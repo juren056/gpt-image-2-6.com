@@ -1,0 +1,78 @@
+export const meta = {
+  title: 'Qwen Image 3.0 Released: Confirmed Features',
+  description:
+    'Qwen Image 3.0 launched July 21, 2026. Review the confirmed capabilities, live API access, pricing, and this site’s production integration.',
+  created_at: '2026-07-21T00:00:00.000Z',
+  updated_at: '2026-09-04T00:00:00.000Z',
+  author_name: 'Qwen Image 3 Community Studio',
+};
+
+Qwen officially announced **Qwen Image 3.0 on July 21, 2026**. The third generation focuses on practical, information-dense images rather than only attractive pictures. Its launch theme is “Real,” expressed through richer content, more authentic details, and deeper knowledge.
+
+This article separates facts in the official announcement and Model Studio documentation from details that still need approved access, a model card, or repeatable hands-on testing.
+
+## Confirmed capabilities
+
+According to the [official Qwen announcement](https://qwen.ai/blog?id=qwen-image-3.0), Qwen Image 3.0 supports instructions of up to approximately **4.5K tokens**. This is intended for complex jobs such as newspapers, storyboards, exam papers, professional infographics, and nested interface designs.
+
+The official examples highlight:
+
+- a complete 3×3 knowledge infographic produced in one pass;
+- complex formulas, diagrams, labels, and multiple content regions in one image;
+- fine text rendered at approximately 10px in the launch examples;
+- native rendering across 12 languages;
+- more than 100 artistic styles and a broad range of interface types;
+- detailed skin, hair, natural materials, and realistic paper textures;
+- image-editing examples including annotations, restoration, and research-style overlays.
+
+These are launch claims and official demonstrations. They are not yet independent benchmarks from this website.
+
+## Official API status and what is not yet verified here
+
+The announcement confirms the model release, but release status is not the same as a production API being available to every third-party application.
+
+[Alibaba Cloud Model Studio documentation](https://help.aliyun.com/en/model-studio/image-model/) now lists the official model ID **qwen-image-3.0-pro** and marks it as **invite-only testing**. The documentation describes text-to-image and image editing, up to six outputs per request, and resolutions up to 2048×2048.
+
+Commercial API access is now available for the `alibaba/qwen-image-3/text-to-image` model. The verified integration supports documented request and output options. Downloadable weights, local license terms, hardware requirements, and a tested native ComfyUI 3.0 workflow remain separate questions, so we will not invent download links or local requirements.
+
+Follow the dedicated [Qwen Image 3.0 API status guide](/qwen-image-3-api) and [Qwen Image 3.0 ComfyUI guide](/qwen-image-3-comfyui) for clearly labeled updates.
+
+## What changes on this website
+
+The site has moved to **“officially released and live.”** Qwen Image 3 is the default, while users can explicitly select Qwen Image 2 Standard or Pro. Every task records the model that actually generated it.
+
+We will not present a Qwen Image 2.0 output as a Qwen Image 3.0 result. The model selector, task history, credit cost, and examples must continue to show the model actually used.
+
+The production integration keeps provider credentials and model IDs on the server, accepts only supported image sizes and safe fixed options, charges 5 credits per request, monitors asynchronous tasks, restores credits after failed tasks, and copies successful images to durable object storage when configured. Qwen Image 2 remains explicitly labeled as a separate user-selectable model rather than being presented as 3.0.
+
+## How we will test Qwen Image 3.0
+
+Ongoing tests cover portraits, product photography, posters, dense text, multilingual layouts, user interfaces, supported prompt lengths, content-safety failures, and all available aspect ratios.
+
+We plan to publish the prompts, settings, output images, latency, failure rate, and cost. That will make the future [Qwen Image 3.0 vs Qwen Image 2.0 comparison](/qwen-image-3-vs-qwen-image-2) reproducible rather than promotional.
+
+The [Qwen Image 3.0 prompt guide](/qwen-image-3-prompts) uses practical patterns and labels which capabilities come directly from the official launch announcement.
+
+## A practical evaluation checklist
+
+Do not judge a model from one attractive output. Use the same brief, aspect ratio, and review criteria across several runs, then record where each result succeeds or fails. For Qwen Image 3.0, a useful review covers five separate dimensions:
+
+1. **Instruction coverage:** are all requested subjects, relationships, and exclusions present?
+2. **Text accuracy:** are spelling, numbers, prices, names, and reading order correct at the final export size?
+3. **Visual consistency:** do repeated characters, products, materials, and brand colors remain stable?
+4. **Production fitness:** is there enough safe space for crops, overlays, and platform-specific ratios?
+5. **Cost of correction:** how many reruns or manual edits are needed before the asset is publishable?
+
+Keep the original prompt beside each output and change one variable at a time. This makes the comparison reproducible and prevents a lucky generation from being mistaken for a reliable workflow.
+
+## When Qwen Image 3.0 is a sensible choice
+
+The model is most relevant when a job combines detailed instructions with structured visual content: product benefit graphics, localized posters, educational diagrams, storyboards, or interfaces with multiple regions. A simpler model may still be the better choice for basic decorative images when speed and cost matter more than layout or text control.
+
+For commercial work, treat every generated asset as a draft until a person checks factual claims, trademarks, required disclosures, product accuracy, and every visible character. The model can reduce iteration time; it does not replace editorial or legal review.
+
+## Independent-site notice
+
+Qwen Image 3 Community Studio is an independent third-party product. It is not affiliated with, authorized by, or endorsed by Alibaba or the Qwen team. “Qwen” and related marks belong to their respective owners.
+
+**Official sources:** [Qwen Image 3.0: Rich Content, Authentic Details, Deep Knowledge](https://qwen.ai/blog?id=qwen-image-3.0) · [Alibaba Cloud Model Studio image API documentation](https://help.aliyun.com/en/model-studio/image-model/)

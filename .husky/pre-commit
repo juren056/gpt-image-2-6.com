@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+# GitHub Desktop / Git GUI on Windows often omit Node.js from PATH when running hooks,
+# which makes `npx lint-staged` fail with "command not found" and dumps PATH.
+if ! command -v node >/dev/null 2>&1; then
+  for dir in \
+    "/c/Program Files/nodejs" \
+    "/c/Program Files (x86)/nodejs" \
+    "$PROGRAMFILES/nodejs" \
+    "$LOCALAPPDATA/Programs/nodejs" \
+    "$APPDATA/npm"
+  do
+    [ -d "$dir" ] && PATH="$dir:$PATH"
+  done
+  export PATH
+fi
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+LINT_STAGED="$ROOT/node_modules/lint-staged/bin/lint-staged.js"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "husky pre-commit: Node.js not found. Install Node.js or commit from a terminal."
+  exit 1
+fi
+
+if [ ! -f "$LINT_STAGED" ]; then
+  echo "husky pre-commit: dependencies missing — run npm install first."
+  exit 1
+fi
+
+node "$LINT_STAGED"

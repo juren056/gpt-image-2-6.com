@@ -1,0 +1,451 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useForm } from '@tanstack/react-form';
+import { createFileRoute } from '@tanstack/react-router';
+import { z } from 'zod';
+
+import { authClient, signIn, signUp, useSession } from '@/core/auth/client';
+import { Link, useRouter } from '@/core/i18n/navigation';
+import { envConfigs } from '@/config';
+import { trackFunnelEvent } from '@/lib/analytics-events';
+import { apiPost } from '@/lib/api-client';
+import { formatAuthError } from '@/lib/auth-error';
+import {
+  buildAuthSwitchQuery,
+  resolvePostAuthDestination,
+  toAbsoluteAuthCallbackURL,
+  validateAuthSearch,
+} from '@/lib/auth-navigation';
+import { m } from '@/paraglide/messages.js';
+import { localizeHref } from '@/paraglide/runtime.js';
+import { usePublicConfig } from '@/hooks/use-public-config';
+import { AuthMarketingShell } from '@/components/auth-marketing-shell';
+import { TextField } from '@/components/form-field';
+import { TurnstileWidget } from '@/components/turnstile-widget';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldSeparator,
+} from '@/components/ui/field';
+
+function SignUpPage() {
+  const router = useRouter();
+  const { data: session, isPending: sessionPending } = useSession();
+  // Set right before we navigate so the already-signed-in effect doesn't also fire.
+  const navigatingRef = useRef(false);
+  const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaResetSignal, setCaptchaResetSignal] = useState(0);
+  const handleCaptchaToken = useCallback((token: string) => {
+    setCaptchaToken(token);
+  }, []);
+
+  const search = Route.useSearch();
+  const afterLoginUrl = resolvePostAuthDestination(search);
+  const switchQuery = buildAuthSwitchQuery(afterLoginUrl);
+  const signUpSchema = z
+    .object({
+      name: z
+        .string()
+        .trim()
+        .min(1, m['common.sign.validation_name_required']()),
+      email: z
+        .string()
+        .trim()
+        .min(1, m['common.sign.validation_email_required']())
+        .email(m['common.sign.validation_email_invalid']()),
+      password: z.string().min(8, m['common.sign.validation_password_min']()),
+      confirmPassword: z
+        .string()
+        .min(1, m['common.sign.validation_confirm_password_required']()),
+      inviteCode: z.string(),
+    })
+    .refine((d) => d.password === d.confirmPassword, {
+      path: ['confirmPassword'],
+      message: m['common.sign.password_mismatch'](),
+    });
+
+  // Already signed in (visited /sign-up directly, or a stale callbackUrl looped
+  // back here) → go home. The auth pages never gate themselves, so this can't loop.
+  useEffect(() => {
+    if (sessionPending || navigatingRef.current) return;
+    if (session?.user) {
+      navigatingRef.current = true;
+      router.push('/');
+    }
+  }, [sessionPending, session?.user, router]);
+
+  const configQuery = usePublicConfig();
+  const configs = configQuery.data ?? {};
+
+  const configsLoaded = configQuery.isSuccess;
+  const emailEnabled = configs.email_auth_enabled !== 'false';
+  const emailOtpEnabled = configs.email_otp_sign_in_enabled === 'true';
+  const googleEnabled = configs.google_auth_enabled === 'true';
+  const githubEnabled = configs.github_auth_enabled === 'true';
+  const emailVerificationEnabled =
+    configs.email_verification_enabled === 'true';
+  const inviteCodeRequired = configs.invite_code_required === 'true';
+  const turnstileEnabled = configs.turnstile_enabled === 'true';
+  const turnstileSiteKey = configs.turnstile_site_key || '';
+  // Invite-only mode cannot collect an invite code during an OAuth redirect,
+  // so hide social creation while preserving email sign-up enforcement.
+  const hasSocial = !inviteCodeRequired && (googleEnabled || githubEnabled);
+  const hasAnyMethod = emailEnabled || emailOtpEnabled || hasSocial;
+  const starterCredits =
+    configs.initial_credits_enabled === 'true'
+      ? Math.max(
+          0,
+          Number.parseInt(configs.initial_credits_amount || '0', 10) || 0
+        )
+      : 0;
+
+  const form = useForm({
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      inviteCode: '',
+    },
+    validators: { onSubmit: signUpSchema },
+    onSubmit: async ({ value }) => {
+      setError('');
+      const trimmedInvite = value.inviteCode.trim();
+      if (inviteCodeRequired && !trimmedInvite) {
+        setError(m['common.sign.invite_code_required']());
+        return;
+      }
+      try {
+        // Pre-validate invite code so we don't create an unredeemable account.
+        if (inviteCodeRequired) {
+          try {
+            await apiPost('/api/invite-codes/validate', {
+              code: trimmedInvite,
+            });
+          } catch (err: any) {
+            setError(err?.message || m['common.sign.invite_code_invalid']());
+            return;
+          }
+        }
+
+        const result = await signUp.email({
+          name: value.name.trim(),
+          email: value.email.trim().toLowerCase(),
+          password: value.password,
+          fetchOptions: {
+            headers: {
+              ...(trimmedInvite ? { 'x-invite-code': trimmedInvite } : {}),
+              ...(turnstileEnabled && captchaToken
+                ? { 'x-captcha-response': captchaToken }
+                : {}),
+            },
+          },
+        });
+        if (result.error) {
+          setError(
+            formatAuthError(
+              result.error,
+              m['common.sign.error_sign_up_failed']()
+            )
+          );
+          if (turnstileEnabled) setCaptchaResetSignal((value) => value + 1);
+          return;
+        }
+
+        // Try to redeem when feature is enabled.
+        // - Without email verification: we have a session immediately, redeem now.
+        // - With email verification: redeem after sign-in; we still attempt now in
+        //   case autoSignIn is on, and silently swallow the unauthorized failure.
+        if (inviteCodeRequired && trimmedInvite) {
+          try {
+            await apiPost('/api/invite-codes/redeem', { code: trimmedInvite });
+          } catch {}
+        }
+
+        if (emailVerificationEnabled) {
+          let verificationSent = false;
+          try {
+            const sendResult = await authClient.emailOtp.sendVerificationOtp({
+              email: value.email.trim().toLowerCase(),
+              type: 'email-verification',
+            });
+            verificationSent = !sendResult.error;
+          } catch {
+            verificationSent = false;
+          }
+
+          const verifyParams = new URLSearchParams({
+            email: value.email.trim().toLowerCase(),
+            callbackUrl: afterLoginUrl,
+            [verificationSent ? 'sent' : 'sendFailed']: '1',
+          });
+          const verifyPath = `/verify-email?${verifyParams.toString()}`;
+          router.push(verifyPath);
+        } else {
+          // Hard navigation so the destination reloads with a fresh session
+          // cookie — a client push would let the guard read a stale (logged-out)
+          // session store and bounce straight back to /sign-in.
+          navigatingRef.current = true;
+          window.location.assign(localizeHref(afterLoginUrl));
+        }
+      } catch (err: unknown) {
+        if (turnstileEnabled) setCaptchaResetSignal((value) => value + 1);
+        if (import.meta.env.DEV) {
+          console.error(
+            'Sign-up request failed',
+            err instanceof Error ? err.message : 'Unknown error'
+          );
+        }
+        setError(formatAuthError(err, m['common.sign.error_sign_up_failed']()));
+      }
+    },
+  });
+
+  async function handleSocial(provider: 'google' | 'github') {
+    if (provider === 'google') {
+      trackFunnelEvent('google_signup_clicked', { source: 'signup_page' });
+      window.sessionStorage.setItem('qwenimage3:signup-pending', '1');
+    }
+    const callbackURL = toAbsoluteAuthCallbackURL(
+      afterLoginUrl,
+      window.location.origin
+    );
+    await signIn.social({ provider, callbackURL });
+  }
+
+  return (
+    <AuthMarketingShell starterCredits={starterCredits}>
+      <div className="flex w-full flex-col gap-6">
+        <Link href="/" className="self-center font-serif text-lg italic">
+          {envConfigs.app_name}
+        </Link>
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl">
+              {m['common.sign.sign_up_title']()}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {configsLoaded && !hasAnyMethod ? (
+              <div className="rounded-lg border border-dashed p-6 text-center">
+                <p className="text-sm font-medium">
+                  {m['common.sign.no_methods_title']()}
+                </p>
+                <p className="text-muted-foreground mt-1 text-sm">
+                  {m['common.sign.no_methods_description']()}
+                </p>
+              </div>
+            ) : (
+              <form
+                noValidate
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const validation = signUpSchema.safeParse(form.state.values);
+                  if (!validation.success) {
+                    setError(
+                      validation.error.issues[0]?.message ||
+                        m['common.sign.error_sign_up_failed']()
+                    );
+                    return;
+                  }
+                  form.handleSubmit();
+                }}
+              >
+                <FieldGroup>
+                  {error && (
+                    <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm">
+                      {error}
+                    </div>
+                  )}
+
+                  {hasSocial && (
+                    <Field>
+                      {googleEnabled && (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={() => handleSocial('google')}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            className="size-4"
+                          >
+                            <path
+                              d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          {m['common.sign.google_sign_in']()}
+                        </Button>
+                      )}
+                      {githubEnabled && (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={() => handleSocial('github')}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            className="size-4"
+                          >
+                            <path
+                              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          {m['common.sign.github_sign_in']()}
+                        </Button>
+                      )}
+                    </Field>
+                  )}
+
+                  {hasSocial && (emailEnabled || emailOtpEnabled) && (
+                    <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                      {m['common.sign.or']()}
+                    </FieldSeparator>
+                  )}
+
+                  {emailOtpEnabled && (
+                    <Field>
+                      <Link
+                        href={`/sign-in${switchQuery}`}
+                        onClick={() => {
+                          trackFunnelEvent('email_signup_clicked', {
+                            source: 'signup_page',
+                          });
+                          window.sessionStorage.setItem(
+                            'qwenimage3:signup-pending',
+                            '1'
+                          );
+                        }}
+                        className="bg-foreground text-background hover:bg-foreground/90 flex min-h-11 w-full items-center justify-center rounded-md px-4 text-sm font-medium"
+                      >
+                        {m['common.sign.continue_with_email']()}
+                      </Link>
+                      <FieldDescription className="text-center">
+                        {m['common.sign.email_code_tip']()}
+                      </FieldDescription>
+                    </Field>
+                  )}
+
+                  {emailEnabled && !emailOtpEnabled && (
+                    <>
+                      <form.Field name="name">
+                        {(field) => (
+                          <TextField
+                            field={field}
+                            label={m['common.sign.name_title']()}
+                            type="text"
+                            required
+                            placeholder={m['common.sign.name_placeholder']()}
+                          />
+                        )}
+                      </form.Field>
+                      <form.Field name="email">
+                        {(field) => (
+                          <TextField
+                            field={field}
+                            label={m['common.sign.email_title']()}
+                            type="email"
+                            required
+                            placeholder={m['common.sign.email_placeholder']()}
+                          />
+                        )}
+                      </form.Field>
+                      <form.Field name="password">
+                        {(field) => (
+                          <TextField
+                            field={field}
+                            label={m['common.sign.password_title']()}
+                            type="password"
+                            required
+                            placeholder={m[
+                              'common.sign.password_placeholder'
+                            ]()}
+                          />
+                        )}
+                      </form.Field>
+                      <form.Field name="confirmPassword">
+                        {(field) => (
+                          <TextField
+                            field={field}
+                            label={m['common.sign.confirm_password_title']()}
+                            type="password"
+                            required
+                            placeholder={m[
+                              'common.sign.confirm_password_placeholder'
+                            ]()}
+                          />
+                        )}
+                      </form.Field>
+                      {inviteCodeRequired && (
+                        <form.Field name="inviteCode">
+                          {(field) => (
+                            <TextField
+                              field={field}
+                              label={m['common.sign.invite_code_title']()}
+                              type="text"
+                              required
+                              placeholder={m[
+                                'common.sign.invite_code_placeholder'
+                              ]()}
+                            />
+                          )}
+                        </form.Field>
+                      )}
+                      {turnstileEnabled && turnstileSiteKey && (
+                        <Field>
+                          <TurnstileWidget
+                            siteKey={turnstileSiteKey}
+                            onTokenChange={handleCaptchaToken}
+                            resetSignal={captchaResetSignal}
+                          />
+                        </Field>
+                      )}
+                      <Field>
+                        <form.Subscribe selector={(s) => s.isSubmitting}>
+                          {(isSubmitting) => (
+                            <Button
+                              type="submit"
+                              disabled={
+                                isSubmitting ||
+                                (turnstileEnabled && !captchaToken)
+                              }
+                            >
+                              {isSubmitting
+                                ? '...'
+                                : m['common.sign.sign_up_title']()}
+                            </Button>
+                          )}
+                        </form.Subscribe>
+                        <FieldDescription className="text-center">
+                          {m['common.sign.already_have_account']()}{' '}
+                          <Link
+                            href={`/sign-in${switchQuery}`}
+                            className="underline underline-offset-4"
+                          >
+                            {m['common.sign.sign_in_title']()}
+                          </Link>
+                        </FieldDescription>
+                      </Field>
+                    </>
+                  )}
+                </FieldGroup>
+              </form>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </AuthMarketingShell>
+  );
+}
+
+export const Route = createFileRoute('/(auth)/sign-up')({
+  validateSearch: validateAuthSearch,
+  component: SignUpPage,
+});

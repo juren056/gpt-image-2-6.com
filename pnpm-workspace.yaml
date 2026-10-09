@@ -1,0 +1,7 @@
+packages:
+  - .
+
+# Keep dependency layout compatible with Nitro's file tracer without storing
+# user-specific pnpm store paths in a tracked .npmrc file.
+nodeLinker: hoisted
+packageImportMethod: copy
