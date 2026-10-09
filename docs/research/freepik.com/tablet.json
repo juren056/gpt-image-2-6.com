@@ -1,0 +1,119 @@
+{
+  "url": "https://www.freepik.com/ai/photo-editor",
+  "title": "That request didn't go through. Our security filter flagged something. You don't have permission to access this page.",
+  "body": "rgb(8, 8, 8)",
+  "headings": [
+    {
+      "text": "That request didn't go through. Our security filter flagged something. You don't have permission to access this page.",
+      "styles": {
+        "fontFamily": "KlarheitInline, GeistInline, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "fontSize": "30px",
+        "fontWeight": "800",
+        "lineHeight": "30px",
+        "letterSpacing": "normal",
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "8px 0px 0px",
+        "gap": "normal",
+        "borderRadius": "0px",
+        "border": "0px solid rgb(255, 255, 255)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "158px",
+        "width": "382.953px",
+        "maxWidth": "none",
+        "display": "block",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "tag": "A",
+      "text": "BACK TO HOMEPAGE",
+      "aria": null,
+      "placeholder": null,
+      "href": "https://www.magnific.com",
+      "type": null,
+      "styles": {
+        "fontFamily": "GeistInline, sans-serif",
+        "fontSize": "15px",
+        "fontWeight": "600",
+        "lineHeight": "17.25px",
+        "letterSpacing": "0.75px",
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "10px 28px",
+        "gap": "normal",
+        "borderRadius": "9999px",
+        "border": "1px solid rgb(255, 255, 255)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "39.25px",
+        "width": "221.125px",
+        "maxWidth": "none",
+        "display": "flex",
+        "gridTemplateColumns": "none",
+        "transition": "background-color 0.2s, color 0.2s"
+      }
+    },
+    {
+      "tag": "A",
+      "text": "here",
+      "aria": null,
+      "placeholder": null,
+      "href": "mailto:support@magnific.com?subject=Access%20denied&body=Hi%2C%0A%0APlease%20provide%20the%20following%20information%20so%20we%20can%20assist%20you%3A%0A%0A-%20Error%20reference%20you%20see%3A%0A%0A-%20The%20IP%20address%20of%20your%20WiFi%20connection%20(you%20can%20get%20it%20here%3A%20https%3A%2F%2Fwhatismyipaddress.com)%0A%0A-%20Confirm%20if%20you%27re%20using%20a%20VPN.%0A%0A-%20Screenshots%20of%20your%20screen%20and%20of%20the%20console%20information.%0A%0AThank%20you.%0A",
+      "type": null,
+      "styles": {
+        "fontFamily": "GeistInline, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "600",
+        "lineHeight": "19.2px",
+        "letterSpacing": "normal",
+        "color": "rgb(255, 88, 174)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "gap": "normal",
+        "borderRadius": "0px",
+        "border": "0px solid rgb(255, 88, 174)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "auto",
+        "width": "auto",
+        "maxWidth": "none",
+        "display": "inline",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    }
+  ],
+  "layout": [
+    {
+      "tag": "MAIN",
+      "classes": "content",
+      "text": "403\nThat request didn't go through. Our security filter flagged something. You don't have permission to access this page.\n\nStart fresh from the homepa",
+      "styles": {
+        "fontFamily": "GeistInline, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "18.4px",
+        "letterSpacing": "normal",
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "gap": "64px",
+        "borderRadius": "0px",
+        "border": "0px solid rgb(255, 255, 255)",
+        "boxShadow": "none",
+        "position": "relative",
+        "height": "788px",
+        "width": "656px",
+        "maxWidth": "none",
+        "display": "flex",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    }
+  ]
+}

@@ -24,7 +24,7 @@ const STATIC_PATHS: Array<
 > = [
   {
     path: '',
-    lastModified: SITE_LAST_UPDATED,
+    lastModified: '2026-10-10',
     changeFrequency: 'weekly',
     priority: 1,
   },

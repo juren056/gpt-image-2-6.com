@@ -1,7 +1,23 @@
 import { envConfigs } from '@/config';
 import { locales, localizeUrl } from '@/paraglide/runtime.js';
 
-export const DEFAULT_SOCIAL_IMAGE = '/imgs/generated/hero-1783598692895.png';
+export const DEFAULT_SOCIAL_IMAGE = '/brand/nano-banana-social.png';
+
+export function organizationSchema() {
+  return {
+    '@type': 'Organization',
+    '@id': `${envConfigs.app_url}/#organization`,
+    name: envConfigs.app_name,
+    url: envConfigs.app_url,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${envConfigs.app_url}/logo.png`,
+      contentUrl: `${envConfigs.app_url}/logo.png`,
+      width: 512,
+      height: 512,
+    },
+  };
+}
 
 // Only advertise locales whose editorial and legal content is complete and
 // reviewed. Other UI translations remain available to users, but are kept out
@@ -88,8 +104,8 @@ export function seoHead(params: {
     description,
     type = 'article',
     image,
-    imageWidth = 1024,
-    imageHeight = 576,
+    imageWidth = image ? 1024 : 1200,
+    imageHeight = image ? 576 : 630,
     datePublished,
     dateModified,
     faqItems = [],
@@ -156,11 +172,7 @@ export function seoHead(params: {
               inLanguage: seoLanguageTag(canonicalLocale),
               ...(datePublished ? { datePublished } : {}),
               ...(dateModified ? { dateModified } : {}),
-              publisher: {
-                '@type': 'Organization',
-                name: envConfigs.app_name,
-                url: envConfigs.app_url,
-              },
+              publisher: organizationSchema(),
             },
             ...(path === '/'
               ? []

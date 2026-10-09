@@ -42,3 +42,4 @@ LICENSE
 *.log
 *.pem
 *.tsbuildinfo
+.artifacts

@@ -6,6 +6,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nanobanana21pro-com",
+  "compatibility_date": "2026-06-10",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true,
@@ -22,7 +23,7 @@
       "binding": "DB",
       "database_name": "nanobanana21pro-db",
       "database_id": "REPLACE_WITH_OUTPUT_OF_WRANGLER_D1_CREATE",
-      "migrations_dir": "drizzle",
+      "migrations_dir": "drizzle/d1",
     },
   ],
   // ── Postgres via Hyperdrive (instead of D1) ────────────────────────────────

@@ -51,6 +51,7 @@ yarn-error.log*
 
 # Local browser profiles and screenshots created during visual QA
 /.visual-check/
+/.artifacts/
 
 # env — local files hold secrets, never commit (keep .env.example tracked)
 .env

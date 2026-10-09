@@ -1,42 +1,23 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 import { envConfigs } from '@/config';
-import { seoHead } from '@/lib/seo';
+import { organizationSchema, seoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { CTA } from '@/blocks/cta';
+import { CreativeHome } from '@/blocks/creative-home';
 import { FAQ, getHomepageFaqs } from '@/blocks/faq';
-import { Features } from '@/blocks/features';
 import { Footer } from '@/blocks/footer';
-import { Header } from '@/blocks/header';
-import { Hero } from '@/blocks/hero';
-import { HomepageDiscovery } from '@/blocks/homepage-discovery';
 import { HomepageEnhancements } from '@/blocks/homepage-enhancements';
-import { ImageEditingFeature } from '@/blocks/homepage-studio-sections';
-import { HowItWorks } from '@/blocks/how-it-works';
 import { Pricing } from '@/blocks/pricing';
-import { PromptLibrary } from '@/blocks/prompt-library';
 
 function HomePage() {
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-col">
-      <Header />
-      <main>
-        <Hero />
-        <div className="[&>section]:[contain-intrinsic-size:auto_900px] [&>section]:[content-visibility:auto]">
-          <HomepageDiscovery />
-          <HowItWorks />
-          <Features />
-          <ImageEditingFeature />
-          <PromptLibrary compact />
-          <Pricing compact />
-          <FAQ />
-          <CTA />
-        </div>
-      </main>
+    <CreativeHome>
+      <Pricing compact />
+      <FAQ compact />
       <Footer />
       <HomepageEnhancements />
-    </div>
+    </CreativeHome>
   );
 }
 
@@ -58,13 +39,16 @@ export const Route = createFileRoute('/')({
       title,
       description,
       type: 'website',
-      dateModified: '2026-10-06',
+      dateModified: '2026-10-10',
       faqItems: loaderData?.faqItems ?? [],
       extraSchemas: [
+        organizationSchema(),
         {
           '@type': 'WebSite',
+          '@id': `${envConfigs.app_url}/#website`,
           name: envConfigs.app_name,
           url: envConfigs.app_url,
+          publisher: { '@id': `${envConfigs.app_url}/#organization` },
         },
       ],
     });

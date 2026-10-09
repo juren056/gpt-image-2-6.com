@@ -111,6 +111,8 @@ export type GeneratorWorkspaceCopy = {
   }>;
   openGuide: string;
   modelLabel: string;
+  modelSearch?: string;
+  modelEmpty?: string;
   modelName: string;
   creditUnit: string;
   aspectLabel: string;
@@ -960,15 +962,17 @@ export function ImageGeneratorWorkspace({
   }
 
   return (
-    <div className="border-border bg-card/95 shadow-primary/10 overflow-hidden rounded-[1.5rem] border shadow-xl backdrop-blur sm:rounded-[2rem] sm:shadow-2xl">
-      <div className="border-border flex flex-col gap-3 border-b px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-4">
-        <div className="flex min-w-0 flex-wrap items-center gap-3">
-          <span className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-xl">
+    <div className="border-border bg-card overflow-hidden rounded-2xl border shadow-sm">
+      <div className="border-border flex flex-col gap-3 border-b px-4 py-4 sm:px-5 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex min-w-0 flex-wrap items-center gap-2.5">
+          <span className="bg-primary/10 text-primary flex size-8 items-center justify-center rounded-lg">
             <WandSparkles className="size-4" />
           </span>
           <div data-tour="generator-prompt">
             <p className="text-sm font-semibold">{copy.label}</p>
-            <p className="text-muted-foreground text-xs">{copy.privateLabel}</p>
+            <p className="text-muted-foreground text-[11px]">
+              {copy.privateLabel}
+            </p>
           </div>
 
           <button
@@ -976,7 +980,7 @@ export function ImageGeneratorWorkspace({
             onClick={() =>
               window.dispatchEvent(new Event(OPEN_GENERATOR_GUIDE_EVENT))
             }
-            className="border-border bg-background/80 hover:border-primary/40 hover:text-primary flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition-colors"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground flex min-h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium transition-colors"
           >
             <CircleHelp className="size-3.5" aria-hidden="true" />
             {copy.openGuide}
@@ -985,15 +989,9 @@ export function ImageGeneratorWorkspace({
           <details className="group relative">
             <summary
               onClick={() => setShowToolNudge(false)}
-              className="border-primary/20 bg-primary/5 hover:border-primary/40 hover:bg-primary/10 focus-visible:ring-ring flex min-h-10 cursor-pointer list-none items-center gap-2 rounded-full border pr-3 pl-1.5 text-xs font-semibold transition-colors select-none focus-visible:ring-2 focus-visible:outline-none [&::-webkit-details-marker]:hidden"
+              className="border-border bg-background hover:border-primary/40 hover:bg-primary/5 focus-visible:ring-ring flex min-h-9 cursor-pointer list-none items-center gap-2 rounded-lg border pr-2.5 pl-1.5 text-xs font-medium transition-colors select-none focus-visible:ring-2 focus-visible:outline-none [&::-webkit-details-marker]:hidden"
             >
-              <span
-                className={cn(
-                  'bg-primary text-primary-foreground relative flex size-6 items-center justify-center rounded-full shadow-sm',
-                  showToolNudge &&
-                    'motion-safe:animate-bounce motion-reduce:animate-none'
-                )}
-              >
+              <span className="bg-primary/10 text-primary relative flex size-6 items-center justify-center rounded-md">
                 <Bot className="size-3.5" aria-hidden="true" />
                 {showToolNudge ? (
                   <span className="ring-background absolute -top-0.5 -right-0.5 size-2 rounded-full bg-amber-400 ring-2" />
@@ -1058,13 +1056,13 @@ export function ImageGeneratorWorkspace({
             </div>
           </details>
         </div>
-        <div className="flex w-full min-w-0 items-center gap-2 sm:w-auto sm:justify-end">
+        <div className="flex w-full min-w-0 flex-wrap items-center gap-2 xl:w-auto xl:justify-end">
           <button
             type="button"
             onClick={handleCreditBalanceClick}
             disabled={isCreditBalanceLoading}
             className={cn(
-              'border-border bg-background/80 hover:border-primary/40 hover:text-primary flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-2.5 text-[11px] font-medium transition-colors disabled:cursor-wait disabled:opacity-70 sm:px-3 sm:text-xs',
+              'border-border bg-background hover:border-primary/40 hover:text-primary flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-[11px] font-medium transition-colors disabled:cursor-wait disabled:opacity-70 sm:px-3 sm:text-xs',
               hasInsufficientCredits &&
                 'border-amber-300 bg-amber-50 text-amber-800 hover:border-amber-400 hover:text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300'
             )}
@@ -1082,9 +1080,8 @@ export function ImageGeneratorWorkspace({
             ) : null}
           </button>
 
-          <div className="border-border bg-muted/60 flex h-8 min-w-0 flex-1 items-center gap-2 rounded-full border px-2.5 text-[11px] sm:w-fit sm:flex-none sm:shrink-0 sm:px-3 sm:text-xs">
+          <div className="text-muted-foreground flex h-8 min-w-0 flex-1 items-center gap-2 px-1 text-[11px] sm:w-fit sm:flex-none sm:px-2 sm:text-xs">
             <span className="relative flex size-2 shrink-0">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-amber-400 opacity-70" />
               <span className="relative inline-flex size-2 rounded-full bg-amber-500" />
             </span>
             <span className="truncate font-medium">
@@ -1097,8 +1094,8 @@ export function ImageGeneratorWorkspace({
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[1.1fr_.9fr]">
-        <div className="flex flex-col gap-5 p-4 sm:gap-6 sm:p-7">
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+        <div className="flex min-w-0 flex-col gap-5 p-4 sm:p-5">
           <div
             className="bg-muted/60 order-1 grid grid-cols-2 rounded-xl p-1"
             aria-label="Creation mode"
@@ -1117,7 +1114,7 @@ export function ImageGeneratorWorkspace({
               Edit
             </Link>
           </div>
-          <div className="order-3">
+          <div className="order-2">
             <label htmlFor="homepage-prompt" className="text-sm font-medium">
               {copy.promptLabel}
             </label>
@@ -1135,7 +1132,7 @@ export function ImageGeneratorWorkspace({
                 }
               }}
               placeholder={copy.promptPlaceholder}
-              className="bg-background/80 mt-3 min-h-32 resize-none rounded-2xl p-4 text-sm leading-relaxed"
+              className="border-border bg-background focus-visible:border-primary/50 mt-3 min-h-44 resize-y rounded-xl p-4 text-sm leading-6 shadow-none"
               maxLength={IMAGE_MAX_PROMPT_LENGTH}
               disabled={isGenerating}
             />
@@ -1144,7 +1141,7 @@ export function ImageGeneratorWorkspace({
             </p>
           </div>
 
-          <div className="order-5">
+          <div className="order-3">
             <p className="text-muted-foreground mb-2 text-xs font-medium">
               {copy.examplesLabel}
             </p>
@@ -1154,7 +1151,8 @@ export function ImageGeneratorWorkspace({
                   key={example}
                   type="button"
                   onClick={() => setPrompt(example)}
-                  className="border-border bg-background hover:border-primary/40 hover:text-primary min-h-10 shrink-0 snap-start rounded-full border px-3 py-1.5 text-left text-xs transition-colors"
+                  title={example}
+                  className="border-border bg-muted/30 hover:border-primary/40 hover:bg-primary/5 hover:text-primary min-h-9 shrink-0 snap-start rounded-lg border px-3 py-1.5 text-left text-xs transition-colors"
                 >
                   {index + 1}. {example.slice(0, 31)}…
                 </button>
@@ -1164,7 +1162,7 @@ export function ImageGeneratorWorkspace({
 
           <div
             data-tour="generator-options"
-            className="order-2 grid gap-5 sm:grid-cols-2"
+            className="order-4 grid min-w-0 gap-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
           >
             <div>
               <p className="mb-2 text-xs font-medium">{copy.modelLabel}</p>
@@ -1174,6 +1172,8 @@ export function ImageGeneratorWorkspace({
                 onChange={setModel}
                 disabled={isGenerating}
                 ariaLabel={copy.modelLabel}
+                searchLabel={copy.modelSearch}
+                emptyLabel={copy.modelEmpty}
                 creditUnit={copy.creditUnit}
               />
               <a
@@ -1193,9 +1193,10 @@ export function ImageGeneratorWorkspace({
                     onClick={() => setAspect(option.key)}
                     disabled={isGenerating}
                     aria-label={option.label}
+                    aria-pressed={aspect === option.key}
                     title={option.label}
                     className={cn(
-                      'border-border flex h-10 flex-1 items-center justify-center rounded-xl border transition-colors',
+                      'border-border flex h-10 min-w-0 flex-1 items-center justify-center rounded-lg border transition-colors',
                       aspect === option.key
                         ? 'border-primary bg-primary/8 text-primary'
                         : 'text-muted-foreground hover:text-foreground'
@@ -1216,8 +1217,8 @@ export function ImageGeneratorWorkspace({
             </div>
           </div>
 
-          <details className="border-border bg-muted/25 order-6 rounded-2xl border p-4">
-            <summary className="cursor-pointer text-sm font-semibold">
+          <details className="border-border order-5 rounded-xl border px-3.5 py-3">
+            <summary className="text-muted-foreground cursor-pointer text-xs font-medium">
               Advanced settings
             </summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -1238,9 +1239,9 @@ export function ImageGeneratorWorkspace({
 
           <div
             data-tour="generator-submit"
-            className="order-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+            className="border-border order-6 flex flex-col gap-3 border-t pt-4"
           >
-            <p className="text-muted-foreground flex items-center gap-1.5 text-xs">
+            <p className="text-muted-foreground flex items-center justify-between gap-1.5 text-xs">
               <Sparkles className="size-3.5" />
               {copy.cost.replace('{credits}', String(creditCost))}
             </p>
@@ -1251,7 +1252,7 @@ export function ImageGeneratorWorkspace({
                 isGenerating ||
                 Boolean(mounted && (!prompt.trim() || !seedIsValid))
               }
-              className="h-12 w-full rounded-full px-7 sm:w-auto"
+              className="h-14 w-full rounded-xl px-5 text-sm font-semibold shadow-sm"
             >
               {isGenerating ? (
                 <>
@@ -1311,7 +1312,7 @@ export function ImageGeneratorWorkspace({
           ) : null}
         </div>
 
-        <div className="border-border bg-muted/35 border-t p-4 sm:p-7 lg:border-t-0 lg:border-l">
+        <div className="border-border bg-muted/20 min-w-0 border-t p-4 sm:p-5 lg:border-t-0 lg:border-l">
           <div className="mb-3 flex items-center justify-between gap-3">
             <p className="text-sm font-medium">{copy.resultTitle}</p>
             {outputUrl ? (
@@ -1328,7 +1329,7 @@ export function ImageGeneratorWorkspace({
               }
             }}
             className={cn(
-              'border-border bg-background group relative flex min-h-60 w-full items-center justify-center overflow-hidden rounded-2xl border',
+              'border-border bg-background group relative flex min-h-60 w-full items-center justify-center overflow-hidden rounded-xl border',
               outputUrl && 'cursor-zoom-in',
               displayedAspect === 'square'
                 ? 'aspect-[4/3] sm:aspect-square'
@@ -1634,7 +1635,7 @@ export function ImageGeneratorWorkspace({
           {selectedResult && !isGenerating ? (
             !session?.user ? (
               <div className="border-primary/20 bg-primary/5 mt-4 rounded-2xl border p-4">
-                <p className="font-serif text-lg">
+                <p className="text-base font-semibold">
                   Your first AI Image image is ready.
                 </p>
                 <p className="text-muted-foreground mt-1 text-sm leading-6">
@@ -1684,10 +1685,10 @@ export function ImageGeneratorWorkspace({
                 </div>
               </div>
             ) : (
-              <div className="border-primary/15 mt-4 overflow-hidden rounded-2xl border bg-[linear-gradient(135deg,oklch(0.98_0.02_292),oklch(0.98_0.018_185))] p-4 dark:bg-[linear-gradient(135deg,oklch(0.21_0.04_292),oklch(0.2_0.035_185))]">
+              <div className="border-border bg-card mt-4 overflow-hidden rounded-xl border p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-serif text-lg leading-tight">
+                    <p className="text-base leading-tight font-semibold">
                       {copy.continueTitle}
                     </p>
                     <p className="text-muted-foreground mt-1 text-xs leading-5">

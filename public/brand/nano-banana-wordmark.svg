@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="96" viewBox="0 0 432 96" role="img" aria-labelledby="title"><title id="title">Nano Banana wordmark</title><g transform="translate(0 0) scale(.1875)"><g>
+  <path d="M113 160l-8-28 22-8 11 33" fill="#B98125"/>
+  <path d="M119 151C115 259 192 332 288 315c57-10 99-55 123-114-2 112-83 194-182 181C126 369 73 274 100 168Z" fill="#FFD43B"/>
+  <path d="M111 178c-14 79 31 158 115 174 77 15 143-36 172-103-30 98-107 143-182 115-72-27-106-99-105-186Z" fill="#F3AA19"/>
+  <path d="M136 231c17 45 50 73 98 81" fill="none" stroke="#FFF3A7" stroke-width="12" stroke-linecap="round"/>
+  <path d="m352 88 15 41 41 15-41 15-15 41-15-41-41-15 41-15Z" fill="#FFF3A7"/>
+  <rect x="269" y="184" width="18" height="18" rx="4" fill="#FFD43B"/>
+</g></g><text x="116" y="64" fill="#191C18" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="700" font-size="48" letter-spacing="-2">Nano Banana</text></svg>

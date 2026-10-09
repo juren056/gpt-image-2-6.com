@@ -7,6 +7,7 @@ import { getAllConfigs } from '@/modules/config/service';
 import { createCheckout } from '@/modules/payment/service';
 import { getCurrentSubscription } from '@/modules/subscriptions/service';
 import { isProduction } from '@/lib/env';
+import { isStripeCheckoutReady } from '@/lib/payment-readiness';
 import { enforceMinIntervalRateLimit } from '@/lib/rate-limit';
 import { respData, respErr } from '@/lib/resp';
 
@@ -75,6 +76,14 @@ async function POST({ request }: { request: Request }) {
       configs.default_payment_provider;
     if (!providerKey || configs[`${providerKey}_enabled`] !== 'true') {
       return respErr('This payment provider is not enabled', { status: 400 });
+    }
+    if (providerKey === 'stripe' && !isStripeCheckoutReady(configs)) {
+      return respErr(
+        'Payments are not available yet. Please try again later.',
+        {
+          status: 503,
+        }
+      );
     }
     const testAmountRaw = providerKey
       ? configs[`${providerKey}_test_amount`]

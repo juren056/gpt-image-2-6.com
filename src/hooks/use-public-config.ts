@@ -11,7 +11,7 @@ export function usePublicConfig() {
   return useQuery({
     queryKey: ['public-config'],
     queryFn: () => apiGet<PublicConfig>('/api/config/public'),
-    staleTime: 3600_000,
+    staleTime: 60_000,
     gcTime: 3600_000,
   });
 }

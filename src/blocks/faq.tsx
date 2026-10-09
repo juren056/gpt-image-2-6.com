@@ -24,12 +24,23 @@ export function getHomepageFaqs(locale: string) {
   }));
 }
 
-export function FAQ() {
+export function FAQ({ compact = false }: { compact?: boolean }) {
   return (
-    <section id="faq" className="px-4 py-24 sm:py-32">
+    <section
+      id="faq"
+      className={
+        compact ? 'border-border border-t px-1 py-10' : 'px-4 py-24 sm:py-32'
+      }
+    >
       <div className="mx-auto max-w-3xl">
-        <div className="mb-16 text-center">
-          <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+        <div className={compact ? 'mb-6 text-center' : 'mb-16 text-center'}>
+          <h2
+            className={
+              compact
+                ? 'text-2xl font-semibold tracking-tight'
+                : 'font-serif text-4xl font-medium tracking-tight sm:text-5xl'
+            }
+          >
             {m['landing.faq.title']()}
           </h2>
           <p className="text-muted-foreground mt-5">

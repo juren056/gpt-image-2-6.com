@@ -12,7 +12,7 @@ export type ConfigMap = Record<string, string>;
 // In-memory cache
 let cachedConfigs: ConfigMap | null = null;
 let cacheTime = 0;
-const CACHE_TTL = 3600_000; // 1 hour
+const CACHE_TTL = 60_000; // Pick up provider/auth settings promptly across Workers.
 
 /**
  * Get all configs from database.

@@ -367,6 +367,10 @@ export function Pricing({
   });
 
   function startCheckout(plan: PricingPlan, provider: PaymentProvider) {
+    if (provider === 'stripe' && configs.stripe_ready !== 'true') {
+      toast.info(m['landing.pricing.checkout_unavailable']());
+      return;
+    }
     const productId = plan.productId;
     if (!productId) {
       toast.error(m['landing.pricing.checkout_unavailable']());

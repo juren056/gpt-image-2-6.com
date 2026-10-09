@@ -1,0 +1,577 @@
+{
+  "body": "rgb(255, 255, 255)",
+  "elements": [
+    {
+      "styles": {
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderRadius": "16px",
+        "color": "rgb(13, 13, 13)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "16px",
+        "height": "704px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "16px 20px",
+        "position": "static",
+        "transition": "padding 0.2s cubic-bezier(0.4, 0, 0.2, 1), gap 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "72px"
+      },
+      "tag": "NAV",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderRadius": "0px",
+        "color": "rgb(13, 13, 13)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "10px",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "relative",
+        "transition": "opacity 0.2s cubic-bezier(0, 0, 0.2, 1)",
+        "width": "42px"
+      },
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "absolute",
+        "transition": "opacity 0.15s cubic-bezier(0, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgb(255, 87, 174)",
+        "borderRadius": "8px",
+        "color": "rgb(15, 15, 15)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "all",
+        "width": "32px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "inline-flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "inline-flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "inline-flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "inline-flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "32px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "32px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(13, 13, 13)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "gap": "0px",
+        "height": "60px",
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "padding": "0px 16px",
+        "position": "relative",
+        "transition": "all",
+        "width": "1184px"
+      },
+      "tag": "HEADER",
+      "text": "PricingLog inSign up"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(255, 87, 174)",
+        "display": "block",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "height": "22.75px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "relative",
+        "transition": "all",
+        "width": "46.9375px"
+      },
+      "tag": "BUTTON",
+      "text": "Pricing"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "inline-flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "gap": "8px",
+        "height": "32px",
+        "lineHeight": "18px",
+        "maxWidth": "none",
+        "padding": "0px 16px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "47.6px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "8px",
+        "height": "40px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px 16px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "71.6px"
+      },
+      "tag": "BUTTON",
+      "text": "Log in"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgb(26, 26, 26)",
+        "borderRadius": "8px",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "8px",
+        "height": "40px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px 16px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "81.6375px"
+      },
+      "tag": "BUTTON",
+      "text": "Sign up"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(54, 54, 54)",
+        "display": "block",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "gap": "normal",
+        "height": "27px",
+        "lineHeight": "27px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "all",
+        "width": "106.95px"
+      },
+      "tag": "H2",
+      "text": "Image Editor"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(26, 26, 26)",
+        "display": "block",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "height": "22.75px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "all",
+        "width": "411.4px"
+      },
+      "tag": "H3",
+      "text": "Click and comment to edit"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(26, 26, 26)",
+        "display": "block",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "height": "22.75px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "all",
+        "width": "411.4px"
+      },
+      "tag": "H3",
+      "text": "Adjust settings"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(26, 26, 26)",
+        "display": "block",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "height": "22.75px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "all",
+        "width": "411.4px"
+      },
+      "tag": "H3",
+      "text": "Upload your image"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "color": "rgb(26, 26, 26)",
+        "display": "block",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "height": "22.75px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "all",
+        "width": "411.4px"
+      },
+      "tag": "H3",
+      "text": "Write your prompt"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "6px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "24px",
+        "lineHeight": "18px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "24px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "6px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "gap": "normal",
+        "height": "24px",
+        "lineHeight": "18px",
+        "maxWidth": "none",
+        "padding": "0px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "24px"
+      },
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "6px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "gap": "8px",
+        "height": "24px",
+        "lineHeight": "18px",
+        "maxWidth": "none",
+        "padding": "0px 12px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "114.275px"
+      },
+      "tag": "BUTTON",
+      "text": "Full tutorial"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgba(115, 115, 115, 0.05)",
+        "borderRadius": "8px",
+        "color": "rgb(26, 26, 26)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "8px",
+        "height": "40px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px 16px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "167.262px"
+      },
+      "tag": "BUTTON",
+      "text": "Upload an image"
+    },
+    {
+      "styles": {
+        "backgroundColor": "rgb(26, 26, 26)",
+        "borderRadius": "8px",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "fontFamily": "Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "8px",
+        "height": "40px",
+        "lineHeight": "22.75px",
+        "maxWidth": "none",
+        "padding": "0px 16px",
+        "position": "static",
+        "transition": "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), fill 0.15s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "width": "197.4px"
+      },
+      "tag": "BUTTON",
+      "text": "Select from creations"
+    }
+  ],
+  "url": "https://www.magnific.com/app/image-editor?tool=adjust&from_element=landing_photo_editor",
+  "viewport": [
+    1280,
+    720
+  ]
+}

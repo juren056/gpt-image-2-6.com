@@ -3,6 +3,44 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Product workspace tokens are scoped; billing/admin retain their own theme. */
+.creative-home {
+  --font-display: var(--font-body);
+  --background: oklch(0.975 0.003 85);
+  --foreground: oklch(0.2 0.005 85);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --primary: oklch(0.82 0.16 85);
+  --primary-foreground: oklch(0.2 0.005 85);
+  --muted: oklch(0.945 0.004 85);
+  --muted-foreground: oklch(0.48 0.005 85);
+  --border: oklch(0.9 0.004 85);
+  --ring: oklch(0.68 0.14 85);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --accent: var(--muted);
+  --accent-foreground: var(--foreground);
+}
+.dark .creative-home {
+  --background: oklch(0.17 0.003 85);
+  --foreground: oklch(0.96 0.003 85);
+  --card: oklch(0.205 0.003 85);
+  --muted: oklch(0.255 0.003 85);
+  --muted-foreground: oklch(0.7 0.005 85);
+  --border: oklch(0.31 0.003 85);
+}
+.creative-home h1,
+.creative-home h2,
+.creative-home h3 {
+  font-family: var(--font-body);
+}
+.creative-home .text-primary {
+  color: oklch(0.48 0.1 65);
+}
+.dark .creative-home .text-primary {
+  color: var(--primary);
+}
+
 /* Locale-aware typography. Latin-script marketing headings keep the branded
    Libre Baskerville face. Scripts that it does not cover use familiar modern
    UI sans faces, preventing mixed serif/sans glyphs inside one heading. */

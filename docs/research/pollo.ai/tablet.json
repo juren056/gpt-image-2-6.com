@@ -1,0 +1,116 @@
+{
+  "url": "https://pollo.ai/ai-image-generator",
+  "title": "Just a moment...",
+  "body": "rgba(0, 0, 0, 0)",
+  "headings": [
+    {
+      "text": "pollo.ai",
+      "styles": {
+        "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "40px",
+        "fontWeight": "600",
+        "lineHeight": "50px",
+        "letterSpacing": "normal",
+        "color": "rgb(49, 49, 49)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "gap": "normal",
+        "borderRadius": "0px",
+        "border": "0px none rgb(49, 49, 49)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "50px",
+        "width": "149.266px",
+        "maxWidth": "none",
+        "display": "block",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    },
+    {
+      "text": "Performing security verification",
+      "styles": {
+        "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "lineHeight": "30px",
+        "letterSpacing": "normal",
+        "color": "rgb(49, 49, 49)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "gap": "normal",
+        "borderRadius": "0px",
+        "border": "0px none rgb(49, 49, 49)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "30px",
+        "width": "720px",
+        "maxWidth": "none",
+        "display": "block",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "tag": "A",
+      "text": "Cloudflare",
+      "aria": "Cloudflare, opens in a new tab",
+      "placeholder": null,
+      "href": "https://www.cloudflare.com?utm_source=challenge&utm_campaign=m",
+      "type": null,
+      "styles": {
+        "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal",
+        "color": "rgb(0, 0, 238)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "gap": "normal",
+        "borderRadius": "0px",
+        "border": "0px none rgb(0, 0, 238)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "18px",
+        "width": "59.1406px",
+        "maxWidth": "none",
+        "display": "inline-block",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Privacy",
+      "aria": "Privacy, opens in a new tab",
+      "placeholder": null,
+      "href": "https://www.cloudflare.com/privacypolicy/",
+      "type": null,
+      "styles": {
+        "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal",
+        "color": "rgb(0, 0, 238)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "gap": "normal",
+        "borderRadius": "0px",
+        "border": "0px none rgb(0, 0, 238)",
+        "boxShadow": "none",
+        "position": "static",
+        "height": "18px",
+        "width": "40.1875px",
+        "maxWidth": "none",
+        "display": "block",
+        "gridTemplateColumns": "none",
+        "transition": "all"
+      }
+    }
+  ],
+  "layout": []
+}

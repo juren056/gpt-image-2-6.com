@@ -145,14 +145,17 @@ export function ToolMarketplaceShell({
   copy,
   children,
   compact = false,
+  standalone = false,
 }: {
   tools: MarketplaceTool[];
   activeKind: ToolCatalogItem['kind'];
   copy: MarketplaceCopy;
   children: ReactNode;
   compact?: boolean;
+  standalone?: boolean;
 }) {
   const currentTool = tools.find((tool) => tool.kind === activeKind);
+  if (standalone) return <>{children}</>;
 
   return (
     <section

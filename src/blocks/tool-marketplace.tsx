@@ -1,11 +1,13 @@
+import { IMAGE_MAX_PROMPT_LENGTH } from '@/config/image-models';
 import { m } from '@/paraglide/messages.js';
 import { getLocalizedTools } from '@/blocks/tool-catalog';
 import { ImageGeneratorWorkspace } from '@/components/image-generator-workspace';
 import { ToolMarketplaceShell } from '@/components/tool-marketplace-shell';
 
-export function ToolMarketplace() {
+export function ToolMarketplace({ studio = false }: { studio?: boolean }) {
   return (
     <ToolMarketplaceShell
+      standalone={studio}
       compact
       tools={getLocalizedTools()}
       activeKind="image"
@@ -37,7 +39,9 @@ export function ToolMarketplace() {
           status: m['landing.generator.status'](),
           statusDetail: m['landing.generator.status_detail'](),
           promptLabel: m['landing.generator.prompt_label'](),
-          promptHint: m['landing.generator.prompt_hint'](),
+          promptHint: m['landing.generator.prompt_hint']({
+            count: IMAGE_MAX_PROMPT_LENGTH.toLocaleString(),
+          }),
           promptPlaceholder: m['landing.generator.prompt_placeholder'](),
           examplesLabel: m['landing.generator.examples_label'](),
           promptExamples: [
@@ -69,6 +73,8 @@ export function ToolMarketplace() {
           ],
           openGuide: m['landing.generator.open_guide'](),
           modelLabel: m['landing.generator.model_label'](),
+          modelSearch: m['studio.model_search'](),
+          modelEmpty: m['studio.model_empty'](),
           modelName: m['landing.generator.standard_model'](),
           creditUnit: m['landing.generator.credit_unit'](),
           aspectLabel: m['landing.generator.aspect_label'](),

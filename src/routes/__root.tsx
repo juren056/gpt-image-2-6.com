@@ -13,6 +13,7 @@ import * as Sentry from '@sentry/tanstackstart-react';
 import { ThemeProvider } from 'next-themes';
 
 import { Link } from '@/core/i18n/navigation';
+import { envConfigs } from '@/config';
 import { isRtlLocale } from '@/config/locale';
 import { getQueryClient } from '@/lib/query-client';
 import { m } from '@/paraglide/messages.js';
@@ -31,8 +32,6 @@ import '@fontsource/libre-baskerville/700.css';
 import '@fontsource/libre-baskerville/400-italic.css';
 import '@/styles/globals.css';
 
-const DEFAULT_GOOGLE_ANALYTICS_ID = 'G-MNN3QKYV5P';
-
 export const Route = createRootRoute({
   head: () => {
     const locale = getLocale();
@@ -41,6 +40,9 @@ export const Route = createRootRoute({
       meta: [
         { charSet: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'theme-color', content: '#191C18' },
+        { name: 'application-name', content: envConfigs.app_name },
+        { name: 'apple-mobile-web-app-title', content: envConfigs.app_name },
         {
           title: m['common.metadata.title']({}, { locale: locale as any }),
         },
@@ -57,7 +59,7 @@ export const Route = createRootRoute({
           rel: 'icon',
           href: '/favicon.ico',
           type: 'image/x-icon',
-          sizes: '48x48 96x96',
+          sizes: '16x16 32x32 48x48 96x96',
         },
         {
           rel: 'icon',
@@ -114,8 +116,7 @@ function RootComponent() {
  */
 function PublicRuntimeIntegrations() {
   const { data: configs } = usePublicConfig();
-  const gaId =
-    configs?.google_analytics_id?.trim() || DEFAULT_GOOGLE_ANALYTICS_ID;
+  const gaId = configs?.google_analytics_id?.trim() || '';
   const plausibleDomain = configs?.plausible_domain?.trim() || '';
   const plausibleSrc = configs?.plausible_src?.trim() || '';
   const crispWebsiteId =

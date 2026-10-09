@@ -1,16 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 import { filterPublicConfigs, getAllConfigs } from '@/modules/config/service';
+import { isStripeCheckoutReady } from '@/lib/payment-readiness';
 import { ANONYMOUS_IMAGE_GENERATION_ENABLED } from '@/lib/product-policy';
 import { respData } from '@/lib/resp';
 
 const publicCache = {
   headers: {
-    'Cache-Control':
-      'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400',
-    'CDN-Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-    'Vercel-CDN-Cache-Control':
-      'public, max-age=3600, stale-while-revalidate=86400',
+    'Cache-Control': 'public, max-age=15, s-maxage=60, must-revalidate',
+    'CDN-Cache-Control': 'public, max-age=60, must-revalidate',
+    'Vercel-CDN-Cache-Control': 'public, max-age=60, must-revalidate',
   },
 };
 
@@ -64,6 +63,7 @@ function isEmailSendingConfigured(configs: Record<string, string>): boolean {
 async function GET({ request }: { request: Request }) {
   const configs = await getAllConfigs();
   const result = filterPublicConfigs(configs, publicKeys);
+  result.stripe_ready = isStripeCheckoutReady(configs) ? 'true' : 'false';
   const emailConfigured = isEmailSendingConfigured(configs);
   result.password_reset_enabled =
     configs.email_auth_enabled !== 'false' && emailConfigured
