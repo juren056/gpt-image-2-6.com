@@ -12,8 +12,6 @@ export type CreativeOperation =
   | 'vectorize';
 
 export type CreativeModelId =
-  | 'qwen-image-3-edit'
-  | 'qwen-image-2.1'
   | 'gpt-image-2.5-flare'
   | 'gpt-image-2.5-sunburst'
   | 'nano-banana-2'
@@ -24,17 +22,7 @@ export type CreativeModelId =
   | 'flux-2-pro';
 
 export type CreativeModelDefinition = {
-  acceptanceId:
-    | 'M01'
-    | 'M02'
-    | 'M03'
-    | 'M04'
-    | 'M05'
-    | 'M06'
-    | 'M07'
-    | 'M08'
-    | 'M09'
-    | 'M10';
+  acceptanceId: 'M02' | 'M03' | 'M04' | 'M05' | 'M06' | 'M07' | 'M08' | 'M09';
   id: CreativeModelId;
   label: string;
   provider: CreativeProvider;
@@ -57,29 +45,6 @@ export type CreativeModelDefinition = {
  * acceptance run is approved. This flag is not a fake model substitution.
  */
 export const CREATIVE_MODELS: readonly CreativeModelDefinition[] = [
-  {
-    acceptanceId: 'M01',
-    id: 'qwen-image-3-edit',
-    label: 'Qwen Image 3 Edit',
-    provider: 'fal',
-    credential: 'fal_api_key',
-    endpoints: { edit: 'alibaba/qwen-image-3/edit' },
-    operations: ['edit', 'replace-background', 'relight'],
-    maxPromptLength: 5000,
-    maxReferences: 3,
-    sizes: [
-      'square_hd',
-      'landscape_4_3',
-      'landscape_16_9',
-      'portrait_4_3',
-      'portrait_16_9',
-    ],
-    qualities: [],
-    sizeParameter: 'image_size',
-    credits: { edit: 5, 'replace-background': 5, relight: 5 },
-    productionEnabled: true,
-    commercialUse: 'approved',
-  },
   {
     acceptanceId: 'M02',
     id: 'gpt-image-2.5-flare',
@@ -353,25 +318,6 @@ export const CREATIVE_MODELS: readonly CreativeModelDefinition[] = [
     maxPromptLength: 32000,
     maxReferences: 14,
     sizes: ['auto', '1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3'],
-    qualities: [],
-    sizeParameter: 'aspect_ratio',
-    credits: {},
-    productionEnabled: false,
-    commercialUse: 'pending',
-  },
-  {
-    acceptanceId: 'M10',
-    id: 'qwen-image-2.1',
-    label: 'Qwen Image 2.1',
-    provider: 'fal',
-    credential: 'fal_api_key',
-    endpoints: {},
-    operations: ['generate', 'edit'],
-    maxPromptLength: 5000,
-    // Product preview limit. The provider's final reference-image limit is not
-    // claimed until a hosted API publishes and passes its contract tests.
-    maxReferences: 3,
-    sizes: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3'],
     qualities: [],
     sizeParameter: 'aspect_ratio',
     credits: {},

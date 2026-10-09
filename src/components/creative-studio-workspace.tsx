@@ -64,7 +64,7 @@ type TaskView = {
 export function CreativeStudioWorkspace() {
   const queryClient = useQueryClient();
   const [toolId, setToolId] = useState<CreativeToolId>('T01');
-  const [modelId, setModelId] = useState('qwen-image-3-edit');
+  const [modelId, setModelId] = useState('flux-2-pro');
   const [prompt, setPrompt] = useState('');
   const [references, setReferences] = useState<string[]>([]);
   const [projectId, setProjectId] = useState<string>();
@@ -139,7 +139,7 @@ export function CreativeStudioWorkspace() {
 
   useEffect(() => {
     try {
-      const saved = window.localStorage.getItem('qwenimage3:brand-kit');
+      const saved = window.localStorage.getItem('image-studio:brand-kit');
       if (!saved) return;
       const brand = JSON.parse(saved) as StudioProjectState['brand'];
       if (brand?.name) setTemplateBrand(brand.name);
@@ -421,7 +421,7 @@ export function CreativeStudioWorkspace() {
         fontNames: ['Inter'],
       };
       window.localStorage.setItem(
-        'qwenimage3:brand-kit',
+        'image-studio:brand-kit',
         JSON.stringify(brand)
       );
       commit({ ...state, brand });

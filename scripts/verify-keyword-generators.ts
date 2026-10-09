@@ -109,7 +109,7 @@ assert.throws(
 );
 assert.equal(
   getImageDownloadFilename('task-1', 'image/svg+xml'),
-  'qwen-image-task-1.svg'
+  'image-task-1.svg'
 );
 assert.equal(
   await readBoundedVectorResponse(new Response('<svg><path d="M0 0"/></svg>')),

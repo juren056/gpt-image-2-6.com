@@ -99,9 +99,9 @@ function SignInPage() {
   useEffect(() => {
     if (sessionPending || navigatingRef.current) return;
     if (session?.user) {
-      if (window.sessionStorage.getItem('qwenimage3:signup-pending')) {
+      if (window.sessionStorage.getItem('image-studio:signup-pending')) {
         trackFunnelEvent('signup_success');
-        window.sessionStorage.removeItem('qwenimage3:signup-pending');
+        window.sessionStorage.removeItem('image-studio:signup-pending');
       }
       navigatingRef.current = true;
       window.location.assign(localizeHref(afterLoginUrl));

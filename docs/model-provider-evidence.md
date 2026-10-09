@@ -4,7 +4,6 @@ Checked against first-party provider documentation on 2026-09-12. Endpoint names
 
 | ID  | Product model            | Provider endpoint                                                                   | Evidence used for contract implementation                                                                                                                                  |
 | --- | ------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| M01 | Qwen Image 3 Edit        | `alibaba/qwen-image-3/edit`                                                         | [fal API schema](https://fal.ai/models/alibaba/qwen-image-3/edit/api)                                                                                                      |
 | M02 | GPT Image 2.5 Flare      | `openai/gpt-image-2.5/flare/text-to-image`, `openai/gpt-image-2.5/flare/edit`       | [fal generation schema](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api), [fal edit schema](https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api)  |
 | M03 | GPT Image 2.5 Sunburst   | `openai/gpt-image-2.5/sunburst/text-to-image`, `openai/gpt-image-2.5/sunburst/edit` | [fal model page](https://fal.ai/gpt-image-2.5)                                                                                                                             |
 | M04 | Nano Banana 2            | `fal-ai/nano-banana-2`, `fal-ai/nano-banana-2/edit`                                 | [fal generation schema](https://fal.ai/models/fal-ai/nano-banana-2/api), [fal edit schema](https://fal.ai/models/fal-ai/nano-banana-2/edit/api)                            |
@@ -17,7 +16,6 @@ Utility evidence: [BRIA background removal](https://fal.ai/models/fal-ai/bria/ba
 
 ## Important contract decisions
 
-- Qwen Image 3 Edit accepts 1–3 references. The UI and server use the same registry limit.
 - Nano Banana 2 Lite is deliberately limited to one reference and 1K in this release contract; it is not presented as equivalent to the larger Gemini image models.
 - All M01–M08 production requests use the server-side Fal credential; no provider key is exposed to the browser.
 - FLUX.2 is labeled `FLUX.2 [pro] (fal/BFL)` so users can see the concrete variant and delivery route.

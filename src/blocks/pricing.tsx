@@ -58,7 +58,7 @@ export function Pricing({
   const [pendingPlan, setPendingPlan] = useState<PricingPlan | null>(null);
   const [loadingProvider, setLoadingProvider] =
     useState<PaymentProvider | null>(null);
-  const [monthlyImages, setMonthlyImages] = useState(220);
+  const [monthlyImages, setMonthlyImages] = useState(137);
   const [returningPlanId, setReturningPlanId] = useState<string | undefined>();
 
   useEffect(() => {
@@ -67,10 +67,10 @@ export function Pricing({
 
   useEffect(() => {
     if (!session?.user) return;
-    const planId = window.sessionStorage.getItem('qwenimage3:pending-plan');
+    const planId = window.sessionStorage.getItem('image-studio:pending-plan');
     if (!planId) return;
     setReturningPlanId(planId);
-    window.sessionStorage.removeItem('qwenimage3:pending-plan');
+    window.sessionStorage.removeItem('image-studio:pending-plan');
     window.setTimeout(
       () =>
         document
@@ -338,7 +338,7 @@ export function Pricing({
       ]
     : honestGroups;
   const recommendedTier =
-    monthlyImages <= 80 ? 'starter' : monthlyImages <= 220 ? 'creator' : 'pro';
+    monthlyImages <= 50 ? 'starter' : monthlyImages <= 137 ? 'creator' : 'pro';
 
   const checkoutMutation = useMutation({
     mutationFn: ({
@@ -393,7 +393,7 @@ export function Pricing({
       { product: productId }
     );
     if (!session?.user) {
-      window.sessionStorage.setItem('qwenimage3:pending-plan', plan.id);
+      window.sessionStorage.setItem('image-studio:pending-plan', plan.id);
       router.push('/sign-up?callbackUrl=%2Fpricing');
       return;
     }
@@ -452,7 +452,7 @@ export function Pricing({
               {m['landing.pricing.recommender_title']()}
             </p>
             <div className="mt-3 flex justify-center gap-2">
-              {[80, 220, 560].map((amount) => (
+              {[50, 137, 350].map((amount) => (
                 <button
                   key={amount}
                   type="button"

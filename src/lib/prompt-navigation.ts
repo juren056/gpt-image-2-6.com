@@ -1,7 +1,7 @@
 import { APPLY_GENERATOR_PROMPT_EVENT } from '@/lib/homepage-events';
 
-const GENERATOR_DRAFT_KEY = 'qwenimage3:generator-draft';
-const VIDEO_PROMPT_DRAFT_KEY = 'qwenimage3:video-prompt-draft';
+const GENERATOR_DRAFT_KEY = 'image-studio:generator-draft';
+const VIDEO_PROMPT_DRAFT_KEY = 'image-studio:video-prompt-draft';
 
 export function stageGeneratorPrompt(prompt: string): void {
   if (typeof window === 'undefined') return;

@@ -59,7 +59,6 @@ export function PublicModelGenerator({
 }) {
   const page = findPublicModel(modelId)!;
   const model = CREATIVE_MODELS.find((item) => item.id === modelId)!;
-  const isQwen21 = modelId === 'qwen-image-2.1';
   const isPreview = page.availability === 'preview';
   const isUnavailable = !model.productionEnabled;
   const example = CREATIVE_EXAMPLES.find((item) => item.modelId === modelId);
@@ -132,7 +131,7 @@ export function PublicModelGenerator({
   function submit() {
     if (!session?.user) {
       window.sessionStorage.setItem(
-        'qwenimage3:public-generator-draft',
+        'image-studio:public-generator-draft',
         JSON.stringify({ modelId, mode, prompt, size })
       );
       window.location.href = `/sign-up?callbackUrl=${encodeURIComponent(page.path)}`;
@@ -335,7 +334,7 @@ export function PublicModelGenerator({
           )}
           {isUnavailable
             ? isPreview
-              ? 'Qwen Image 2.1 API is being connected'
+              ? 'The hosted API is being connected'
               : 'Generation opens when the API is verified'
             : session?.user
               ? `${mode === 'generate' ? 'Generate' : 'Edit'} · ${cost} credits`
@@ -439,7 +438,6 @@ export function PublicModelGenerator({
 export function PublicModelPage({ modelId }: { modelId: CreativeModelId }) {
   const page = findPublicModel(modelId)!;
   const model = CREATIVE_MODELS.find((item) => item.id === modelId)!;
-  const isQwen21 = modelId === 'qwen-image-2.1';
   const isPreview = page.availability === 'preview';
   const isComingSoon = page.availability === 'coming-soon';
   const isUnavailable = Boolean(page.availability);
@@ -461,13 +459,11 @@ export function PublicModelPage({ modelId }: { modelId: CreativeModelId }) {
           { label: page.name },
         ]}
         eyebrow={
-          isQwen21
-            ? 'Official release · commercial API pending'
-            : isPreview
-              ? 'API preview'
-              : isComingSoon
-                ? 'Coming soon'
-                : 'Dedicated model workspace'
+          isPreview
+            ? 'API preview'
+            : isComingSoon
+              ? 'Coming soon'
+              : 'Dedicated model workspace'
         }
         title={`${page.name} Image Generator${model.operations.includes('edit') ? ' & Editor' : ''}`}
         description={page.summary}
@@ -600,17 +596,6 @@ export function PublicModelPage({ modelId }: { modelId: CreativeModelId }) {
           },
         ]}
         related={[
-          ...(isQwen21
-            ? [
-                {
-                  href: '/qwen-image-2-1-transparent-png',
-                  title: 'Qwen Image 2.1 transparent PNG',
-                  description:
-                    'Explore the native RGBA and transparent asset workflow.',
-                  image: '/imgs/models/qwen-image-2-1-workflow-preview.webp',
-                },
-              ]
-            : []),
           ...gptImageTaskPages,
           ...relatedModels.map((item) => ({
             href: item.path,
@@ -639,29 +624,6 @@ export function ModelsDirectory() {
           limits, and server-side billing. Your choice is never silently
           replaced.
         </p>
-        <article className="border-border bg-card mt-10 grid gap-5 rounded-3xl border p-6 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-amber-100 text-xl font-bold text-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
-            3.1
-          </span>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-lg font-semibold">Qwen Image 3.1</h2>
-              <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-semibold text-amber-900 uppercase dark:bg-amber-950/50 dark:text-amber-200">
-                Announced
-              </span>
-            </div>
-            <p className="text-muted-foreground mt-2 text-sm leading-6">
-              Expected later in 2026. Public API, model ID, pricing, weights,
-              and commercial terms have not been announced.
-            </p>
-          </div>
-          <Link
-            href="/qwen-image-3-1"
-            className="text-primary inline-flex min-h-10 items-center gap-2 font-semibold"
-          >
-            View release status <ArrowRight className="size-4" />
-          </Link>
-        </article>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {PUBLIC_MODEL_PAGES.map((item) => (
             <article

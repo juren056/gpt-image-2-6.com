@@ -127,7 +127,7 @@ function BillingPage() {
     >('/api/user/orders?page=1&pageSize=1&status=paid').then((result) => {
       const paidOrder = result.items[0];
       if (paidOrder?.status === 'paid') {
-        const receiptKey = `qwenimage3:purchase-receipt:${paidOrder.id}`;
+        const receiptKey = `image-studio:purchase-receipt:${paidOrder.id}`;
         if (!window.localStorage.getItem(receiptKey)) {
           trackFunnelEvent('purchase_success');
           window.localStorage.setItem(receiptKey, 'recorded');
@@ -139,7 +139,7 @@ function BillingPage() {
         });
         if (stagedPurchase) {
           window.sessionStorage.setItem(
-            'qwenimage3:pending-ga4-purchase',
+            'image-studio:pending-ga4-purchase',
             JSON.stringify(stagedPurchase)
           );
         }

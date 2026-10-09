@@ -18,7 +18,7 @@ function ReferralLanding() {
     if (isPending) return;
     if (/^[A-Za-z0-9_-]{6,24}$/.test(code)) {
       window.localStorage.setItem(
-        'qwenimage3:referral-code',
+        'image-studio:referral-code',
         code.toUpperCase()
       );
       router.push(

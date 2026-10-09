@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 import { useSession } from '@/core/auth/client';
 import { useRouter } from '@/core/i18n/navigation';
 import {
-  QWEN_IMAGE_2_STANDARD_COST,
+  IMAGE_GENERATION_COST,
   SIMPLE_TOOL_IMAGE_MODEL_ID,
 } from '@/config/image-models';
 import {
@@ -181,7 +181,7 @@ export function YouTubeThumbnailWorkspace({
   const [mood, setMood] = useState(copy.moods[0]?.prompt ?? '');
   const state = useToolSession({
     activeTaskId,
-    cost: QWEN_IMAGE_2_STANDARD_COST,
+    cost: IMAGE_GENERATION_COST,
     taskBase: '/api/images',
   });
 
@@ -1098,7 +1098,7 @@ export function BackgroundRemoverWorkspace({
       return;
     try {
       const saved = JSON.parse(
-        window.sessionStorage.getItem('qwenimage3:last-output') || 'null'
+        window.sessionStorage.getItem('image-studio:last-output') || 'null'
       ) as { imageUrl?: string; createdAt?: number } | null;
       if (
         !saved?.imageUrl ||

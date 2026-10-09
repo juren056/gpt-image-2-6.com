@@ -16,8 +16,6 @@ Two independent settings guard real calls:
 
 Utility IDs are `utility-remove-background`, `utility-upscale`, and `utility-vectorize`. The global switch remains the emergency rollback: turning it off stops all new Creative Studio provider submissions without deleting tasks or assets.
 
-The Studio page and existing Qwen generation routes are separate. These flags do not alter historical Qwen 2511 tasks or the existing production Qwen Image 3 generator.
-
 ## Production status
 
 On 2026-09-12, the production Fal credential was present and the bounded live acceptance suite completed for all 18 endpoint cases. M08 edit initially exposed an incorrect `input_images` field, was corrected to Fal's documented `image_urls`, and passed a single targeted repair run. The Studio and paid-model gates were then enabled for all eight model IDs and the three utility IDs.

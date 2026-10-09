@@ -410,7 +410,7 @@ export function PromptLibrary({
                       <div className="p-4">
                         <div className="mb-2 text-[10px] font-medium text-slate-400">
                           {item.mediaType === 'image'
-                            ? `Qwen Image 3 · ${item.ratio} · ${item.resolution}`
+                            ? `AI Image · ${item.ratio} · ${item.resolution}`
                             : m['prompts.video_models_hint']()}
                         </div>
                         <p className="line-clamp-4 min-h-20 text-xs leading-5 text-slate-600 dark:text-white/52">

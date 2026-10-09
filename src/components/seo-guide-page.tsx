@@ -221,7 +221,7 @@ export function SeoGuidePage({
             ))}
           </nav>
           <Link
-            href="/guides"
+            href="/prompts"
             className="text-primary mt-7 inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
           >
             {allGuidesLabel}

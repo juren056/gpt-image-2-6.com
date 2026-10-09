@@ -36,7 +36,7 @@ export function parseEditorDraft(
   }
 }
 
-const EDITOR_DRAFT_DB = 'qwenimage3-editor-draft';
+const EDITOR_DRAFT_DB = 'image-studio-editor-draft';
 const EDITOR_DRAFT_STORE = 'drafts';
 const EDITOR_REFERENCE_KEY = 'reference-files';
 

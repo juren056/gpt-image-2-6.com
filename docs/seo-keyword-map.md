@@ -6,33 +6,24 @@ This document defines the primary search intent owned by each public page family
 
 ## Core hubs
 
-| URL                   | Primary keyword            |
-| --------------------- | -------------------------- |
-| /                     | qwen image 3 generator     |
-| /qwen-image-editor    | qwen image editor          |
-| /models               | ai image models            |
-| /tools                | ai image tools             |
-| /prompts              | ai image and video prompts |
-| /qwen-image-3-prompts | qwen image 3 prompts       |
-| /guides               | qwen image 3 guides        |
-| /lab                  | qwen image 3 tests         |
-| /pricing              | qwen image 3 pricing       |
-| /blog                 | qwen image 3 blog          |
+| URL      | Primary keyword            |
+| -------- | -------------------------- |
+| /models  | ai image models            |
+| /tools   | ai image tools             |
+| /prompts | ai image and video prompts |
 
 ## Image model pages
 
-| URL                             | Primary keyword                  |
-| ------------------------------- | -------------------------------- |
-| /qwen-image-2-1-generator       | qwen image 2.1 generator         |
-| /qwen-image-2-1-transparent-png | qwen image 2.1 transparent png   |
-| /gpt-image-2-5-flare            | gpt image 2.5 flare generator    |
-| /gpt-image-2-5-sunburst         | gpt image 2.5 sunburst generator |
-| /nano-banana-2                  | nano banana 2 generator          |
-| /nano-banana-2-5                | nano banana 2.5 generator        |
-| /nano-banana-2-lite             | nano banana 2 lite generator     |
-| /nano-banana-pro                | nano banana pro generator        |
-| /seedream-5-pro                 | seedream 5.0 pro generator       |
-| /flux-2-pro                     | flux.2 pro generator             |
+| URL                     | Primary keyword                  |
+| ----------------------- | -------------------------------- |
+| /gpt-image-2-5-flare    | gpt image 2.5 flare generator    |
+| /gpt-image-2-5-sunburst | gpt image 2.5 sunburst generator |
+| /nano-banana-2          | nano banana 2 generator          |
+| /nano-banana-2-5        | nano banana 2.5 generator        |
+| /nano-banana-2-lite     | nano banana 2 lite generator     |
+| /nano-banana-pro        | nano banana pro generator        |
+| /seedream-5-pro         | seedream 5.0 pro generator       |
+| /flux-2-pro             | flux.2 pro generator             |
 
 ## Tool pages
 
@@ -92,7 +83,6 @@ The /prompts page is the broad mixed image-and-video library. Image category pag
 
 ## Consolidation rules
 
-- /qwen-image-3-standard-vs-pro permanently redirects to /qwen-image-3-vs-pro.
 - Internal prompt hand-offs use fragment URLs plus session storage, not crawlable prompt query strings.
 - Pages with English-only body content are indexable only in English until a reviewed Chinese version exists.
 - Non-indexable locale fallbacks use noindex, follow and canonicalize to the indexed English URL.

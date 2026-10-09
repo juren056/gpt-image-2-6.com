@@ -6,7 +6,6 @@ Updated: 2026-09-12 after production rollout. This ledger distinguishes contract
 
 | ID  | Scope                  | Code implementation | Configuration         | Mock / contract tests | Paid live test                          | Production | Evidence / blocker    |
 | --- | ---------------------- | ------------------- | --------------------- | --------------------- | --------------------------------------- | ---------- | --------------------- |
-| M01 | Qwen Image 3 Edit      | Implemented         | `fal_api_key` present | Passed                | Passed                                  | Enabled    | fal edit endpoint     |
 | M02 | GPT Image 2.5 Flare    | Implemented         | `fal_api_key` present | Passed                | Passed                                  | Enabled    | fal generation + edit |
 | M03 | GPT Image 2.5 Sunburst | Implemented         | `fal_api_key` present | Passed                | Passed                                  | Enabled    | fal generation + edit |
 | M04 | Nano Banana 2          | Implemented         | `fal_api_key` present | Passed                | Passed                                  | Enabled    | fal generation + edit |

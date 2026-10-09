@@ -22,12 +22,9 @@
 
 - All AI Tools -> `/tools`
 - Background Remover -> `/image-background-remover`
-- Qwen Image 3 API -> `/qwen-image-3-api`
-- Qwen Image 3 ComfyUI -> `/qwen-image-3-comfyui`
 
 ### AI Image
 
-- Qwen Image 3 Generator -> `/#generator`
 - AI Poster Generator -> `/ai-poster-generator`
 - AI Product Photo Generator -> `/ai-product-photo-generator`
 - AI YouTube Thumbnail Generator -> `/ai-youtube-thumbnail-generator`

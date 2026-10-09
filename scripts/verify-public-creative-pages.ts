@@ -17,10 +17,10 @@ function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
 
-assert(PUBLIC_MODEL_PAGES.length === 10, 'M01-M10 public model coverage');
+assert(PUBLIC_MODEL_PAGES.length === 8, 'Retained public model coverage');
 assert(PUBLIC_TOOL_PAGES.length === 25, 'T01-T25 public tool coverage');
 assert(
-  new Set(PUBLIC_MODEL_PAGES.map((item) => item.id)).size === 10,
+  new Set(PUBLIC_MODEL_PAGES.map((item) => item.id)).size === 8,
   'Model public IDs must be unique'
 );
 assert(
@@ -31,22 +31,8 @@ assert(
   new Set([
     ...PUBLIC_MODEL_PAGES.map((item) => item.path),
     ...PUBLIC_TOOL_PAGES.map((item) => item.path),
-  ]).size === 35,
+  ]).size === 33,
   'Every model/tool needs a distinct public URL'
-);
-
-const qwen21 = PUBLIC_MODEL_PAGES.find((item) => item.id === 'qwen-image-2.1');
-assert(
-  qwen21?.availability === 'preview',
-  'Qwen Image 2.1 must remain an API preview'
-);
-assert(
-  qwen21?.path === '/qwen-image-2-1-generator',
-  'Qwen Image 2.1 canonical route'
-);
-assert(
-  existsSync(join(process.cwd(), 'public', qwen21.image.replace(/^\//, ''))),
-  'Qwen Image 2.1 preview visual is missing'
 );
 
 for (const page of PUBLIC_MODEL_PAGES) {
@@ -135,6 +121,4 @@ for (const banned of [
   );
 }
 
-console.log(
-  'public creative routes and visuals: 10 models + 25 tools verified'
-);
+console.log('public creative routes and visuals: 8 models + 25 tools verified');

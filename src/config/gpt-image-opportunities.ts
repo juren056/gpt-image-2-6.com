@@ -487,7 +487,7 @@ export const GPT_IMAGE_OPPORTUNITIES: Record<
           'Not from headline rates alone. You need actual token use, quality, inputs, output, and retries. OpenAI notes its GPT Image 2 calculator does not estimate GPT Image 2.5 token use.',
       },
       {
-        question: 'Are QwenImage3 credits the same as API tokens?',
+        question: 'Are AI Image Studio credits the same as API tokens?',
         answer:
           'No. Site credits are the billing unit shown before a run; API tokens are the provider’s underlying unit.',
       },

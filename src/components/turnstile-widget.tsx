@@ -22,7 +22,7 @@ function loadTurnstile() {
 
   scriptPromise = new Promise<void>((resolve, reject) => {
     const existing = document.querySelector<HTMLScriptElement>(
-      'script[data-qwen-turnstile]'
+      'script[data-image-studio-turnstile]'
     );
     if (existing) {
       existing.addEventListener('load', () => resolve(), { once: true });
@@ -35,7 +35,7 @@ function loadTurnstile() {
       'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
     script.async = true;
     script.defer = true;
-    script.dataset.qwenTurnstile = 'true';
+    script.dataset.imageStudioTurnstile = 'true';
     script.onload = () => resolve();
     script.onerror = () => reject(new Error('Turnstile failed to load'));
     document.head.appendChild(script);

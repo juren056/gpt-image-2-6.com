@@ -1,6 +1,5 @@
 import {
   ArrowRight,
-  CalendarClock,
   PackageOpen,
   Palette,
   ScanLine,
@@ -59,8 +58,6 @@ const quickTasks = [
 ] as const;
 
 const FEATURED_MODEL_IDS = new Set([
-  'qwen-image-3-edit',
-  'qwen-image-2.1',
   'gpt-image-2.5-flare',
   'nano-banana-2',
   'seedream-5-pro',
@@ -157,29 +154,6 @@ export function HomepageDiscovery() {
               Compare all models <ArrowRight className="size-4" />
             </Link>
           </div>
-          <Link
-            href="/qwen-image-3-1"
-            className="border-border bg-card mt-8 grid gap-4 rounded-3xl border p-5 transition-colors hover:border-amber-400/70 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:p-6"
-          >
-            <span className="flex size-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-200">
-              <CalendarClock className="size-6" />
-            </span>
-            <span>
-              <span className="flex flex-wrap items-center gap-2">
-                <strong className="text-lg">Qwen Image 3.1</strong>
-                <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-amber-900 uppercase dark:bg-amber-950/50 dark:text-amber-200">
-                  Announced
-                </span>
-              </span>
-              <span className="text-muted-foreground mt-1 block text-sm leading-6">
-                Track the confirmed 2026 release window, official API status,
-                model ID, pricing, and launch-day verification.
-              </span>
-            </span>
-            <span className="text-primary inline-flex items-center gap-2 text-sm font-semibold">
-              View release status <ArrowRight className="size-4" />
-            </span>
-          </Link>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featuredModels.map((item) => (
               <article
@@ -204,7 +178,7 @@ export function HomepageDiscovery() {
                       ? item.availability === 'preview'
                         ? 'API preview'
                         : 'Coming soon'
-                      : `Generate${item.id === 'qwen-image-3-edit' ? '' : ' / Edit'}`}
+                      : `Generate${item.id === 'flux-2-pro' ? '' : ' / Edit'}`}
                   </span>
                   <ModelBrandTile
                     modelId={item.id}
@@ -225,14 +199,6 @@ export function HomepageDiscovery() {
                       : `Try ${item.name}`}{' '}
                     <ArrowRight className="size-4" />
                   </Link>
-                  {item.id === 'qwen-image-2.1' ? (
-                    <Link
-                      href="/qwen-image-2-1-transparent-png"
-                      className="mt-1 flex min-h-10 items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300"
-                    >
-                      Native transparent PNG <ArrowRight className="size-4" />
-                    </Link>
-                  ) : null}
                 </div>
               </article>
             ))}

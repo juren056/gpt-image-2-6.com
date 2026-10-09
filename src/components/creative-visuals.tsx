@@ -37,7 +37,7 @@ export type VisualIcon = ComponentType<{
 
 type ModelVisual = {
   brand:
-    | 'Qwen'
+    | 'AI'
     | 'OpenAI'
     | 'Google Gemini'
     | 'ByteDance Seed'
@@ -48,9 +48,9 @@ type ModelVisual = {
 };
 
 const MODEL_VISUALS: Record<string, ModelVisual> = {
-  qwen: {
-    brand: 'Qwen',
-    src: '/brands/qwen.svg',
+  generic: {
+    brand: 'AI',
+    src: '/logo.svg',
     surfaceClassName:
       'border-violet-200 bg-violet-50 dark:border-violet-400/20 dark:bg-violet-400/10',
   },
@@ -86,7 +86,7 @@ export function getModelVisual(modelId: string): ModelVisual {
   if (modelId.startsWith('nano-banana')) return MODEL_VISUALS.gemini;
   if (modelId.startsWith('seedream')) return MODEL_VISUALS.seed;
   if (modelId.startsWith('flux-')) return MODEL_VISUALS.bfl;
-  return MODEL_VISUALS.qwen;
+  return MODEL_VISUALS.generic;
 }
 
 export function ModelBrandMark({

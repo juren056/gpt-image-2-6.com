@@ -6,7 +6,6 @@ No automatic充值, payment, retry loop, or provider call is included. Before ex
 
 | Scope                  |                      Operations | Count | Test specification                         | Site credits |
 | ---------------------- | ------------------------------: | ----: | ------------------------------------------ | -----------: |
-| M01 Qwen Image 3 Edit  |                            edit |     1 | 1 reference, square, PNG                   |            5 |
 | M02 Flare              |                 generate + edit |     2 | 1024 square, auto quality, one output each |           24 |
 | M03 Sunburst           |                 generate + edit |     2 | 1024 square, auto quality, one output each |           16 |
 | M04 Nano Banana 2      |                 generate + edit |     2 | 1K, one reference for edit                 |           12 |

@@ -41,31 +41,6 @@ export type PublicModelPage = {
 
 export const PUBLIC_MODEL_PAGES: readonly PublicModelPage[] = [
   {
-    id: 'qwen-image-3-edit',
-    name: 'Qwen Image 3 Edit',
-    path: '/qwen-image-editor',
-    summary:
-      'Edit up to three reference images with precise natural-language instructions.',
-    useCase: 'Reference editing and subject-preserving changes',
-    image: '/imgs/seo/ecommerce-campaign-board.webp',
-  },
-  {
-    id: 'qwen-image-2.1',
-    name: 'Qwen Image 2.1',
-    path: '/qwen-image-2-1-generator',
-    summary:
-      'Explore the officially released Qwen Image 2.1 generation, editing, native RGBA, and multi-reference workflow.',
-    useCase:
-      'Native transparent RGBA, generation, editing, and up to 10 documented references',
-    image: '/imgs/models/qwen-image-2-1-workflow-preview.webp',
-    availability: 'preview',
-    seoTitle:
-      'Qwen Image 2.1 Generator & Editor – Native RGBA & Multi-Reference',
-    seoDescription:
-      'Explore Qwen Image 2.1 native RGBA generation, editing, masks, and up to 10 documented references. Commercial generation stays disabled until licensing and a hosted API are verified.',
-    dateModified: '2026-09-21',
-  },
-  {
     id: 'gpt-image-2.5-flare',
     name: 'GPT Image 2.5 Flare',
     path: '/gpt-image-2-5-flare',
@@ -366,7 +341,7 @@ export const PUBLIC_TOOL_PAGES: readonly PublicToolPage[] = [
     action: 'Convert to SVG',
     image: '/imgs/generated/feature-styles-1783598714340.png',
     cardImage: '/imgs/tool-cards/image-to-svg.webp',
-    seoTitle: 'Vectorize Image Online - PNG/JPG to Editable SVG | QwenImage3',
+    seoTitle: 'Vectorize Image Online - PNG/JPG to Editable SVG',
     seoDescription:
       'Vectorize an image into editable SVG paths. Upload PNG, JPG, or WebP artwork, inspect the result, and download the traced vector file.',
   },

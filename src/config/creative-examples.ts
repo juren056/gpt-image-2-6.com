@@ -17,32 +17,6 @@ export type CreativeExample = {
  */
 export const CREATIVE_EXAMPLES: readonly CreativeExample[] = [
   {
-    exampleId: 'qwen-edit-product-layout',
-    publicAsset: '/imgs/seo/ecommerce-campaign-board.webp',
-    inputAsset: '/imgs/showcase/cobalt-perfume.webp',
-    modelId: 'qwen-image-3-edit',
-    promptOrRecipe:
-      'Keep the product identity unchanged and place it in a clean editorial campaign layout.',
-    parameters: { mode: 'edit', references: 1, ratio: '4:3' },
-    sourceType: 'site-owned-illustration',
-    authorization: 'site-owned',
-  },
-  {
-    exampleId: 'qwen-21-multi-reference-workspace-preview',
-    publicAsset: '/imgs/models/qwen-image-2-1-workflow-preview.webp',
-    modelId: 'qwen-image-2.1',
-    promptOrRecipe:
-      'Preserve the designer sneaker silhouette, borrow the iridescent woven material palette, and use the urban pavilion geometry for one editorial footwear campaign.',
-    parameters: {
-      mode: 'preview',
-      references: 3,
-      ratio: '16:10',
-      api: 'pending',
-    },
-    sourceType: 'site-owned-illustration',
-    authorization: 'site-owned',
-  },
-  {
     exampleId: 'flare-campaign-concept',
     publicAsset: '/imgs/tools/ai-poster-showcase.webp',
     modelId: 'gpt-image-2.5-flare',

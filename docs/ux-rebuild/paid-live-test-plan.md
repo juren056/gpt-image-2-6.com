@@ -4,7 +4,6 @@ No call in this plan has been executed in this round. Run once per row, never re
 
 | Scope                         | Operation(s)                                   |  Calls | Site credits |
 | ----------------------------- | ---------------------------------------------- | -----: | -----------: |
-| Qwen Image 3 Edit             | edit                                           |      1 |            5 |
 | GPT Image 2.5 Flare           | generate + edit                                |      2 |           24 |
 | GPT Image 2.5 Sunburst        | generate + edit                                |      2 |           16 |
 | Nano Banana 2                 | generate + edit                                |      2 |           12 |

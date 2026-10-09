@@ -111,10 +111,7 @@ const orphans = records
   )
   .map((record) => record.path);
 
-const redirectResponse = await fetch(base + '/qwen-image-3-standard-vs-pro', {
-  redirect: 'manual',
-});
-const zhModelResponse = await fetch(base + '/zh/qwen-image-2-1-generator');
+const zhModelResponse = await fetch(base + '/zh/flux-2-pro');
 const zhModelHtml = await zhModelResponse.text();
 const zhModelRobots = one(
   zhModelHtml,
@@ -140,10 +137,6 @@ const report = {
   badCanonical: badCanonical.map((record) => record.path),
   orphans,
   promptQueryLinks,
-  consolidationRedirect: {
-    status: redirectResponse.status,
-    location: redirectResponse.headers.get('location'),
-  },
   englishOnlyZhFallback: {
     robots: zhModelRobots,
     canonical: zhModelCanonical,
@@ -162,8 +155,7 @@ const failed =
   badCanonical.length ||
   orphans.length ||
   promptQueryLinks ||
-  ![301, 302, 307, 308].includes(redirectResponse.status) ||
   !zhModelRobots.includes('noindex') ||
-  new URL(zhModelCanonical).pathname !== '/qwen-image-2-1-generator';
+  new URL(zhModelCanonical).pathname !== '/flux-2-pro';
 
 if (failed) process.exitCode = 1;

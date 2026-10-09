@@ -14,7 +14,7 @@ export function Hero() {
   }, []);
 
   const headline = m['landing.hero.headline']();
-  const headlinePrefix = 'Qwen Image 3';
+  const headlinePrefix = 'AI Image';
   const hasHeadlinePrefix = headline.startsWith(headlinePrefix);
 
   return (
@@ -33,7 +33,7 @@ export function Hero() {
       <div className="relative mx-auto max-w-[90rem]">
         <div className="mx-auto mb-8 max-w-4xl text-center sm:mb-10">
           <Link
-            href="/qwen-image-editor"
+            href="/ai-image-editor"
             aria-label={m['landing.hero.official_source']()}
             className="border-border bg-background/80 hover:border-primary/40 hover:text-primary mx-auto mb-5 inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-medium shadow-sm backdrop-blur transition-colors sm:text-xs"
           >
@@ -73,7 +73,7 @@ export function Hero() {
               {m['tools.special.sign_in']()}
             </a>
             <Link
-              href="/qwen-image-editor"
+              href="/ai-image-editor"
               className="border-border bg-background inline-flex min-h-11 items-center rounded-full border px-5 text-sm font-semibold"
             >
               {m['editor.title']()}

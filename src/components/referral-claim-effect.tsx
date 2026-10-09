@@ -6,7 +6,7 @@ import { useSession } from '@/core/auth/client';
 import { apiPost } from '@/lib/api-client';
 import { m } from '@/paraglide/messages.js';
 
-const KEY = 'qwenimage3:referral-code';
+const KEY = 'image-studio:referral-code';
 
 export function ReferralClaimEffect() {
   const { data: session } = useSession();

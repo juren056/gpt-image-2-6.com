@@ -10,7 +10,7 @@ $targets = [ordered]@{
 }
 if (-not $Locales -or $Locales.Count -eq 0) { $Locales = @($targets.Keys) }
 
-$protectedPattern = '\{[^{}]+\}|https?://\S+|Qwen Image 3\.0|Qwen Image 3|Qwen Image 2 Standard|Qwen Image 2 Pro|MiniMax H3|Seedance 2\.5|WAN 3\.0|ComfyUI|GitHub|Google|Cloudflare|Stripe|PayPal|Creem|Alipay|WeChat|Replicate|Gemini|OAuth|SMTP|JSON|REST API|API|S3|R2|D1'
+$protectedPattern = '\{[^{}]+\}|https?://\S+|AI Image\.0|AI Image|FLUX.2 [pro]|FLUX.2 [pro]|MiniMax H3|Seedance 2\.5|WAN 3\.0|ComfyUI|GitHub|Google|Cloudflare|Stripe|PayPal|Creem|Alipay|WeChat|Replicate|Gemini|OAuth|SMTP|JSON|REST API|API|S3|R2|D1'
 $items = [System.Collections.Generic.List[object]]::new()
 foreach ($property in $source.PSObject.Properties) {
   if ($property.Name -eq '$schema') { continue }
@@ -28,7 +28,7 @@ function Invoke-TranslationBatch {
   param([object[]]$Batch, [string]$Target)
   $parts = [System.Collections.Generic.List[string]]::new()
   for ($i = 0; $i -lt $Batch.Count; $i++) {
-    $parts.Add("[[[QWENMSG$($i.ToString('0000'))]]]`n$($Batch[$i].Masked)")
+    $parts.Add("[[[APPMSG$($i.ToString('0000'))]]]`n$($Batch[$i].Masked)")
   }
   $body = @{ client = 'gtx'; sl = 'en'; tl = $Target; dt = 't'; q = ($parts -join "`n") }
   for ($attempt = 1; $attempt -le 5; $attempt++) {
@@ -36,7 +36,7 @@ function Invoke-TranslationBatch {
       $payload = Invoke-RestMethod -Method Post -Uri 'https://translate.googleapis.com/translate_a/single' -Body $body -TimeoutSec 60
       $translatedParts = @($payload[0] | ForEach-Object { [string]$_[0] })
       $translated = $translatedParts -join ''
-      $split = @([regex]::Split($translated, '\s*\[\[\[QWENMSG\d{4}\]\]\]\s*'))
+      $split = @([regex]::Split($translated, '\s*\[\[\[APPMSG\d{4}\]\]\]\s*'))
       $values = @($split | Select-Object -Skip 1)
       if ($values.Count -ne $Batch.Count) { throw "Expected $($Batch.Count) entries, received $($values.Count)" }
       return $values

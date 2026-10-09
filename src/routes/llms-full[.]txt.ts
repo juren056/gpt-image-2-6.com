@@ -8,12 +8,6 @@ const STATIC_PAGES: { path: string; title: string; description: string }[] = [
   { path: '', title: 'Home', description: 'Landing page' },
   { path: '/pricing', title: 'Pricing', description: 'Pricing plans' },
   {
-    path: '/qwen-image-3-1',
-    title: 'Qwen Image 3.1 Release Date and API Status',
-    description:
-      'Source-checked announcement, 2026 release window, API availability, model ID, pricing and launch updates',
-  },
-  {
     path: '/seedance-2-5',
     title: 'Seedance 2.5 Free AI Video Generator',
     description:

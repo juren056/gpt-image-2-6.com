@@ -6,8 +6,6 @@ const [
   outputDir = '.artifacts/creative-ui',
 ] = process.argv.slice(2);
 const publicModelIds = [
-  'qwen-image-3-edit',
-  'qwen-image-2.1',
   'gpt-image-2.5-flare',
   'gpt-image-2.5-sunburst',
   'nano-banana-2',

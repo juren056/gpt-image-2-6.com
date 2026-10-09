@@ -1,5 +1,5 @@
 export const AUTH_SECRET_PLACEHOLDER =
-  'qwen-image-3-dev-secret-change-in-production';
+  'image-studio-dev-secret-change-in-production';
 
 // Isomorphic env access:
 // - Public (client-visible) vars are VITE_-prefixed and read from
@@ -16,10 +16,10 @@ const publicEnv = (key: string) => metaEnv[key] ?? procEnv[key];
 export const envConfigs: Record<string, string> = {
   // App (public)
   app_url: publicEnv('VITE_APP_URL') ?? 'http://localhost:3000',
-  app_name: publicEnv('VITE_APP_NAME') ?? 'Qwen Image 3',
+  app_name: publicEnv('VITE_APP_NAME') ?? 'My App',
   app_description:
     publicEnv('VITE_APP_DESCRIPTION') ??
-    'Independent Qwen Image community generator and prompt studio.',
+    'Independent AI Image community generator and prompt studio.',
   app_logo: publicEnv('VITE_APP_LOGO') ?? '/logo.svg',
 
   // Database

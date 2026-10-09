@@ -30,37 +30,10 @@ const STATIC_PATHS: Array<
   },
   { path: '/pricing', changeFrequency: 'weekly', priority: 0.9 },
   {
-    path: '/qwen-image-editor',
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 1,
-  },
-  {
-    path: '/qwen-image-2-1-transparent-png',
-    lastModified: '2026-09-21',
-    changeFrequency: 'weekly',
-    priority: 0.95,
-    indexableLocales: ['en', 'zh'],
-  },
-  {
-    path: '/qwen-image-3-1',
-    lastModified: '2026-09-23',
-    changeFrequency: 'daily',
-    priority: 1,
-    indexableLocales: ['en', 'zh'],
-  },
-  {
     path: '/prompts',
     lastModified: SITE_LAST_UPDATED,
     changeFrequency: 'weekly',
     priority: 0.95,
-  },
-  {
-    path: '/lab',
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.95,
-    indexableLocales: ['en'],
   },
   ...[
     'poster',
@@ -79,40 +52,6 @@ const STATIC_PATHS: Array<
     priority: 0.75,
     indexableLocales: ['en'],
   })),
-  ...[
-    'qwen-image-3-chinese-text-test',
-    'qwen-image-3-typography-test',
-    'qwen-image-3-product-photo-test',
-    'qwen-image-3-infographic-test',
-    'qwen-image-3-image-editing-test',
-    'qwen-image-3-vs-pro',
-  ].map((slug) => ({
-    path: `/${slug}`,
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'monthly',
-    priority: 0.8,
-    indexableLocales: ['en'],
-  })),
-  ...[
-    'qwen-image-3-pro',
-    'qwen-image-3-image-to-image',
-    'qwen-image-3-infographic-generator',
-    'qwen-image-3-text-generator',
-    'qwen-image-3-product-photo-generator',
-    'qwen-image-3-poster-generator',
-  ].map((slug) => ({
-    path: `/${slug}`,
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'monthly',
-    priority: 0.85,
-    indexableLocales: ['en'],
-  })),
-  {
-    path: '/guides',
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.9,
-  },
   {
     path: '/tools',
     lastModified: SITE_LAST_UPDATED,
@@ -126,9 +65,7 @@ const STATIC_PATHS: Array<
     priority: 0.9,
     indexableLocales: ['en'],
   },
-  ...PUBLIC_MODEL_PAGES.filter(
-    (model) => model.path !== '/qwen-image-editor'
-  ).map((model) => ({
+  ...PUBLIC_MODEL_PAGES.map((model) => ({
     path: model.path,
     lastModified: model.dateModified ?? SITE_LAST_UPDATED,
     changeFrequency: 'weekly',
@@ -223,32 +160,6 @@ const STATIC_PATHS: Array<
   {
     path: '/remove-matcha-filter',
     lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.9,
-  },
-  { path: '/qwen-image-3-prompts', changeFrequency: 'weekly', priority: 0.9 },
-  { path: '/qwen-image-3-api', changeFrequency: 'weekly', priority: 0.9 },
-  {
-    path: '/qwen-image-3-open-source',
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  },
-  {
-    path: '/qwen-image-3-text-rendering',
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  },
-  {
-    path: '/qwen-image-3-for-ecommerce',
-    lastModified: SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  },
-  { path: '/qwen-image-3-comfyui', changeFrequency: 'weekly', priority: 0.9 },
-  {
-    path: '/qwen-image-3-vs-qwen-image-2',
     changeFrequency: 'weekly',
     priority: 0.9,
   },

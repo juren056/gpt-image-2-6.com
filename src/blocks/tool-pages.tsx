@@ -124,9 +124,7 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
   const otherKind: ScenarioToolKind =
     kind === 'poster' ? 'product_photo' : 'poster';
   const guidePath =
-    kind === 'poster'
-      ? '/qwen-image-3-text-rendering'
-      : '/qwen-image-3-for-ecommerce';
+    kind === 'poster' ? '/ai-poster-generator' : '/ai-product-photo-generator';
 
   return {
     kind,
@@ -191,7 +189,7 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
         label: m[`tools.${otherKind}.link_label`](),
       },
       {
-        href: '/qwen-image-3-prompts',
+        href: '/prompts',
         label: m['seo.prompts.link_label'](),
       },
     ],

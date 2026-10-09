@@ -12,10 +12,7 @@ import { Header } from '@/blocks/header';
 import { Hero } from '@/blocks/hero';
 import { HomepageDiscovery } from '@/blocks/homepage-discovery';
 import { HomepageEnhancements } from '@/blocks/homepage-enhancements';
-import {
-  HomepageLab,
-  ImageEditingFeature,
-} from '@/blocks/homepage-studio-sections';
+import { ImageEditingFeature } from '@/blocks/homepage-studio-sections';
 import { HowItWorks } from '@/blocks/how-it-works';
 import { Pricing } from '@/blocks/pricing';
 import { PromptLibrary } from '@/blocks/prompt-library';
@@ -32,7 +29,6 @@ function HomePage() {
           <Features />
           <ImageEditingFeature />
           <PromptLibrary compact />
-          <HomepageLab />
           <Pricing compact />
           <FAQ />
           <CTA />
@@ -69,11 +65,6 @@ export const Route = createFileRoute('/')({
           '@type': 'WebSite',
           name: envConfigs.app_name,
           url: envConfigs.app_url,
-          about: {
-            '@type': 'Thing',
-            name: 'Qwen Image 3.0',
-            url: 'https://qwen.ai/blog?id=qwen-image-3.0',
-          },
         },
       ],
     });

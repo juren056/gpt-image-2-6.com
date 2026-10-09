@@ -2,7 +2,6 @@ import { ArrowRight, ImagePlus, Sparkles } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { stageGeneratorPrompt } from '@/lib/prompt-navigation';
-import { LAB_PAGES } from '@/content/lab-pages';
 import { STUDIO_PROMPTS } from '@/content/studio-prompts';
 
 export function ImageEditingFeature() {
@@ -11,7 +10,7 @@ export function ImageEditingFeature() {
       <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2">
         <img
           src="/imgs/seo/ecommerce-campaign-board.webp"
-          alt="Qwen Image reference editing workflow"
+          alt="AI Image reference editing workflow"
           width={1024}
           height={640}
           loading="lazy"
@@ -29,7 +28,7 @@ export function ImageEditingFeature() {
             the product, text, crop and geometry that must remain unchanged.
           </p>
           <Link
-            href="/qwen-image-editor"
+            href="/ai-image-editor"
             className="bg-primary text-primary-foreground mt-7 inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold"
           >
             <ImagePlus className="size-4" />
@@ -76,7 +75,7 @@ export function StudioPromptPreview() {
             >
               <img
                 src={item.image}
-                alt={`${item.title} Qwen Image example`}
+                alt={`${item.title} AI Image example`}
                 width={640}
                 height={400}
                 loading="lazy"
@@ -99,45 +98,6 @@ export function StudioPromptPreview() {
             </article>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-export function HomepageLab() {
-  return (
-    <section className="px-4 py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-primary text-xs font-semibold tracking-[.18em] uppercase">
-          Qwen Image 3 Lab
-        </p>
-        <h2 className="mt-3 font-serif text-3xl tracking-tight sm:text-5xl">
-          Prompts, visible results and failure notes
-        </h2>
-        <p className="text-muted-foreground mt-4 max-w-2xl leading-7">
-          Each lab page states what was tested, what worked, what needs review
-          and how the prompt can be improved. Unknown data stays unknown.
-        </p>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {LAB_PAGES.slice(0, 6).map((page) => (
-            <Link
-              key={page.slug}
-              href={`/${page.slug}`}
-              className="border-border bg-card rounded-2xl border p-5"
-            >
-              <h3 className="font-semibold">{page.title}</h3>
-              <p className="text-muted-foreground mt-2 line-clamp-3 text-sm leading-6">
-                {page.shortAnswer}
-              </p>
-            </Link>
-          ))}
-        </div>
-        <Link
-          href="/lab"
-          className="text-primary mt-7 inline-flex items-center gap-2 font-semibold"
-        >
-          Open the Lab <ArrowRight className="size-4" />
-        </Link>
       </div>
     </section>
   );

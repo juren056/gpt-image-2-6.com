@@ -271,16 +271,13 @@ try {
     'https://v3b.fal.media/test/cutout.png'
   );
 
-  assert.equal(MATCHA_FILTER_REMOVAL_COST, 5);
+  assert.equal(MATCHA_FILTER_REMOVAL_COST, 10);
   const matchaOptions = sanitizeMatchaFilterRemovalOptions(
     'https://cdn.example.com/matcha-filtered.webp'
   );
   assert.equal(matchaOptions.strength, 0.86);
-  assert.equal(matchaOptions.num_inference_steps, 40);
-  assert.equal(matchaOptions.guidance_scale, 4.5);
-  assert.match(matchaOptions.negative_prompt, /green color cast/);
   assert.equal(
-    matchaOptions.image_url,
+    matchaOptions.image_urls[0],
     'https://cdn.example.com/matcha-filtered.webp'
   );
   assert.equal(

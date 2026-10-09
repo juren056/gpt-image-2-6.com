@@ -606,6 +606,8 @@ export class FalProvider implements AIProvider {
     }
 
     input = { ...input, ...options };
+    if (model === 'fal-ai/flux-2-pro/edit') delete input.strength;
+    if (model.startsWith('fal-ai/flux-2-pro')) delete input.num_images;
 
     if (options.image_input && Array.isArray(options.image_input)) {
       if (['fal-ai/kling-video/o1/video-to-video/edit'].includes(model)) {

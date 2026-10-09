@@ -51,42 +51,6 @@ export function Footer() {
       ],
     },
     {
-      title: m['landing.nav.guides'](),
-      links: [
-        {
-          label: m['seo.prompts.title'](),
-          href: '/qwen-image-3-prompts',
-        },
-        {
-          label: m['seo.text_rendering.title'](),
-          href: '/qwen-image-3-text-rendering',
-        },
-        {
-          label: m['seo.ecommerce.title'](),
-          href: '/qwen-image-3-for-ecommerce',
-        },
-        {
-          label: m['seo.comfyui.title'](),
-          href: '/qwen-image-3-comfyui',
-        },
-      ],
-    },
-    {
-      title: m['landing.footer.development_research'](),
-      links: [
-        { label: m['seo.api.title'](), href: '/qwen-image-3-api' },
-        {
-          label: m['seo.open_source.title'](),
-          href: '/qwen-image-3-open-source',
-        },
-        {
-          label: m['seo.comparison.title'](),
-          href: '/qwen-image-3-vs-qwen-image-2',
-        },
-        { label: m['landing.footer.blog'](), href: '/blog' },
-      ],
-    },
-    {
       title: m['landing.footer.legal'](),
       links: [
         { label: 'About', href: '/about' },

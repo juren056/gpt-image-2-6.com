@@ -1,8 +1,6 @@
-# Qwen Image 3
+# AI Image
 
-Qwen Image 3 is an independent image-generation workspace and subscription service built for beginners. The homepage combines guided prompting, model and aspect-ratio controls, examples, pricing, account management, credits, and subscription billing.
-
-This project is an independent third-party product and is not affiliated with or endorsed by Alibaba or the Qwen team.
+AI Image is an independent image-generation workspace and subscription service built for beginners. The homepage combines guided prompting, model and aspect-ratio controls, examples, pricing, account management, credits, and subscription billing.
 
 ## Technology
 

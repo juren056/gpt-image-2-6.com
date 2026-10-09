@@ -6,23 +6,23 @@ import {
 } from '../src/lib/auth-navigation';
 import { parseEditorDraft } from '../src/lib/editor-draft';
 
-const origin = 'https://qwenimage3.com';
+const origin = 'https://nanobanana21pro.com';
 
 assert.equal(
   toAbsoluteAuthCallbackURL('/#generator', origin),
-  'https://qwenimage3.com/#generator'
+  'https://nanobanana21pro.com/#generator'
 );
 assert.equal(
   toAbsoluteAuthCallbackURL('/zh/ai-video-generator#tool', origin),
-  'https://qwenimage3.com/zh/ai-video-generator#tool'
+  'https://nanobanana21pro.com/zh/ai-video-generator#tool'
 );
 assert.equal(
   toAbsoluteAuthCallbackURL('/sign-in?authError=oauth', origin),
-  'https://qwenimage3.com/settings/generate'
+  'https://nanobanana21pro.com/settings/generate'
 );
 assert.equal(
   toAbsoluteAuthCallbackURL('https://evil.example/phish', origin),
-  'https://qwenimage3.com/settings/generate'
+  'https://nanobanana21pro.com/settings/generate'
 );
 assert.equal(
   toAbsoluteAuthCallbackURL(
@@ -30,7 +30,7 @@ assert.equal(
     origin,
     '//evil.example'
   ),
-  'https://qwenimage3.com/settings/generate'
+  'https://nanobanana21pro.com/settings/generate'
 );
 assert.equal(safeInternalAuthDestination('/#generator'), '/#generator');
 assert.equal(safeInternalAuthDestination('//evil.example'), null);

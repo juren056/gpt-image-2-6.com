@@ -923,7 +923,7 @@ export function getSettings(): Setting[] {
       name: 'creative_enabled_model_ids',
       title: 'Accepted model IDs',
       type: 'text',
-      placeholder: 'qwen-image-3-edit,flux-2-pro',
+      placeholder: 'flux-2-pro,flux-2-pro',
       tip: 'Comma-separated allowlist. Both this list and the global paid-model switch are required.',
       group: 'creative_studio',
       tab: 'ai',

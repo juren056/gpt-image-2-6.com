@@ -12,10 +12,10 @@ assert.equal(verifyFalWebhookToken(taskId, token), true);
 assert.equal(verifyFalWebhookToken(`${taskId}-other`, token), false);
 assert.equal(verifyFalWebhookToken(taskId, `${token.slice(0, -1)}0`), false);
 
-const callback = buildFalWebhookUrl('https://qwenimage3.com', taskId);
+const callback = buildFalWebhookUrl('https://nanobanana21pro.com', taskId);
 assert.ok(callback);
 const callbackUrl = new URL(callback);
-assert.equal(callbackUrl.origin, 'https://qwenimage3.com');
+assert.equal(callbackUrl.origin, 'https://nanobanana21pro.com');
 assert.equal(callbackUrl.pathname, '/api/images/fal-webhook');
 assert.equal(callbackUrl.searchParams.get('task'), taskId);
 assert.equal(callbackUrl.searchParams.get('token'), token);

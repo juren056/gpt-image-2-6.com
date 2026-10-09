@@ -43,13 +43,6 @@ export function Header() {
           description: 'Compare generation, editing, limits, and pricing.',
           icon: Images,
         },
-        {
-          href: '/qwen-image-3-1',
-          label: 'Qwen Image 3.1',
-          description: 'Announced for 2026 · API and pricing not released.',
-          icon: Images,
-          isNew: true,
-        },
         ...PUBLIC_MODEL_PAGES.map((model) => ({
           href: model.path,
           label: model.name,
@@ -87,7 +80,7 @@ export function Header() {
         ),
       ],
     },
-    { type: 'link', href: '/lab', label: 'Resources' },
+    { type: 'link', href: '/prompts', label: 'Resources' },
     {
       type: 'link',
       href: '/pricing',

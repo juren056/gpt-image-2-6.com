@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { eq } from 'drizzle-orm';
 
 // Always use an isolated database; this verification cannot ban a real user.
-const directory = mkdtempSync(join(tmpdir(), 'qwen-unsafe-image-ban-'));
+const directory = mkdtempSync(join(tmpdir(), 'image-unsafe-image-ban-'));
 process.env.DATABASE_PROVIDER = 'sqlite';
 process.env.DATABASE_URL = `file:${join(directory, 'test.db').replaceAll('\\', '/')}`;
 execFileSync(

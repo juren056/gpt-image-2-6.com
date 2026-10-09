@@ -25,7 +25,7 @@ import {
 import { respData, respErr } from '@/lib/resp';
 import { verifyTurnstileToken } from '@/lib/turnstile';
 
-const VISITOR_COOKIE = 'qwenimage3_visitor';
+const VISITOR_COOKIE = 'image-studio_visitor';
 const DEVICE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
 const IP_WINDOW_MS = 24 * 60 * 60 * 1000;
 const TOKEN_TTL_MS = 30 * 60 * 1000;

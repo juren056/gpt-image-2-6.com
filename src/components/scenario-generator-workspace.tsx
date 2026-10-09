@@ -19,7 +19,6 @@ import { useRouter } from '@/core/i18n/navigation';
 import {
   DEFAULT_IMAGE_MODEL_ID,
   IMAGE_GENERATION_COST,
-  QWEN_IMAGE_2_STANDARD_COST,
   SIMPLE_TOOL_IMAGE_MODEL_ID,
 } from '@/config/image-models';
 import { apiGet, apiPost } from '@/lib/api-client';
@@ -149,7 +148,7 @@ export function ScenarioGeneratorWorkspace({
   const generationModel =
     kind === 'poster' ? SIMPLE_TOOL_IMAGE_MODEL_ID : DEFAULT_IMAGE_MODEL_ID;
   const generationCost =
-    kind === 'poster' ? QWEN_IMAGE_2_STANDARD_COST : IMAGE_GENERATION_COST;
+    kind === 'poster' ? IMAGE_GENERATION_COST : IMAGE_GENERATION_COST;
 
   useEffect(() => setMounted(true), []);
 
@@ -157,7 +156,7 @@ export function ScenarioGeneratorWorkspace({
     if (kind !== 'product_photo') return;
     try {
       const draft = JSON.parse(
-        window.sessionStorage.getItem('qwenimage3:product-photo-draft') ||
+        window.sessionStorage.getItem('image-studio:product-photo-draft') ||
           'null'
       ) as Record<string, unknown> | null;
       if (!draft) return;
@@ -171,7 +170,7 @@ export function ScenarioGeneratorWorkspace({
       )?.[0] as Aspect | undefined;
       if (restoredAspect) setAspect(restoredAspect);
     } catch {
-      window.sessionStorage.removeItem('qwenimage3:product-photo-draft');
+      window.sessionStorage.removeItem('image-studio:product-photo-draft');
     }
   }, [kind]);
 
@@ -331,7 +330,7 @@ export function ScenarioGeneratorWorkspace({
   useEffect(() => {
     if (kind !== 'product_photo' || !mounted) return;
     window.sessionStorage.setItem(
-      'qwenimage3:product-photo-draft',
+      'image-studio:product-photo-draft',
       JSON.stringify({
         product: primary,
         details: secondary,

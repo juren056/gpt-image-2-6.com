@@ -1,6 +1,6 @@
 {
-  "name": "Qwen Image 3",
-  "short_name": "Qwen Image 3",
+  "name": "AI Image",
+  "short_name": "AI Image",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#5b21b6",
+  "theme_color": "#18181b",
   "background_color": "#ffffff",
   "display": "standalone"
 }

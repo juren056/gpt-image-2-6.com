@@ -4,7 +4,7 @@ async function GET() {
   return Response.json(
     {
       status: 'ok',
-      service: 'qwenimage3',
+      service: 'image-studio',
       timestamp: new Date().toISOString(),
     },
     {

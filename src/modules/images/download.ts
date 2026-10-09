@@ -85,7 +85,7 @@ export function getImageDownloadFilename(
   const extension = IMAGE_EXTENSION_BY_TYPE[normalizedType] || 'png';
   const safeTaskId =
     taskId.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 36) || 'generated';
-  return `qwen-image-${safeTaskId}.${extension}`;
+  return `image-${safeTaskId}.${extension}`;
 }
 
 export async function fetchImageForDownload(rawUrl: string): Promise<Response> {

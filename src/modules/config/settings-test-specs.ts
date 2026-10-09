@@ -149,7 +149,7 @@ export const testSpecs: Record<string, TestSpec> = {
         name: 'filename',
         label: 'Test filename',
         type: 'text',
-        defaultValue: 'qwenimage3-storage-test.txt',
+        defaultValue: 'image-studio-storage-test.txt',
       },
     ],
   },
@@ -217,7 +217,7 @@ export const testSpecs: Record<string, TestSpec> = {
         name: 'model',
         label: 'Model',
         type: 'text',
-        defaultValue: 'alibaba/qwen-image-3/text-to-image',
+        defaultValue: 'fal-ai/flux-2-pro',
         required: true,
       },
       {

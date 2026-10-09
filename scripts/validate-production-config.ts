@@ -1,4 +1,3 @@
-const MAIN_ORIGIN = 'https://qwenimage3.com';
 const isProduction = process.env.VERCEL_ENV === 'production';
 
 function fail(message: string): never {
@@ -13,10 +12,9 @@ function parseOrigin(name: string, value: string | undefined) {
   } catch {
     fail(`${name} must be an absolute URL.`);
   }
+  if (url.username || url.password)
+    fail(`${name} must not include credentials.`);
   if (url.protocol !== 'https:') fail(`${name} must use HTTPS.`);
-  if (url.origin !== MAIN_ORIGIN) {
-    fail(`${name} must use the canonical production origin ${MAIN_ORIGIN}.`);
-  }
   return url.origin;
 }
 
@@ -39,7 +37,7 @@ if (!isProduction) {
   }
   if (
     !process.env.AUTH_SECRET ||
-    process.env.AUTH_SECRET === 'qwen-image-3-dev-secret-change-in-production'
+    process.env.AUTH_SECRET === 'image-studio-dev-secret-change-in-production'
   ) {
     fail(
       'AUTH_SECRET must be configured and must not use the dev placeholder.'
@@ -52,16 +50,6 @@ if (!isProduction) {
   );
   if (!hasRedis)
     fail('A complete Upstash/KV REST credential pair is required.');
-
-  const editModel = process.env.QWEN_IMAGE_EDIT_MODEL_ID?.trim();
-  if (
-    editModel &&
-    !['fal-ai/qwen-image-edit-2511', 'alibaba/qwen-image-3/edit'].includes(
-      editModel
-    )
-  ) {
-    fail('QWEN_IMAGE_EDIT_MODEL_ID is not an approved editor endpoint.');
-  }
 
   console.log('[production-config] Required production settings are present.');
 }

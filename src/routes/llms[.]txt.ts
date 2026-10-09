@@ -7,27 +7,15 @@ import { getLocalPosts, mergePosts } from '@/content/posts';
 const STATIC_PAGES: { path: string; title: string; description: string }[] = [
   {
     path: '',
-    title: 'Qwen Image 3.0 Generator',
+    title: 'AI Image Generator',
     description:
-      'Official Qwen Image 3.0 release information and a live generator with verified model access',
+      'Official AI Image release information and a live generator with verified model access',
   },
   {
     path: '/pricing',
-    title: 'Qwen Image Pricing and Credit Plans',
+    title: 'AI Image Pricing and Credit Plans',
     description:
-      'Monthly subscriptions, Alipay prepaid memberships and one-time credit packs for the Qwen Image 3 generator',
-  },
-  {
-    path: '/guides',
-    title: 'Qwen Image 3.0 Guides',
-    description:
-      'A structured learning center for creators and developers covering prompts, text, ecommerce, API access, local workflows and model comparison',
-  },
-  {
-    path: '/qwen-image-3-1',
-    title: 'Qwen Image 3.1 Release Date and API Status',
-    description:
-      'Source-checked Qwen Image 3.1 announcement, 2026 release window, API availability, model ID, pricing and launch updates',
+      'Monthly subscriptions, Alipay prepaid memberships and one-time credit packs for the AI Image generator',
   },
   {
     path: '/seedance-2-5',
@@ -54,50 +42,8 @@ const STATIC_PAGES: { path: string; title: string; description: string }[] = [
       'Paid Seedance 2.0 text-to-video generation through fal with native audio and 720p output',
   },
   {
-    path: '/qwen-image-3-prompts',
-    title: 'Qwen Image 3.0 Prompts',
-    description:
-      'Post-release prompt patterns with confirmed 3.0 capabilities separated from untested guidance',
-  },
-  {
-    path: '/qwen-image-3-api',
-    title: 'Qwen Image 3.0 API',
-    description:
-      'Live Qwen Image 3 API details, server-side integration, task polling, storage and pricing',
-  },
-  {
-    path: '/qwen-image-3-open-source',
-    title: 'Qwen Image 3.0 Open-Source Status',
-    description:
-      'Source-checked status of model weights, model cards, repositories, licenses and local downloads',
-  },
-  {
-    path: '/qwen-image-3-text-rendering',
-    title: 'Qwen Image 3.0 Text Rendering',
-    description:
-      'Practical prompting and review methods for Chinese, English and multilingual text in generated images',
-  },
-  {
-    path: '/qwen-image-3-for-ecommerce',
-    title: 'Qwen Image 3.0 for Ecommerce',
-    description:
-      'A production workflow for product scenes, marketplace graphics, localized ads and accuracy review',
-  },
-  {
-    path: '/qwen-image-3-comfyui',
-    title: 'Qwen Image 3.0 ComfyUI',
-    description:
-      'Verified weights and ComfyUI workflow availability after the official 3.0 announcement',
-  },
-  {
-    path: '/qwen-image-3-vs-qwen-image-2',
-    title: 'Qwen Image 3.0 vs Qwen Image 2.0',
-    description:
-      'Officially confirmed 3.0 capabilities compared with tested Qwen Image 2.0 behavior',
-  },
-  {
     path: '/blog',
-    title: 'Qwen Image 3.0 Guides and Updates',
+    title: 'AI Image Guides and Updates',
     description:
       'Verified release updates, prompt guides, workflow notes and transparent integration progress',
   },
@@ -133,10 +79,9 @@ export const Route = createFileRoute('/llms.txt')({
           '',
           '## Current Image Model',
           '',
-          '- Access: Verified third-party model endpoint',
-          '- Default model: Qwen Image 3.0 (`alibaba/qwen-image-3/text-to-image`)',
-          '- Optional models: Qwen Image 2 Standard and Qwen Image 2 Pro',
-          '- Credits per image: 4 (Standard), 5 (Qwen Image 3), or 10 (Pro)',
+          '- Access: Third-party image model endpoints configured by the site operator',
+          '- Default model: FLUX.2 [pro]',
+          '- Credits per image: 8',
           '- Status: Live',
           '',
           '## Pages',

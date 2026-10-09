@@ -21,8 +21,8 @@ export function publicModelRouteOptions(modelId: CreativeModelId) {
             title:
               page.seoTitle ||
               (isPreview
-                ? `${page.name} Image Generator — API Preview | QwenImage3`
-                : `${page.name} Image Generator & Editor | QwenImage3`),
+                ? `${page.name} Image Generator — API Preview | AI Image Studio`
+                : `${page.name} Image Generator & Editor | AI Image Studio`),
             description:
               page.seoDescription ||
               (isPreview
@@ -64,7 +64,7 @@ export function publicToolRouteOptions(toolId: CreativeToolId) {
         ? seoHead({
             locale: loaderData.locale,
             path: tool.path,
-            title: tool.seoTitle || `${tool.name} Online | QwenImage3`,
+            title: tool.seoTitle || `${tool.name} Online | AI Image Studio`,
             description:
               tool.seoDescription ||
               `${tool.summary} Open a task-specific workspace with visible controls, result preview, and clear processing costs.`,

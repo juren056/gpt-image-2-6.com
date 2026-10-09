@@ -31,8 +31,8 @@ import { Link, useRouter } from '@/core/i18n/navigation';
 import type { CreativeModelDefinition } from '@/config/creative-studio';
 import {
   DEFAULT_IMAGE_MODEL_ID,
+  IMAGE_MAX_PROMPT_LENGTH,
   IMAGE_MODELS,
-  QWEN_IMAGE_3_MAX_PROMPT_LENGTH,
 } from '@/config/image-models';
 import { trackFunnelEvent } from '@/lib/analytics-events';
 import { apiGet, apiPost } from '@/lib/api-client';
@@ -196,8 +196,8 @@ const ASPECT_RATIO_VALUES: Record<GeneratorAspect, string> = {
   story: '9:16',
 };
 
-const GENERATOR_DRAFT_KEY = 'qwenimage3:generator-draft';
-const SESSION_RESULTS_KEY_PREFIX = 'qwenimage3:generator-session-results:';
+const GENERATOR_DRAFT_KEY = 'image-studio:generator-draft';
+const SESSION_RESULTS_KEY_PREFIX = 'image-studio:generator-session-results:';
 const MAX_SESSION_RESULTS = 6;
 const MAX_COMPARE_RESULTS = 4;
 
@@ -238,10 +238,7 @@ export function ImageGeneratorWorkspace({
   const [prompt, setPrompt] = useState('');
   const [model, setModel] = useState<string>(DEFAULT_IMAGE_MODEL_ID);
   const [aspect, setAspect] = useState<GeneratorAspect>('square');
-  const [negativePrompt, setNegativePrompt] = useState('');
-  const [promptEnhance, setPromptEnhance] = useState(false);
   const [seed, setSeed] = useState('');
-  const [outputs, setOutputs] = useState(1);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [anonymousTaskToken, setAnonymousTaskToken] = useState<string | null>(
     null
@@ -321,11 +318,7 @@ export function ImageGeneratorWorkspace({
         model,
         options: {
           image_size: ASPECT_VALUES[aspect],
-          enable_prompt_expansion: promptEnhance,
-          num_images: outputs,
-          ...(negativePrompt.trim()
-            ? { negative_prompt: negativePrompt.trim() }
-            : {}),
+          num_images: 1,
           ...(seed ? { seed: Number(seed) } : {}),
         },
       });
@@ -367,7 +360,7 @@ export function ImageGeneratorWorkspace({
       window.sessionStorage.removeItem(GENERATOR_DRAFT_KEY);
     }
     if (incomingPrompt) {
-      setPrompt(incomingPrompt.slice(0, QWEN_IMAGE_3_MAX_PROMPT_LENGTH));
+      setPrompt(incomingPrompt.slice(0, IMAGE_MAX_PROMPT_LENGTH));
       window.setTimeout(
         () =>
           document
@@ -376,7 +369,7 @@ export function ImageGeneratorWorkspace({
         0
       );
     } else if (savedDraft?.prompt) {
-      setPrompt(savedDraft.prompt.slice(0, QWEN_IMAGE_3_MAX_PROMPT_LENGTH));
+      setPrompt(savedDraft.prompt.slice(0, IMAGE_MAX_PROMPT_LENGTH));
     }
     if (incomingAspect && incomingAspect in ASPECT_VALUES) {
       setAspect(incomingAspect as keyof typeof ASPECT_VALUES);
@@ -450,7 +443,7 @@ export function ImageGeneratorWorkspace({
         ?.prompt;
       if (!nextPrompt?.trim()) return;
 
-      setPrompt(nextPrompt.trim().slice(0, QWEN_IMAGE_3_MAX_PROMPT_LENGTH));
+      setPrompt(nextPrompt.trim().slice(0, IMAGE_MAX_PROMPT_LENGTH));
       window.setTimeout(
         () =>
           document
@@ -509,7 +502,7 @@ export function ImageGeneratorWorkspace({
         setCompareMode(false);
         setCompareIds([]);
         window.sessionStorage.setItem(
-          'qwenimage3:last-output',
+          'image-studio:last-output',
           JSON.stringify({
             imageUrl,
             prompt: task.prompt,
@@ -519,11 +512,11 @@ export function ImageGeneratorWorkspace({
         );
         if (anonymousTaskToken) {
           window.sessionStorage.setItem(
-            'qwenimage3:completed-first-anonymous',
+            'image-studio:completed-first-anonymous',
             '1'
           );
           window.sessionStorage.setItem(
-            'qwenimage3:anonymous-claim',
+            'image-studio:anonymous-claim',
             JSON.stringify({
               token: anonymousTaskToken,
               prompt: task.prompt || snapshot?.prompt || prompt,
@@ -539,11 +532,11 @@ export function ImageGeneratorWorkspace({
         trackFunnelEvent('anonymous_generate_success');
       } else if (
         session?.user &&
-        window.sessionStorage.getItem('qwenimage3:completed-first-anonymous')
+        window.sessionStorage.getItem('image-studio:completed-first-anonymous')
       ) {
         trackFunnelEvent('second_generation');
         window.sessionStorage.removeItem(
-          'qwenimage3:completed-first-anonymous'
+          'image-studio:completed-first-anonymous'
         );
       }
       queryClient.invalidateQueries({ queryKey: ['user-image-usage'] });
@@ -597,11 +590,11 @@ export function ImageGeneratorWorkspace({
 
   useEffect(() => {
     if (!session?.user) return;
-    if (window.sessionStorage.getItem('qwenimage3:signup-pending')) {
+    if (window.sessionStorage.getItem('image-studio:signup-pending')) {
       trackFunnelEvent('signup_success');
-      window.sessionStorage.removeItem('qwenimage3:signup-pending');
+      window.sessionStorage.removeItem('image-studio:signup-pending');
     }
-    const raw = window.sessionStorage.getItem('qwenimage3:anonymous-claim');
+    const raw = window.sessionStorage.getItem('image-studio:anonymous-claim');
     if (!raw) return;
     try {
       const claim = JSON.parse(raw);
@@ -612,12 +605,12 @@ export function ImageGeneratorWorkspace({
         prompt: typeof claim.prompt === 'string' ? claim.prompt : '',
       })
         .then(() => {
-          window.sessionStorage.removeItem('qwenimage3:anonymous-claim');
+          window.sessionStorage.removeItem('image-studio:anonymous-claim');
           queryClient.invalidateQueries({ queryKey: ['user-images'] });
         })
         .catch(() => undefined);
     } catch {
-      window.sessionStorage.removeItem('qwenimage3:anonymous-claim');
+      window.sessionStorage.removeItem('image-studio:anonymous-claim');
     }
   }, [queryClient, session?.user]);
 
@@ -695,13 +688,8 @@ export function ImageGeneratorWorkspace({
   const selectedModel =
     enabledModels.find((candidate) => candidate.id === model) ??
     enabledModels[0];
-  const creditCost =
-    (selectedModel?.credits ?? 0) *
-    (selectedModel?.kind === 'studio' ? 1 : outputs);
+  const creditCost = selectedModel?.credits ?? 0;
 
-  useEffect(() => {
-    if (selectedModel?.kind === 'studio' && outputs !== 1) setOutputs(1);
-  }, [outputs, selectedModel?.kind]);
   const creditBalance = creditsQuery.data?.balance;
   const hasInsufficientCredits =
     typeof creditBalance === 'number' && creditBalance < creditCost;
@@ -858,7 +846,7 @@ export function ImageGeneratorWorkspace({
   }
 
   function continueWithResult(result: SessionResult) {
-    setPrompt(result.prompt.slice(0, QWEN_IMAGE_3_MAX_PROMPT_LENGTH));
+    setPrompt(result.prompt.slice(0, IMAGE_MAX_PROMPT_LENGTH));
     if (enabledModels.some((candidate) => candidate.id === result.model)) {
       setModel(result.model);
     }
@@ -869,7 +857,7 @@ export function ImageGeneratorWorkspace({
     setCompareMode(false);
     setCompareIds([]);
     window.sessionStorage.setItem(
-      'qwenimage3:last-output',
+      'image-studio:last-output',
       JSON.stringify({
         imageUrl: result.imageUrl,
         prompt: result.prompt,
@@ -887,7 +875,7 @@ export function ImageGeneratorWorkspace({
 
   function stageResultForTool(result: SessionResult, tool: string) {
     window.sessionStorage.setItem(
-      'qwenimage3:last-output',
+      'image-studio:last-output',
       JSON.stringify({
         imageUrl: result.imageUrl,
         prompt: result.prompt,
@@ -903,7 +891,7 @@ export function ImageGeneratorWorkspace({
 
   function storeEditorSource(result: SessionResult) {
     window.sessionStorage.setItem(
-      'qwenimage3:editor-source',
+      'image-studio:editor-source',
       JSON.stringify({
         url: result.imageUrl,
         prompt: `Edit this image while preserving the main subject: ${result.prompt}`,
@@ -914,7 +902,7 @@ export function ImageGeneratorWorkspace({
   function openSignup(result: SessionResult, intent: SignupIntent) {
     if (intent === 'edit') storeEditorSource(result);
     window.sessionStorage.setItem(
-      'qwenimage3:post-auth-intent',
+      'image-studio:post-auth-intent',
       JSON.stringify({ intent, taskId: result.id, createdAt: Date.now() })
     );
     setSignupIntent(intent);
@@ -923,13 +911,13 @@ export function ImageGeneratorWorkspace({
   }
 
   function authDestination() {
-    return signupIntent === 'edit' ? '/qwen-image-editor' : '/#generator';
+    return signupIntent === 'edit' ? '/ai-image-editor' : '/#generator';
   }
 
   async function continueWithGoogle() {
     if (socialPending) return;
     setSocialPending(true);
-    window.sessionStorage.setItem('qwenimage3:signup-pending', '1');
+    window.sessionStorage.setItem('image-studio:signup-pending', '1');
     trackFunnelEvent('google_signup_clicked', {
       source: 'post_generation_modal',
     });
@@ -955,7 +943,7 @@ export function ImageGeneratorWorkspace({
 
   function goToEditor(result: SessionResult) {
     storeEditorSource(result);
-    window.location.href = '/qwen-image-editor';
+    window.location.href = '/ai-image-editor';
   }
 
   function handleCreditBalanceClick() {
@@ -1123,7 +1111,7 @@ export function ImageGeneratorWorkspace({
               Generate
             </button>
             <Link
-              href="/qwen-image-editor"
+              href="/ai-image-editor"
               className="text-muted-foreground hover:text-foreground flex min-h-10 items-center justify-center rounded-lg px-4 text-sm font-semibold"
             >
               Edit
@@ -1148,11 +1136,11 @@ export function ImageGeneratorWorkspace({
               }}
               placeholder={copy.promptPlaceholder}
               className="bg-background/80 mt-3 min-h-32 resize-none rounded-2xl p-4 text-sm leading-relaxed"
-              maxLength={QWEN_IMAGE_3_MAX_PROMPT_LENGTH}
+              maxLength={IMAGE_MAX_PROMPT_LENGTH}
               disabled={isGenerating}
             />
             <p className="text-muted-foreground mt-1.5 text-right text-[11px] tabular-nums">
-              {prompt.length}/{QWEN_IMAGE_3_MAX_PROMPT_LENGTH}
+              {prompt.length}/{IMAGE_MAX_PROMPT_LENGTH}
             </p>
           </div>
 
@@ -1234,17 +1222,6 @@ export function ImageGeneratorWorkspace({
             </summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="text-sm">
-                <span className="font-medium">Negative prompt</span>
-                <input
-                  value={negativePrompt}
-                  maxLength={500}
-                  onChange={(event) => setNegativePrompt(event.target.value)}
-                  placeholder="blurry, distorted text"
-                  disabled={isGenerating}
-                  className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3"
-                />
-              </label>
-              <label className="text-sm">
                 <span className="font-medium">Seed</span>
                 <input
                   value={seed}
@@ -1256,43 +1233,6 @@ export function ImageGeneratorWorkspace({
                   className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3"
                 />
               </label>
-              <div className="text-sm">
-                <span className="font-medium">Prompt enhance (slower)</span>
-                <button
-                  type="button"
-                  aria-pressed={promptEnhance}
-                  onClick={() => setPromptEnhance((value) => !value)}
-                  className="border-border bg-background mt-2 block min-h-11 w-full rounded-xl border px-3 text-left"
-                >
-                  {promptEnhance ? 'On' : 'Off'}
-                </button>
-              </div>
-              <div className="text-sm">
-                <span className="font-medium">Outputs</span>
-                <div className="mt-2 grid grid-cols-3 gap-2">
-                  {(selectedModel?.kind === 'studio' ? [1] : [1, 2, 4]).map(
-                    (count) => (
-                      <button
-                        key={count}
-                        type="button"
-                        disabled={!session?.user || isGenerating}
-                        onClick={() => setOutputs(count)}
-                        className={cn(
-                          'border-border min-h-11 rounded-xl border',
-                          outputs === count && 'border-primary bg-primary/8'
-                        )}
-                      >
-                        {count}
-                      </button>
-                    )
-                  )}
-                </div>
-                {!session?.user ? (
-                  <p className="text-muted-foreground mt-1 text-xs">
-                    {copy.signUpToGenerate}
-                  </p>
-                ) : null}
-              </div>
             </div>
           </details>
 
@@ -1695,7 +1635,7 @@ export function ImageGeneratorWorkspace({
             !session?.user ? (
               <div className="border-primary/20 bg-primary/5 mt-4 rounded-2xl border p-4">
                 <p className="font-serif text-lg">
-                  Your first Qwen Image 3 image is ready.
+                  Your first AI Image image is ready.
                 </p>
                 <p className="text-muted-foreground mt-1 text-sm leading-6">
                   Download the preview now, or create a free account to save it,
@@ -1948,7 +1888,7 @@ export function ImageGeneratorWorkspace({
       >
         <DialogContent className="top-auto bottom-0 max-h-[92dvh] w-full max-w-none translate-y-0 rounded-t-3xl rounded-b-none p-5 sm:top-1/2 sm:bottom-auto sm:max-w-md sm:-translate-y-1/2 sm:rounded-2xl sm:p-6">
           <DialogHeader className="text-left">
-            <DialogTitle>Your first Qwen Image 3 image is ready.</DialogTitle>
+            <DialogTitle>Your first AI Image image is ready.</DialogTitle>
             <DialogDescription className="leading-6">
               Create a free account to save your image, keep generating and edit
               your result.
@@ -1973,7 +1913,10 @@ export function ImageGeneratorWorkspace({
             <Link
               href={`/sign-in?callbackUrl=${encodeURIComponent(authDestination())}`}
               onClick={() => {
-                window.sessionStorage.setItem('qwenimage3:signup-pending', '1');
+                window.sessionStorage.setItem(
+                  'image-studio:signup-pending',
+                  '1'
+                );
                 trackFunnelEvent('email_signup_clicked', {
                   source: 'post_generation_modal',
                 });

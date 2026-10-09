@@ -207,7 +207,7 @@ function SignUpPage() {
   async function handleSocial(provider: 'google' | 'github') {
     if (provider === 'google') {
       trackFunnelEvent('google_signup_clicked', { source: 'signup_page' });
-      window.sessionStorage.setItem('qwenimage3:signup-pending', '1');
+      window.sessionStorage.setItem('image-studio:signup-pending', '1');
     }
     const callbackURL = toAbsoluteAuthCallbackURL(
       afterLoginUrl,
@@ -319,7 +319,7 @@ function SignUpPage() {
                             source: 'signup_page',
                           });
                           window.sessionStorage.setItem(
-                            'qwenimage3:signup-pending',
+                            'image-studio:signup-pending',
                             '1'
                           );
                         }}

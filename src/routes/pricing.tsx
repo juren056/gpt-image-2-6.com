@@ -26,8 +26,8 @@ export const Route = createFileRoute('/pricing')({
           extraSchemas: [
             {
               '@type': 'Service',
-              name: 'Qwen Image generation plans',
-              provider: { '@type': 'Organization', name: 'Qwen Image 3' },
+              name: 'AI Image generation plans',
+              provider: { '@type': 'Organization', name: 'AI Image' },
               offers: [
                 { '@type': 'Offer', price: '8.99', priceCurrency: 'USD' },
                 { '@type': 'Offer', price: '19.99', priceCurrency: 'USD' },

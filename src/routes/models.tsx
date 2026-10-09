@@ -13,7 +13,7 @@ export const Route = createFileRoute('/models')({
       ? seoHead({
           locale: loaderData.locale,
           path: '/models',
-          title: 'AI Image Models for Generation & Editing | QwenImage3',
+          title: 'AI Image Models for Generation & Editing | AI Image Studio',
           description:
             'Compare image generation and editing models, then open a dedicated generator with accurate inputs, limits, and credit pricing.',
           type: 'website',

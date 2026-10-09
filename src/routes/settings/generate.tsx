@@ -20,8 +20,8 @@ import { toast } from 'sonner';
 
 import {
   DEFAULT_IMAGE_MODEL_ID,
+  IMAGE_MAX_PROMPT_LENGTH,
   IMAGE_MODELS,
-  QWEN_IMAGE_3_MAX_PROMPT_LENGTH,
 } from '@/config/image-models';
 import { apiGet, apiPost } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
@@ -198,7 +198,7 @@ function GeneratePage() {
         response.headers.get('content-disposition') || '';
       const filenameMatch = contentDisposition.match(/filename="([^"]+)"/i);
       const filename =
-        filenameMatch?.[1] || `qwen-image-${item.id.slice(0, 36)}.png`;
+        filenameMatch?.[1] || `image-${item.id.slice(0, 36)}.png`;
       const objectUrl = URL.createObjectURL(blob);
       const anchor = document.createElement('a');
       anchor.href = objectUrl;
@@ -234,13 +234,13 @@ function GeneratePage() {
     const imageUrl = item.images[0]?.imageUrl;
     if (!imageUrl) return;
     window.sessionStorage.setItem(
-      'qwenimage3:editor-source',
+      'image-studio:editor-source',
       JSON.stringify({
         url: imageUrl,
         prompt: `Edit this image while preserving the main subject: ${item.prompt}`,
       })
     );
-    window.location.href = '/qwen-image-editor';
+    window.location.href = '/ai-image-editor';
   }
 
   function toggleCompare(item: ImageTask) {
@@ -335,11 +335,11 @@ function GeneratePage() {
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={m['settings.generate.prompt_placeholder']()}
               rows={5}
-              maxLength={QWEN_IMAGE_3_MAX_PROMPT_LENGTH}
+              maxLength={IMAGE_MAX_PROMPT_LENGTH}
               disabled={isGenerating}
             />
             <p className="text-muted-foreground text-right text-xs tabular-nums">
-              {prompt.length}/{QWEN_IMAGE_3_MAX_PROMPT_LENGTH}
+              {prompt.length}/{IMAGE_MAX_PROMPT_LENGTH}
             </p>
             <div>
               <p className="mb-2 text-sm font-medium">

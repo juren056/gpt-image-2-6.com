@@ -19,10 +19,10 @@ import { getFalAcceptanceCases } from '../src/modules/images/fal-live-acceptance
 
 assert.deepEqual(
   CREATIVE_MODELS.map((model) => model.acceptanceId),
-  ['M01', 'M02', 'M03', 'M04', 'M05', 'M06', 'M07', 'M08', 'M09', 'M10']
+  ['M02', 'M03', 'M04', 'M05', 'M06', 'M07', 'M08', 'M09']
 );
-assert.equal(new Set(CREATIVE_MODELS.map((model) => model.id)).size, 10);
-assert.equal(getFalAcceptanceCases().length, 18);
+assert.equal(new Set(CREATIVE_MODELS.map((model) => model.id)).size, 8);
+assert.equal(getFalAcceptanceCases().length, 17);
 assert.equal(
   CREATIVE_MODELS.every(
     (model) =>
@@ -42,7 +42,7 @@ assert.equal(
 );
 assert.equal(
   CREATIVE_MODELS.filter(
-    (model) => !['nano-banana-2.5', 'qwen-image-2.1'].includes(model.id)
+    (model) => !['nano-banana-2.5'].includes(model.id)
   ).every((model) => model.productionEnabled === true),
   true
 );
@@ -57,24 +57,6 @@ assert.throws(
   /coming soon/
 );
 
-const qwen21 = CREATIVE_MODELS.find((model) => model.id === 'qwen-image-2.1');
-assert.equal(qwen21?.productionEnabled, false);
-assert.deepEqual(qwen21?.endpoints, {});
-assert.deepEqual(qwen21?.credits, {});
-assert.throws(
-  () => requireProductionCreativeModel('qwen-image-2.1'),
-  /coming soon/
-);
-assert.throws(
-  () =>
-    validateCreativeRequest({
-      model: 'qwen-image-2.1',
-      operation: 'generate',
-      prompt: 'contract test',
-    }),
-  /has no generate endpoint/
-);
-
 assert.deepEqual(
   CREATIVE_TOOLS.map((tool) => tool.id),
   Array.from(
@@ -87,19 +69,19 @@ assert.equal(
   true
 );
 
-const qwen = validateCreativeRequest({
-  model: 'qwen-image-3-edit',
+const editRequest = validateCreativeRequest({
+  model: 'flux-2-pro',
   operation: 'edit',
   prompt: 'Keep the product and change the wall to cobalt blue',
   imageUrls: ['https://cdn.example.com/source.png'],
   size: 'square_hd',
 });
-assert.equal(qwen.providerModel, 'alibaba/qwen-image-3/edit');
-assert.equal(qwen.credits, 5);
+assert.equal(editRequest.providerModel, 'fal-ai/flux-2-pro/edit');
+assert.equal(editRequest.credits, 10);
 assert.throws(
   () =>
     validateCreativeRequest({
-      model: 'qwen-image-3-edit',
+      model: 'flux-2-pro',
       operation: 'edit',
       prompt: 'edit',
       imageUrls: [],
@@ -119,7 +101,7 @@ assert.throws(
 assert.throws(
   () =>
     validateCreativeRequest({
-      model: 'qwen-image-3-edit',
+      model: 'flux-2-pro',
       operation: 'edit',
       prompt: 'edit',
       imageUrls: ['http://example.com/a.png'],
@@ -240,7 +222,7 @@ for (const definition of CREATIVE_MODELS.filter(
         options:
           operation === 'edit'
             ? definition.id === 'flux-2-pro'
-              ? { input_images: ['https://cdn.example.com/source.png'] }
+              ? { image_urls: ['https://cdn.example.com/source.png'] }
               : { image_urls: ['https://cdn.example.com/source.png'] }
             : {
                 [definition.sizeParameter]: definition.sizes[0],

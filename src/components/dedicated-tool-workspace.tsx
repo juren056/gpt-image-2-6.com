@@ -401,7 +401,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
       return;
     try {
       const saved = JSON.parse(
-        window.sessionStorage.getItem('qwenimage3:last-output') || 'null'
+        window.sessionStorage.getItem('image-studio:last-output') || 'null'
       ) as { imageUrl?: string; createdAt?: number } | null;
       if (
         !saved?.imageUrl ||
@@ -570,7 +570,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
   function runRemote() {
     if (!session?.user) {
       window.sessionStorage.setItem(
-        'qwenimage3:tool-draft',
+        'image-studio:tool-draft',
         JSON.stringify({ toolId, prompt, modelId })
       );
       window.location.href = `/sign-up?callbackUrl=${encodeURIComponent(tool.path)}`;
@@ -601,7 +601,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
   function requireSignIn() {
     if (session?.user) return false;
     window.sessionStorage.setItem(
-      'qwenimage3:tool-draft',
+      'image-studio:tool-draft',
       JSON.stringify({ toolId, prompt, modelId })
     );
     window.location.href = `/sign-up?callbackUrl=${encodeURIComponent(tool.path)}`;
@@ -874,7 +874,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
   async function runLocalFlow() {
     if (toolId === 'T16') {
       window.localStorage.setItem(
-        'qwenimage3:brand-kit',
+        'image-studio:brand-kit',
         JSON.stringify({
           ...brand,
           logo: brandLogoUploads.find((item) => item.url)?.url || null,
@@ -885,7 +885,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
     }
     if (toolId === 'T24') {
       window.localStorage.setItem(
-        'qwenimage3:prompt-recipe',
+        'image-studio:prompt-recipe',
         JSON.stringify({ template, brand: brand.name, industry, prompt })
       );
       toast.success('A private recipe copy was saved in this browser.');
@@ -939,7 +939,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
     }
     if (toolId === 'T21') {
       window.sessionStorage.setItem(
-        'qwenimage3:selected-template',
+        'image-studio:selected-template',
         JSON.stringify({ template, brand: brand.name, prompt })
       );
       const destinations: Record<string, string> = {

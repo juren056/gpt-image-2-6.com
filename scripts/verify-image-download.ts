@@ -22,11 +22,11 @@ for (const unsafeUrl of [
 
 assert.equal(
   getImageDownloadFilename('abc/../123', 'image/webp'),
-  'qwen-image-abc123.webp'
+  'image-abc123.webp'
 );
 assert.equal(
   getImageDownloadFilename('', 'image/png; charset=binary'),
-  'qwen-image-generated.png'
+  'image-generated.png'
 );
 
 const originalFetch = globalThis.fetch;

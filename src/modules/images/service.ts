@@ -28,11 +28,10 @@ import {
 import { aiTask, order } from '@/config/db/schema';
 import {
   DEFAULT_IMAGE_MODEL_ID,
+  IMAGE_EDIT_COST,
+  IMAGE_EDIT_MODEL_ID,
   IMAGE_GENERATION_COST,
-  QWEN_IMAGE_3_EDIT_MODEL_ID,
-  QWEN_IMAGE_3_MAX_PROMPT_LENGTH,
-  QWEN_IMAGE_EDIT_COST,
-  QWEN_IMAGE_EDIT_MODEL_ID,
+  IMAGE_MAX_PROMPT_LENGTH,
   requireEnabledImageModel,
   sanitizeImageEditOptions,
   sanitizeImageGenerationOptions,
@@ -393,14 +392,7 @@ export async function getCreativeModelAvailability() {
 }
 
 function resolveImageEditModelId() {
-  const requested = process.env.QWEN_IMAGE_EDIT_MODEL_ID?.trim();
-  if (!requested || requested === QWEN_IMAGE_EDIT_MODEL_ID) {
-    return QWEN_IMAGE_EDIT_MODEL_ID;
-  }
-  if (requested === QWEN_IMAGE_3_EDIT_MODEL_ID) {
-    return QWEN_IMAGE_3_EDIT_MODEL_ID;
-  }
-  throw new Error('Unsupported QWEN_IMAGE_EDIT_MODEL_ID configuration');
+  return IMAGE_EDIT_MODEL_ID;
 }
 
 /**
@@ -413,9 +405,9 @@ export function validateAnonymousImageInput(params: {
 }) {
   const trimmed = params.prompt.trim();
   if (!trimmed) throw new Error('Prompt is required');
-  if (trimmed.length > QWEN_IMAGE_3_MAX_PROMPT_LENGTH) {
+  if (trimmed.length > IMAGE_MAX_PROMPT_LENGTH) {
     throw new Error(
-      `Prompt is too long (max ${QWEN_IMAGE_3_MAX_PROMPT_LENGTH} characters)`
+      `Prompt is too long (max ${IMAGE_MAX_PROMPT_LENGTH} characters)`
     );
   }
 
@@ -536,7 +528,7 @@ export async function claimAnonymousImage(params: {
   responseUrl?: string;
 }) {
   await assertUserSafetyAllowed(params.userId);
-  const prompt = params.prompt.trim().slice(0, QWEN_IMAGE_3_MAX_PROMPT_LENGTH);
+  const prompt = params.prompt.trim().slice(0, IMAGE_MAX_PROMPT_LENGTH);
   const safety = classifyPromptLocally(prompt);
   if (!safety.allowed) throw new Error(safety.publicMessage);
   const [existing] = await db()
@@ -737,9 +729,9 @@ export async function generateImage(params: {
   const { userId, prompt, model, options } = params;
   const trimmed = prompt.trim();
   if (!trimmed) throw new Error('Prompt is required');
-  if (trimmed.length > QWEN_IMAGE_3_MAX_PROMPT_LENGTH)
+  if (trimmed.length > IMAGE_MAX_PROMPT_LENGTH)
     throw new Error(
-      `Prompt is too long (max ${QWEN_IMAGE_3_MAX_PROMPT_LENGTH} characters)`
+      `Prompt is too long (max ${IMAGE_MAX_PROMPT_LENGTH} characters)`
     );
 
   await assertPaidGenerationAllowed(userId);
@@ -822,9 +814,9 @@ export async function generateImageEdit(params: {
 }) {
   const prompt = params.prompt.trim();
   if (!prompt) throw new Error('Describe the edit you want');
-  if (prompt.length > QWEN_IMAGE_3_MAX_PROMPT_LENGTH) {
+  if (prompt.length > IMAGE_MAX_PROMPT_LENGTH) {
     throw new Error(
-      `Prompt is too long (max ${QWEN_IMAGE_3_MAX_PROMPT_LENGTH} characters)`
+      `Prompt is too long (max ${IMAGE_MAX_PROMPT_LENGTH} characters)`
     );
   }
   await assertPaidGenerationAllowed(params.userId);
@@ -846,7 +838,7 @@ export async function generateImageEdit(params: {
     provider: provider.name,
     model: editModel,
     prompt,
-    costCredits: QWEN_IMAGE_EDIT_COST,
+    costCredits: IMAGE_EDIT_COST,
     options,
     safety: allowedSafetyMetadata(safety),
   });
@@ -871,7 +863,7 @@ export async function generateImageEdit(params: {
     return {
       id: task.id,
       status: AITaskStatus.PROCESSING,
-      costCredits: QWEN_IMAGE_EDIT_COST,
+      costCredits: IMAGE_EDIT_COST,
     };
   } catch (error) {
     const message =
@@ -1387,7 +1379,9 @@ export async function refreshMediaToolTask(taskId: string, userId: string) {
     task?.model === MEDIA_TOOL_MODELS.minimaxH3TextToVideo ||
     isWan3VideoModel(task?.model) ||
     isBackgroundRemovalModel(task?.model) ||
-    isMatchaFilterRemovalModel(task?.model);
+    (isMatchaFilterRemovalModel(task?.model) &&
+      task &&
+      getStoredMatchaStrength(task) !== undefined);
   if (!task || task.userId !== userId || !isAllowedModel) {
     throw new Error('Task not found');
   }
@@ -1458,6 +1452,7 @@ export async function refreshMediaToolTask(taskId: string, userId: string) {
     if (result.taskStatus === ProviderTaskStatus.SUCCESS) {
       const shouldColorize =
         isMatchaFilterRemovalModel(task.model) &&
+        getStoredMatchaStrength(task) !== undefined &&
         matchaStage !== 'colorize' &&
         shouldRunMatchaColorization(getStoredMatchaStrength(task));
       const neutralizedImage = result.taskInfo?.images?.[0]?.imageUrl;

@@ -170,24 +170,6 @@ export function BackgroundRemoverToolPage() {
         copy={pageCopy('background_remover')}
         workspace={backgroundWorkspace()}
       />
-      <section className="border-border border-t px-4 py-10">
-        <div className="border-border bg-muted/25 mx-auto flex max-w-6xl flex-col justify-between gap-5 rounded-3xl border p-6 sm:flex-row sm:items-center">
-          <div>
-            <h2 className="font-semibold">
-              {m['qwen21_transparent.remover_crosslink_title']()}
-            </h2>
-            <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-              {m['qwen21_transparent.remover_crosslink_text']()}
-            </p>
-          </div>
-          <Link
-            href="/qwen-image-2-1-transparent-png"
-            className="text-primary min-h-10 shrink-0 self-start font-semibold sm:self-auto"
-          >
-            {m['qwen21_transparent.remover_crosslink_action']()}
-          </Link>
-        </div>
-      </section>
     </>
   );
 }

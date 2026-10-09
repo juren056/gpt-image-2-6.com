@@ -6,7 +6,7 @@ export const MEDIA_TOOL_MODELS = {
   minimaxH3TextToVideo: 'minimax/h3/text-to-video',
   wan3TextToVideo: 'alibaba/wan-3.0/text-to-video',
   backgroundRemoval: 'fal-ai/bria/background/remove',
-  matchaFilterRemoval: 'fal-ai/qwen-image-edit/image-to-image',
+  matchaFilterRemoval: 'fal-ai/flux-2-pro/edit',
 } as const;
 
 const LEGACY_WAN3_MODELS = new Set([
@@ -43,7 +43,7 @@ export const VIDEO_GENERATION_COST = 150;
 export const VIDEO_GENERATION_COST_LONG = 240;
 export const SEEDANCE25_CREDITS_PER_SECOND = 50;
 export const BACKGROUND_REMOVAL_COST = 2;
-export const MATCHA_FILTER_REMOVAL_COST = 5;
+export const MATCHA_FILTER_REMOVAL_COST = 10;
 
 export const VIDEO_PROMPT_MAX_LENGTH = 1200;
 export const SEEDANCE25_PROMPT_MAX_LENGTH = 5000;
@@ -212,13 +212,8 @@ export function sanitizeMatchaFilterRemovalOptions(
   }
 
   return {
-    image_url: imageUrl,
+    image_urls: [imageUrl],
     strength: sanitizeMatchaFilterStrength(strength),
-    num_inference_steps: 40,
-    guidance_scale: 4.5,
-    negative_prompt:
-      'green color cast, yellow color cast, olive tint, chartreuse tint, matcha filter, monochrome green grading, crushed blacks, blown highlights, altered text, altered watermark, changed composition',
-    acceleration: 'regular',
     enable_safety_checker: true,
     output_format: 'png',
     num_images: 1,

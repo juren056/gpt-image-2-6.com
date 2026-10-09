@@ -461,7 +461,7 @@ function PixelWorkspace() {
       <FirstGenerationFeedback
         taskId={mode === 'text' ? paidTaskId : null}
         status={mode === 'text' && paidTaskId && result ? 'success' : null}
-        modelId="qwen-image-3"
+        modelId="flux-2-pro"
       />
     </div>
   );
@@ -602,7 +602,7 @@ function PromptWorkspace() {
 const RELATED: Record<KeywordGeneratorKind, string[]> = {
   mockup: ['/ai-product-photo-generator', '/image-background-remover'],
   pixel: ['/ai-image-generator', '/image-resizer'],
-  prompt: ['/qwen-image-3-prompts', '/ai-image-generator'],
+  prompt: ['/prompts', '/ai-image-generator'],
 };
 
 const KEYWORD_ASSET: Record<KeywordGeneratorKind, string> = {
@@ -616,7 +616,7 @@ const RELATED_ASSET: Record<string, string> = {
   '/image-background-remover': '/imgs/tool-cards/background-remover.webp',
   '/ai-image-generator': '/imgs/tool-cards/ai-image-generator.webp',
   '/image-resizer': '/imgs/tool-cards/image-resizer.webp',
-  '/qwen-image-3-prompts': '/imgs/seo/prompt-case-board.webp',
+  '/prompts': '/imgs/seo/prompt-case-board.webp',
 };
 
 export function KeywordGeneratorPage({ kind }: { kind: KeywordGeneratorKind }) {
