@@ -9,7 +9,7 @@ async function checkAdmin(request: Request) {
   const auth = getAuth();
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user) throw new Error('Unauthorized');
-  const isAdmin = await hasPermission(session.user.id, 'admin.*');
+  const isAdmin = await hasPermission(session.user.id, (request.method === "GET" ? "admin.posts.read" : request.method === "DELETE" ? "admin.posts.delete" : "admin.posts.write"));
   if (!isAdmin) throw new Error('Forbidden');
   return session;
 }

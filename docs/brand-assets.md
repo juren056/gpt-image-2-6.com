@@ -1,6 +1,6 @@
 # Nano Banana 品牌图标与搜索抓取
 
-设计名：Banana Spark。香蕉弧线结合像素点、四角星芒；金黄、暖金与炭绿构成高对比品牌色。图标为本站原创矢量图，不表示 Google 或模型提供商官方身份。
+设计名：Pixel Peel（用户选定的 D 方案）。阶梯像素轮廓、香蕉黄、炭绿边缘与青柠绿果柄组成紧凑香蕉。根据选定概念稿重绘为 16×16 整数网格矢量母版，适配小尺寸；不表示 Google 或模型提供商官方身份。
 
 ## 完整文件
 
@@ -13,7 +13,6 @@
 | `public/favicon-{16,32,48,96}x{16,32,48,96}.png` | 各尺寸 PNG 图标，48/96 用于首页 icon 声明          |
 | `public/apple-touch-icon.png`                    | 180×180 iOS 主屏图标                               |
 | `public/icon-{192,512}.png`                      | Web App 普通图标                                   |
-| `public/icon-maskable-{192,512}.png`             | 留出安全区的可裁切图标                             |
 | `public/site.webmanifest`                        | 应用名称、启动地址、颜色与图标清单                 |
 | `public/brand/nano-banana-mark.{svg,png}`        | 透明标志                                           |
 | `public/brand/nano-banana-icon.svg`              | 图标矢量源文件                                     |
@@ -21,7 +20,9 @@
 | `public/brand/nano-banana-wordmark.svg`          | 水平字标（Inter / Segoe UI / Arial 字体回退）      |
 | `public/brand/nano-banana-social.{svg,png}`      | 1200×630 分享封面                                  |
 
-运行 `node scripts/brand-assets.mjs` 可从同一矢量母版重新生成全部文件。颜色：`#191C18`、`#FFD43B`、`#F3AA19`、`#FFF3A7`。favicon 路径保持稳定，避免每次发布改变抓取地址。
+运行 `node scripts/brand-assets.mjs` 可从同一矢量母版重新生成全部文件。颜色：`#191C18`、`#FFD43B`、`#B6DE55`。全部图标透明背景，仅保留香蕉；分享封面也移除香蕉后面的白色方块。favicon 路径保持稳定。旧白底图标已覆盖，旧 maskable 文件及旧概念参考图已删除，品牌包已重新生成。安装图标使用 purpose=any，平台自身可能添加系统底色。
+
+本次改版在图标、品牌 Logo、manifest 和分享封面引用上使用固定版本 `v=pixel-peel-transparent-2`，让浏览器重新请求新图。此版本不随日常部署变化。
 
 ## 已配置
 
@@ -37,7 +38,7 @@
 2. 对 `https://nanobanana21pro.com/` 使用网址检查 → 请求编入索引，让 Google 重新抓取 favicon 声明。
 3. 图标地址不要求单独提交 sitemap；不要使用移除工具删除旧图标记录。
 
-没有提供 GSC 账户或验证凭据，本次不声称已代为提交或已收录。文件、标签和可抓取配置完善后，收录与图标展示仍由 Google 决定。
+GSC 域名资源已验证，首页收录请求和 sitemap 提交已完成，见 `docs/google-integration.md`。Google 搜索中的图标更新取决于重新抓取，不保证即时刷新。
 
 官方参考：
 

@@ -1,5 +1,15 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './banana-replica.css';
+@import './banana-generator.css';
+@import './banana-chrome.css';
+@import './banana-features.css';
+@import './banana-home-content.css';
+@import './banana-account.css';
+@import './banana-composer.css';
+@import './banana-account-pages.css';
+@import './banana-account-shell.css';
+@import './banana-checkout.css';
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import {
   Boxes,
   CalendarDays,
@@ -19,46 +18,26 @@ import { toast } from 'sonner';
 import { useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { trackFunnelEvent } from '@/lib/analytics-events';
-import { apiPost } from '@/lib/api-client';
-import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
-import { usePublicConfig } from '@/hooks/use-public-config';
-import {
-  PaymentProviderModal,
-  type PaymentProvider,
-} from '@/components/payment-provider-modal';
 import {
   PricingTable,
   type PricingGroup,
   type PricingPlan,
 } from '@/components/pricing-table';
 
-const ALL_PROVIDERS: PaymentProvider[] = [
-  'stripe',
-  'creem',
-  'paypal',
-  'alipay',
-  'wechat',
-];
-
 export function Pricing({
   title,
   headingLevel = 'h2',
   compact = false,
+  showHeader = true,
 }: {
   title?: string;
   headingLevel?: 'h1' | 'h2';
   compact?: boolean;
+  showHeader?: boolean;
 } = {}) {
   const router = useRouter();
   const { data: session } = useSession();
-  const { data: configsData } = usePublicConfig();
-  const configs = configsData ?? {};
-  const [modalOpen, setModalOpen] = useState(false);
-  const [pendingPlan, setPendingPlan] = useState<PricingPlan | null>(null);
-  const [loadingProvider, setLoadingProvider] =
-    useState<PaymentProvider | null>(null);
-  const [monthlyImages, setMonthlyImages] = useState(137);
   const [returningPlanId, setReturningPlanId] = useState<string | undefined>();
 
   useEffect(() => {
@@ -81,11 +60,6 @@ export function Pricing({
     toast.info(m['landing.pricing.plan_restored']());
   }, [session?.user]);
   const Heading = headingLevel;
-
-  const enabledProviders = useMemo<PaymentProvider[]>(
-    () => ALL_PROVIDERS.filter((p) => configs[`${p}_enabled`] === 'true'),
-    [configs]
-  );
 
   const starterFeatures = [
     { icon: Images, label: m['landing.pricing.feature_starter_images']() },
@@ -319,110 +293,32 @@ export function Pricing({
       ...plan,
       originalPrice: undefined,
       promotionLabel: undefined,
+      // A pack buys credits. Model-specific image estimates belong beside the
+      // selected request, not on a plan that supports several different models.
+      features: plan.features.filter(
+        (feature) => typeof feature === 'string' || feature.icon !== Images
+      ),
     })),
   }));
-  const groups: PricingGroup[] = compact
-    ? [
-        {
-          key: 'homepage-recommended',
-          label: m['landing.pricing.popular'](),
-          plans: [
-            honestGroups[0].plans[1],
-            {
-              ...honestGroups[2].plans[1],
-              featured: false,
-              badge: undefined,
-            },
-          ],
-        },
-      ]
-    : honestGroups;
-  const recommendedTier =
-    monthlyImages <= 50 ? 'starter' : monthlyImages <= 137 ? 'creator' : 'pro';
-
-  const checkoutMutation = useMutation({
-    mutationFn: ({
-      plan,
-      provider,
-    }: {
-      plan: PricingPlan;
-      provider: PaymentProvider;
-    }) =>
-      apiPost<{ checkout_url?: string }>('/api/payment/checkout', {
-        product_id: plan.productId,
-        payment_provider: provider,
-      }),
-    onSuccess: (data) => {
-      if (!data?.checkout_url) {
-        toast.error(m['landing.pricing.checkout_unavailable']());
-        setLoadingProvider(null);
-        return;
-      }
-      window.location.href = data.checkout_url;
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || m['landing.pricing.checkout_unavailable']());
-      setLoadingProvider(null);
-    },
-  });
-
-  function startCheckout(plan: PricingPlan, provider: PaymentProvider) {
-    if (provider === 'stripe' && configs.stripe_ready !== 'true') {
-      toast.info(m['landing.pricing.checkout_unavailable']());
-      return;
-    }
-    const productId = plan.productId;
-    if (!productId) {
-      toast.error(m['landing.pricing.checkout_unavailable']());
-      return;
-    }
-    setLoadingProvider(provider);
-    trackFunnelEvent('checkout_started', {
-      product: productId,
-      provider,
-    });
-    checkoutMutation.mutate({ plan, provider });
-  }
+  const groups: PricingGroup[] = honestGroups;
 
   function handleCheckout(plan: PricingPlan) {
-    const productId = plan.productId;
-    if (!productId) {
-      toast.error(m['landing.pricing.checkout_unavailable']());
-      return;
-    }
+    if (!plan.productId) return;
     trackFunnelEvent(
-      productId.startsWith('credits_')
+      plan.productId.startsWith('credits_')
         ? 'credit_pack_clicked'
         : 'subscription_clicked',
-      { product: productId }
+      { product: plan.productId }
     );
-    if (!session?.user) {
-      window.sessionStorage.setItem('image-studio:pending-plan', plan.id);
-      router.push('/sign-up?callbackUrl=%2Fpricing');
-      return;
-    }
-    if (enabledProviders.length === 0) {
-      toast.info(m['landing.pricing.checkout_unavailable']());
-      return;
-    }
-    if (plan.paymentProvider) {
-      const requiredProvider = plan.paymentProvider as PaymentProvider;
-      if (!enabledProviders.includes(requiredProvider)) {
-        toast.error(m['landing.pricing.checkout_unavailable']());
-        return;
-      }
-      startCheckout(plan, requiredProvider);
-      return;
-    }
-    const selectEnabled = configs.select_payment_enabled === 'true';
-    const defaultProvider = (configs.default_payment_provider ||
-      enabledProviders[0]) as PaymentProvider;
-    if (selectEnabled && enabledProviders.length > 1) {
-      setPendingPlan(plan);
-      setModalOpen(true);
-      return;
-    }
-    startCheckout(plan, defaultProvider);
+    const returnPath =
+      new URLSearchParams(window.location.search).get('redirect') ||
+      '/settings/billing';
+    router.push(
+      '/checkout?product=' +
+        encodeURIComponent(plan.productId) +
+        '&redirect=' +
+        encodeURIComponent(returnPath)
+    );
   }
 
   return (
@@ -431,60 +327,31 @@ export function Pricing({
       className="border-border relative isolate overflow-hidden border-t px-3 py-16 sm:px-4 sm:py-32"
     >
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div
-          data-tour="subscription-overview"
-          className="mb-9 text-center sm:mb-16"
-        >
-          <p className="text-primary mb-3 text-xs font-semibold tracking-[0.2em] uppercase">
-            {m['landing.pricing.eyebrow']()}
-          </p>
-          <Heading className="font-serif text-4xl tracking-tight sm:text-5xl">
-            {title ?? m['landing.pricing.title']()}
-          </Heading>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:mt-5 sm:text-base">
-            {compact
-              ? m['landing.pricing.homepage_description']()
-              : m['landing.pricing.description']()}
-          </p>
-          <p className="text-muted-foreground mt-3 text-xs">
-            {m['landing.pricing.credit_note']()}
-          </p>
-        </div>
-        {!compact ? (
-          <div className="border-border bg-muted/30 mx-auto mb-8 max-w-2xl rounded-2xl border p-4 text-center sm:p-5">
-            <p className="text-sm font-semibold">
-              {m['landing.pricing.recommender_title']()}
+        {showHeader && (
+          <div
+            data-tour="subscription-overview"
+            className="mb-9 text-center sm:mb-16"
+          >
+            <p className="text-primary mb-3 text-xs font-semibold tracking-[0.2em] uppercase">
+              {m['landing.pricing.eyebrow']()}
             </p>
-            <div className="mt-3 flex justify-center gap-2">
-              {[50, 137, 350].map((amount) => (
-                <button
-                  key={amount}
-                  type="button"
-                  onClick={() => setMonthlyImages(amount)}
-                  className={cn(
-                    'border-border rounded-full border px-4 py-2 text-sm font-semibold',
-                    monthlyImages === amount
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-background hover:bg-muted'
-                  )}
-                >
-                  {m['landing.pricing.images_per_month']({ count: amount })}
-                </button>
-              ))}
-            </div>
+            <Heading className="font-serif text-4xl tracking-tight sm:text-5xl">
+              {title ?? m['landing.pricing.title']()}
+            </Heading>
+            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:mt-5 sm:text-base">
+              {compact
+                ? m['landing.pricing.homepage_description']()
+                : m['landing.pricing.description']()}
+            </p>
             <p className="text-muted-foreground mt-3 text-xs">
-              {m['landing.pricing.recommender_hint']()}
+              {m['landing.pricing.credit_note']()}
             </p>
           </div>
-        ) : null}
+        )}
         <PricingTable
           groups={groups}
           onCheckout={handleCheckout}
-          recommendedTier={compact ? undefined : recommendedTier}
           selectedPlanId={returningPlanId}
-          valueLabel={m['landing.pricing.value_per_image']({
-            price: '{price}',
-          })}
         />
         {compact ? (
           <div className="mt-8 text-center">
@@ -515,24 +382,6 @@ export function Pricing({
           </p>
         )}
       </div>
-
-      <PaymentProviderModal
-        open={modalOpen}
-        onOpenChange={(open) => {
-          setModalOpen(open);
-          if (!open) {
-            setPendingPlan(null);
-            setLoadingProvider(null);
-          }
-        }}
-        providers={enabledProviders.length ? enabledProviders : ['stripe']}
-        loadingProvider={loadingProvider}
-        onSelect={(provider) =>
-          pendingPlan ? startCheckout(pendingPlan, provider) : undefined
-        }
-        planName={pendingPlan?.name}
-        price={pendingPlan?.price}
-      />
     </section>
   );
 }

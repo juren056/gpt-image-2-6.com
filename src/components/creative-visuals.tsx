@@ -27,6 +27,7 @@ import {
   Workflow,
 } from 'lucide-react';
 
+import { DEFAULT_APP_LOGO } from '@/config/brand';
 import type { CreativeToolId } from '@/config/creative-tools';
 import { cn } from '@/lib/utils';
 
@@ -50,7 +51,7 @@ type ModelVisual = {
 const MODEL_VISUALS: Record<string, ModelVisual> = {
   generic: {
     brand: 'AI',
-    src: '/logo.svg',
+    src: DEFAULT_APP_LOGO,
     surfaceClassName:
       'border-violet-200 bg-violet-50 dark:border-violet-400/20 dark:bg-violet-400/10',
   },

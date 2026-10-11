@@ -910,6 +910,11 @@ export async function runCreativeImage(params: {
     output_format: request.outputFormat,
     num_images: 1,
   };
+  if (request.model.id === 'nano-banana-2.1') {
+    options.resolution = '1K';
+    options.limit_generations = true;
+    options.safety_tolerance = '4';
+  }
   if (request.providerModel.startsWith('bytedance/seedream/')) {
     // Fal image endpoints that expose this option default to true. Sending it
     // explicitly prevents a future endpoint/default change from disabling it.

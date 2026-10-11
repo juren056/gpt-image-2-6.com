@@ -12,6 +12,12 @@ export const Route = createFileRoute('/robots.txt')({
           'Disallow: /admin',
           'Disallow: /settings',
           'Disallow: /api/',
+          'Disallow: /zh/admin',
+          'Disallow: /zh/settings',
+          'Disallow: /zh/api/',
+          // The exact public API guide is readable; API endpoints remain blocked.
+          'Allow: /api/$',
+          'Allow: /zh/api/$',
           '',
           `Sitemap: ${envConfigs.app_url}/sitemap.xml`,
           '',

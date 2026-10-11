@@ -25,7 +25,7 @@ async function GET({ request }: { request: Request }) {
     const auth = getAuth();
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) return respErr('Unauthorized');
-    if (!(await hasPermission(session.user.id, 'admin.*'))) {
+    if (!(await hasPermission(session.user.id, "admin.ai-tasks.read"))) {
       return respErr('Forbidden');
     }
 

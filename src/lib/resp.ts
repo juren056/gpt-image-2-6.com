@@ -1,5 +1,7 @@
 export function respData(data: any, init?: ResponseInit) {
-  return respJson(0, 'ok', data ?? [], init);
+  // Explicit null represents an absent singleton (for example no subscription).
+  // Only an omitted payload uses the legacy empty-list fallback.
+  return respJson(0, 'ok', data === undefined ? [] : data, init);
 }
 
 export function respOk(init?: ResponseInit) {

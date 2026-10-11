@@ -178,9 +178,11 @@ export async function getUserPermissionCodes(
   const roles = await db()
     .select({ roleId: userRole.roleId })
     .from(userRole)
+    .innerJoin(role, eq(userRole.roleId, role.id))
     .where(
       and(
         eq(userRole.userId, userId),
+        eq(role.status, 'active'),
         or(isNull(userRole.expiresAt), gt(userRole.expiresAt, now))
       )
     );

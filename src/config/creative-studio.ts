@@ -12,6 +12,7 @@ export type CreativeOperation =
   | 'vectorize';
 
 export type CreativeModelId =
+  | 'nano-banana-2.1'
   | 'gpt-image-2.5-flare'
   | 'gpt-image-2.5-sunburst'
   | 'nano-banana-2'
@@ -22,7 +23,16 @@ export type CreativeModelId =
   | 'flux-2-pro';
 
 export type CreativeModelDefinition = {
-  acceptanceId: 'M02' | 'M03' | 'M04' | 'M05' | 'M06' | 'M07' | 'M08' | 'M09';
+  acceptanceId:
+    | 'M02'
+    | 'M03'
+    | 'M04'
+    | 'M05'
+    | 'M06'
+    | 'M07'
+    | 'M08'
+    | 'M09'
+    | 'M10';
   id: CreativeModelId;
   label: string;
   provider: CreativeProvider;
@@ -45,6 +55,28 @@ export type CreativeModelDefinition = {
  * acceptance run is approved. This flag is not a fake model substitution.
  */
 export const CREATIVE_MODELS: readonly CreativeModelDefinition[] = [
+  {
+    acceptanceId: 'M10',
+    id: 'nano-banana-2.1',
+    label: 'Nano Banana 2.1',
+    provider: 'fal',
+    credential: 'fal_api_key',
+    endpoints: {
+      generate: 'google/nano-banana-2.1',
+      edit: 'google/nano-banana-2.1/edit',
+    },
+    operations: ['generate', 'edit'],
+    maxPromptLength: 32000,
+    maxReferences: 14,
+    sizes: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3'],
+    qualities: [],
+    sizeParameter: 'aspect_ratio',
+    // Fixed single-image, provider-default 1K request. Larger resolutions are
+    // intentionally not exposed at this quote.
+    credits: { generate: 8, edit: 8 },
+    productionEnabled: true,
+    commercialUse: 'approved',
+  },
   {
     acceptanceId: 'M02',
     id: 'gpt-image-2.5-flare',

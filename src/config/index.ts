@@ -1,3 +1,5 @@
+import { DEFAULT_APP_LOGO } from './brand';
+
 export const AUTH_SECRET_PLACEHOLDER =
   'image-studio-dev-secret-change-in-production';
 
@@ -20,7 +22,10 @@ export const envConfigs: Record<string, string> = {
   app_description:
     publicEnv('VITE_APP_DESCRIPTION') ??
     'Independent AI Image community generator and prompt studio.',
-  app_logo: publicEnv('VITE_APP_LOGO') ?? '/logo.svg',
+  app_logo:
+    !publicEnv('VITE_APP_LOGO') || publicEnv('VITE_APP_LOGO') === '/logo.svg'
+      ? DEFAULT_APP_LOGO
+      : publicEnv('VITE_APP_LOGO')!,
 
   // Database
   database_url: procEnv.DATABASE_URL ?? '',

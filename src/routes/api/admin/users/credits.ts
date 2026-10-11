@@ -19,7 +19,7 @@ async function POST({ request }: { request: Request }) {
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) return respErr('Unauthorized');
 
-    const isAdmin = await hasPermission(session.user.id, 'admin.*');
+    const isAdmin = await hasPermission(session.user.id, "admin.credits.write");
     if (!isAdmin) return respErr('Forbidden');
 
     const body = await request.json().catch(() => ({}));

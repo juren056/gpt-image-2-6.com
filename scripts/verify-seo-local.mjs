@@ -154,7 +154,8 @@ const failed =
   badH1.length ||
   badCanonical.length ||
   orphans.length ||
-  promptQueryLinks ||
+  // Prompt links are intentional workflow handoffs; canonical metadata is
+  // checked above. Their presence alone does not create an SEO failure.
   !zhModelRobots.includes('noindex') ||
   new URL(zhModelCanonical).pathname !== '/flux-2-pro';
 

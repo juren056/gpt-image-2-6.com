@@ -41,6 +41,16 @@ export type PublicModelPage = {
 
 export const PUBLIC_MODEL_PAGES: readonly PublicModelPage[] = [
   {
+    id: 'nano-banana-2.1',
+    name: 'Nano Banana 2.1',
+    path: '/',
+    summary:
+      'Generate and edit images with Nano Banana 2.1, with a visible credit quote before each request.',
+    useCase: 'Focused image creation and reference editing',
+    image: '/imgs/showcase/cobalt-perfume.webp',
+    dateModified: '2026-10-10',
+  },
+  {
     id: 'gpt-image-2.5-flare',
     name: 'GPT Image 2.5 Flare',
     path: '/gpt-image-2-5-flare',
@@ -66,17 +76,6 @@ export const PUBLIC_MODEL_PAGES: readonly PublicModelPage[] = [
       'Generate images or transform reference images while preserving intent.',
     useCase: 'Reference-led creative editing',
     image: '/imgs/showcase/ceramic-artist.webp',
-  },
-  {
-    id: 'nano-banana-2.5',
-    name: 'Nano Banana 2.5',
-    path: '/nano-banana-2-5',
-    summary:
-      'A launch-ready generation and editing workspace prepared for the future Nano Banana 2.5 API.',
-    useCase:
-      'Preview the prepared workflow while endpoint, capabilities, and pricing await official confirmation',
-    image: '/imgs/seo/controlled-comparison.webp',
-    availability: 'coming-soon',
   },
   {
     id: 'nano-banana-2-lite',

@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   CreditCard,
+  ExternalLink,
   Eye,
   MoreHorizontal,
-  Pencil,
+  Receipt,
   RotateCcw,
   XCircle,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useSession } from '@/core/auth/client';
 import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
 import {
@@ -25,10 +22,14 @@ import {
 import { ApiError, apiGet, apiPost, type PageResult } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
+import {
+  AccountCard,
+  AccountPagination,
+  AccountQueryState,
+} from '@/components/banana-account-cards';
 import { DataTable, type Column } from '@/components/data-table';
 import { Badge } from '@/components/ui/badge';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -55,6 +56,7 @@ type Subscription = {
   productName?: string | null;
   interval?: string | null;
   intervalCount?: number | null;
+  creditsAmount?: number | null;
   amount?: number | null;
   currency?: string | null;
   currentPeriodStart?: string | null;
@@ -106,6 +108,8 @@ function isCancellable(
 
 function BillingPage() {
   const queryClient = useQueryClient();
+  const { data: session } = useSession();
+  const userId = session?.user.id;
   const [tab, setTab] = useState<Tab>('all');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -124,27 +128,31 @@ function BillingPage() {
         amount: number;
         currency: string;
       }>
-    >('/api/user/orders?page=1&pageSize=1&status=paid').then((result) => {
-      const paidOrder = result.items[0];
-      if (paidOrder?.status === 'paid') {
-        const receiptKey = `image-studio:purchase-receipt:${paidOrder.id}`;
-        if (!window.localStorage.getItem(receiptKey)) {
-          trackFunnelEvent('purchase_success');
-          window.localStorage.setItem(receiptKey, 'recorded');
+    >('/api/user/orders?page=1&pageSize=1&status=paid')
+      .then((result) => {
+        const paidOrder = result.items[0];
+        if (paidOrder?.status === 'paid') {
+          const receiptKey = `image-studio:purchase-receipt:${paidOrder.id}`;
+          if (!window.localStorage.getItem(receiptKey)) {
+            trackFunnelEvent('purchase_success');
+            window.localStorage.setItem(receiptKey, 'recorded');
+          }
+          const stagedPurchase = buildGa4PurchaseEvent({
+            transactionId: paidOrder.orderNo,
+            amountMinor: paidOrder.amount,
+            currency: paidOrder.currency,
+          });
+          if (stagedPurchase) {
+            window.sessionStorage.setItem(
+              'image-studio:pending-ga4-purchase',
+              JSON.stringify(stagedPurchase)
+            );
+          }
         }
-        const stagedPurchase = buildGa4PurchaseEvent({
-          transactionId: paidOrder.orderNo,
-          amountMinor: paidOrder.amount,
-          currency: paidOrder.currency,
-        });
-        if (stagedPurchase) {
-          window.sessionStorage.setItem(
-            'image-studio:pending-ga4-purchase',
-            JSON.stringify(stagedPurchase)
-          );
-        }
-      }
-    });
+      })
+      .catch(() => {
+        /* Payment status remains available through the order-history retry. */
+      });
     url.searchParams.delete('purchase');
     window.history.replaceState(
       null,
@@ -163,15 +171,16 @@ function BillingPage() {
   }, [tab, debouncedSearch]);
 
   const currentQuery = useQuery({
-    queryKey: ['billing', 'current'],
+    queryKey: ['billing', userId, 'current'],
+    enabled: !!userId,
     queryFn: () =>
       apiGet<Subscription | null>('/api/user/subscriptions/current'),
   });
   const current = currentQuery.data ?? null;
-  const currentLoaded = !currentQuery.isPending;
 
   const listQuery = useQuery({
-    queryKey: ['billing', 'list', page, tab, debouncedSearch],
+    queryKey: ['billing', userId, 'list', page, tab, debouncedSearch],
+    enabled: !!userId,
     queryFn: () => {
       const params = new URLSearchParams({
         page: String(page),
@@ -183,7 +192,8 @@ function BillingPage() {
         `/api/user/subscriptions?${params}`
       );
     },
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData, previousQuery) =>
+      previousQuery?.queryKey[1] === userId ? previousData : undefined,
   });
   const rows = listQuery.data?.items ?? [];
   const total = listQuery.data?.total ?? 0;
@@ -195,6 +205,9 @@ function BillingPage() {
       toast.success(m['settings.billing.cancel_success']());
       setCanceling(null);
       queryClient.invalidateQueries({ queryKey: ['billing'] });
+      queryClient.invalidateQueries({
+        queryKey: ['user-subscription-current'],
+      });
     },
     onError: (err) => {
       toast.error(
@@ -210,6 +223,9 @@ function BillingPage() {
     onSuccess: () => {
       toast.success(m['settings.billing.resume_success']());
       queryClient.invalidateQueries({ queryKey: ['billing'] });
+      queryClient.invalidateQueries({
+        queryKey: ['user-subscription-current'],
+      });
     },
     onError: (err) => {
       toast.error(
@@ -372,41 +388,35 @@ function BillingPage() {
   ];
 
   return (
-    <div className="space-y-6 p-4 sm:p-6">
-      <div>
-        <h1 className="text-2xl font-bold">{m['settings.billing.title']()}</h1>
-        <p className="text-muted-foreground">
-          {m['settings.billing.description']()}
-        </p>
-      </div>
-
-      <Card className="max-w-md">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>{m['settings.billing.subscription']()}</CardTitle>
-            <Link
-              href="/pricing"
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'sm' }),
-                'gap-2'
-              )}
-            >
-              <Pencil className="size-4" />
-              {current
-                ? m['settings.billing.adjust']()
-                : m['settings.billing.subscribe']()}
-            </Link>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {!currentLoaded ? (
-            <p className="text-muted-foreground text-sm">…</p>
-          ) : current ? (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <p className="text-3xl font-bold">
-                  {current.planName || current.productName || '—'}
-                </p>
+    <div className="banana-account-pages">
+      <h1 className="sr-only">{m['settings.billing.title']()}</h1>
+      <AccountCard>
+        <div className="banana-account-card-heading">
+          <h2>{m['settings.billing.subscription']()}</h2>
+          <Link href="/pricing" className="banana-account-primary">
+            {current
+              ? m['settings.billing.adjust']()
+              : m['settings.billing.subscribe']()}
+          </Link>
+        </div>
+        <AccountQueryState
+          loading={currentQuery.isPending}
+          error={currentQuery.isError}
+          loadingLabel={m['settings.profile.loading']()}
+          errorLabel={m['banana.account.load_failed']()}
+          retryLabel={m['common.error.retry']()}
+          onRetry={() => {
+            void currentQuery.refetch();
+          }}
+        />
+        {!currentQuery.isError &&
+          currentQuery.isSuccess &&
+          (current ? (
+            <>
+              <p className="banana-account-subscription-name">
+                {current.planName || current.productName || '—'}
+              </p>
+              <div className="banana-account-subscription-details">
                 <Badge variant={statusVariant(current.status)}>
                   {current.status}
                 </Badge>
@@ -415,21 +425,21 @@ function BillingPage() {
                     ? m['settings.billing.prepaid']()
                     : m['settings.billing.auto_renew']()}
                 </Badge>
+                {current.amount != null && current.currency && (
+                  <span>
+                    {formatAmount(current.amount, current.currency)}
+                    {current.interval ? ` / ${current.interval}` : ''}
+                  </span>
+                )}
               </div>
-              {current.amount && current.currency && (
-                <p className="text-muted-foreground text-sm">
-                  {formatAmount(current.amount, current.currency)}
-                  {current.interval ? ` / ${current.interval}` : ''}
-                </p>
-              )}
               {current.canceledEndAt ? (
-                <p className="text-destructive text-sm">
+                <p className="banana-account-card-description">
                   {m['settings.billing.ends_on']({
                     date: new Date(current.canceledEndAt).toLocaleDateString(),
                   })}
                 </p>
               ) : current.currentPeriodEnd ? (
-                <p className="text-muted-foreground text-sm">
+                <p className="banana-account-card-description">
                   {(current.renewalMode === 'prepaid'
                     ? m['settings.billing.valid_until']
                     : m['settings.billing.renews_on'])({
@@ -439,53 +449,127 @@ function BillingPage() {
                   })}
                 </p>
               ) : null}
-            </div>
+              {current.creditsAmount != null && (
+                <p className="banana-account-card-description">
+                  {m['settings.payments.credits']()}:{' '}
+                  {current.creditsAmount.toLocaleString()}
+                </p>
+              )}
+              <div className="banana-account-subscription-actions">
+                <button
+                  type="button"
+                  className="banana-account-secondary"
+                  onClick={() => setViewing(current)}
+                >
+                  {m['settings.billing.view']()}
+                </button>
+                {current.renewalMode !== 'prepaid' &&
+                  current.paymentProvider === 'stripe' &&
+                  current.paymentUserId && (
+                    <button
+                      type="button"
+                      className="banana-account-secondary"
+                      disabled={portalMutation.isPending}
+                      onClick={() =>
+                        portalMutation.mutate(current.subscriptionNo)
+                      }
+                    >
+                      {m['settings.billing.manage_payment']()}
+                    </button>
+                  )}
+                {isCancellable(current.status, current.renewalMode) && (
+                  <button
+                    type="button"
+                    className="banana-account-secondary"
+                    onClick={() => setCanceling(current)}
+                  >
+                    {m['settings.billing.cancel']()}
+                  </button>
+                )}
+                {current.renewalMode !== 'prepaid' &&
+                  current.status === 'pending_cancel' && (
+                    <button
+                      type="button"
+                      className="banana-account-secondary"
+                      disabled={resumeMutation.isPending}
+                      onClick={() =>
+                        resumeMutation.mutate(current.subscriptionNo)
+                      }
+                    >
+                      {m['settings.billing.resume']()}
+                    </button>
+                  )}
+              </div>
+            </>
           ) : (
-            <p className="text-muted-foreground text-3xl font-bold">
-              {m['settings.billing.no_subscription']()}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+            <>
+              <p className="banana-account-subscription-name">
+                {m['banana.account.free_plan']()}
+              </p>
+              <p className="banana-account-card-description">
+                {m['banana.account.no_active_subscription']()}
+              </p>
+            </>
+          ))}
+      </AccountCard>
+      <OrderHistory userId={userId} />
+      <AccountCard>
+        <details>
+          <summary className="cursor-pointer text-sm font-semibold">
+            {m['banana.account.subscription_history']()}
+          </summary>
+          <div className="mt-5 space-y-4">
+            <div className="border-border flex gap-1 overflow-x-auto overflow-y-hidden border-b">
+              {TABS.map((tb) => (
+                <button
+                  key={tb}
+                  onClick={() => setTab(tb)}
+                  className={cn(
+                    '-mb-px border-b-2 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+                    tab === tb
+                      ? 'border-primary text-foreground'
+                      : 'text-muted-foreground hover:text-foreground border-transparent'
+                  )}
+                >
+                  {tDynamic(`settings.billing.tab_${tb}`)}
+                </button>
+              ))}
+            </div>
 
-      <div className="border-border flex gap-1 overflow-x-auto overflow-y-hidden border-b">
-        {TABS.map((tb) => (
-          <button
-            key={tb}
-            onClick={() => setTab(tb)}
-            className={cn(
-              '-mb-px border-b-2 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors',
-              tab === tb
-                ? 'border-primary text-foreground'
-                : 'text-muted-foreground hover:text-foreground border-transparent'
-            )}
-          >
-            {tDynamic(`settings.billing.tab_${tb}`)}
-          </button>
-        ))}
-      </div>
-
-      <Card>
-        <CardContent>
-          <DataTable
-            columns={columns}
-            data={rows}
-            total={total}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-            rowKey={(r) => r.id}
-            emptyText={m['settings.billing.no_subscription']()}
-            search={search}
-            onSearchChange={setSearch}
-            onRefresh={async () => {
-              currentQuery.refetch();
-              await listQuery.refetch();
-            }}
-            loading={listQuery.isFetching}
-          />
-        </CardContent>
-      </Card>
+            <div>
+              <AccountQueryState
+                loading={listQuery.isPending}
+                error={listQuery.isError}
+                loadingLabel={m['settings.profile.loading']()}
+                errorLabel={m['banana.account.load_failed']()}
+                retryLabel={m['common.error.retry']()}
+                onRetry={() => {
+                  void listQuery.refetch();
+                }}
+              />
+              {!listQuery.isError && listQuery.data && (
+                <DataTable
+                  columns={columns}
+                  data={rows}
+                  total={total}
+                  page={page}
+                  pageSize={PAGE_SIZE}
+                  onPageChange={setPage}
+                  rowKey={(r) => r.id}
+                  emptyText={m['settings.billing.no_subscription']()}
+                  search={search}
+                  onSearchChange={setSearch}
+                  onRefresh={async () => {
+                    currentQuery.refetch();
+                    await listQuery.refetch();
+                  }}
+                  loading={listQuery.isFetching}
+                />
+              )}
+            </div>
+          </div>
+        </details>
+      </AccountCard>
 
       <Dialog open={!!viewing} onOpenChange={(v) => !v && setViewing(null)}>
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
@@ -588,6 +672,139 @@ function BillingPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+type BillingOrder = {
+  id: string;
+  orderNo: string;
+  status: string;
+  amount: number;
+  currency: string;
+  productName?: string | null;
+  planName?: string | null;
+  creditsAmount?: number | null;
+  invoiceUrl?: string | null;
+  paidAt?: string | null;
+  createdAt: string;
+};
+function OrderHistory({ userId }: { userId?: string }) {
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+  const query = useQuery({
+    queryKey: ['billing-orders', userId, page, debouncedSearch],
+    enabled: !!userId,
+    queryFn: () => {
+      const params = new URLSearchParams({
+        page: String(page),
+        pageSize: String(PAGE_SIZE),
+      });
+      if (debouncedSearch) params.set('search', debouncedSearch);
+      return apiGet<PageResult<BillingOrder>>(`/api/user/orders?${params}`);
+    },
+    placeholderData: (previousData, previousQuery) =>
+      previousQuery?.queryKey[1] === userId ? previousData : undefined,
+  });
+  return (
+    <AccountCard>
+      <div className="banana-account-card-heading">
+        <h2>{m['banana.account.order_history']()}</h2>
+        <Link href="/settings/payments" className="banana-account-secondary">
+          {m['settings.payments.title']()}
+        </Link>
+      </div>
+      <div className="banana-account-list-toolbar">
+        <input
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          className="banana-account-search"
+          placeholder={m['common.search.placeholder']()}
+          aria-label={m['common.search.placeholder']()}
+        />
+        <button
+          type="button"
+          className="banana-account-secondary"
+          disabled={query.isFetching}
+          onClick={() => {
+            void query.refetch();
+          }}
+        >
+          {m['common.table.refresh']()}
+        </button>
+      </div>
+      <AccountQueryState
+        loading={query.isPending}
+        error={query.isError}
+        loadingLabel={m['settings.profile.loading']()}
+        errorLabel={m['banana.account.load_failed']()}
+        retryLabel={m['common.error.retry']()}
+        onRetry={() => {
+          void query.refetch();
+        }}
+      />
+      {!query.isError && query.data && (
+        <div aria-busy={query.isFetching}>
+          {query.data.items.length ? (
+            query.data.items.map((order) => (
+              <div className="banana-account-order-row" key={order.id}>
+                <span className="banana-account-activity-icon">
+                  <Receipt size={18} />
+                </span>
+                <div className="banana-account-activity-description">
+                  <strong>
+                    {order.planName || order.productName || order.orderNo}
+                  </strong>
+                  <span>
+                    {new Date(
+                      order.paidAt || order.createdAt
+                    ).toLocaleDateString()}{' '}
+                    · {order.orderNo}
+                  </span>
+                </div>
+                <Badge variant={statusVariant(order.status)}>
+                  {order.status}
+                </Badge>
+                <span className="banana-account-order-price">
+                  {formatAmount(order.amount, order.currency)}
+                </span>
+                {order.invoiceUrl && /^https?:\/\//i.test(order.invoiceUrl) && (
+                  <a
+                    href={order.invoiceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="banana-account-order-invoice"
+                  >
+                    <ExternalLink size={14} />
+                    {m['settings.payments.invoice']()}
+                  </a>
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="banana-account-empty">
+              {m['settings.payments.no_payments']()}
+            </p>
+          )}
+          <AccountPagination
+            page={page}
+            total={query.data.total}
+            pageSize={PAGE_SIZE}
+            previousLabel={m['common.table.previous']()}
+            nextLabel={m['common.table.next']()}
+            onPageChange={setPage}
+            busy={query.isFetching}
+          />
+        </div>
+      )}
+    </AccountCard>
   );
 }
 

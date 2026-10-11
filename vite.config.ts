@@ -78,6 +78,30 @@ export default defineConfig({
       cookieName: 'PARAGLIDE_LOCALE',
       strategy: ['url', 'cookie', 'baseLocale'],
       urlPatterns: [
+        // The exact /api page is an editorial guide, not a server endpoint.
+        {
+          pattern: '/api',
+          localized: [
+            ['en', '/api'],
+            ['ko', '/ko/api'],
+            ['ja', '/ja/api'],
+            ['es', '/es/api'],
+            ['de', '/de/api'],
+            ['fr', '/fr/api'],
+            ['zh', '/zh/api'],
+            ['zh-TW', '/zh-tw/api'],
+            ['ru', '/ru/api'],
+            ['ar', '/ar/api'],
+            ['pt', '/pt/api'],
+            ['it', '/it/api'],
+            ['tr', '/tr/api'],
+            ['vi', '/vi/api'],
+            ['nl', '/nl/api'],
+            ['th', '/th/api'],
+            ['pl', '/pl/api'],
+            ['hu', '/hu/api'],
+          ],
+        },
         // API endpoints are never locale-prefixed.
         {
           pattern: '/api/:path*',

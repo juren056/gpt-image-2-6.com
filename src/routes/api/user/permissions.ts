@@ -10,7 +10,7 @@ async function GET({ request }: { request: Request }) {
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) return respErr('Unauthorized');
 
-    const isAdmin = await hasPermission(session.user.id, 'admin.*');
+    const isAdmin = await hasPermission(session.user.id, 'admin.access');
     return respData({ isAdmin });
   } catch (error: any) {
     return respErr(error.message || 'Internal error');

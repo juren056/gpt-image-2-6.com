@@ -91,7 +91,7 @@ const serverEntry = {
       req.method === 'GET' &&
       url.pathname !== '/' &&
       url.pathname.endsWith('/') &&
-      !url.pathname.startsWith('/api/')
+      (url.pathname === '/api/' || !url.pathname.startsWith('/api/'))
     ) {
       url.pathname = url.pathname.replace(/\/+$/, '');
       return markBuild(

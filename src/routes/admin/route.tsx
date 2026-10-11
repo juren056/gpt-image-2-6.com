@@ -174,7 +174,7 @@ function AdminLayout() {
       brand={envConfigs.app_name}
       brandHref="/admin"
       profileHref="/settings/profile"
-      requirePermission="admin.*"
+      requirePermission="admin.access"
     >
       <Outlet />
     </AppLayout>

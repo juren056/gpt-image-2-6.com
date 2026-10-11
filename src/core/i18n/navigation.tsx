@@ -19,6 +19,7 @@ type LinkProps = Omit<ComponentProps<'a'>, 'href'> & {
   href: string;
   locale?: string; // kept for API compat; locale switching goes via setLocale()
   prefetch?: boolean | string;
+  activeOptions?: { exact?: boolean };
   children?: ReactNode;
 };
 

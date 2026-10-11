@@ -34,7 +34,33 @@ if (process.argv.includes('--prebuilt')) {
 } else {
   run('scripts/db-setup.mjs', []);
   run('node_modules/vite/bin/vite.js', ['build']);
+  run('scripts/prerender-public.mjs', []);
 }
 if (process.argv[2] === 'deploy') {
-  run('node_modules/wrangler/bin/wrangler.js', ['deploy']);
+  const releaseConfigIndex = process.argv.indexOf('--release-config');
+  const releaseConfigPath =
+    releaseConfigIndex >= 0 ? process.argv[releaseConfigIndex + 1] : undefined;
+  if (releaseConfigIndex >= 0 && !releaseConfigPath)
+    throw new Error('Missing release config path');
+  if (releaseConfigPath) {
+    const release = JSON.parse(readFileSync(releaseConfigPath, 'utf8'));
+    const generated = JSON.parse(
+      readFileSync('.output/server/wrangler.json', 'utf8')
+    );
+    if (
+      release.name !== generated.name ||
+      JSON.stringify(release.routes) !== JSON.stringify(generated.routes) ||
+      JSON.stringify(release.d1_databases) !==
+        JSON.stringify(generated.d1_databases) ||
+      release.vars.VITE_APP_URL !== generated.vars.VITE_APP_URL
+    ) {
+      throw new Error(
+        'Prepared release identity does not match this project build'
+      );
+    }
+  }
+  run(
+    'node_modules/wrangler/bin/wrangler.js',
+    releaseConfigPath ? ['deploy', '--config', releaseConfigPath] : ['deploy']
+  );
 }

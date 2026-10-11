@@ -1,30 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { envConfigs } from '@/config';
-import { seoHead } from '@/lib/seo';
+import { nanoSiteRouteOptions } from '@/lib/nano-site-routes';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { Footer } from '@/blocks/footer';
-import { Header } from '@/blocks/header';
+import { getNanoPageCopy, NanoSitePage } from '@/blocks/nano-site';
 import { BlogCard } from '@/components/blog-card';
 import { formatPostDate } from '@/content/posts';
 import { getBlogPostsFn } from '@/content/posts/server';
 
 export const Route = createFileRoute('/blog/')({
+  ...nanoSiteRouteOptions('blog'),
   loader: async () => {
     const locale = getLocale();
     const posts = await getBlogPostsFn({ data: { locale } });
-    return { locale, posts };
-  },
-  head: ({ loaderData }) => {
-    const locale = loaderData?.locale ?? 'en';
-    return seoHead({
-      locale,
-      path: '/blog',
-      title: `${m['blog.title']({}, { locale: locale as any })} | ${envConfigs.app_name}`,
-      description: m['blog.description']({}, { locale: locale as any }),
-      type: 'website',
-    });
+    return { locale, page: getNanoPageCopy('blog', locale), posts };
   },
   component: BlogPage,
 });
@@ -33,14 +22,13 @@ function BlogPage() {
   const { locale, posts } = Route.useLoaderData();
 
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-1 px-4 py-16 sm:py-24">
+    <NanoSitePage id="blog">
+      <section className="px-4 py-16 sm:py-24">
         <div className="mx-auto max-w-5xl">
           <div className="mb-16 text-center">
-            <h1 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
+            <h2 className="font-serif text-3xl font-normal tracking-tight sm:text-4xl">
               {m['blog.title']()}
-            </h1>
+            </h2>
             <p className="text-muted-foreground mx-auto mt-5 max-w-lg">
               {m['blog.description']()}
             </p>
@@ -66,8 +54,7 @@ function BlogPage() {
             </div>
           )}
         </div>
-      </main>
-      <Footer />
-    </div>
+      </section>
+    </NanoSitePage>
   );
 }

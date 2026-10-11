@@ -9,27 +9,21 @@ const publicDir = path.join(root, 'public');
 const brandDir = path.join(publicDir, 'brand');
 await fs.mkdir(brandDir, { recursive: true });
 
-const mark = `<g>
-  <path d="M113 160l-8-28 22-8 11 33" fill="#B98125"/>
-  <path d="M119 151C115 259 192 332 288 315c57-10 99-55 123-114-2 112-83 194-182 181C126 369 73 274 100 168Z" fill="#FFD43B"/>
-  <path d="M111 178c-14 79 31 158 115 174 77 15 143-36 172-103-30 98-107 143-182 115-72-27-106-99-105-186Z" fill="#F3AA19"/>
-  <path d="M136 231c17 45 50 73 98 81" fill="none" stroke="#FFF3A7" stroke-width="12" stroke-linecap="round"/>
-  <path d="m352 88 15 41 41 15-41 15-15 41-15-41-41-15 41-15Z" fill="#FFF3A7"/>
-  <rect x="269" y="184" width="18" height="18" rx="4" fill="#FFD43B"/>
+// Selected proposal D, redrawn as an editable pixel-grid master. Integer
+// coordinates make the silhouette crisp even in the 16px favicon.
+const mark = `<g transform="scale(32)" shape-rendering="crispEdges">
+  <path d="M11 2h2v1h1v2h1v5h-1v2h-1v1h-1v1h-2v1H5v-1H3v-1H2v-2h1v-1h3V9h2V8h1V7h1V6h1V4h-1V3h1Z" fill="#191C18"/>
+  <path d="M12 5h2v5h-1v2h-1v1h-2v1H5v-1H3v-2h3v-1h2V9h1V8h1V7h1V6h1Z" fill="#FFD43B"/>
+  <path d="M11 3h2v2h-1V4h-1Z" fill="#B6DE55"/>
 </g>`;
 const svg = (
   body,
   width = 512,
   height = 512,
-  label = 'Nano Banana — banana spark'
+  label = 'Nano Banana — Pixel Peel'
 ) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title"><title id="title">${label}</title>${body}</svg>\n`;
-const icon = svg(
-  `<rect width="512" height="512" rx="120" fill="#191C18"/>${mark}`
-);
-const maskable = svg(
-  `<rect width="512" height="512" fill="#191C18"/><g transform="translate(51.2 51.2) scale(.8)">${mark}</g>`
-);
+const icon = svg(mark);
 const transparent = svg(mark);
 await fs.writeFile(path.join(publicDir, 'logo.svg'), icon);
 await fs.writeFile(path.join(publicDir, 'favicon.svg'), icon);
@@ -56,16 +50,13 @@ const files = [
 ];
 for (const [name, size] of files) {
   const rendered = sharp(Buffer.from(icon)).resize(size, size);
-  if (name === 'apple-touch-icon.png') {
-    rendered.flatten({ background: '#191C18' });
-  }
   await rendered.png().toFile(path.join(publicDir, name));
 }
+// Transparent artwork uses purpose=any; remove the obsolete opaque maskable set.
 for (const size of [192, 512]) {
-  await sharp(Buffer.from(maskable))
-    .resize(size, size)
-    .png()
-    .toFile(path.join(publicDir, `icon-maskable-${size}.png`));
+  await fs.rm(path.join(publicDir, `icon-maskable-${size}.png`), {
+    force: true,
+  });
 }
 await sharp(Buffer.from(transparent))
   .png()
@@ -99,18 +90,17 @@ await fs.writeFile(
 
 const social = svg(
   `<rect width="1200" height="630" fill="#191C18"/>
-  <circle cx="1040" cy="120" r="230" fill="none" stroke="#31372B" stroke-width="2"/>
-  <circle cx="1040" cy="120" r="330" fill="none" stroke="#31372B" stroke-width="2"/>
-  <g transform="translate(745 98) scale(.85)">${mark}</g>
+  <path d="M944 64h64v64h64v64h64v64h64M1008 480h64v-64h64v-64h64" fill="none" stroke="#31372B" stroke-width="16"/>
+  <g transform="translate(764 119) scale(.76)">${mark}</g>
   <text x="80" y="125" fill="#FFD43B" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="4">NANO BANANA</text>
-  <text x="76" y="266" fill="#FAF9F2" font-family="Segoe UI,Arial,sans-serif" font-size="76" font-weight="700" letter-spacing="-3">Small spark.</text>
+  <text x="76" y="266" fill="#FAF9F2" font-family="Segoe UI,Arial,sans-serif" font-size="76" font-weight="700" letter-spacing="-3">Small pixels.</text>
   <text x="76" y="359" fill="#FAF9F2" font-family="Segoe UI,Arial,sans-serif" font-size="76" font-weight="700" letter-spacing="-3">Big imagination.</text>
   <text x="80" y="443" fill="#C1C6B7" font-family="Segoe UI,Arial,sans-serif" font-size="26">AI image generation &amp; editing</text>
   <path d="M80 510h70" stroke="#FFD43B" stroke-width="5" stroke-linecap="round"/>
   <text x="80" y="568" fill="#C1C6B7" font-family="Segoe UI,Arial,sans-serif" font-size="21">nanobanana21pro.com</text>`,
   1200,
   630,
-  'Nano Banana — Small spark. Big imagination.'
+  'Nano Banana — Small pixels. Big imagination.'
 );
 await fs.writeFile(path.join(brandDir, 'nano-banana-social.svg'), social);
 await sharp(Buffer.from(social))
@@ -133,16 +123,10 @@ await fs.writeFile(
       background_color: '#191C18',
       icons: [
         ...[192, 512].map((size) => ({
-          src: `/icon-${size}.png`,
+          src: `/icon-${size}.png?v=pixel-peel-transparent-2`,
           sizes: `${size}x${size}`,
           type: 'image/png',
           purpose: 'any',
-        })),
-        ...[192, 512].map((size) => ({
-          src: `/icon-maskable-${size}.png`,
-          sizes: `${size}x${size}`,
-          type: 'image/png',
-          purpose: 'maskable',
         })),
       ],
     },

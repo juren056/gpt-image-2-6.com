@@ -1,0 +1,150 @@
+.banana-section {
+  padding: 112px 0;
+  background: var(--background);
+}
+.banana-acid.banana-section {
+  background: #facc15;
+}
+.banana-section-compact {
+  padding-top: 0;
+}
+.banana-button-ink {
+  background: #171717;
+  color: #f8f8f8;
+}
+.banana-button-ink:hover {
+  background: #303030;
+}
+.banana-step-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  list-style: none;
+}
+.banana-step-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 24px 24px;
+  text-align: center;
+}
+.banana-step-number {
+  position: absolute;
+  top: -20px;
+  left: 24px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f5f3ee;
+  font-weight: 600;
+  font-size: 14px;
+}
+.banana-step-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  width: 24px;
+  top: 50%;
+  border-top: 1px dashed var(--border);
+}
+.banana-model-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.banana-model-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 14px;
+}
+.banana-model-table th,
+.banana-model-table td {
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  padding: 20px;
+}
+.banana-model-table th:first-child {
+  width: 140px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.banana-model-table thead th:first-child {
+  padding: 0;
+  width: 140px;
+}
+.banana-model-table thead .banana-model-selected {
+  border: 1px solid #facc15;
+  background: #facc1508;
+  border-radius: 12px 12px 0 0;
+}
+.banana-comparison-link {
+  transition: border-color 0.2s;
+}
+.banana-comparison-link:hover {
+  border-color: #facc15;
+}
+.banana-case-card img {
+  transition: transform 0.5s ease-out;
+}
+.banana-case-card:hover img {
+  transform: scale(1.035);
+}
+.banana-faq-grid {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: 80px;
+}
+.banana-faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.banana-faq-item:first-child {
+  border-top: 1px solid var(--border);
+}
+.banana-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.banana-pricing #pricing {
+  background: transparent;
+  border: 0;
+  padding: 40px 0 0;
+}
+.banana-pricing :is(h2, h3) {
+  font-family: var(--font-body);
+}
+@media (max-width: 1023px) {
+  .banana-faq-grid {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 40px;
+  }
+}
+@media (max-width: 767px) {
+  .banana-section {
+    padding: 80px 0;
+  }
+  .banana-section-compact {
+    padding-top: 0;
+  }
+  .banana-step-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .banana-step-card:not(:last-child)::after {
+    left: 50%;
+    top: 100%;
+    width: 0;
+    height: 40px;
+    border-top: 0;
+    border-left: 1px dashed var(--border);
+  }
+  .banana-faq-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

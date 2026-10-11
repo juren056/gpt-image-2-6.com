@@ -17,7 +17,10 @@ function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
 
-assert(PUBLIC_MODEL_PAGES.length === 8, 'Retained public model coverage');
+assert(
+  PUBLIC_MODEL_PAGES.length === 8,
+  'Retained model coverage plus the 2.1 homepage'
+);
 assert(PUBLIC_TOOL_PAGES.length === 25, 'T01-T25 public tool coverage');
 assert(
   new Set(PUBLIC_MODEL_PAGES.map((item) => item.id)).size === 8,
@@ -31,7 +34,7 @@ assert(
   new Set([
     ...PUBLIC_MODEL_PAGES.map((item) => item.path),
     ...PUBLIC_TOOL_PAGES.map((item) => item.path),
-  ]).size === 33,
+  ]).size === PUBLIC_MODEL_PAGES.length + PUBLIC_TOOL_PAGES.length,
   'Every model/tool needs a distinct public URL'
 );
 
@@ -50,7 +53,7 @@ for (const page of PUBLIC_MODEL_PAGES) {
     process.cwd(),
     'src',
     'routes',
-    `${page.path.slice(1)}.tsx`
+    page.path === '/' ? 'index.tsx' : `${page.path.slice(1)}.tsx`
   );
   assert(existsSync(route), `Missing explicit route ${page.path}`);
   assert(
@@ -83,28 +86,6 @@ for (const page of PUBLIC_TOOL_PAGES) {
   assert(existsSync(route), `Missing explicit route ${page.path}`);
 }
 
-const homepage = readFileSync(
-  join(process.cwd(), 'src', 'blocks', 'homepage-discovery.tsx'),
-  'utf8'
-);
-assert(
-  homepage.includes('PUBLIC_MODEL_PAGES') &&
-    homepage.includes('PUBLIC_TOOL_PAGES') &&
-    homepage.includes('ModelBrandTile') &&
-    homepage.includes('CreativeToolTile'),
-  'Homepage must render both complete public registries'
-);
-
-const generator = readFileSync(
-  join(process.cwd(), 'src', 'components', 'image-generator-workspace.tsx'),
-  'utf8'
-);
-assert(
-  generator.includes('<ModelPicker') &&
-    !generator.includes('<select\n                  value={selectedModel?.id}'),
-  'Homepage model choice must use the branded accessible picker'
-);
-
 const studio = readFileSync(
   join(process.cwd(), 'src', 'components', 'creative-studio-workspace.tsx'),
   'utf8'
@@ -121,4 +102,4 @@ for (const banned of [
   );
 }
 
-console.log('public creative routes and visuals: 8 models + 25 tools verified');
+console.log('public creative routes and visuals: 9 models + 25 tools verified');

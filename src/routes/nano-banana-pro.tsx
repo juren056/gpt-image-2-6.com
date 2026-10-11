@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { publicModelRouteOptions } from '@/lib/public-creative-routes';
+import { nanoSiteRouteOptions } from '@/lib/nano-site-routes';
 
 export const Route = createFileRoute('/nano-banana-pro')(
-  publicModelRouteOptions('nano-banana-pro')
+  nanoSiteRouteOptions('pro')
 );

@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useSession } from '@/core/auth/client';
+import { tDynamic } from '@/core/i18n/dynamic';
 import type {
   CreativeModelDefinition,
   CreativeOperation,
@@ -62,12 +64,16 @@ type TaskView = {
 };
 
 export function CreativeStudioWorkspace() {
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
   const [toolId, setToolId] = useState<CreativeToolId>('T01');
   const [modelId, setModelId] = useState('flux-2-pro');
   const [prompt, setPrompt] = useState('');
   const [references, setReferences] = useState<string[]>([]);
   const [projectId, setProjectId] = useState<string>();
+  const [resumeProjectId, setResumeProjectId] = useState<string>();
+  const restoredProjectRef = useRef<string | undefined>(undefined);
+  const [sourceTaskId, setSourceTaskId] = useState<string>();
   const [projectTitle, setProjectTitle] = useState('Untitled creative project');
   const [state, setState] = useState<StudioProjectState>(
     createEmptyStudioState
@@ -94,6 +100,46 @@ export function CreativeStudioWorkspace() {
     queryKey: ['creative-models'],
     queryFn: () => apiGet<ModelView[]>('/api/studio/models'),
   });
+  const resumeProject = useQuery({
+    queryKey: ['resume-creative-project', session?.user?.id, resumeProjectId],
+    queryFn: () =>
+      apiGet<{ id: string; title: string; state: StudioProjectState }>(
+        `/api/studio/projects/${encodeURIComponent(resumeProjectId!)}`
+      ),
+    enabled: Boolean(resumeProjectId && session?.user),
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+  const sourceTask = useQuery({
+    queryKey: ['studio-reference-task', session?.user?.id, sourceTaskId],
+    queryFn: () =>
+      apiGet<TaskView>(`/api/images/${encodeURIComponent(sourceTaskId!)}`),
+    enabled: Boolean(sourceTaskId && session?.user),
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+  useEffect(() => {
+    const urls = sourceTask.data?.images
+      ?.map((image) => image.imageUrl)
+      .filter((url): url is string => Boolean(url && /^https?:\/\//.test(url)));
+    if (urls?.length) setReferences(urls);
+  }, [sourceTask.data]);
+  useEffect(() => {
+    if (
+      !resumeProject.data ||
+      restoredProjectRef.current === resumeProject.data.id
+    )
+      return;
+    const project = resumeProject.data;
+    restoredProjectRef.current = project.id;
+    setState(project.state);
+    setProjectId(project.id);
+    setProjectTitle(project.title);
+    setPrompt(project.state.prompt || '');
+    if (project.state.modelId) setModelId(project.state.modelId);
+    setPast([]);
+    setFuture([]);
+  }, [resumeProject.data]);
   const taskQuery = useQuery({
     queryKey: ['creative-task', activeTaskId],
     queryFn: () => apiGet<TaskView>(`/api/images/${activeTaskId}`),
@@ -113,8 +159,10 @@ export function CreativeStudioWorkspace() {
     () =>
       (modelsQuery.data || []).filter(
         (item) =>
-          !activeTool.operation ||
-          item.operations.includes(activeTool.operation as CreativeOperation)
+          item.productionEnabled &&
+          item.enabled &&
+          (!activeTool.operation ||
+            item.operations.includes(activeTool.operation as CreativeOperation))
       ),
     [activeTool.operation, modelsQuery.data]
   );
@@ -132,6 +180,16 @@ export function CreativeStudioWorkspace() {
     const requestedTool = new URLSearchParams(window.location.search).get(
       'tool'
     );
+    const requestedProject = new URLSearchParams(window.location.search).get(
+      'project'
+    );
+    if (requestedProject && requestedProject.length <= 160)
+      setResumeProjectId(requestedProject);
+    const requestedSource = new URLSearchParams(window.location.search).get(
+      'sourceTask'
+    );
+    if (requestedSource && requestedSource.length <= 160)
+      setSourceTaskId(requestedSource);
     if (CREATIVE_TOOLS.some((tool) => tool.id === requestedTool)) {
       setToolId(requestedTool as CreativeToolId);
     }
@@ -582,6 +640,50 @@ export function CreativeStudioWorkspace() {
     URL.revokeObjectURL(url);
   }
 
+  if (resumeProjectId && resumeProject.isPending)
+    return (
+      <div
+        className="flex min-h-64 items-center justify-center gap-3"
+        role="status"
+      >
+        <Loader2 className="animate-spin" />
+        {tDynamic('account_assets.loading')}
+      </div>
+    );
+  if (resumeProjectId && resumeProject.isError)
+    return (
+      <div
+        className="flex min-h-64 flex-col items-center justify-center gap-3"
+        role="alert"
+      >
+        <p>{tDynamic('account_assets.project_error')}</p>
+        <Button variant="outline" onClick={() => void resumeProject.refetch()}>
+          {tDynamic('account_assets.retry')}
+        </Button>
+      </div>
+    );
+  if (sourceTaskId && sourceTask.isPending)
+    return (
+      <div
+        className="flex min-h-64 items-center justify-center gap-3"
+        role="status"
+      >
+        <Loader2 className="animate-spin" />
+        {tDynamic('account_assets.loading')}
+      </div>
+    );
+  if (sourceTaskId && sourceTask.isError)
+    return (
+      <div
+        className="flex min-h-64 flex-col items-center justify-center gap-3"
+        role="alert"
+      >
+        <p>{tDynamic('account_assets.error')}</p>
+        <Button variant="outline" onClick={() => void sourceTask.refetch()}>
+          {tDynamic('account_assets.retry')}
+        </Button>
+      </div>
+    );
   return (
     <div className="grid gap-4 p-4 xl:grid-cols-[260px_minmax(0,1fr)_300px]">
       <Card className="h-fit">

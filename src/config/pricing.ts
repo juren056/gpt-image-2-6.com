@@ -157,7 +157,10 @@ export const pricingCatalog: Record<string, PricingProduct> = {
 };
 
 export function getPricingProduct(productId: string): PricingProduct | null {
-  const product = productId ? pricingCatalog[productId] : undefined;
+  const product =
+    productId && Object.hasOwn(pricingCatalog, productId)
+      ? pricingCatalog[productId]
+      : undefined;
   // Annual checkout remains disabled until monthly credit-tranche scheduling
   // is implemented. Keeping the catalog entries preserves the planned prices
   // without exposing an unsafe all-at-once annual grant.
@@ -166,5 +169,7 @@ export function getPricingProduct(productId: string): PricingProduct | null {
 }
 
 export function listPricingProducts(): PricingProduct[] {
-  return Object.values(pricingCatalog);
+  return Object.values(pricingCatalog).filter((product) =>
+    getPricingProduct(product.productId)
+  );
 }

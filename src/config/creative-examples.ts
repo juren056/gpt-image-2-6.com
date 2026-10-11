@@ -17,6 +17,16 @@ export type CreativeExample = {
  */
 export const CREATIVE_EXAMPLES: readonly CreativeExample[] = [
   {
+    exampleId: 'banana-21-brief-illustration',
+    publicAsset: '/imgs/showcase/cobalt-perfume.webp',
+    modelId: 'nano-banana-2.1',
+    promptOrRecipe:
+      'A product brief illustration, not a verified Nano Banana 2.1 output.',
+    parameters: { mode: 'preview', aspect_ratio: '1:1' },
+    sourceType: 'site-owned-illustration',
+    authorization: 'site-owned',
+  },
+  {
     exampleId: 'flare-campaign-concept',
     publicAsset: '/imgs/tools/ai-poster-showcase.webp',
     modelId: 'gpt-image-2.5-flare',

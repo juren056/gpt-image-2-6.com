@@ -1,7 +1,10 @@
 import { envConfigs } from '@/config';
+import { brandAssetUrl } from '@/config/brand';
 import { locales, localizeUrl } from '@/paraglide/runtime.js';
 
-export const DEFAULT_SOCIAL_IMAGE = '/brand/nano-banana-social.png';
+export const DEFAULT_SOCIAL_IMAGE = brandAssetUrl(
+  '/brand/nano-banana-social.png'
+);
 
 export function organizationSchema() {
   return {
@@ -11,8 +14,8 @@ export function organizationSchema() {
     url: envConfigs.app_url,
     logo: {
       '@type': 'ImageObject',
-      url: `${envConfigs.app_url}/logo.png`,
-      contentUrl: `${envConfigs.app_url}/logo.png`,
+      url: `${envConfigs.app_url}${brandAssetUrl('/logo.png')}`,
+      contentUrl: `${envConfigs.app_url}${brandAssetUrl('/logo.png')}`,
       width: 512,
       height: 512,
     },

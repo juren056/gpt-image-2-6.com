@@ -1,68 +1,52 @@
-import { tDynamic } from '@/core/i18n/dynamic';
-import { m } from '@/paraglide/messages.js';
-import { SiteFooter, type FooterColumn } from '@/components/site-footer';
+import { envConfigs } from '@/config';
+import { getLocale } from '@/paraglide/runtime.js';
+import { bananaText } from '@/blocks/banana-messages';
+import { BananaFooter } from '@/components/banana-footer';
+import { BuiltWithShipAny } from '@/components/built-with-shipany';
+import { FooterLocaleLinks } from '@/components/locale-selector';
 
 export function Footer() {
-  const columns: FooterColumn[] = [
-    {
-      title: m['landing.footer.product'](),
-      links: [
-        { label: m['landing.nav.generator'](), href: '/#generator' },
-        { label: m['landing.nav.gallery'](), href: '/#gallery' },
-        { label: m['landing.nav.pricing'](), href: '/pricing' },
-      ],
-    },
-    {
-      title: m['tools.common.tools'](),
-      links: [
-        { label: m['tools.common.all_tools'](), href: '/tools' },
-        {
-          label: m['minimax_h3.title'](),
-          href: '/minimax-h3',
-        },
-        {
-          label: m['seedance25.title'](),
-          href: '/seedance-2-5',
-        },
-        {
-          label: tDynamic('seedance_draft.nav_label'),
-          href: '/seedance-2-5-draft-mode',
-        },
-        {
-          label: m['tools.poster.link_label'](),
-          href: '/ai-poster-generator',
-        },
-        {
-          label: m['tools.product_photo.link_label'](),
-          href: '/ai-product-photo-generator',
-        },
-        {
-          label: m['tools.youtube_thumbnail.link_label'](),
-          href: '/ai-youtube-thumbnail-generator',
-        },
-        {
-          label: m['tools.video.link_label'](),
-          href: '/ai-video-generator',
-        },
-        {
-          label: m['tools.background_remover.link_label'](),
-          href: '/image-background-remover',
-        },
-      ],
-    },
-    {
-      title: m['landing.footer.legal'](),
-      links: [
-        { label: 'About', href: '/about' },
-        { label: m['landing.footer.privacy'](), href: '/privacy-policy' },
-        { label: m['landing.footer.terms'](), href: '/terms-of-service' },
-        { label: m['landing.footer.refunds'](), href: '/refund-policy' },
-        { label: m['landing.footer.contact'](), href: '/contact' },
-      ],
-    },
-  ];
-
+  const locale = getLocale() === 'zh' ? 'zh' : 'en';
+  const text = (key: string) => bananaText(`chrome.${key}`, locale);
+  const link = (href: string, key: string) => ({ href, label: text(key) });
   return (
-    <SiteFooter tagline={m['landing.footer.tagline']()} columns={columns} />
+    <BananaFooter
+      brand={envConfigs.app_name}
+      logo={envConfigs.app_logo}
+      description={text('footer_description')}
+      contact={link('/contact', 'contact')}
+      columns={[
+        {
+          title: text('resources'),
+          links: [
+            link('/prompts', 'prompts'),
+            link('/prompts/ui', 'ui_prompts'),
+            link('/prompts/chinese', 'chinese_prompts'),
+            link('/free', 'free'),
+            link('/guide', 'guide'),
+            link('/blog', 'blog'),
+            link('/api', 'api'),
+            link('/gpt-image-2-5-api-pricing', 'api_costs'),
+            link('/scientific-figures', 'science'),
+            link('/logo', 'logo'),
+            link('/mcp', 'mcp'),
+            link('/pricing', 'pricing'),
+          ],
+        },
+        {
+          title: text('legal'),
+          links: [
+            link('/about', 'about'),
+            link('/privacy-policy', 'privacy'),
+            link('/terms-of-service', 'terms'),
+            link('/refund-policy', 'refunds'),
+          ],
+        },
+      ]}
+      languageControls={<FooterLocaleLinks />}
+      copyright={`© ${new Date().getFullYear()} ${envConfigs.app_name}`}
+      disclosure={text('independent')}
+      attribution={<BuiltWithShipAny appUrl={envConfigs.app_url} />}
+    />
   );
 }

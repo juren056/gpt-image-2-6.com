@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ArrowUpRight, House, Menu, Search, Sparkles } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
+import { DEFAULT_APP_LOGO } from '@/config/brand';
 import type { ToolCatalogItem } from '@/lib/tools';
 import { ToolIcon } from '@/components/tool-icon';
 import {
@@ -89,7 +90,7 @@ export function CreativeHomeShell({
         className="flex items-center gap-3 px-3 py-3 font-semibold"
       >
         <img
-          src={logo || '/logo.svg'}
+          src={logo || DEFAULT_APP_LOGO}
           alt=""
           className="size-8 rounded-lg bg-white p-1"
         />

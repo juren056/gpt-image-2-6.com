@@ -38,6 +38,12 @@ import {
 } from '@/config/public-creative';
 import { apiGet, apiPost } from '@/lib/api-client';
 import { sanitizeSvgMarkup } from '@/lib/creative-canvas';
+import {
+  safeStudioSource,
+  STUDIO_TOOL_LAYOUTS,
+  type StudioDeskContext,
+  type StudioToolDraft,
+} from '@/lib/studio-desk';
 import { CreativeToolTile } from '@/components/creative-visuals';
 import {
   GeneratorGuideSections,
@@ -49,6 +55,7 @@ import {
   type ImageUploaderValue,
 } from '@/components/image-uploader';
 import { ModelPicker } from '@/components/model-picker';
+import { StudioToolStage } from '@/components/studio-tool-stage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -71,7 +78,7 @@ type Layer = {
   scale: number;
   rotation: number;
 };
-type BatchDownload = { name: string; url: string };
+type BatchDownload = { name: string; url: string; taskId?: string };
 
 const PANEL_GUIDANCE: Record<
   PublicPanelType,
@@ -349,50 +356,96 @@ function triggerDownload(url: string, filename: string) {
   anchor.click();
 }
 
-export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
+export function DedicatedToolWorkspace({
+  toolId,
+  studio,
+}: {
+  toolId: CreativeToolId;
+  studio?: StudioDeskContext;
+}) {
+  const initial = useRef(studio?.initialDraft || {}).current;
+  const studioRef = useRef(studio);
+  studioRef.current = studio;
   const tool = findPublicTool(toolId)!;
   const { data: session } = useSession();
-  const [uploads, setUploads] = useState<ImageUploaderValue[]>([]);
-  const [handoffPreview, setHandoffPreview] = useState<string>();
-  const [exampleVersion, setExampleVersion] = useState(0);
-  const [prompt, setPrompt] = useState('');
-  const [modelId, setModelId] = useState('gpt-image-2.5-sunburst');
-  const [taskId, setTaskId] = useState<string>();
-  const [color, setColor] = useState('#6d4aff');
-  const [color2, setColor2] = useState('#f5efe8');
-  const [amount, setAmount] = useState(45);
-  const [amount2, setAmount2] = useState(24);
-  const [x, setX] = useState(50);
-  const [y, setY] = useState(78);
-  const [text, setText] = useState('Your headline');
-  const [fontSize, setFontSize] = useState(48);
-  const [rotation, setRotation] = useState(0);
-  const [flipX, setFlipX] = useState(false);
-  const [flipY, setFlipY] = useState(false);
-  const [crop, setCrop] = useState(100);
-  const [fit, setFit] = useState<'contain' | 'cover' | 'extend'>('contain');
-  const [outputSet, setOutputSet] = useState('social');
-  const [scale, setScale] = useState<2 | 4>(2);
-  const [svgWidth, setSvgWidth] = useState(640);
-  const [lighting, setLighting] = useState('Warm window light');
-  const [selectionMode, setSelectionMode] = useState<'brush' | 'eraser'>(
-    'brush'
-  );
-  const [drawingData, setDrawingData] = useState('');
-  const [svg, setSvg] = useState(
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><path fill="#6d4aff" d="M32 32h256v116H32z"/><circle fill="#fff" cx="160" cy="90" r="38"/></svg>'
-  );
-  const [brand, setBrand] = useState({
-    name: '',
-    font: 'Inter',
-    primary: '#6d4aff',
-    secondary: '#f5efe8',
+  const [uploads, setUploads] = useState<ImageUploaderValue[]>(() => {
+    const urls = initial.uploadUrls?.length
+      ? initial.uploadUrls
+      : studio?.sourceUrl
+        ? [studio.sourceUrl]
+        : [];
+    return urls.map((url, index) => ({
+      id: `preset-${url}-${index}`,
+      preview: url,
+      url,
+      status: 'uploaded',
+    }));
   });
+  const [handoffPreview, setHandoffPreview] = useState<string | undefined>(
+    initial.uploadUrls?.[0] || studio?.sourceUrl
+  );
+  const [exampleVersion, setExampleVersion] = useState(0);
+  const [prompt, setPrompt] = useState(initial.prompt ?? '');
+  const [modelId, setModelId] = useState(
+    initial.modelId ?? (studio ? 'nano-banana-2.1' : 'gpt-image-2.5-sunburst')
+  );
+  const [taskId, setTaskId] = useState<string | undefined>(
+    initial.resultTaskId
+  );
+  const [color, setColor] = useState(initial.color ?? '#6d4aff');
+  const [color2, setColor2] = useState(initial.color2 ?? '#f5efe8');
+  const [amount, setAmount] = useState(initial.amount ?? 45);
+  const [amount2, setAmount2] = useState(initial.amount2 ?? 24);
+  const [x, setX] = useState(initial.x ?? 50);
+  const [y, setY] = useState(initial.y ?? 78);
+  const [text, setText] = useState(initial.text ?? 'Your headline');
+  const [fontSize, setFontSize] = useState(initial.fontSize ?? 48);
+  const [rotation, setRotation] = useState(initial.rotation ?? 0);
+  const [flipX, setFlipX] = useState(initial.flipX ?? false);
+  const [flipY, setFlipY] = useState(initial.flipY ?? false);
+  const [crop, setCrop] = useState(initial.crop ?? 100);
+  const [fit, setFit] = useState<'contain' | 'cover' | 'extend'>(
+    initial.fit ?? 'contain'
+  );
+  const [outputSet, setOutputSet] = useState(initial.outputSet ?? 'social');
+  const [scale, setScale] = useState<2 | 4>(initial.scale ?? 2);
+  const [svgWidth, setSvgWidth] = useState(initial.svgWidth ?? 640);
+  const [lighting, setLighting] = useState(
+    initial.lighting ?? 'Warm window light'
+  );
+  const [selectionMode, setSelectionMode] = useState<'brush' | 'eraser'>(
+    initial.selectionMode ?? 'brush'
+  );
+  const [drawingData, setDrawingData] = useState(initial.drawingData ?? '');
+  const [svg, setSvg] = useState(
+    initial.svg ??
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><path fill="#6d4aff" d="M32 32h256v116H32z"/><circle fill="#fff" cx="160" cy="90" r="38"/></svg>'
+  );
+  const [brand, setBrand] = useState(
+    initial.brand ?? {
+      name: '',
+      font: 'Inter',
+      primary: '#6d4aff',
+      secondary: '#f5efe8',
+    }
+  );
   const [brandLogoUploads, setBrandLogoUploads] = useState<
     ImageUploaderValue[]
-  >([]);
+  >(() =>
+    initial.brandLogoUrl
+      ? [
+          {
+            id: 'saved-brand-logo',
+            preview: initial.brandLogoUrl,
+            url: initial.brandLogoUrl,
+            status: 'uploaded',
+          },
+        ]
+      : []
+  );
 
   useEffect(() => {
+    if (studio) return;
     if (
       ['T01', 'T16', 'T19', 'T20', 'T21', 'T24'].includes(toolId) ||
       new URLSearchParams(window.location.search).get('source') !==
@@ -421,19 +474,39 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
       // Ignore stale or malformed session handoff data.
     }
   }, [toolId]);
-  const [selectedOutputs, setSelectedOutputs] = useState([
-    'Studio',
-    'Lifestyle',
-  ]);
-  const [steps, setSteps] = useState(['Remove background', 'Upscale']);
-  const [statuses, setStatuses] = useState<string[]>([]);
-  const [batchDownloads, setBatchDownloads] = useState<BatchDownload[]>([]);
+  const [selectedOutputs, setSelectedOutputs] = useState(
+    initial.selectedOutputs ?? ['Studio', 'Lifestyle']
+  );
+  const [steps, setSteps] = useState(
+    initial.steps ?? ['Remove background', 'Upscale']
+  );
+  const [statuses, setStatuses] = useState<string[]>(initial.statuses ?? []);
+  const [batchDownloads, setBatchDownloads] = useState<BatchDownload[]>(
+    initial.outputs ?? []
+  );
+  const [failedBatchItems, setFailedBatchItems] = useState<number[]>([]);
+  const batchQueueSignature = JSON.stringify(
+    uploads.map((item) => [item.id, item.url, item.preview])
+  );
+  const previousBatchQueue = useRef(batchQueueSignature);
+  useEffect(() => {
+    if (previousBatchQueue.current !== batchQueueSignature) {
+      previousBatchQueue.current = batchQueueSignature;
+      setFailedBatchItems([]);
+      // A changed queue requires a fresh run; completed exports remain downloadable.
+      setStatuses([]);
+    }
+  }, [batchQueueSignature]);
   const [flowBusy, setFlowBusy] = useState(false);
-  const [layers, setLayers] = useState<Layer[]>([]);
-  const [noteMode, setNoteMode] = useState<'arrow' | 'box' | 'brush'>('arrow');
-  const [template, setTemplate] = useState('Product launch');
-  const [industry, setIndustry] = useState('');
-  const [logoStyle, setLogoStyle] = useState('Wordmark');
+  const [layers, setLayers] = useState<Layer[]>(initial.layers ?? []);
+  const [noteMode, setNoteMode] = useState<'arrow' | 'box' | 'brush'>(
+    initial.noteMode ?? 'arrow'
+  );
+  const [template, setTemplate] = useState(
+    initial.template ?? 'Product launch'
+  );
+  const [industry, setIndustry] = useState(initial.industry ?? '');
+  const [logoStyle, setLogoStyle] = useState(initial.logoStyle ?? 'Wordmark');
   const previewRef = useRef<HTMLDivElement>(null);
 
   const source = uploads.find((item) => item.status === 'uploaded' && item.url);
@@ -447,7 +520,11 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
         ? false
         : 1500,
   });
-  const resultUrl = taskQuery.data?.images?.[0]?.imageUrl;
+  const resultUrl =
+    taskQuery.data?.images?.[0]?.imageUrl ||
+    (taskId === initial.resultTaskId && taskQuery.data?.status !== 'failed'
+      ? initial.resultUrl
+      : undefined);
   const operation = AI_TOOL_OPERATION[toolId];
   const utility = UTILITY_OPERATION[toolId];
   const utilityAvailability = useQuery({
@@ -492,7 +569,14 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
         scale: 100,
         rotation: 0,
       }));
-    setLayers(mapped);
+    setLayers((current) =>
+      mapped.map((layer) => {
+        const previous =
+          current.find((item) => item.src === layer.src) ||
+          initial.layers?.find((item) => item.src === layer.src);
+        return previous ? { ...previous, id: layer.id } : layer;
+      })
+    );
   }, [toolId, uploads]);
 
   useEffect(() => {
@@ -638,14 +722,20 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
           outputFormat: 'png',
         });
         const url = await waitForTask(task.id);
-        completed.push({ name: `${output}.png`, url });
+        completed.push({ name: `${output}.png`, url, taskId: task.id });
+        setBatchDownloads([...completed]);
+        studioRef.current?.onResult(url, task.id);
         setStatuses((current) => [
           ...current.filter((status) => !status.startsWith(`${output}:`)),
           `${output}: completed`,
         ]);
       }
-      setBatchDownloads(completed);
     } catch (error) {
+      const failedOutput = selectedOutputs[completed.length];
+      setStatuses((current) => [
+        ...current.filter((status) => !status.startsWith(`${failedOutput}:`)),
+        `${failedOutput}: failed`,
+      ]);
       toast.error(error instanceof Error ? error.message : 'Image set failed.');
     } finally {
       setFlowBusy(false);
@@ -686,10 +776,13 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
       ) || CREATIVE_MODELS.find((item) => item.operations.includes('relight'))!;
     setFlowBusy(true);
     setStatuses([]);
+    setBatchDownloads([]);
+    const completed: BatchDownload[] = [];
     let currentUrl = new URL(source.url, window.location.origin).href;
     try {
       for (let index = 0; index < steps.length; index += 1) {
         const step = steps[index];
+        let stepTaskId: string | undefined;
         const prefix = `Step ${index + 1}: ${step}`;
         setStatuses((current) => [...current, `${prefix} · running`]);
         if (step === 'Remove background' || step === 'Upscale') {
@@ -699,6 +792,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
             scale,
           });
           currentUrl = await waitForTask(task.id);
+          stepTaskId = task.id;
         } else if (step === 'Relight') {
           const task = await apiPost<{ id: string }>('/api/studio/run', {
             model: relightModel.id,
@@ -709,18 +803,30 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
             outputFormat: 'png',
           });
           currentUrl = await waitForTask(task.id);
+          stepTaskId = task.id;
         } else if (step === 'Add text') {
           currentUrl = await addTextAsset(currentUrl);
         } else if (step !== 'Export') {
           throw new Error(`Unsupported workflow step: ${step}`);
         }
+        completed.push({
+          name: `${index + 1}-${step}.png`,
+          url: currentUrl,
+          taskId: stepTaskId,
+        });
+        setBatchDownloads([...completed]);
+        studioRef.current?.onResult(currentUrl, stepTaskId);
         setStatuses((current) => [
           ...current.filter((status) => !status.startsWith(prefix)),
           `${prefix} · completed`,
         ]);
       }
-      setBatchDownloads([{ name: 'workflow-result.png', url: currentUrl }]);
     } catch (error) {
+      const failedPrefix = `Step ${completed.length + 1}: ${steps[completed.length]}`;
+      setStatuses((current) => [
+        ...current.filter((status) => !status.startsWith(failedPrefix)),
+        `${failedPrefix} · failed`,
+      ]);
       toast.error(error instanceof Error ? error.message : 'Workflow failed.');
     } finally {
       setFlowBusy(false);
@@ -871,7 +977,7 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
     if (blob) downloadBlob(blob, 'image/png', `${tool.path.slice(1)}.png`);
   }
 
-  async function runLocalFlow() {
+  async function runLocalFlow(retryFailed = false) {
     if (toolId === 'T16') {
       window.localStorage.setItem(
         'image-studio:brand-kit',
@@ -893,14 +999,20 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
     }
     if (toolId === 'T14') {
       setFlowBusy(true);
-      setStatuses([]);
-      setBatchDownloads((items) => {
-        items.forEach((item) => URL.revokeObjectURL(item.url));
-        return [];
-      });
+      if (!retryFailed) {
+        setStatuses([]);
+        setBatchDownloads((items) => {
+          items.forEach((item) => URL.revokeObjectURL(item.url));
+          return [];
+        });
+      }
+      const failed: number[] = [];
       try {
-        const completed: BatchDownload[] = [];
+        const completed: BatchDownload[] = retryFailed
+          ? [...batchDownloads]
+          : [];
         for (let index = 0; index < uploads.length; index += 1) {
+          if (retryFailed && !failedBatchItems.includes(index)) continue;
           const item = uploads[index];
           setStatuses((current) => [
             ...current.filter(
@@ -908,26 +1020,37 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
             ),
             `Image ${index + 1}: processing`,
           ]);
-          const image = await loadImage(item.preview || item.url!);
-          const canvas = document.createElement('canvas');
-          const ratio = Math.min(1, 1600 / image.naturalWidth);
-          canvas.width = Math.round(image.naturalWidth * ratio);
-          canvas.height = Math.round(image.naturalHeight * ratio);
-          canvas
-            .getContext('2d')
-            ?.drawImage(image, 0, 0, canvas.width, canvas.height);
-          completed.push({
-            name: `optimized-${index + 1}.png`,
-            url: URL.createObjectURL(await canvasBlob(canvas)),
-          });
-          setStatuses((current) => [
-            ...current.filter(
-              (status) => !status.startsWith(`Image ${index + 1}:`)
-            ),
-            `Image ${index + 1}: completed`,
-          ]);
+          try {
+            const image = await loadImage(item.preview || item.url!);
+            const canvas = document.createElement('canvas');
+            const ratio = Math.min(1, 1600 / image.naturalWidth);
+            canvas.width = Math.round(image.naturalWidth * ratio);
+            canvas.height = Math.round(image.naturalHeight * ratio);
+            canvas
+              .getContext('2d')
+              ?.drawImage(image, 0, 0, canvas.width, canvas.height);
+            completed.push({
+              name: `optimized-${index + 1}.png`,
+              url: URL.createObjectURL(await canvasBlob(canvas)),
+            });
+            setBatchDownloads([...completed]);
+            setStatuses((current) => [
+              ...current.filter(
+                (status) => !status.startsWith(`Image ${index + 1}:`)
+              ),
+              `Image ${index + 1}: completed`,
+            ]);
+          } catch {
+            failed.push(index);
+            setStatuses((current) => [
+              ...current.filter(
+                (status) => !status.startsWith(`Image ${index + 1}:`)
+              ),
+              `Image ${index + 1}: failed`,
+            ]);
+          }
         }
-        setBatchDownloads(completed);
+        setFailedBatchItems(failed);
       } catch (error) {
         toast.error(
           error instanceof Error ? error.message : 'Batch processing failed.'
@@ -968,26 +1091,147 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
     }
   }
 
+  const draft: StudioToolDraft = useMemo(
+    () => ({
+      prompt,
+      modelId,
+      color,
+      color2,
+      amount,
+      amount2,
+      x,
+      y,
+      text,
+      fontSize,
+      rotation,
+      flipX,
+      flipY,
+      crop,
+      fit,
+      outputSet,
+      scale,
+      svgWidth,
+      lighting,
+      svg,
+      brand,
+      selectedOutputs,
+      steps,
+      template,
+      industry,
+      logoStyle,
+      layers,
+      drawingData,
+      drawingSourceUrl:
+        toolId === 'T22' ? '' : preview || studio?.sourceUrl || '',
+      selectionMode,
+      noteMode,
+      uploadUrls: uploads
+        .filter((item) => item.status === 'uploaded' && item.url)
+        .map((item) => item.url!),
+      brandLogoUrl:
+        brandLogoUploads.find((item) => item.status === 'uploaded')?.url || '',
+      resultUrl,
+      resultTaskId: taskId,
+      outputs: batchDownloads.filter((item) =>
+        Boolean(safeStudioSource(item.url))
+      ),
+      statuses,
+    }),
+    [
+      prompt,
+      modelId,
+      color,
+      color2,
+      amount,
+      amount2,
+      x,
+      y,
+      text,
+      fontSize,
+      rotation,
+      flipX,
+      flipY,
+      crop,
+      fit,
+      outputSet,
+      scale,
+      svgWidth,
+      lighting,
+      svg,
+      brand,
+      selectedOutputs,
+      steps,
+      template,
+      industry,
+      logoStyle,
+      layers,
+      drawingData,
+      selectionMode,
+      noteMode,
+      uploads,
+      brandLogoUploads,
+      preview,
+      studio?.sourceUrl,
+      resultUrl,
+      taskId,
+      batchDownloads,
+      statuses,
+    ]
+  );
+  useEffect(() => {
+    studioRef.current?.onDraft(draft);
+  }, [draft]);
+  useEffect(() => {
+    studioRef.current?.onBusy(isWorking);
+  }, [isWorking]);
+  const reportedResult = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (
+      resultUrl &&
+      taskQuery.data?.status === 'success' &&
+      reportedResult.current !== resultUrl
+    ) {
+      reportedResult.current = resultUrl;
+      studioRef.current?.onResult(resultUrl, taskId);
+    }
+  }, [resultUrl, taskId, taskQuery.data?.status]);
+
   const needsUpload = !['T01', 'T16', 'T19', 'T20', 'T21', 'T24'].includes(
     toolId
   );
   const allowsMultiple = ['T11', 'T14'].includes(toolId);
 
   return (
-    <div className="border-border bg-card shadow-foreground/5 mt-10 grid max-w-full overflow-hidden rounded-[2rem] border shadow-2xl lg:grid-cols-[minmax(0,26rem)_1fr]">
-      <div className="min-w-0 space-y-5 p-4 sm:p-7">
-        <div className="border-border bg-muted/20 -mx-4 -mt-4 flex items-center justify-between gap-3 border-b px-4 py-4 sm:-mx-7 sm:-mt-7 sm:px-7 sm:py-5">
+    <div
+      className={
+        studio
+          ? `studio-tool-workspace studio-layout-${STUDIO_TOOL_LAYOUTS[toolId]}`
+          : 'border-border bg-card shadow-foreground/5 mt-10 grid max-w-full overflow-hidden rounded-[2rem] border shadow-2xl lg:grid-cols-[minmax(0,26rem)_1fr]'
+      }
+    >
+      <div
+        className={
+          studio ? 'studio-tool-controls' : 'min-w-0 space-y-5 p-4 sm:p-7'
+        }
+      >
+        <div
+          className={
+            studio
+              ? 'studio-controls-heading'
+              : 'border-border bg-muted/20 -mx-4 -mt-4 flex items-center justify-between gap-3 border-b px-4 py-4 sm:-mx-7 sm:-mt-7 sm:px-7 sm:py-5'
+          }
+        >
           <div className="flex items-center gap-3">
             <CreativeToolTile toolId={toolId} />
             <div>
               <p className="text-sm font-semibold">{tool.name}</p>
               <p className="text-muted-foreground text-xs">
-                Configure the input
+                {studio?.copy.controls || 'Configure the input'}
               </p>
             </div>
           </div>
           <span className="bg-primary/10 text-primary rounded-full px-2.5 py-1 text-[10px] font-bold tracking-[.12em] uppercase">
-            Step 01
+            {studio ? studio.copy.input : 'Step 01'}
           </span>
         </div>
         {needsUpload ? (
@@ -997,23 +1241,36 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
               allowMultiple={allowsMultiple}
               maxImages={allowsMultiple ? 20 : 1}
               maxSizeMB={10}
-              title={allowsMultiple ? 'Upload images' : 'Start with an image'}
+              title={
+                studio?.copy.upload ||
+                (allowsMultiple ? 'Upload images' : 'Start with an image')
+              }
               emptyHint="PNG, JPG or WebP, up to 10MB each."
               defaultPreviews={
-                handoffPreview
-                  ? [handoffPreview]
-                  : exampleVersion
-                    ? [tool.image]
-                    : undefined
+                exampleVersion
+                  ? [tool.image]
+                  : allowsMultiple && initial.uploadUrls?.length
+                    ? initial.uploadUrls
+                    : toolId === 'T11' && initial.layers?.length
+                      ? initial.layers.map((layer) => layer.src)
+                      : handoffPreview
+                        ? [handoffPreview]
+                        : undefined
               }
-              onChange={setUploads}
+              onChange={(items) => {
+                setUploads(items);
+                const url = items.find(
+                  (item) => item.status === 'uploaded' && item.url
+                )?.url;
+                if (url) studioRef.current?.onSource?.(url);
+              }}
             />
             <button
               type="button"
               onClick={() => setExampleVersion((version) => version + 1)}
               className="text-primary min-h-10 text-xs font-semibold"
             >
-              Use a site-owned example
+              {studio?.copy.tryExample || 'Use an example image'}
             </button>
           </div>
         ) : null}
@@ -1110,12 +1367,14 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
               max={80}
               onChange={setAmount2}
             />
-            <DrawingCanvas
-              mode={selectionMode}
-              brushSize={amount2}
-              onChange={setDrawingData}
-              label="Paint the editable area in white"
-            />
+            {!studio && (
+              <DrawingCanvas
+                mode={selectionMode}
+                brushSize={amount2}
+                onChange={setDrawingData}
+                label="Paint the editable area in white"
+              />
+            )}
           </>
         ) : null}
         {toolId === 'T09' ? (
@@ -1287,6 +1546,9 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
               maxSizeMB={5}
               title="Optional brand logo"
               emptyHint="PNG, JPG or WebP. Signed-in uploads can be reused."
+              defaultPreviews={
+                initial.brandLogoUrl ? [initial.brandLogoUrl] : undefined
+              }
               onChange={setBrandLogoUploads}
             />
             <BrandFields brand={brand} setBrand={setBrand} />
@@ -1424,13 +1686,15 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
         {toolId === 'T22' ? (
           <>
             <FieldTitle>Sketch input</FieldTitle>
-            <DrawingCanvas
-              mode="brush"
-              brushSize={Math.max(2, amount2)}
-              onChange={setDrawingData}
-              label="Draw a sketch, or upload one above"
-              light
-            />
+            {!studio && (
+              <DrawingCanvas
+                mode="brush"
+                brushSize={Math.max(2, amount2)}
+                onChange={setDrawingData}
+                label="Draw a sketch, or upload one above"
+                light
+              />
+            )}
             <Range
               label="Follow sketch structure"
               value={amount}
@@ -1457,14 +1721,16 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
               onChange={(event) => setPrompt(event.target.value)}
               placeholder="1. Replace the marked label. 2. Remove the boxed item..."
             />
-            <DrawingCanvas
-              mode={noteMode}
-              brushSize={
-                noteMode === 'box' ? 22 : noteMode === 'arrow' ? 12 : amount2
-              }
-              onChange={setDrawingData}
-              label={`Draw the ${noteMode} annotation area in white`}
-            />
+            {!studio && (
+              <DrawingCanvas
+                mode={noteMode}
+                brushSize={
+                  noteMode === 'box' ? 22 : noteMode === 'arrow' ? 12 : amount2
+                }
+                onChange={setDrawingData}
+                label={`Draw the ${noteMode} annotation area in white`}
+              />
+            )}
           </>
         ) : null}
         {toolId === 'T24' ? (
@@ -1638,7 +1904,19 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
             onClick={runRemote}
             disabled={
               isWorking ||
-              Boolean(utility && (!source || !utilityStatus?.enabled))
+              Boolean(utility && (!source || !utilityStatus?.enabled)) ||
+              Boolean(
+                operation &&
+                operation !== 'generate' &&
+                !source &&
+                !(toolId === 'T22' && drawingData)
+              ) ||
+              Boolean(
+                operation &&
+                !['T06', 'T09', 'T20', 'T22'].includes(toolId) &&
+                !prompt.trim()
+              ) ||
+              Boolean(['T07', 'T08', 'T23'].includes(toolId) && !drawingData)
             }
             className="min-h-12 w-full rounded-full"
           >
@@ -1678,46 +1956,147 @@ export function DedicatedToolWorkspace({ toolId }: { toolId: CreativeToolId }) {
 
       <div
         ref={previewRef}
-        className="bg-muted/35 border-border min-h-80 min-w-0 border-t p-4 sm:p-7 lg:min-h-[36rem] lg:border-t-0 lg:border-l"
+        className={
+          studio
+            ? 'studio-tool-stage'
+            : 'bg-muted/35 border-border min-h-80 min-w-0 border-t p-4 sm:p-7 lg:min-h-[36rem] lg:border-t-0 lg:border-l'
+        }
       >
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold tracking-[.14em] uppercase">
-              Result preview
+              {studio?.copy.stage || 'Result preview'}
             </p>
             <p className="text-muted-foreground mt-1 text-xs">
-              Inspect the output before downloading or continuing.
+              {studio?.copy.inspect ||
+                'Inspect the output before downloading or continuing.'}
             </p>
           </div>
           <span className="border-border bg-background rounded-full border px-2.5 py-1 text-[10px] font-semibold">
-            Step 02
+            {studio ? studio.copy.output : 'Step 02'}
           </span>
         </div>
-        <Preview
-          toolId={toolId}
-          preview={resultUrl || preview}
-          color={color}
-          color2={color2}
-          amount={amount}
-          amount2={amount2}
-          x={x}
-          y={y}
-          text={text}
-          fontSize={fontSize}
-          rotation={rotation}
-          fit={fit}
-          svg={svg}
-          layers={layers}
-          noteMode={noteMode}
-          template={template}
-          brand={brand.name}
-          statuses={statuses}
-          downloads={batchDownloads}
-          flipX={flipX}
-          flipY={flipY}
-          crop={crop}
-          isWorking={isWorking}
-        />
+        {studio ? (
+          <StudioToolStage
+            toolId={toolId}
+            copy={studio.copy}
+            source={preview || studio.sourceUrl}
+            result={resultUrl}
+            draft={draft}
+            outputs={batchDownloads}
+            statuses={statuses}
+            isWorking={isWorking}
+            queuedInputs={uploads.map((item, index) => ({
+              name: `Image ${index + 1}`,
+              url: item.preview || item.url || '',
+            }))}
+            onPrompt={setPrompt}
+            drawing={
+              ['T07', 'T08', 'T22', 'T23'].includes(toolId) ? (
+                <DrawingCanvas
+                  key={
+                    toolId === 'T22'
+                      ? 'sketch'
+                      : preview || studio.sourceUrl || 'empty'
+                  }
+                  mode={toolId === 'T23' ? noteMode : selectionMode}
+                  brushSize={Math.max(2, amount2)}
+                  onChange={setDrawingData}
+                  initialData={
+                    toolId === 'T22' ||
+                    initial.drawingSourceUrl ===
+                      (preview || studio.sourceUrl || '')
+                      ? initial.drawingData
+                      : undefined
+                  }
+                  label={studio.copy.draw}
+                  light={toolId === 'T22'}
+                  backdrop={
+                    toolId === 'T22' ? undefined : preview || studio.sourceUrl
+                  }
+                />
+              ) : undefined
+            }
+          >
+            <Preview
+              toolId={toolId}
+              preview={resultUrl || preview}
+              color={color}
+              color2={color2}
+              amount={amount}
+              amount2={amount2}
+              x={x}
+              y={y}
+              text={text}
+              fontSize={fontSize}
+              rotation={rotation}
+              fit={fit}
+              svg={svg}
+              layers={layers}
+              noteMode={noteMode}
+              template={template}
+              brand={brand.name}
+              statuses={statuses}
+              downloads={batchDownloads}
+              flipX={flipX}
+              flipY={flipY}
+              crop={crop}
+              isWorking={isWorking}
+            />
+          </StudioToolStage>
+        ) : (
+          <Preview
+            toolId={toolId}
+            preview={resultUrl || preview}
+            color={color}
+            color2={color2}
+            amount={amount}
+            amount2={amount2}
+            x={x}
+            y={y}
+            text={text}
+            fontSize={fontSize}
+            rotation={rotation}
+            fit={fit}
+            svg={svg}
+            layers={layers}
+            noteMode={noteMode}
+            template={template}
+            brand={brand.name}
+            statuses={statuses}
+            downloads={batchDownloads}
+            flipX={flipX}
+            flipY={flipY}
+            crop={crop}
+            isWorking={isWorking}
+          />
+        )}
+        {studio && toolId === 'T14' && (
+          <>
+            <p className="studio-stage-note">{studio.copy.localExports}</p>
+            {failedBatchItems.length > 0 && (
+              <Button
+                type="button"
+                disabled={isWorking}
+                onClick={() => void runLocalFlow(true)}
+              >
+                {studio.copy.retryFailed} · {failedBatchItems.length}
+              </Button>
+            )}
+          </>
+        )}
+        {studio &&
+          resultUrl &&
+          taskQuery.data?.status === 'success' &&
+          toolId !== 'T18' && (
+            <a
+              href={`/api/images/${encodeURIComponent(taskId!)}/download`}
+              className="studio-result-download"
+            >
+              <Download size={16} />
+              {studio.copy.download}
+            </a>
+          )}
         {toolId === 'T18' &&
         taskId &&
         taskQuery.data?.status === 'success' &&
@@ -1770,8 +2149,8 @@ function Preview(props: {
     const previewUrl = safeSvgPreview(props.svg);
     return (
       <div className="mx-auto max-w-3xl">
-        <p className="text-muted-foreground mb-3 text-xs font-semibold tracking-[.16em] uppercase">
-          Safe vector preview
+        <p className="text-muted-foreground mb-3 text-sm">
+          Sanitized vector preview
         </p>
         <div className="border-border bg-background flex min-h-72 items-center justify-center rounded-2xl border p-6">
           {previewUrl ? (
@@ -2017,18 +2396,24 @@ function DrawingCanvas({
   onChange,
   label,
   light = false,
+  backdrop,
+  initialData,
 }: {
   mode: 'brush' | 'eraser' | 'arrow' | 'box';
   brushSize: number;
   onChange: (dataUrl: string) => void;
   label: string;
   light?: boolean;
+  backdrop?: string;
+  initialData?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 640, height: 320 });
   const drawingRef = useRef(false);
   const startPointRef = useRef({ x: 0, y: 0 });
   const snapshotRef = useRef<ImageData | null>(null);
   const historyRef = useRef<ImageData[]>([]);
+  const baselineHasDrawing = useRef(false);
 
   const reset = () => {
     const canvas = canvasRef.current;
@@ -2037,6 +2422,7 @@ function DrawingCanvas({
     ctx.fillStyle = light ? '#ffffff' : '#000000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     historyRef.current = [];
+    baselineHasDrawing.current = false;
     onChange('');
   };
 
@@ -2046,14 +2432,38 @@ function DrawingCanvas({
     const previous = historyRef.current.pop();
     if (!canvas || !ctx || !previous) return;
     ctx.putImageData(previous, 0, 0);
-    onChange(historyRef.current.length ? canvas.toDataURL('image/png') : '');
+    onChange(
+      historyRef.current.length || baselineHasDrawing.current
+        ? canvas.toDataURL('image/png')
+        : ''
+    );
   };
 
   useEffect(() => {
-    reset();
-    // The canvas is intentionally initialized only when its background mode changes.
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
+    ctx.fillStyle = light ? '#ffffff' : '#000000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    historyRef.current = [];
+    baselineHasDrawing.current = false;
+    let cancelled = false;
+    if (initialData) {
+      const saved = new Image();
+      saved.onload = () => {
+        if (cancelled) return;
+        ctx.drawImage(saved, 0, 0, canvas.width, canvas.height);
+        baselineHasDrawing.current = true;
+        onChange(canvas.toDataURL('image/png'));
+      };
+      saved.src = initialData;
+    } else onChange('');
+    return () => {
+      cancelled = true;
+    };
+    // Restore the tool's saved monochrome drawing, never bake in the source image.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [light]);
+  }, [light, dimensions.width, dimensions.height]);
 
   const point = (event: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = event.currentTarget;
@@ -2160,17 +2570,49 @@ function DrawingCanvas({
           </button>
         </span>
       </div>
-      <canvas
-        ref={canvasRef}
-        width={640}
-        height={320}
-        onPointerDown={start}
-        onPointerMove={draw}
-        onPointerUp={finish}
-        onPointerCancel={finish}
-        className="border-border bg-background aspect-[2/1] w-full touch-none rounded-2xl border"
-        aria-label={label}
-      />
+      <div className="studio-drawing-surface" style={{ position: 'relative' }}>
+        {backdrop && (
+          <img
+            src={backdrop}
+            alt="Reference for region selection"
+            onLoad={(e) => {
+              const image = e.currentTarget;
+              const ratio = Math.min(
+                1,
+                2048 / Math.max(image.naturalWidth, image.naturalHeight)
+              );
+              setDimensions({
+                width: Math.max(1, Math.round(image.naturalWidth * ratio)),
+                height: Math.max(1, Math.round(image.naturalHeight * ratio)),
+              });
+            }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'fill',
+            }}
+          />
+        )}
+        <canvas
+          ref={canvasRef}
+          width={dimensions.width}
+          height={dimensions.height}
+          style={{
+            position: 'relative',
+            aspectRatio: `${dimensions.width}/${dimensions.height}`,
+            mixBlendMode: backdrop ? 'screen' : undefined,
+            opacity: backdrop ? 0.6 : 1,
+          }}
+          onPointerDown={start}
+          onPointerMove={draw}
+          onPointerUp={finish}
+          onPointerCancel={finish}
+          className="border-border bg-background aspect-[2/1] w-full touch-none rounded-2xl border"
+          aria-label={label}
+        />
+      </div>
     </div>
   );
 }

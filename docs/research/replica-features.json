@@ -1,0 +1,833 @@
+{
+  "html": "<div class=\"group/section scroll-mt-24 md:scroll-mt-28\" data-bento-section=\"feature_with_media\" data-surface=\"ink\"><section class=\"py-20 md:py-28\"><div class=\"mx-auto px-5 sm:px-6 max-w-7xl\"><div class=\"text-start mb-16\"><span data-slot=\"section-eyebrow\" class=\"text-sm font-medium tracking-wide text-muted-foreground\">What it does</span><h2 class=\"text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl mt-3\">Three things Nano Banana 2.1 does well</h2><p class=\"mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground md:text-lg\">What each one lets you do, with an example.</p></div><div class=\"flex flex-col gap-20 md:gap-28\"><div class=\"grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16\"><div class=\"max-w-xl\"><div data-slot=\"icon-tile\" class=\"grid size-10 place-items-center rounded-lg border border-border bg-muted/50 text-foreground mb-4\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16\"></path><path d=\"M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2\"></path><circle cx=\"13\" cy=\"7\" r=\"1\" fill=\"currentColor\"></circle><rect x=\"8\" y=\"2\" width=\"14\" height=\"14\" rx=\"2\"></rect></svg></div><h3 class=\"text-2xl font-semibold tracking-tight text-foreground lg:text-3xl\">Up to 10 references, one finished picture</h3><div class=\"mt-4 flex flex-col gap-4\"><p class=\"leading-relaxed text-muted-foreground\">Upload a person, an outfit, a pet and a chair, then describe the scene you want them in. Nano Banana 2.1 takes up to 10 reference images, and Google says it keeps up to four characters consistent across edits, so the people and products in the result still look like the ones you uploaded.</p></div><a href=\"#tool-generator\" title=\"Add your references\" role=\"button\" tabindex=\"0\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground hover:bg-primary/80 gap-1.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 h-10 rounded-lg px-5 group-data-[surface=acid]/section:bg-black group-data-[surface=acid]/section:text-white group-data-[surface=acid]/section:hover:bg-black/80 mt-8\">Add your references</a></div><div class=\"relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm\"><img src=\"/cdn-cgi/image/format=auto,width=800/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-references-20260928.webp\" srcset=\"/cdn-cgi/image/format=auto,width=400/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-references-20260928.webp 400w, /cdn-cgi/image/format=auto,width=640/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-references-20260928.webp 640w, /cdn-cgi/image/format=auto,width=800/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-references-20260928.webp 800w\" sizes=\"(min-width: 1024px) 50vw, 100vw\" alt=\"Woman in a mustard corduroy jacket on a walnut lounge chair holding a white terrier in warm window light\" class=\"absolute inset-0 h-full w-full object-cover\" loading=\"lazy\" decoding=\"async\" data-fallback-src=\"https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-references-20260928.webp\"></div></div><div class=\"grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16\"><div class=\"max-w-xl lg:order-2 lg:ms-auto\"><div data-slot=\"icon-tile\" class=\"grid size-10 place-items-center rounded-lg border border-border bg-muted/50 text-foreground mb-4\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4v16\"></path><path d=\"M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2\"></path><path d=\"M9 20h6\"></path></svg></div><h3 class=\"text-2xl font-semibold tracking-tight text-foreground lg:text-3xl\">Text you can read inside the image</h3><div class=\"mt-4 flex flex-col gap-4\"><p class=\"leading-relaxed text-muted-foreground\">Posters, menus, packaging and greeting cards only work when the words are right. Google says Nano Banana 2.1 renders text and infographic layouts more accurately than Nano Banana 2, so headlines, labels and charts come out clean.</p></div><a href=\"#tool-generator\" title=\"Write a poster prompt\" role=\"button\" tabindex=\"0\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground hover:bg-primary/80 gap-1.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 h-10 rounded-lg px-5 group-data-[surface=acid]/section:bg-black group-data-[surface=acid]/section:text-white group-data-[surface=acid]/section:hover:bg-black/80 mt-8\">Write a poster prompt</a></div><div class=\"relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm lg:order-1\"><img src=\"/cdn-cgi/image/format=auto,width=800/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-text-20260928.webp\" srcset=\"/cdn-cgi/image/format=auto,width=400/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-text-20260928.webp 400w, /cdn-cgi/image/format=auto,width=640/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-text-20260928.webp 640w, /cdn-cgi/image/format=auto,width=800/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-text-20260928.webp 800w\" sizes=\"(min-width: 1024px) 50vw, 100vw\" alt=\"Banana yellow cafe poster reading MORNING BLEND and Banana oat latte on a cream plaster wall\" class=\"absolute inset-0 h-full w-full object-cover\" loading=\"lazy\" decoding=\"async\" data-fallback-src=\"https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-text-20260928.webp\"></div></div><div class=\"grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16\"><div class=\"max-w-xl\"><div data-slot=\"icon-tile\" class=\"grid size-10 place-items-center rounded-lg border border-border bg-muted/50 text-foreground mb-4\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 2v14a2 2 0 0 0 2 2h14\"></path><path d=\"M18 22V8a2 2 0 0 0-2-2H2\"></path></svg></div><h3 class=\"text-2xl font-semibold tracking-tight text-foreground lg:text-3xl\">Any shape, up to 4K</h3><div class=\"mt-4 flex flex-col gap-4\"><p class=\"leading-relaxed text-muted-foreground\">Nano Banana 2.1 offers 14 aspect ratios, from a tall 1:8 banner to a wide 8:1 strip, plus the everyday 1:1, 9:16 and 16:9. Google says it fixed the tiling seams very wide and tall images could show at 2K and 4K. Draft at 1K, then run the version you like again at 2K or 4K on a paid plan.</p></div><a href=\"#tool-generator\" title=\"Pick a ratio and size\" role=\"button\" tabindex=\"0\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground hover:bg-primary/80 gap-1.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 h-10 rounded-lg px-5 group-data-[surface=acid]/section:bg-black group-data-[surface=acid]/section:text-white group-data-[surface=acid]/section:hover:bg-black/80 mt-8\">Pick a ratio and size</a></div><div class=\"relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm\"><img src=\"/cdn-cgi/image/format=auto,width=800/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-ratios-20260928.webp\" srcset=\"/cdn-cgi/image/format=auto,width=400/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-ratios-20260928.webp 400w, /cdn-cgi/image/format=auto,width=640/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-ratios-20260928.webp 640w, /cdn-cgi/image/format=auto,width=800/https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-ratios-20260928.webp 800w\" sizes=\"(min-width: 1024px) 50vw, 100vw\" alt=\"Three framed prints of the same coastal village in tall, square and wide proportions on a white wall\" class=\"absolute inset-0 h-full w-full object-cover\" loading=\"lazy\" decoding=\"async\" data-fallback-src=\"https://cdn.nanobanana21.com/assets/landing/nanobanana21/index-feat-ratios-20260928.webp\"></div></div></div></div></section></div>",
+  "styles": [
+    {
+      "class": "py-20 md:py-28",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "1629.15px",
+        "lineHeight": "24px",
+        "padding": "112px 0px",
+        "width": "1424.8px"
+      },
+      "tag": "SECTION",
+      "text": "What it doesThree things Nano Banana 2.1 does wellWhat each one lets you do, with an example.Up to 10 references, one finished pictureUpload a person, an outfit, a pet and a chair, then describe the s"
+    },
+    {
+      "class": "mx-auto px-5 sm:px-6 max-w-7xl",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "1405.15px",
+        "lineHeight": "24px",
+        "padding": "0px 24px",
+        "width": "1280px"
+      },
+      "tag": "DIV",
+      "text": "What it doesThree things Nano Banana 2.1 does wellWhat each one lets you do, with an example.Up to 10 references, one finished pictureUpload a person, an outfit, a pet and a chair, then describe the s"
+    },
+    {
+      "class": "text-start mb-16",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "131.65px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "1232px"
+      },
+      "tag": "DIV",
+      "text": "What it doesThree things Nano Banana 2.1 does wellWhat each one lets you do, with an example."
+    },
+    {
+      "class": "text-sm font-medium tracking-wide text-muted-foreground",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "20.3px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "SPAN",
+      "text": "What it does"
+    },
+    {
+      "class": "text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl mt-3",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "48px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "50.4px",
+        "lineHeight": "50.4px",
+        "padding": "0px",
+        "width": "1232px"
+      },
+      "tag": "H2",
+      "text": "Three things Nano Banana 2.1 does well"
+    },
+    {
+      "class": "mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground md:text-lg",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "18px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "29.25px",
+        "lineHeight": "29.25px",
+        "padding": "0px",
+        "width": "672px"
+      },
+      "tag": "P",
+      "text": "What each one lets you do, with an example."
+    },
+    {
+      "class": "flex flex-col gap-20 md:gap-28",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "flex",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "112px",
+        "gridTemplateColumns": "none",
+        "height": "1209.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "1232px"
+      },
+      "tag": "DIV",
+      "text": "Up to 10 references, one finished pictureUpload a person, an outfit, a pet and a chair, then describe the scene you want them in. Nano Banana 2.1 takes up to 10 reference images, and Google says it ke"
+    },
+    {
+      "class": "grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "64px",
+        "gridTemplateColumns": "584px 584px",
+        "height": "328.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "1232px"
+      },
+      "tag": "DIV",
+      "text": "Up to 10 references, one finished pictureUpload a person, an outfit, a pet and a chair, then describe the scene you want them in. Nano Banana 2.1 takes up to 10 reference images, and Google says it ke"
+    },
+    {
+      "class": "max-w-xl",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "317px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "DIV",
+      "text": "Up to 10 references, one finished pictureUpload a person, an outfit, a pet and a chair, then describe the scene you want them in. Nano Banana 2.1 takes up to 10 reference images, and Google says it ke"
+    },
+    {
+      "class": "grid size-10 place-items-center rounded-lg border border-border bg-muted/50 text-foreground mb-4",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "7.2px",
+        "display": "grid",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "38.4px",
+        "height": "40px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "40px"
+      },
+      "tag": "DIV",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "24px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "24px"
+      },
+      "tag": "svg",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "circle",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "14px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "14px"
+      },
+      "tag": "rect",
+      "text": ""
+    },
+    {
+      "class": "text-2xl font-semibold tracking-tight text-foreground lg:text-3xl",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "69px",
+        "lineHeight": "34.5px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "H3",
+      "text": "Up to 10 references, one finished picture"
+    },
+    {
+      "class": "mt-4 flex flex-col gap-4",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "flex",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "16px",
+        "gridTemplateColumns": "none",
+        "height": "104px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "DIV",
+      "text": "Upload a person, an outfit, a pet and a chair, then describe the scene you want them in. Nano Banana 2.1 takes up to 10 reference images, and Google says it keeps up to four characters consistent acro"
+    },
+    {
+      "class": "leading-relaxed text-muted-foreground",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "104px",
+        "lineHeight": "26px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "P",
+      "text": "Upload a person, an outfit, a pet and a chair, then describe the scene you want them in. Nano Banana 2.1 takes up to 10 reference images, and Google says it keeps up to four characters consistent acro"
+    },
+    {
+      "class": "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground hover:bg-primary/80 gap-1.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 h-10 rounded-lg px-5 group-data-[surface=acid]/section:bg-black group-data-[surface=acid]/section:text-white group-data-[surface=acid]/section:hover:bg-black/80 mt-8",
+      "css": {
+        "backgroundColor": "rgb(250, 204, 21)",
+        "borderRadius": "7.2px",
+        "display": "inline-flex",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "6px",
+        "gridTemplateColumns": "none",
+        "height": "40px",
+        "lineHeight": "20.3px",
+        "padding": "0px 20px",
+        "width": "173.562px"
+      },
+      "tag": "A",
+      "text": "Add your references"
+    },
+    {
+      "class": "relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm",
+      "css": {
+        "backgroundColor": "rgb(10, 10, 10)",
+        "borderRadius": "11.2px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "328.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "584px"
+      },
+      "tag": "DIV",
+      "text": ""
+    },
+    {
+      "class": "absolute inset-0 h-full w-full object-cover",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "326.9px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "582.4px"
+      },
+      "tag": "IMG",
+      "text": ""
+    },
+    {
+      "class": "grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "64px",
+        "gridTemplateColumns": "584px 584px",
+        "height": "328.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "1232px"
+      },
+      "tag": "DIV",
+      "text": "Text you can read inside the imagePosters, menus, packaging and greeting cards only work when the words are right. Google says Nano Banana 2.1 renders text and infographic layouts more accurately than"
+    },
+    {
+      "class": "max-w-xl lg:order-2 lg:ms-auto",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "282.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "DIV",
+      "text": "Text you can read inside the imagePosters, menus, packaging and greeting cards only work when the words are right. Google says Nano Banana 2.1 renders text and infographic layouts more accurately than"
+    },
+    {
+      "class": "grid size-10 place-items-center rounded-lg border border-border bg-muted/50 text-foreground mb-4",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "7.2px",
+        "display": "grid",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "38.4px",
+        "height": "40px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "40px"
+      },
+      "tag": "DIV",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "24px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "24px"
+      },
+      "tag": "svg",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "text-2xl font-semibold tracking-tight text-foreground lg:text-3xl",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "34.5px",
+        "lineHeight": "34.5px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "H3",
+      "text": "Text you can read inside the image"
+    },
+    {
+      "class": "mt-4 flex flex-col gap-4",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "flex",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "16px",
+        "gridTemplateColumns": "none",
+        "height": "104px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "DIV",
+      "text": "Posters, menus, packaging and greeting cards only work when the words are right. Google says Nano Banana 2.1 renders text and infographic layouts more accurately than Nano Banana 2, so headlines, labe"
+    },
+    {
+      "class": "leading-relaxed text-muted-foreground",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "104px",
+        "lineHeight": "26px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "P",
+      "text": "Posters, menus, packaging and greeting cards only work when the words are right. Google says Nano Banana 2.1 renders text and infographic layouts more accurately than Nano Banana 2, so headlines, labe"
+    },
+    {
+      "class": "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground hover:bg-primary/80 gap-1.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 h-10 rounded-lg px-5 group-data-[surface=acid]/section:bg-black group-data-[surface=acid]/section:text-white group-data-[surface=acid]/section:hover:bg-black/80 mt-8",
+      "css": {
+        "backgroundColor": "rgb(250, 204, 21)",
+        "borderRadius": "7.2px",
+        "display": "inline-flex",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "6px",
+        "gridTemplateColumns": "none",
+        "height": "40px",
+        "lineHeight": "20.3px",
+        "padding": "0px 20px",
+        "width": "187.413px"
+      },
+      "tag": "A",
+      "text": "Write a poster prompt"
+    },
+    {
+      "class": "relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm lg:order-1",
+      "css": {
+        "backgroundColor": "rgb(10, 10, 10)",
+        "borderRadius": "11.2px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "328.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "584px"
+      },
+      "tag": "DIV",
+      "text": ""
+    },
+    {
+      "class": "absolute inset-0 h-full w-full object-cover",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "326.9px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "582.4px"
+      },
+      "tag": "IMG",
+      "text": ""
+    },
+    {
+      "class": "grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "64px",
+        "gridTemplateColumns": "584px 584px",
+        "height": "328.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "1232px"
+      },
+      "tag": "DIV",
+      "text": "Any shape, up to 4KNano Banana 2.1 offers 14 aspect ratios, from a tall 1:8 banner to a wide 8:1 strip, plus the everyday 1:1, 9:16 and 16:9. Google says it fixed the tiling seams very wide and tall i"
+    },
+    {
+      "class": "max-w-xl",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "282.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "DIV",
+      "text": "Any shape, up to 4KNano Banana 2.1 offers 14 aspect ratios, from a tall 1:8 banner to a wide 8:1 strip, plus the everyday 1:1, 9:16 and 16:9. Google says it fixed the tiling seams very wide and tall i"
+    },
+    {
+      "class": "grid size-10 place-items-center rounded-lg border border-border bg-muted/50 text-foreground mb-4",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "7.2px",
+        "display": "grid",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "38.4px",
+        "height": "40px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "40px"
+      },
+      "tag": "DIV",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "24px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "24px"
+      },
+      "tag": "svg",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "inline",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "auto",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "auto"
+      },
+      "tag": "path",
+      "text": ""
+    },
+    {
+      "class": "text-2xl font-semibold tracking-tight text-foreground lg:text-3xl",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "30px",
+        "fontWeight": "600",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "34.5px",
+        "lineHeight": "34.5px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "H3",
+      "text": "Any shape, up to 4K"
+    },
+    {
+      "class": "mt-4 flex flex-col gap-4",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "flex",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "16px",
+        "gridTemplateColumns": "none",
+        "height": "104px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "DIV",
+      "text": "Nano Banana 2.1 offers 14 aspect ratios, from a tall 1:8 banner to a wide 8:1 strip, plus the everyday 1:1, 9:16 and 16:9. Google says it fixed the tiling seams very wide and tall images could show at"
+    },
+    {
+      "class": "leading-relaxed text-muted-foreground",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "104px",
+        "lineHeight": "26px",
+        "padding": "0px",
+        "width": "576px"
+      },
+      "tag": "P",
+      "text": "Nano Banana 2.1 offers 14 aspect ratios, from a tall 1:8 banner to a wide 8:1 strip, plus the everyday 1:1, 9:16 and 16:9. Google says it fixed the tiling seams very wide and tall images could show at"
+    },
+    {
+      "class": "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground hover:bg-primary/80 gap-1.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 h-10 rounded-lg px-5 group-data-[surface=acid]/section:bg-black group-data-[surface=acid]/section:text-white group-data-[surface=acid]/section:hover:bg-black/80 mt-8",
+      "css": {
+        "backgroundColor": "rgb(250, 204, 21)",
+        "borderRadius": "7.2px",
+        "display": "inline-flex",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "gap": "6px",
+        "gridTemplateColumns": "none",
+        "height": "40px",
+        "lineHeight": "20.3px",
+        "padding": "0px 20px",
+        "width": "170.438px"
+      },
+      "tag": "A",
+      "text": "Pick a ratio and size"
+    },
+    {
+      "class": "relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm",
+      "css": {
+        "backgroundColor": "rgb(10, 10, 10)",
+        "borderRadius": "11.2px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "328.5px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "584px"
+      },
+      "tag": "DIV",
+      "text": ""
+    },
+    {
+      "class": "absolute inset-0 h-full w-full object-cover",
+      "css": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "display": "block",
+        "fontSize": "16px",
+        "fontWeight": "460",
+        "gap": "normal",
+        "gridTemplateColumns": "none",
+        "height": "326.9px",
+        "lineHeight": "24px",
+        "padding": "0px",
+        "width": "582.4px"
+      },
+      "tag": "IMG",
+      "text": ""
+    }
+  ]
+}

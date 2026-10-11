@@ -14,6 +14,7 @@ import { ThemeProvider } from 'next-themes';
 
 import { Link } from '@/core/i18n/navigation';
 import { envConfigs } from '@/config';
+import { brandAssetUrl } from '@/config/brand';
 import { isRtlLocale } from '@/config/locale';
 import { getQueryClient } from '@/lib/query-client';
 import { m } from '@/paraglide/messages.js';
@@ -40,7 +41,7 @@ export const Route = createRootRoute({
       meta: [
         { charSet: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: '#191C18' },
+        { name: 'theme-color', content: '#0a0a0a' },
         { name: 'application-name', content: envConfigs.app_name },
         { name: 'apple-mobile-web-app-title', content: envConfigs.app_name },
         {
@@ -57,29 +58,33 @@ export const Route = createRootRoute({
       links: [
         {
           rel: 'icon',
-          href: '/favicon.ico',
+          href: brandAssetUrl('/favicon.ico'),
           type: 'image/x-icon',
           sizes: '16x16 32x32 48x48 96x96',
         },
         {
           rel: 'icon',
-          href: '/favicon-48x48.png',
+          href: brandAssetUrl('/favicon-48x48.png'),
           type: 'image/png',
           sizes: '48x48',
         },
         {
           rel: 'icon',
-          href: '/favicon-96x96.png',
+          href: brandAssetUrl('/favicon-96x96.png'),
           type: 'image/png',
           sizes: '96x96',
         },
-        { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+        {
+          rel: 'icon',
+          href: brandAssetUrl('/favicon.svg'),
+          type: 'image/svg+xml',
+        },
         {
           rel: 'apple-touch-icon',
-          href: '/apple-touch-icon.png',
+          href: brandAssetUrl('/apple-touch-icon.png'),
           sizes: '180x180',
         },
-        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'manifest', href: brandAssetUrl('/site.webmanifest') },
       ],
     };
   },
@@ -94,7 +99,8 @@ function RootComponent() {
     <QueryClientProvider client={getQueryClient()}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="dark"
+        storageKey="banana21-theme-v2"
         enableSystem
         disableTransitionOnChange
       >

@@ -1,0 +1,235 @@
+.banana-prompt-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.banana-prompt-heading h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.banana-prompt-total {
+  color: var(--foreground);
+  font-size: 32px;
+  white-space: nowrap;
+}
+.banana-prompt-total span {
+  display: block;
+  color: var(--assets-muted);
+  font-size: 12px;
+  font-weight: 400;
+  text-align: right;
+}
+.banana-prompt-library .banana-workflow-categories button {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+}
+.banana-workflow-categories small {
+  opacity: 0.65;
+  font-size: 11px;
+}
+.banana-prompt-status {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--assets-muted);
+  font-size: 12px;
+}
+.banana-prompt-status button {
+  text-decoration: underline;
+}
+.banana-prompt-preview {
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+}
+.banana-prompt-library .banana-workflow-image img {
+  object-fit: contain;
+  background: #111;
+}
+.banana-prompt-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  padding: 9px;
+  background: #111c;
+  color: white;
+}
+.banana-prompt-heart.active {
+  color: #facc15;
+}
+.banana-prompt-title {
+  text-align: left;
+  width: 100%;
+}
+.banana-prompt-title h3 {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 42px;
+}
+.banana-prompt-credit {
+  font-size: 11px;
+  color: var(--assets-muted);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.banana-prompt-credit a:hover,
+.banana-workflow-note a,
+.banana-prompt-provenance a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.banana-prompt-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+.banana-prompt-pagination button {
+  padding: 10px 18px;
+  border-radius: 7px;
+  border: 1px solid var(--assets-border);
+}
+.banana-prompt-pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.banana-prompt-library button:focus-visible,
+.banana-prompt-library a:focus-visible,
+.banana-prompt-dialog button:focus-visible {
+  outline: 2px solid #eab308;
+  outline-offset: 3px;
+}
+.banana-prompt-dialog {
+  --assets-border: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --assets-muted: var(--muted-foreground);
+  width: min(1120px, calc(100vw - 32px));
+  max-width: min(1120px, calc(100vw - 32px)) !important;
+  max-height: 90dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+.banana-prompt-detail-image {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #0d0d0d;
+  color: #eee;
+}
+.banana-prompt-detail-image img {
+  object-fit: contain;
+  width: 100%;
+  max-height: 70dvh;
+  height: auto;
+}
+.banana-prompt-detail-image a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+.banana-prompt-detail-body {
+  padding: 36px 24px 24px;
+  min-width: 0;
+}
+.banana-prompt-detail-body [data-slot='dialog-title'] {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.banana-prompt-detail-meta {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.banana-prompt-detail-body pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 260px;
+  overflow-y: auto;
+  font-family: inherit;
+  line-height: 1.7;
+  font-size: 13px;
+  padding: 16px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+.banana-prompt-reference {
+  background: #facc1515;
+  border: 1px solid #facc1540;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.banana-prompt-adapt {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin: 14px 0;
+}
+.banana-prompt-provenance {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 10px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  margin-top: 20px;
+  padding-top: 16px;
+  overflow-wrap: anywhere;
+}
+.banana-prompt-library.is-public {
+  border: 1px solid var(--assets-border);
+  border-radius: 14px;
+  margin: 32px 0;
+}
+@media (max-width: 700px) {
+  .banana-prompt-dialog {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .banana-prompt-detail-image img {
+    max-height: 45dvh;
+  }
+  .banana-prompt-heading {
+    flex-wrap: wrap;
+  }
+  .banana-prompt-total {
+    font-size: 24px;
+  }
+  .banana-prompt-library .banana-workflow-toolbar {
+    flex-wrap: wrap;
+  }
+  .banana-prompt-library .banana-assets-search {
+    flex-basis: 100%;
+  }
+  .banana-prompt-detail-body {
+    padding: 24px 16px;
+  }
+}

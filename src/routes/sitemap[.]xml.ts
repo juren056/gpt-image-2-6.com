@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { envConfigs } from '@/config';
 import { GPT_IMAGE_OPPORTUNITIES } from '@/config/gpt-image-opportunities';
+import { NANO_SITE_PAGES, NANO_SITE_REVIEW_DATE } from '@/config/nano-site';
 import {
   PUBLIC_MODEL_PAGES,
   PUBLIC_TOOL_PAGES,
@@ -28,10 +29,15 @@ const STATIC_PATHS: Array<
     changeFrequency: 'weekly',
     priority: 1,
   },
-  { path: '/pricing', changeFrequency: 'weekly', priority: 0.9 },
+  {
+    path: '/pricing',
+    lastModified: NANO_SITE_REVIEW_DATE,
+    changeFrequency: 'weekly',
+    priority: 0.9,
+  },
   {
     path: '/prompts',
-    lastModified: SITE_LAST_UPDATED,
+    lastModified: NANO_SITE_REVIEW_DATE,
     changeFrequency: 'weekly',
     priority: 0.95,
   },
@@ -65,13 +71,18 @@ const STATIC_PATHS: Array<
     priority: 0.9,
     indexableLocales: ['en'],
   },
-  ...PUBLIC_MODEL_PAGES.map((model) => ({
-    path: model.path,
-    lastModified: model.dateModified ?? SITE_LAST_UPDATED,
-    changeFrequency: 'weekly',
-    priority: 0.9,
-    indexableLocales: ['en'],
-  })),
+  ...PUBLIC_MODEL_PAGES.filter((model) => model.id !== 'nano-banana-2.1').map(
+    (model) => ({
+      path: model.path,
+      lastModified:
+        model.id === 'nano-banana-pro'
+          ? NANO_SITE_REVIEW_DATE
+          : (model.dateModified ?? SITE_LAST_UPDATED),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+      indexableLocales: model.id === 'nano-banana-pro' ? ['en', 'zh'] : ['en'],
+    })
+  ),
   ...Object.values(GPT_IMAGE_OPPORTUNITIES).map((page) => ({
     path: page.path,
     lastModified: '2026-09-29',
@@ -163,7 +174,18 @@ const STATIC_PATHS: Array<
     changeFrequency: 'weekly',
     priority: 0.9,
   },
-  { path: '/blog', changeFrequency: 'daily', priority: 0.8 },
+  ...Object.values(NANO_SITE_PAGES)
+    .filter(
+      (page) =>
+        !['/', '/prompts', '/pricing', '/nano-banana-pro'].includes(page.path)
+    )
+    .map((page) => ({
+      path: page.path,
+      lastModified: NANO_SITE_REVIEW_DATE,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+      indexableLocales: INDEXABLE_LOCALES,
+    })),
   { path: '/privacy-policy', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/terms-of-service', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/refund-policy', changeFrequency: 'monthly', priority: 0.5 },

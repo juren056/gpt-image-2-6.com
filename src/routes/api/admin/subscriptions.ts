@@ -17,7 +17,7 @@ async function GET({ request }: { request: Request }) {
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) return respErr('Unauthorized');
 
-    const isAdmin = await hasPermission(session.user.id, 'admin.*');
+    const isAdmin = await hasPermission(session.user.id, "admin.subscriptions.read");
     if (!isAdmin) return respErr('Forbidden');
 
     await expirePrepaidSubscriptions();

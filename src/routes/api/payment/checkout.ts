@@ -79,7 +79,7 @@ async function POST({ request }: { request: Request }) {
     }
     if (providerKey === 'stripe' && !isStripeCheckoutReady(configs)) {
       return respErr(
-        'Payments are not available yet. Please try again later.',
+        'Payment could not be opened. Please retry or contact support.',
         {
           status: 503,
         }
@@ -104,7 +104,7 @@ async function POST({ request }: { request: Request }) {
       ? `${baseUrl}/auth-callback?redirect=${encodeURIComponent(`${baseUrl}${safeRedirectPath}`)}`
       : `${baseUrl}/settings/billing?purchase=success`;
     const successUrl = `${baseUrl}/api/payment/callback?redirect=${encodeURIComponent(finalRedirect)}`;
-    const cancelUrl = `${baseUrl}/pricing`;
+    const cancelUrl = `${baseUrl}/checkout?product=${encodeURIComponent(product.productId)}&redirect=${encodeURIComponent(safeRedirectPath)}`;
 
     const checkout = await createCheckout({
       userId: session.user.id,

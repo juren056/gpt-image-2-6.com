@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { CalendarClock, Coins, Gift, RefreshCw } from 'lucide-react';
+import { Coins, Image, RefreshCw, Sparkles } from 'lucide-react';
 
-import { tDynamic } from '@/core/i18n/dynamic';
-import { Link } from '@/core/i18n/navigation';
+import { useSession } from '@/core/auth/client';
 import { apiGet, type PageResult } from '@/lib/api-client';
-import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
-import { DataTable, type Column } from '@/components/data-table';
-import { Badge } from '@/components/ui/badge';
-import { buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  AccountActivityRow,
+  AccountBalanceCard,
+  AccountCard,
+  AccountPagination,
+  AccountQueryState,
+  type AccountCreditBalance,
+} from '@/components/banana-account-cards';
 
 type CreditRow = {
   id: string;
@@ -19,52 +21,34 @@ type CreditRow = {
   transactionType: string;
   transactionScene?: string | null;
   credits: number;
-  remainingCredits: number;
-  balanceBefore: number | null;
   balanceAfter: number | null;
   description?: string | null;
-  status: string;
-  expiresAt?: string | null;
   createdAt: string;
 };
-
-const TABS = ['all', 'grant', 'consume'] as const;
-type Tab = (typeof TABS)[number];
-
+type Tab = 'all' | 'grant' | 'consume';
 const PAGE_SIZE = 20;
-
-type CreditBalance = {
-  balance: number;
-  subscriptionCredits: number;
-  purchasedCredits: number;
-  promotionalCredits: number;
-  nextExpiresAt?: string | null;
-};
-
 function CreditsPage() {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
   const [tab, setTab] = useState<Tab>('all');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
     return () => clearTimeout(timer);
   }, [search]);
-
   useEffect(() => {
     setPage(1);
   }, [tab, debouncedSearch]);
-
   const balanceQuery = useQuery({
-    queryKey: ['user-credits', 'balance'],
-    queryFn: () => apiGet<CreditBalance>('/api/credits'),
+    queryKey: ['user-credits', userId, 'balance'],
+    enabled: !!userId,
+    queryFn: () => apiGet<AccountCreditBalance>('/api/credits'),
   });
-  const balance = balanceQuery.data?.balance ?? null;
-  const balanceLoaded = !balanceQuery.isPending;
-
   const query = useQuery({
-    queryKey: ['user-credits', page, tab, debouncedSearch],
+    queryKey: ['user-credits', userId, page, tab, debouncedSearch],
+    enabled: !!userId,
     queryFn: () => {
       const params = new URLSearchParams({
         page: String(page),
@@ -74,199 +58,143 @@ function CreditsPage() {
       if (debouncedSearch) params.set('search', debouncedSearch);
       return apiGet<PageResult<CreditRow>>(`/api/user/credits?${params}`);
     },
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData, previousQuery) =>
+      previousQuery?.queryKey[1] === userId ? previousData : undefined,
   });
-  const rows = query.data?.items ?? [];
-  const total = query.data?.total ?? 0;
-
-  const columns: Column<CreditRow>[] = [
-    {
-      header: m['settings.credits.transaction_no'](),
-      cell: (r) => <span className="font-mono text-xs">{r.transactionNo}</span>,
-    },
-    {
-      header: m['settings.credits.description_col'](),
-      cell: (r) => <span>{r.description || '—'}</span>,
-    },
-    {
-      header: m['settings.credits.type'](),
-      cell: (r) => (
-        <Badge
-          variant={r.transactionType === 'consume' ? 'secondary' : 'default'}
-        >
-          {r.transactionType}
-        </Badge>
-      ),
-    },
-    {
-      header: m['settings.credits.scene'](),
-      cell: (r) => r.transactionScene || '—',
-    },
-    {
-      header: m['settings.credits.balance_before'](),
-      className: 'text-right',
-      cell: (r) => (
-        <span className="text-muted-foreground text-sm tabular-nums">
-          {r.balanceBefore ?? '—'}
-        </span>
-      ),
-    },
-    {
-      header: m['settings.credits.credits'](),
-      className: 'text-right',
-      cell: (r) => (
-        <span
-          className={cn(
-            'font-medium tabular-nums',
-            r.transactionType === 'consume' && 'text-muted-foreground'
-          )}
-        >
-          {r.credits > 0 ? `+${r.credits}` : r.credits}
-        </span>
-      ),
-    },
-    {
-      header: m['settings.credits.remaining'](),
-      className: 'text-right',
-      cell: (r) => (
-        <span className="text-sm font-medium tabular-nums">
-          {r.balanceAfter ?? '—'}
-        </span>
-      ),
-    },
-    {
-      header: m['settings.credits.status'](),
-      cell: (r) => r.status,
-    },
-    {
-      header: m['settings.credits.expires_at'](),
-      cell: (r) => (
-        <span className="text-muted-foreground text-sm">
-          {r.expiresAt ? new Date(r.expiresAt).toLocaleDateString() : '—'}
-        </span>
-      ),
-    },
-    {
-      header: m['settings.credits.date'](),
-      cell: (r) => (
-        <span className="text-muted-foreground text-sm">
-          {new Date(r.createdAt).toLocaleDateString()}
-        </span>
-      ),
-    },
+  const tabs = [
+    { value: 'all' as const, label: m['settings.credits.tab_all']() },
+    { value: 'grant' as const, label: m['banana.account.earned']() },
+    { value: 'consume' as const, label: m['banana.account.spent']() },
   ];
-
   return (
-    <div className="space-y-6 p-4 sm:p-6">
-      <div>
-        <h1 className="text-2xl font-bold">{m['settings.credits.title']()}</h1>
-        <p className="text-muted-foreground">
-          {m['settings.credits.description']()}
-        </p>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Card>
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle>{m['settings.credits.balance']()}</CardTitle>
-            <Coins className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">
-              {balanceLoaded ? (balance ?? 0) : '…'}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle>
-              {m['settings.credits.subscription_balance']()}
-            </CardTitle>
-            <RefreshCw className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">
-              {balanceLoaded
-                ? (balanceQuery.data?.subscriptionCredits ?? 0)
-                : '…'}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle>{m['settings.credits.purchased_balance']()}</CardTitle>
-            <Gift className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">
-              {balanceLoaded ? (balanceQuery.data?.purchasedCredits ?? 0) : '…'}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle>{m['settings.credits.next_expiry']()}</CardTitle>
-            <CalendarClock className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-lg font-semibold">
-              {balanceQuery.data?.nextExpiresAt
-                ? new Date(balanceQuery.data.nextExpiresAt).toLocaleDateString()
-                : m['settings.credits.no_expiry']()}
-            </p>
-            <Link
-              href="/pricing"
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'sm' }),
-                'gap-2'
-              )}
-            >
-              <Coins className="size-4" />
-              {m['settings.credits.purchase']()}
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="border-border flex gap-1 overflow-x-auto overflow-y-hidden border-b">
-        {TABS.map((tb) => (
-          <button
-            key={tb}
-            onClick={() => setTab(tb)}
-            className={cn(
-              '-mb-px border-b-2 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors',
-              tab === tb
-                ? 'border-primary text-foreground'
-                : 'text-muted-foreground hover:text-foreground border-transparent'
-            )}
-          >
-            {tDynamic(`settings.credits.tab_${tb}`)}
-          </button>
-        ))}
-      </div>
-
-      <Card>
-        <CardContent>
-          <DataTable
-            columns={columns}
-            data={rows}
-            total={total}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-            rowKey={(r) => r.id}
-            emptyText={m['settings.credits.no_records']()}
-            search={search}
-            onSearchChange={setSearch}
-            onRefresh={() => query.refetch()}
-            loading={query.isFetching}
+    <div className="banana-account-pages">
+      <h1 className="sr-only">{m['settings.credits.title']()}</h1>
+      {balanceQuery.data ? (
+        <AccountBalanceCard
+          balance={balanceQuery.data}
+          title={m['banana.account.current_balance']()}
+          purchaseLabel={m['settings.credits.purchase']()}
+          labels={{
+            purchased: m['banana.account.purchased'](),
+            promotional: m['banana.account.free_tier'](),
+            subscription: m['banana.account.subscription'](),
+          }}
+          expiryLabel={m['settings.credits.next_expiry']()}
+          noExpiryLabel={m['settings.credits.no_expiry']()}
+        />
+      ) : (
+        <AccountCard>
+          <AccountQueryState
+            loading={balanceQuery.isPending}
+            error={balanceQuery.isError}
+            loadingLabel={m['settings.profile.loading']()}
+            errorLabel={m['banana.account.load_failed']()}
+            retryLabel={m['common.error.retry']()}
+            onRetry={() => {
+              void balanceQuery.refetch();
+            }}
           />
-        </CardContent>
-      </Card>
+        </AccountCard>
+      )}
+      <AccountCard>
+        <div className="banana-account-card-heading">
+          <div>
+            <h2>{m['banana.account.recent_activity']()}</h2>
+            <p className="banana-account-card-description">
+              {m['banana.account.credit_changes']()}
+            </p>
+          </div>
+          <div
+            className="banana-account-segments"
+            aria-label={m['settings.credits.type']()}
+          >
+            {tabs.map((item) => (
+              <button
+                key={item.value}
+                type="button"
+                aria-pressed={tab === item.value}
+                onClick={() => setTab(item.value)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="banana-account-list-toolbar">
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder={m['common.search.placeholder']()}
+            aria-label={m['common.search.placeholder']()}
+            className="banana-account-search"
+          />
+          <button
+            type="button"
+            className="banana-account-secondary"
+            disabled={query.isFetching}
+            aria-label={m['common.table.refresh']()}
+            onClick={() => {
+              void query.refetch();
+              void balanceQuery.refetch();
+            }}
+          >
+            <RefreshCw size={16} />
+          </button>
+        </div>
+        <AccountQueryState
+          loading={query.isPending}
+          error={query.isError}
+          loadingLabel={m['settings.profile.loading']()}
+          errorLabel={m['banana.account.load_failed']()}
+          retryLabel={m['common.error.retry']()}
+          onRetry={() => {
+            void query.refetch();
+          }}
+        />
+        {!query.isError && query.data && (
+          <div aria-busy={query.isFetching}>
+            {query.data.items.length ? (
+              query.data.items.map((row) => (
+                <AccountActivityRow
+                  key={row.id}
+                  icon={
+                    row.transactionScene === 'ai_generation' ? (
+                      <Image size={18} />
+                    ) : row.credits > 0 ? (
+                      <Sparkles size={18} />
+                    ) : (
+                      <Coins size={18} />
+                    )
+                  }
+                  title={
+                    row.description || row.transactionScene || row.transactionNo
+                  }
+                  date={new Date(row.createdAt).toLocaleDateString()}
+                  change={row.credits}
+                  balance={row.balanceAfter}
+                  balanceLabel={m['settings.credits.balance']()}
+                />
+              ))
+            ) : (
+              <p className="banana-account-empty">
+                {m['settings.credits.no_records']()}
+              </p>
+            )}
+            <AccountPagination
+              page={page}
+              total={query.data.total}
+              pageSize={PAGE_SIZE}
+              previousLabel={m['common.table.previous']()}
+              nextLabel={m['common.table.next']()}
+              onPageChange={setPage}
+              busy={query.isFetching}
+            />
+          </div>
+        )}
+      </AccountCard>
     </div>
   );
 }
-
 export const Route = createFileRoute('/settings/credits')({
   component: CreditsPage,
 });

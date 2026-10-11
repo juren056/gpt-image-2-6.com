@@ -13,7 +13,7 @@ async function GET({ request }: { request: Request }) {
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) return respErr('Unauthorized');
 
-    const isAdmin = await hasPermission(session.user.id, 'admin.*');
+    const isAdmin = await hasPermission(session.user.id, "admin.payments.read");
     if (!isAdmin) return respErr('Forbidden');
 
     const { searchParams } = new URL(request.url);

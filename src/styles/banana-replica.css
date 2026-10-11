@@ -1,0 +1,303 @@
+/* Reference: nanobanana21.com, inspected at 390 / 768 / 1440 px. */
+.banana-app,
+.nano-site {
+  --font-body: ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+  --background: #0a0a0a;
+  --foreground: #f8f8f8;
+  --card: oklch(0.17 0 0);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.22 0 0);
+  --muted-foreground: oklch(0.72 0.01 95);
+  --primary: #facc15;
+  --primary-foreground: #171717;
+  --border: oklch(1 0 0 / 0.12);
+  --input: oklch(1 0 0 / 0.16);
+  --ring: #facc15;
+  --popover: #181818;
+  --popover-foreground: var(--foreground);
+  --accent: #262626;
+  --accent-foreground: var(--foreground);
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-weight: 460;
+  letter-spacing: -0.011em;
+}
+.light :is(.banana-app, .nano-site) {
+  --background: #fcfcfc;
+  --foreground: #191919;
+  --card: #fff;
+  --muted: #f0f0ee;
+  --muted-foreground: #656359;
+  --border: #00000022;
+  --input: #00000029;
+  --popover: #fff;
+  --accent: #efefef;
+}
+:is(.banana-app, .nano-site) :is(h1, h2, h3, h4) {
+  font-family: var(--font-body);
+}
+:is(.banana-app, .nano-site)
+  :is(a, button, summary, input, textarea, select):focus-visible {
+  outline: 2px solid #facc15;
+  outline-offset: 3px;
+}
+.banana-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+.banana-ambient {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+.banana-wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(
+    100% 100% at 0 0,
+    #303030 0%,
+    var(--background) 100%
+  );
+}
+.banana-wash > span {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  transform: skew(45deg);
+  background: linear-gradient(#facc15, transparent);
+}
+.banana-wash > span:nth-child(1) {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 20%,
+    transparent 36%,
+    #000 55%,
+    #00000021 67%,
+    #000 78%,
+    transparent 97%
+  );
+}
+.banana-wash > span:nth-child(2) {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 11%,
+    #000 25%,
+    #0000008c 41%,
+    #00000021 67%,
+    #000 78%,
+    transparent 97%
+  );
+}
+.banana-wash > span:nth-child(3) {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 9%,
+    #000 20%,
+    #0000008c 28%,
+    #0000006c 40%,
+    #000 48%,
+    #0004 54%,
+    #00000021 78%,
+    #000 88%,
+    transparent 97%
+  );
+}
+.banana-wash > span:nth-child(4) {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 17%,
+    #0000008c 26%,
+    #000 35%,
+    transparent 47%,
+    #00000021 69%,
+    #000 79%,
+    transparent 97%
+  );
+}
+.banana-wash > span:nth-child(5) {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 20%,
+    #0000008c 27%,
+    #000 42%,
+    transparent 48%,
+    #00000021 67%,
+    #000 74% 82%,
+    #00000078 88%,
+    transparent 97%
+  );
+}
+.banana-wash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(55% 40% at 0 0, #facc1533, transparent 70%);
+}
+.banana-wash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background: radial-gradient(circle at 1px 1px, #f8f8f880 1px, transparent 0);
+  background-size: 20px 20px;
+}
+.light .banana-wash {
+  background: radial-gradient(100% 100% at 0 0, #e3ddbc, var(--background));
+}
+.banana-hero {
+  padding: 16px 24px 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.banana-hero-badge {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card) 45%, transparent);
+  border-radius: 7px;
+  padding: 2px 12px;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--muted-foreground);
+}
+.banana-hero h1 {
+  margin: 12px 0 0;
+  max-width: 896px;
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.banana-hero h1 span {
+  color: var(--primary);
+}
+.light .banana-hero h1 span {
+  color: #806800;
+}
+.banana-hero p {
+  max-width: 680px;
+  margin: 14px 0 0;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+.banana-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 7px;
+  padding: 10px 20px;
+  background: #facc15;
+  color: #171717;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+.banana-button:hover {
+  background: #e7bc13;
+}
+.banana-hero .banana-button {
+  margin-top: 32px;
+}
+.banana-generator-wrap {
+  padding-top: 0;
+  padding-bottom: 56px;
+  scroll-margin-top: 24px;
+}
+.banana-section-heading {
+  font-size: 48px;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.banana-eyebrow {
+  color: #facc15;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.banana-paper {
+  --background: #f5f3ee;
+  --foreground: #191919;
+  --muted-foreground: #656359;
+  --border: #00000029;
+  --card: #ffffff80;
+  background: var(--background);
+  color: var(--foreground);
+}
+.banana-acid {
+  --foreground: #191919;
+  --muted-foreground: #39352c;
+  --border: #00000029;
+  background: #facc15;
+  color: var(--foreground);
+}
+@media (max-width: 1023px) {
+  .banana-hero h1 {
+    font-size: 44px;
+  }
+  .banana-section-heading {
+    font-size: 36px;
+  }
+}
+@media (max-width: 767px) {
+  .banana-hero h1 {
+    font-size: 36px;
+    line-height: 1.15;
+  }
+}
+@media (max-width: 639px) {
+  .banana-container {
+    padding-inline: 20px;
+  }
+  .banana-hero {
+    padding: 16px 20px 24px;
+  }
+  .banana-hero-badge {
+    font-size: 12px;
+    line-height: 19px;
+    max-width: 100%;
+  }
+  .banana-hero h1 {
+    font-size: 26px;
+    line-height: 1.25;
+    margin-top: 12px;
+  }
+  .banana-hero p {
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .banana-hero .banana-button {
+    margin-top: 24px;
+  }
+  .banana-generator-wrap {
+    padding-bottom: 40px;
+  }
+  .banana-section-heading {
+    font-size: 30px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.banana-app, .nano-site) * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

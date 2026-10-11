@@ -1,0 +1,714 @@
+.banana-account-shell,
+.banana-account-menu,
+.banana-upgrade-dialog,
+.banana-reward-dialog,
+.banana-account-mobile-sidebar,
+.banana-account-loading {
+  --account-bg: #fafafa;
+  --account-sidebar: #f5f5f5;
+  --account-panel: #fff;
+  --account-border: #dedee2;
+  --account-fg: #18181b;
+  --account-muted: #71717a;
+  --account-hover: #eeeeef;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  color: var(--account-fg);
+}
+.dark .banana-account-shell,
+.dark .banana-account-menu,
+.dark .banana-upgrade-dialog,
+.dark .banana-reward-dialog,
+.dark .banana-account-mobile-sidebar,
+.dark .banana-account-loading {
+  --account-bg: #18181b;
+  --account-sidebar: #101012;
+  --account-panel: #18181b;
+  --account-border: #303033;
+  --account-fg: #fafafa;
+  --account-muted: #a1a1aa;
+  --account-hover: #27272a;
+}
+.banana-account-shell {
+  display: flex;
+  min-height: 100dvh;
+  background: var(--account-bg);
+  font-size: 14px;
+  line-height: 1.45;
+  --primary: #facc15;
+  --primary-foreground: #18181b;
+  --background: var(--account-bg);
+  --foreground: var(--account-fg);
+  --muted-foreground: var(--account-muted);
+  --border: var(--account-border);
+  --card: var(--account-panel);
+  --popover: var(--account-panel);
+  --font-serif: ui-sans-serif, system-ui, sans-serif;
+}
+.banana-account-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 224px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  background: var(--account-sidebar);
+  padding: 16px 16px 12px;
+  overflow: hidden;
+  transition:
+    width 0.18s,
+    padding 0.18s;
+}
+.banana-account-brand {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 26px;
+}
+.banana-account-sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.banana-account-brand > a {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  font-weight: 650;
+  font-size: 15px;
+}
+.banana-account-brand img {
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.banana-account-brand span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.banana-account-brand button,
+.banana-account-header > button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 5px;
+}
+.banana-account-brand button:hover,
+.banana-account-header > button:hover {
+  background: var(--account-hover);
+}
+.banana-account-nav {
+  display: grid;
+  gap: 2px;
+}
+.banana-account-nav > a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.banana-account-nav > a:hover,
+.banana-account-nav > a[aria-current='page'] {
+  background: var(--account-hover);
+}
+.banana-account-nav small {
+  margin-left: auto;
+  background: #facc15;
+  color: #161616;
+  border-radius: 20px;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.banana-account-recent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 8px 8px;
+  font-size: 11px;
+  color: var(--account-muted);
+}
+.banana-account-sidebar-bottom {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 24px;
+  display: grid;
+  gap: 12px;
+}
+.banana-account-credit-panel {
+  border: 1px solid var(--account-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--account-panel);
+  padding: 14px 14px 0;
+}
+.banana-account-credit-panel > span {
+  font-size: 11px;
+  color: var(--account-muted);
+}
+.banana-account-credit-panel p {
+  margin: 10px 0 14px;
+  font-size: 11px;
+  color: var(--account-muted);
+}
+.banana-account-credit-panel p strong {
+  font-size: 30px;
+  line-height: 1;
+  color: var(--account-fg);
+  margin-right: 4px;
+  font-weight: 650;
+}
+.banana-account-credit-panel > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: calc(100% + 28px);
+  margin-left: -14px;
+  padding: 10px 14px;
+  background: #facc1514;
+  border-top: 1px solid #facc1520;
+  font-size: 12px;
+  font-weight: 600;
+}
+.banana-account-credit-panel > button svg {
+  background: #facc15;
+  color: #18181b;
+  box-sizing: content-box;
+  padding: 4px;
+  border-radius: 6px;
+}
+.banana-account-reward-entry {
+  text-align: left;
+  min-height: 30px;
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--account-muted);
+  border-radius: 6px;
+}
+.banana-account-reward-entry:hover {
+  background: var(--account-hover);
+  color: var(--account-fg);
+}
+.banana-account-inset {
+  min-width: 0;
+  flex: 1;
+  margin: 12px 12px 0 0;
+}
+.banana-account-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--account-border);
+}
+.banana-account-header > span {
+  font-size: 15px;
+  white-space: nowrap;
+}
+.banana-account-tabs {
+  display: flex;
+  margin-left: auto;
+  border: 1px solid var(--account-border);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 2px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.banana-account-tabs > a {
+  padding: 4px 12px;
+  border-radius: 5px;
+  color: var(--account-muted);
+  white-space: nowrap;
+  font-size: 14px;
+}
+.banana-account-tabs > a:hover {
+  color: var(--account-fg);
+}
+.banana-account-tabs > a[aria-current='page'] {
+  background: var(--account-fg);
+  color: var(--account-panel);
+}
+.banana-account-main {
+  min-width: 0;
+}
+.banana-account-main h1,
+.banana-account-main h2,
+.banana-account-main h3 {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.banana-account-shell--collapsed .banana-account-sidebar {
+  width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+}
+.banana-account-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  outline: none;
+  border-radius: 8px;
+  padding: 4px;
+  min-height: 36px;
+}
+.banana-account-trigger:focus-visible {
+  box-shadow: 0 0 0 2px #facc15;
+}
+.banana-account-avatar {
+  width: 32px;
+  height: 32px;
+  background: #00c878;
+  color: white;
+  font-size: 13px;
+}
+.banana-account-trigger-balance {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.banana-account-trigger-balance svg {
+  color: #facc15;
+}
+.banana-account-trigger--sidebar {
+  width: 100%;
+  padding: 4px 0;
+  text-align: left;
+}
+.banana-account-identity {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 2px;
+}
+.banana-account-identity strong,
+.banana-account-identity small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.banana-account-identity strong {
+  font-size: 12px;
+  font-weight: 550;
+}
+.banana-account-identity small {
+  font-size: 10px;
+  color: var(--account-muted);
+}
+.banana-account-menu {
+  width: 280px;
+  max-width: calc(100vw - 24px);
+  padding: 4px;
+  background: var(--account-panel);
+  color: var(--account-fg);
+  border: 1px solid var(--account-border);
+  box-shadow: 0 14px 44px #0003;
+  border-radius: 8px;
+}
+.banana-account-menu-identity {
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  font-weight: 400;
+}
+.banana-account-menu-identity strong {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--account-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.banana-account-menu-identity span {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--account-muted);
+}
+.banana-account-plan {
+  padding: 10px;
+  margin: 0 2px 8px;
+  border-radius: 8px;
+  border: 1px solid #facc1550;
+  background: #facc1514;
+}
+.banana-account-plan > span {
+  font-size: 10px;
+  font-family: ui-monospace, monospace;
+  color: var(--account-muted);
+}
+.banana-account-plan p {
+  font-size: 12px;
+  margin: 8px 0;
+}
+.banana-account-plan > .banana-account-plan-upgrade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  background: #facc15;
+  color: #18181b;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 500;
+}
+.banana-account-menu [data-slot='dropdown-menu-item'],
+.banana-account-menu [data-slot='dropdown-menu-sub-trigger'] {
+  min-height: 40px;
+  padding: 8px 10px;
+  gap: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+.banana-account-menu [data-slot='dropdown-menu-item']:focus,
+.banana-account-menu [data-slot='dropdown-menu-sub-trigger']:focus {
+  background: var(--account-hover);
+  color: var(--account-fg);
+}
+.banana-account-menu [data-slot='dropdown-menu-item'] svg,
+.banana-account-menu [data-slot='dropdown-menu-sub-trigger'] svg {
+  width: 16px;
+  height: 16px;
+  color: var(--account-muted);
+}
+.banana-account-menu-trailing {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--account-muted);
+}
+.banana-account-menu [data-slot='dropdown-menu-separator'] {
+  background: var(--account-border);
+  margin: 6px 4px;
+}
+.banana-account-language {
+  width: 190px;
+}
+.banana-account-menu .banana-account-plan-upgrade {
+  min-height: 32px;
+  font-size: 12px;
+  background: #facc15;
+  color: #18181b;
+}
+.banana-account-menu .banana-account-plan-upgrade:focus {
+  background: #eab308;
+  color: #18181b;
+}
+.banana-account-menu .banana-account-plan-upgrade svg {
+  color: #18181b;
+}
+.banana-account-header > .banana-account-mobile-toggle {
+  display: none;
+}
+.banana-account-language [aria-current='true'] {
+  background: #facc1514;
+  color: var(--account-fg);
+}
+.banana-upgrade-dialog {
+  width: min(1160px, calc(100vw - 32px));
+  max-width: min(1160px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 28px 24px;
+  background: var(--account-panel);
+  border: 1px solid var(--account-border);
+  border-radius: 14px;
+  gap: 24px;
+  color: var(--account-fg);
+}
+.banana-upgrade-heading {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+.banana-upgrade-heading > svg {
+  color: #facc15;
+}
+.banana-upgrade-heading [data-slot='dialog-title'] {
+  font-size: 26px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+.banana-upgrade-heading [data-slot='dialog-description'] {
+  color: var(--account-muted);
+  font-size: 13px;
+}
+.banana-upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 16px;
+}
+.banana-upgrade-card {
+  border: 1px solid var(--account-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.banana-upgrade-card--popular {
+  border-color: #facc15;
+}
+.banana-upgrade-card-inner {
+  padding: 22px 20px;
+}
+.banana-upgrade-popular {
+  text-align: center;
+  padding: 7px;
+  background: #facc15;
+  color: #18181b;
+  font-size: 12px;
+}
+.banana-upgrade-card h3 {
+  font-size: 20px;
+  font-weight: 550;
+}
+.banana-upgrade-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 18px 0 2px;
+}
+.banana-upgrade-price strong {
+  font-size: 40px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+.banana-upgrade-price span {
+  font-size: 14px;
+  color: var(--account-muted);
+}
+.banana-upgrade-billing {
+  font-size: 11px;
+  min-height: 34px;
+  color: var(--account-muted);
+  margin-bottom: 20px;
+}
+.banana-upgrade-card button {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--account-border);
+  background: var(--account-hover);
+  border-radius: 7px;
+  font-size: 13px;
+}
+.banana-upgrade-card button:disabled {
+  cursor: not-allowed;
+  color: var(--account-muted);
+  font-size: 11px;
+}
+.banana-account-primary,
+.banana-upgrade-card button.banana-account-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  background: #facc15;
+  color: #18181b;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 7px;
+  border: 0;
+}
+.banana-account-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.banana-upgrade-card button.banana-account-primary:disabled {
+  color: #18181b;
+}
+.banana-upgrade-credit-amount {
+  font-size: 13px;
+  margin-top: 18px;
+}
+.banana-upgrade-credit-meter {
+  height: 10px;
+  margin: 10px 0 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--account-fg) 0 2px,
+    transparent 2px 5px
+  );
+  opacity: 0.25;
+}
+.banana-upgrade-card ul {
+  display: grid;
+  gap: 10px;
+  color: var(--account-muted);
+  font-size: 12px;
+}
+.banana-upgrade-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.banana-upgrade-card li svg {
+  flex-shrink: 0;
+  color: var(--account-fg);
+}
+.banana-upgrade-footer {
+  display: grid;
+  text-align: center;
+  justify-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--account-muted);
+}
+.banana-upgrade-footer button {
+  font-size: 12px;
+}
+.banana-upgrade-footer a:hover,
+.banana-upgrade-footer button:hover {
+  color: var(--account-fg);
+}
+.banana-reward-dialog {
+  background: var(--account-panel);
+  color: var(--account-fg);
+  padding: 24px;
+  gap: 16px;
+}
+.banana-reward-dialog [data-slot='dialog-description'] {
+  color: var(--account-muted);
+  line-height: 1.5;
+}
+.banana-reward-streak {
+  font-weight: 600;
+}
+.banana-reward-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.banana-reward-days li {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 10px 3px;
+  border: 1px solid var(--account-border);
+  border-radius: 7px;
+}
+.banana-reward-days small {
+  font-size: 9px;
+  color: var(--account-muted);
+}
+.banana-reward-days strong {
+  font-size: 14px;
+}
+.banana-reward-days li.is-complete {
+  background: #facc1514;
+  border-color: #facc1550;
+}
+.banana-account-loading {
+  background: var(--account-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 100dvh;
+  font-size: 14px;
+}
+.banana-account-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #facc15;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: account-spin 0.8s linear infinite;
+}
+@keyframes account-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.banana-account-mobile-sidebar {
+  background: var(--account-sidebar);
+  color: var(--account-fg);
+  width: 264px !important;
+  padding: 16px;
+  gap: 0;
+  max-width: calc(100vw - 48px);
+  overflow-y: auto;
+}
+.banana-account-mobile-sidebar .banana-account-brand {
+  padding-right: 25px;
+}
+.banana-account-mobile-sidebar .banana-account-sidebar-bottom {
+  padding-bottom: 4px;
+}
+@media (max-width: 767px) {
+  .banana-account-header > .banana-account-mobile-toggle {
+    display: grid;
+  }
+  .banana-account-header > .banana-account-desktop-toggle {
+    display: none;
+  }
+  .banana-account-sidebar {
+    display: none;
+  }
+  .banana-account-inset {
+    margin: 0;
+  }
+  .banana-account-header {
+    gap: 8px;
+    padding: 8px 12px;
+    min-height: 48px;
+    flex-wrap: wrap;
+  }
+  .banana-account-header > span {
+    font-size: 14px;
+  }
+  .banana-account-tabs {
+    padding: 3px;
+    gap: 0;
+  }
+  .banana-account-tabs > a {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  .banana-upgrade-dialog {
+    padding: 24px 16px;
+    gap: 20px;
+  }
+  .banana-upgrade-heading [data-slot='dialog-title'] {
+    font-size: 21px;
+  }
+  .banana-upgrade-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .banana-upgrade-card-inner {
+    padding: 20px;
+  }
+  .banana-upgrade-card--popular {
+    order: -1;
+  }
+  .banana-upgrade-billing {
+    min-height: 0;
+  }
+  .banana-upgrade-price strong {
+    font-size: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .banana-account-sidebar {
+    transition: none;
+  }
+  .banana-account-spinner {
+    animation: none;
+  }
+}
