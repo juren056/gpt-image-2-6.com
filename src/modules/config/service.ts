@@ -4,6 +4,7 @@ import { db } from '@/core/db';
 import { envConfigs } from '@/config';
 import { config } from '@/config/db/schema';
 import { decryptSecret, encryptSecret, isEncryptedSecret } from '@/lib/crypto';
+import { validateImageModerationSettings } from '@/lib/image-moderation-config';
 
 import { getSettings } from './settings';
 
@@ -125,6 +126,7 @@ export function isMaskedConfigValue(value: string): boolean {
  * encrypted at rest — see SECRET_SETTING_NAMES / SECRET_KEY_PATTERN.
  */
 export async function saveConfigs(configs: ConfigMap) {
+  validateImageModerationSettings(configs);
   const entries = await Promise.all(
     Object.entries(configs)
       .filter(

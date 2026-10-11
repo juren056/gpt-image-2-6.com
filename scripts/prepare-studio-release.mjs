@@ -11,7 +11,7 @@ import {
 import path from 'node:path';
 
 const root = process.cwd();
-const build = path.join(root, '.output');
+const build = path.resolve(process.env.NITRO_OUTPUT_DIR || '.output');
 const config = JSON.parse(
   await readFile(path.join(build, 'server/wrangler.json'), 'utf8')
 );
@@ -27,6 +27,14 @@ assert.equal(
   '342759c0-6eec-465f-a80c-717c500ab546'
 );
 assert.equal(config.d1_databases[0].database_name, 'nanobanana21pro-db');
+assert(
+  config.r2_buckets?.some(
+    (bucket) =>
+      bucket.binding === 'IMAGE_BUCKET' &&
+      bucket.bucket_name === 'nanobanana21pro-uploads'
+  ),
+  'The production image upload bucket must be retained in every release'
+);
 const catalog = JSON.parse(
   await readFile(path.join(build, 'public/data/prompt-library-v1.json'), 'utf8')
 ).data;
@@ -43,8 +51,12 @@ for (const file of [
   'src/components/studio-tool-stage.tsx',
   'src/lib/studio-desk.ts',
   'src/styles/studio-desk.css',
+  'docs/homepage-baseline.json',
 ])
   hash.update(await readFile(file));
+// A checkout/backend-only change must also produce a new immutable release.
+// The built entry references the versioned server/client chunks for this build.
+hash.update(await readFile(path.join(build, 'server/index.mjs')));
 const releaseId = hash.digest('hex').slice(0, 12);
 const destination = path.join(
   root,

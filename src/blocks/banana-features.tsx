@@ -1,3 +1,8 @@
+import {
+  HOMEPAGE_EXAMPLES,
+  homepageExampleSelection,
+  homepageImage,
+} from '@/config/homepage-examples';
 import { getLocale } from '@/paraglide/runtime.js';
 import { bananaText } from '@/blocks/banana-messages';
 import {
@@ -5,8 +10,7 @@ import {
   type BananaFeature,
 } from '@/components/banana-features';
 
-const posterPrompt =
-  'Design a warm cafe poster with the exact headline "FRESH COFFEE" and the subheading "Every morning, made for you". Use large readable lettering, a cream background, one illustrated espresso cup and generous space around the text. Keep all spelling exact.';
+const posterPrompt = HOMEPAGE_EXAMPLES[1].prompt;
 
 export function BananaFeatures() {
   const locale = getLocale();
@@ -18,8 +22,8 @@ export function BananaFeatures() {
       body: text('references.body'),
       cta: text('references.cta'),
       href: '/editor',
-      selection: { mode: 'edit', model: 'nano-banana-pro' },
-      image: '/images/workflows/feature-references.svg',
+      selection: homepageExampleSelection(HOMEPAGE_EXAMPLES[0]),
+      image: homepageImage('feature-references'),
       imageAlt: text('references.alt'),
     },
     {
@@ -28,13 +32,8 @@ export function BananaFeatures() {
       body: text('text.body'),
       cta: text('text.cta'),
       href: `/?prompt=${encodeURIComponent(posterPrompt)}#tool-generator`,
-      selection: {
-        mode: 'generate',
-        model: 'nano-banana-pro',
-        prompt: posterPrompt,
-        focus: 'prompt',
-      },
-      image: '/images/workflows/feature-text.svg',
+      selection: homepageExampleSelection(HOMEPAGE_EXAMPLES[1]),
+      image: homepageImage('feature-text'),
       imageAlt: text('text.alt'),
     },
     {
@@ -43,8 +42,11 @@ export function BananaFeatures() {
       body: text('ratios.body'),
       cta: text('ratios.cta'),
       href: '/#tool-generator',
-      selection: { focus: 'shape' },
-      image: '/images/workflows/feature-ratios.svg',
+      selection: {
+        ...homepageExampleSelection(HOMEPAGE_EXAMPLES[2]),
+        focus: 'shape',
+      },
+      image: homepageImage('feature-ratios'),
       imageAlt: text('ratios.alt'),
     },
   ];

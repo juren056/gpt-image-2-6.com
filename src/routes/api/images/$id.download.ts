@@ -33,7 +33,19 @@ async function GET({
     });
     if (limited) return limited;
 
-    const image = await getOwnedImageDownload(params.id, session.user.id);
+    const requestedIndex = new URL(request.url).searchParams.get('index');
+    if (
+      requestedIndex !== null &&
+      (!/^(0|[1-9]\d*)$/.test(requestedIndex) ||
+        !Number.isSafeInteger(Number(requestedIndex)))
+    ) {
+      return respErr('Invalid image index', { status: 400 });
+    }
+    const image = await getOwnedImageDownload(
+      params.id,
+      session.user.id,
+      requestedIndex === null ? 0 : Number(requestedIndex)
+    );
     if (!image) {
       return respErr('Image not found', { status: 404 });
     }

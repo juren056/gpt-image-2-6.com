@@ -194,6 +194,7 @@ export default defineConfig({
     }),
     viteReact(),
     nitro({
+      buildDir: process.env.NITRO_BUILD_DIR || undefined,
       output: process.env.NITRO_OUTPUT_DIR
         ? { dir: process.env.NITRO_OUTPUT_DIR }
         : undefined,

@@ -6,14 +6,18 @@ import { pathToFileURL } from 'node:url';
 // Reuse that service after the complete Worker build instead: this renders the
 // same app, router and locale middleware without a live Worker or user cookies.
 const origin = process.env.VITE_APP_URL || 'https://nanobanana21pro.com';
-const publicDir = resolve('.output/public');
+const publicDir = resolve(process.env.NITRO_OUTPUT_DIR || '.output', 'public');
 const paths = JSON.parse(
   await readFile('src/config/public-prerender-paths.json', 'utf8')
 );
 const app = (
   await import(
-    pathToFileURL(resolve('node_modules/.nitro/vite/services/ssr/index.js'))
-      .href
+    pathToFileURL(
+      resolve(
+        process.env.NITRO_BUILD_DIR || 'node_modules/.nitro',
+        'vite/services/ssr/index.js'
+      )
+    ).href
   )
 ).default;
 

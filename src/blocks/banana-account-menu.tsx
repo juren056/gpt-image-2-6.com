@@ -24,19 +24,10 @@ import {
 } from '@/components/banana-account-menu';
 import { BananaUpgrade } from '@/components/banana-upgrade';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '@/components/ui/dialog';
-
-type DailyReward = {
-  claimedToday: boolean;
-  streak: number;
-  cycleDay: number;
-  nextReward: number;
-  cycleRewards: number[];
-};
+  DailyRewardCard,
+  type DailyRewardState,
+} from '@/components/daily-reward-card';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 export function AccountUpgrade({
   open,
@@ -121,14 +112,14 @@ export function AccountDailyReward({
   const { data: session } = useSession();
   const reward = useQuery({
     queryKey: ['daily-check-in', session?.user?.id],
-    queryFn: () => apiGet<DailyReward>('/api/check-in'),
+    queryFn: () => apiGet<DailyRewardState>('/api/check-in'),
     enabled: open && !!session?.user,
   });
   const claim = useMutation({
     mutationFn: () => {
       if (!session?.user)
         return Promise.reject(new Error(m['common.sign.sign_in_title']()));
-      return apiPost<DailyReward>('/api/check-in');
+      return apiPost<DailyRewardState>('/api/check-in');
     },
     onSuccess: (data) => {
       queryClient.setQueryData(['daily-check-in', session?.user?.id], data);
@@ -140,54 +131,50 @@ export function AccountDailyReward({
   });
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="banana-account banana-reward-dialog">
-        <DialogTitle>{m['account.reward.title']()}</DialogTitle>
-        <DialogDescription>
-          {m['account.reward.description']()}
-        </DialogDescription>
-        {reward.isPending ? (
-          <p role="status">{m['account.shell.loading']()}</p>
-        ) : reward.isError ? (
-          <div>
-            <p role="alert">{m['account.reward.error']()}</p>
-            <button
-              type="button"
-              className="banana-account-primary"
-              onClick={() => reward.refetch()}
-            >
-              {m['common.error.retry']()}
-            </button>
-          </div>
-        ) : (
-          <>
-            <p className="banana-reward-streak">
-              {m['account.reward.streak']({ days: reward.data.streak })}
-            </p>
-            <ol className="banana-reward-days">
-              {reward.data.cycleRewards.map((amount, index) => (
-                <li
-                  key={index}
-                  className={index < reward.data.cycleDay ? 'is-complete' : ''}
-                >
-                  <small>{m['account.reward.day']({ day: index + 1 })}</small>
-                  <strong>+{amount}</strong>
-                </li>
-              ))}
-            </ol>
-            <button
-              type="button"
-              className="banana-account-primary"
-              disabled={claim.isPending || reward.data.claimedToday}
-              onClick={() => claim.mutate()}
-            >
-              {reward.data.claimedToday
-                ? m['account.reward.claimed']()
-                : m['account.reward.claim']({
-                    credits: reward.data.nextReward,
-                  })}
-            </button>
-          </>
-        )}
+      <DialogContent className="banana-account banana-reward-dialog daily-reward-dialog">
+        <DailyRewardCard
+          state={reward.data}
+          loading={reward.isPending}
+          error={reward.isError}
+          pending={claim.isPending}
+          onClaim={() => claim.mutate()}
+          onRetry={() => reward.refetch()}
+          historyDates={(reward.data?.history ?? []).slice(0, 5).map((entry) =>
+            new Intl.DateTimeFormat(getLocale(), {
+              month: 'short',
+              day: 'numeric',
+              timeZone: 'UTC',
+            }).format(new Date(`${entry.date}T00:00:00Z`))
+          )}
+          copy={{
+            title: m['growth.rewards.checkin_title'](),
+            description: m['growth.rewards.checkin_description']({
+              credits: reward.data?.cycleTotal ?? 33,
+            }),
+            streak: m['growth.rewards.streak']({
+              days: reward.data?.streak ?? 0,
+            }),
+            cycleTotal: m['growth.rewards.cycle_total']({
+              credits: reward.data?.cycleTotal ?? 33,
+            }),
+            progress: m['growth.rewards.cycle_progress'](),
+            days: Array.from({ length: 7 }, (_, index) =>
+              m['growth.rewards.day']({ day: index + 1 })
+            ),
+            history: m['growth.rewards.history_title'](),
+            historyEmpty: m['growth.rewards.history_empty'](),
+            creditUnit: m['growth.rewards.credit_unit'](),
+            claim: m['account.reward.claim']({
+              credits: reward.data?.nextReward ?? 3,
+            }),
+            claimed: m['account.reward.claimed'](),
+            completed: m['admin.users.credits_granted'](),
+            loading: m['account.shell.loading'](),
+            error: m['account.reward.error'](),
+            retry: m['common.error.retry'](),
+            rules: m['account.reward.description'](),
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

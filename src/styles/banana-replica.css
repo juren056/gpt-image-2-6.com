@@ -1,8 +1,8 @@
 /* Reference: nanobanana21.com, inspected at 390 / 768 / 1440 px. */
 .banana-app,
 .nano-site {
-  --font-body: ui-sans-serif, system-ui, sans-serif;
-  --font-display: ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-ui);
+  --font-display: var(--font-body);
   --background: #0a0a0a;
   --foreground: #f8f8f8;
   --card: oklch(0.17 0 0);
@@ -217,7 +217,7 @@
 .banana-generator-wrap {
   padding-top: 0;
   padding-bottom: 56px;
-  scroll-margin-top: 24px;
+  scroll-margin-top: 80px;
 }
 .banana-section-heading {
   font-size: 48px;

@@ -184,12 +184,12 @@ export function PricingTable({
 
                 {/* Price */}
                 <div className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <span className="text-primary font-serif text-4xl font-semibold tracking-tight sm:text-5xl">
+                  <span className="text-primary font-serif text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
                     {plan.price}
                   </span>
                   {plan.originalPrice && (
                     <span
-                      className="text-muted-foreground text-base line-through decoration-2"
+                      className="text-muted-foreground text-base tabular-nums line-through decoration-2"
                       aria-label={`${m['landing.pricing.original_price']()} ${plan.originalPrice}`}
                     >
                       {plan.originalPrice}

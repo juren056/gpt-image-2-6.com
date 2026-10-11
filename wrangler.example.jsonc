@@ -37,5 +37,7 @@
   //
   // Other optional bindings — uncomment when needed:
   // "kv_namespaces":  [{ "binding": "CACHE",  "id": "..." }],
-  // "r2_buckets":     [{ "binding": "BUCKET", "bucket_name": "..." }]
+  // Image uploads on Workers require a durable bucket (never a local disk fallback).
+  // For this site's production release, preserve the binding below:
+  // "r2_buckets": [{ "binding": "IMAGE_BUCKET", "bucket_name": "nanobanana21pro-uploads" }]
 }

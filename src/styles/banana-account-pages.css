@@ -27,9 +27,9 @@
 .banana-account-section-title {
   font-size: 14px;
   line-height: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
   color: var(--muted-foreground);
   margin: 0;
 }

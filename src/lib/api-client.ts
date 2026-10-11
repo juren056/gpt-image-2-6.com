@@ -27,14 +27,16 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
     ...init,
     headers: {
-      ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(init?.body && !(init.body instanceof FormData)
+        ? { 'Content-Type': 'application/json' }
+        : {}),
       ...init?.headers,
     },
   });
   const json = await res
     .json()
     .catch(() => ({ code: -1, message: res.statusText || 'Request failed' }));
-  if (json.code !== 0) {
+  if (!res.ok || json.code !== 0) {
     throw new ApiError(
       json.code ?? -1,
       json.message || 'Request failed',
@@ -53,6 +55,10 @@ export const apiPost = <T = void>(url: string, body?: unknown) =>
     method: 'POST',
     body: body == null ? undefined : JSON.stringify(body),
   });
+
+/** Let the browser set the multipart boundary. Uses the same error envelope as JSON requests. */
+export const apiPostForm = <T>(url: string, body: FormData) =>
+  request<T>(url, { method: 'POST', body });
 
 export const apiPut = <T = void>(url: string, body?: unknown) =>
   request<T>(url, { method: 'PUT', body: JSON.stringify(body) });

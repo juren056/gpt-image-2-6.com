@@ -830,6 +830,14 @@ export function getSettings(): Setting[] {
 
     // ─── AI / OpenAI ─────────────────────────────────────────────────
     {
+      name: 'content_safety_openai_enabled',
+      title: 'OpenAI image review',
+      type: 'switch',
+      defaultValue: 'true',
+      group: 'openai',
+      tab: 'ai',
+    },
+    {
       name: 'openai_base_url',
       title: 'Base URL',
       type: 'text',

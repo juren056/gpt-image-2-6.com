@@ -30,8 +30,12 @@ async function POST({ request }: { request: Request }) {
           : [],
         size: typeof body.size === 'string' ? body.size : undefined,
         quality: typeof body.quality === 'string' ? body.quality : undefined,
+        // Forward unknown values to validation; do not silently default an
+        // invalid high-resolution request to a cheaper resolution.
+        resolution: body.resolution,
         outputFormat:
           typeof body.outputFormat === 'string' ? body.outputFormat : undefined,
+        outputCount: body.outputCount,
         maskUrl: typeof body.maskUrl === 'string' ? body.maskUrl : undefined,
         conversationParts: Array.isArray(body.conversationParts)
           ? (body.conversationParts as Array<Record<string, unknown>>)

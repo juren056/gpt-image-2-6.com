@@ -41,7 +41,7 @@ export function AuthMarketingShell({
   ];
 
   return (
-    <main className="relative min-h-svh overflow-hidden bg-[#f6f3ea] px-4 py-8 text-slate-950 sm:px-6 lg:py-12 dark:bg-slate-950 dark:text-slate-50">
+    <main className="nano-auth relative min-h-svh overflow-hidden bg-[#f6f3ea] px-4 py-8 text-slate-950 sm:px-6 lg:py-12 dark:bg-slate-950 dark:text-slate-50">
       <div className="pointer-events-none absolute inset-0 [background-image:radial-gradient(circle_at_1px_1px,rgba(79,70,229,.15)_1px,transparent_0)] [background-size:28px_28px] opacity-60" />
       <div className="relative mx-auto grid min-h-[calc(100svh-6rem)] max-w-6xl overflow-hidden rounded-[2rem] border border-black/8 bg-white shadow-2xl shadow-indigo-950/10 lg:grid-cols-[1.05fr_.95fr] dark:border-white/10 dark:bg-slate-900">
         <aside className="relative hidden overflow-hidden bg-indigo-950 p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">

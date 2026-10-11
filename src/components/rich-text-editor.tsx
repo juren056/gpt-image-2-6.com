@@ -31,6 +31,7 @@ import MarkdownIt from 'markdown-it';
 import { toast } from 'sonner';
 import TurndownService from 'turndown';
 
+import { uploadImageFile } from '@/lib/image-upload-client';
 import { cn } from '@/lib/utils';
 import { markdownStyles } from '@/components/markdown-content';
 import { Button } from '@/components/ui/button';
@@ -290,21 +291,10 @@ export function RichTextEditor({
     if (!editor || !files?.length || uploadingRef.current) return;
     uploadingRef.current = true;
     try {
-      const formData = new FormData();
-      formData.append('files', files[0]);
-      const res = await fetch('/api/storage/upload-image', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await res.json();
-      const url = data?.data?.urls?.[0];
-      if (data.code === 0 && url) {
-        editor.chain().focus().setImage({ src: url }).run();
-      } else {
-        toast.error(data.message || 'Upload failed');
-      }
-    } catch {
-      toast.error('Upload failed');
+      const url = await uploadImageFile(files[0]);
+      editor.chain().focus().setImage({ src: url }).run();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Upload failed');
     } finally {
       uploadingRef.current = false;
       if (fileInputRef.current) fileInputRef.current.value = '';

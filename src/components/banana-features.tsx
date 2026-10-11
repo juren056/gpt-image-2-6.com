@@ -83,8 +83,8 @@ export function BananaFeaturesSection({
                     <img
                       src={feature.image}
                       alt={feature.imageAlt}
-                      width={720}
-                      height={540}
+                      width={1280}
+                      height={720}
                       loading="lazy"
                       decoding="async"
                     />

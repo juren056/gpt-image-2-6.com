@@ -1200,6 +1200,28 @@ export function DedicatedToolWorkspace({
     toolId
   );
   const allowsMultiple = ['T11', 'T14'].includes(toolId);
+  // Keep defaults stable during uploads/removals. Recreating this array on each
+  // render makes the uploader restore a deleted example over a new local file.
+  const uploadDefaults = useMemo(
+    () =>
+      exampleVersion
+        ? [tool.image]
+        : allowsMultiple && initial.uploadUrls?.length
+          ? initial.uploadUrls
+          : toolId === 'T11' && initial.layers?.length
+            ? initial.layers.map((layer) => layer.src)
+            : handoffPreview
+              ? [handoffPreview]
+              : undefined,
+    [
+      exampleVersion,
+      tool.image,
+      allowsMultiple,
+      initial,
+      toolId,
+      handoffPreview,
+    ]
+  );
 
   return (
     <div
@@ -1246,17 +1268,7 @@ export function DedicatedToolWorkspace({
                 (allowsMultiple ? 'Upload images' : 'Start with an image')
               }
               emptyHint="PNG, JPG or WebP, up to 10MB each."
-              defaultPreviews={
-                exampleVersion
-                  ? [tool.image]
-                  : allowsMultiple && initial.uploadUrls?.length
-                    ? initial.uploadUrls
-                    : toolId === 'T11' && initial.layers?.length
-                      ? initial.layers.map((layer) => layer.src)
-                      : handoffPreview
-                        ? [handoffPreview]
-                        : undefined
-              }
+              defaultPreviews={uploadDefaults}
               onChange={(items) => {
                 setUploads(items);
                 const url = items.find(
@@ -1267,7 +1279,20 @@ export function DedicatedToolWorkspace({
             />
             <button
               type="button"
-              onClick={() => setExampleVersion((version) => version + 1)}
+              onClick={() => {
+                const url = new URL(tool.image, window.location.origin).href;
+                setHandoffPreview(url);
+                setUploads([
+                  {
+                    id: `example-${toolId}`,
+                    preview: url,
+                    url,
+                    status: 'uploaded',
+                  },
+                ]);
+                studioRef.current?.onSource?.(url);
+                setExampleVersion((version) => version + 1);
+              }}
               className="text-primary min-h-10 text-xs font-semibold"
             >
               {studio?.copy.tryExample || 'Use an example image'}

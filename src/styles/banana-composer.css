@@ -1,121 +1,382 @@
 .banana-composer {
-  max-width: 820px;
-  margin: clamp(48px, 12vh, 120px) auto 0;
-  padding: 24px;
+  --composer-gold: #facc15;
+  --composer-surface: var(--account-panel, var(--card));
+  --composer-field: #fff;
+  --composer-line: #dcdce2;
+  --composer-muted: #63636e;
+  --composer-shadow: 0 12px 40px #18181b0a;
+  max-width: 880px;
+  margin: clamp(28px, 6vh, 64px) auto 0;
+  padding: 24px 28px 40px;
   text-align: center;
 }
+.dark .banana-composer {
+  --composer-field: #222225;
+  --composer-line: #3a3a40;
+  --composer-muted: #b4b4be;
+  --composer-shadow: 0 18px 50px #0003;
+}
+.banana-composer__emblem {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 18px;
+  border-radius: 18px;
+  background: var(--composer-gold);
+  color: #18181b;
+  box-shadow: 0 4px 0 #c69908;
+  transform: rotate(-7deg);
+}
+.banana-composer__emblem svg {
+  transform: rotate(7deg);
+}
 .banana-composer h2 {
-  font-size: 28px;
-  font-weight: 650;
-  letter-spacing: -0.03em;
+  color: var(--foreground);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
 }
 .banana-composer__intro {
-  color: var(--muted-foreground);
-  margin-top: 12px;
+  color: var(--composer-muted);
+  margin: 12px auto 0;
+  max-width: 660px;
   font-size: 14px;
+  line-height: 1.65;
 }
 .banana-composer__form {
-  margin-top: 24px;
-  border: 1px solid var(--border);
+  margin-top: 28px;
+  border: 1px solid var(--composer-line);
+  border-top: 3px solid var(--composer-gold);
   border-radius: 24px;
-  padding: 16px;
-  background: var(--muted);
+  padding: 20px;
+  background: var(--composer-field);
+  box-shadow: var(--composer-shadow);
   text-align: left;
+  transition:
+    border-color 160ms,
+    box-shadow 160ms;
+}
+.banana-composer__form:focus-within {
+  border-color: #c7a009;
+  box-shadow:
+    0 0 0 3px #facc151c,
+    var(--composer-shadow);
 }
 .banana-composer__form textarea {
+  display: block;
   width: 100%;
-  min-height: 84px;
+  min-height: 100px;
+  max-height: 360px;
   background: transparent;
+  color: var(--foreground);
   outline: none;
   border: 0;
   resize: vertical;
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 1.65;
 }
 .banana-composer__form textarea::placeholder {
-  color: var(--muted-foreground);
+  color: var(--composer-muted);
 }
 .banana-composer__controls {
   display: flex;
   gap: 10px;
   align-items: center;
-  color: var(--muted-foreground);
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--composer-line);
+}
+.banana-composer__model {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--composer-line);
+  border-radius: 12px;
+  background: var(--composer-surface);
+}
+.banana-composer__model > svg {
+  position: absolute;
+  left: 12px;
+  color: #9b7600;
+  pointer-events: none;
+}
+.dark .banana-composer__model > svg {
+  color: var(--composer-gold);
+}
+.banana-composer__model > svg:last-child {
+  left: auto;
+  right: 10px;
+  color: var(--composer-muted);
 }
 .banana-composer__controls select {
-  max-width: 220px;
+  appearance: none;
+  width: 218px;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 0 30px 0 36px;
+  border-radius: 12px;
   background: transparent;
+  color: var(--foreground);
   font-size: 12px;
+  cursor: pointer;
 }
 .banana-composer__controls option {
-  background: var(--card);
+  background: var(--composer-surface);
+  color: var(--foreground);
 }
 .banana-composer__attach {
   display: grid;
   place-items: center;
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
+  height: 42px;
+  width: 42px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  color: #006779;
+  background: #d8f6fc;
+  border: 1px solid #9ee5f1;
+}
+.dark .banana-composer__attach {
+  color: #123b44;
+  background: #67e8f9;
+  border-color: #67e8f9;
 }
 .banana-composer__send {
   display: grid;
   place-items: center;
   margin-left: auto;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: #111;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: var(--composer-gold);
+  color: #18181b;
+  box-shadow: 0 3px 0 #ad8706;
+  cursor: pointer;
+  transition:
+    transform 160ms,
+    background 160ms;
 }
 .banana-composer__send:disabled {
-  opacity: 0.3;
+  background: #c6ad42;
+  color: #40381b;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.dark .banana-composer__send:disabled {
+  background: #6b591b;
+  color: #c9b765;
+}
+.banana-composer__send:not(:disabled):hover {
+  background: #ffda35;
+  transform: translateY(-1px);
 }
 .banana-composer__note {
-  color: var(--muted-foreground);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--composer-muted);
   font-size: 11px;
-  margin-top: 12px;
+  line-height: 1.6;
+  margin-top: 14px;
+}
+.banana-composer__note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 .banana-composer__recipes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 26px;
+  text-align: left;
+}
+.banana-composer__recipes button {
+  --recipe-ink: #846000;
+  --recipe-bright: #facc15;
+  --recipe-tint: #fff6cd;
+  --recipe-dark-tint: #3b3217;
+  --recipe-color: var(--recipe-ink);
+  --recipe-bg: var(--recipe-tint);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 68px;
+  border: 1px solid var(--composer-line);
+  border-radius: 16px;
+  padding: 12px;
+  background: var(--composer-surface);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 160ms,
+    background 160ms;
+}
+.banana-composer__recipes button[data-recipe='poster'] {
+  --recipe-ink: #b64219;
+  --recipe-bright: #ff9468;
+  --recipe-tint: #ffede5;
+  --recipe-dark-tint: #462b21;
+}
+.banana-composer__recipes button[data-recipe='portrait'] {
+  --recipe-ink: #7148b5;
+  --recipe-bright: #c3a0ff;
+  --recipe-tint: #f1eaff;
+  --recipe-dark-tint: #322640;
+}
+.banana-composer__recipes button[data-recipe='edit'] {
+  --recipe-ink: #006b73;
+  --recipe-bright: #5ee3df;
+  --recipe-tint: #dcf9f7;
+  --recipe-dark-tint: #193b3b;
+}
+.banana-composer__recipes button[data-recipe='science'] {
+  --recipe-ink: #2565ad;
+  --recipe-bright: #79baff;
+  --recipe-tint: #e5f2ff;
+  --recipe-dark-tint: #20344a;
+}
+.banana-composer__recipes button[data-recipe='story'] {
+  --recipe-ink: #b33472;
+  --recipe-bright: #ff90be;
+  --recipe-tint: #ffe9f2;
+  --recipe-dark-tint: #452436;
+}
+.dark .banana-composer__recipes button {
+  --recipe-color: var(--recipe-bright);
+  --recipe-bg: var(--recipe-dark-tint);
+}
+.banana-composer__recipe-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  color: #18181b;
+  background: var(--recipe-bright);
+}
+.banana-composer__recipe-title {
+  flex: 1;
+}
+.banana-composer__recipes button > svg {
+  flex-shrink: 0;
+  color: var(--recipe-color);
+}
+.banana-composer__recipes button:hover,
+.banana-composer__recipes button[aria-pressed='true'] {
+  border-color: var(--recipe-color);
+  background: var(--recipe-bg);
+}
+.banana-composer__recipes
+  button[aria-pressed='true']
+  .banana-composer__recipe-icon {
+  background: var(--recipe-bright);
+  color: #18181b;
+}
+.banana-composer__library {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--composer-muted);
   margin-top: 24px;
 }
-.banana-composer__recipes button {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 12px;
-  font-size: 12px;
-  transition: background 0.15s;
-}
-.banana-composer__recipes button:hover {
-  background: var(--muted);
-}
-.banana-composer__library {
-  font-size: 12px;
-  color: var(--muted-foreground);
-  margin-top: 22px;
-}
 .banana-composer__library a {
-  border: 1px solid var(--border);
-  padding: 6px 10px;
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  min-height: 40px;
+  border-radius: 11px;
   color: var(--foreground);
-  margin-left: 8px;
-  display: inline-block;
+  background: #facc1518;
+}
+.banana-composer__library a svg {
+  color: #9b7600;
+}
+.dark .banana-composer__library a svg {
+  color: var(--composer-gold);
+}
+.banana-composer :is(button, a, select):focus-visible {
+  outline: 2px solid #b08b00;
+  outline-offset: 3px;
+}
+.dark .banana-composer :is(button, a, select):focus-visible {
+  outline-color: var(--composer-gold);
 }
 .banana-account-generator {
   padding: 24px;
 }
 @media (max-width: 640px) {
   .banana-composer {
-    margin-top: 32px;
-    padding: 20px;
+    margin-top: 18px;
+    padding: 20px 16px 32px;
   }
-  .banana-composer h2 {
-    font-size: 24px;
+  .banana-composer__emblem {
+    width: 44px;
+    height: 44px;
+    border-radius: 15px;
+    margin-bottom: 16px;
+  }
+  .banana-composer__form {
+    margin-top: 22px;
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .banana-composer__form textarea {
+    font-size: 16px;
+  }
+  .banana-composer__recipes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .banana-composer__recipes button {
+    min-height: 70px;
+    padding: 10px;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .banana-composer__recipes button > svg {
+    display: none;
+  }
+  .banana-composer__recipe-icon {
+    width: 30px;
+    height: 34px;
+    border-radius: 9px;
+  }
+  .banana-composer__model {
+    flex: 1;
+  }
+  .banana-composer__controls {
+    gap: 8px;
+  }
+  .banana-composer__controls select {
+    width: 100%;
+    min-width: 0;
+    padding-left: 30px;
+    font-size: 11px;
+  }
+  .banana-composer__model > svg:first-child {
+    left: 8px;
+    width: 14px;
   }
   .banana-account-generator {
     padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .banana-composer * {
+    transition: none !important;
   }
 }

@@ -1,12 +1,6 @@
+import type { ReactNode } from 'react';
 import type { CheckoutProduct } from '@/types/checkout';
-import {
-  ArrowLeft,
-  Check,
-  CreditCard,
-  Loader2,
-  LockKeyhole,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowLeft, Loader2, LockKeyhole, ShieldCheck } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 
@@ -21,6 +15,7 @@ type Props = {
   error?: string;
   signedIn: boolean;
   ready: boolean;
+  paymentForm?: ReactNode;
   copy: Record<string, string>;
   onCheckout: () => void;
   onRetry: () => void;
@@ -30,12 +25,12 @@ export function BananaCheckout({
   logo,
   locale,
   product,
-  email,
   loading,
   pending,
   error,
   signedIn,
   ready,
+  paymentForm,
   copy,
   onCheckout,
   onRetry,
@@ -114,30 +109,12 @@ export function BananaCheckout({
             <strong>{money}</strong>
             <span>{billing}</span>
           </div>
-          <div className="checkout-form">
-            <label>
-              {copy.email}
-              <div className="checkout-email">{email || copy.signin}</div>
-            </label>
-            <h3>{copy.method}</h3>
-            <div className="checkout-method">
-              <Check size={18} />
-              <CreditCard size={22} />
-              <span>
-                {product?.paymentMethods.includes('alipay')
-                  ? copy.alipay
-                  : copy.card}
-              </span>
-              <span className="checkout-method-brand">Stripe</span>
-            </div>
-            <p className="checkout-coupon">{copy.coupon}</p>
-            <div className="checkout-due">
-              <span>{copy.total}</span>
-              <strong>{money}</strong>
-            </div>
+          <div
+            className={`checkout-form${paymentForm ? 'checkout-form-embedded' : ''}`}
+          >
             {error && (
               <p className="checkout-error" role="alert">
-                {error}
+                {error} <button onClick={onRetry}>{copy.retry}</button>
               </p>
             )}
             {!loading && !product && (
@@ -151,18 +128,23 @@ export function BananaCheckout({
                 <button onClick={onRetry}>{copy.retry}</button>
               </p>
             )}
-            <button
-              className="checkout-pay"
-              disabled={loading || pending || !product || !ready}
-              onClick={onCheckout}
-            >
-              {pending || loading ? (
+            {paymentForm}
+            {(pending || loading) && (
+              <p className="checkout-loading" role="status">
                 <Loader2 size={18} className="animate-spin" />
-              ) : (
+                {copy.working}
+              </p>
+            )}
+            {!signedIn && !loading && (
+              <button
+                className="checkout-pay"
+                disabled={loading || pending || !product || !ready}
+                onClick={onCheckout}
+              >
                 <LockKeyhole size={17} />
-              )}
-              {pending ? copy.working : signedIn ? copy.pay : copy.signin}
-            </button>
+                {copy.signin}
+              </button>
+            )}
             <p className="checkout-security">
               <LockKeyhole size={14} />
               {copy.secure}

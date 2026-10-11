@@ -43,6 +43,8 @@ export type CreativeModelDefinition = {
   maxReferences: number;
   sizes: readonly string[];
   qualities: readonly string[];
+  resolutions?: readonly string[];
+  resolutionCredits?: Readonly<Record<string, number>>;
   sizeParameter: 'image_size' | 'aspect_ratio';
   credits: Partial<Record<CreativeOperation, number>>;
   productionEnabled: boolean;
@@ -68,11 +70,30 @@ export const CREATIVE_MODELS: readonly CreativeModelDefinition[] = [
     operations: ['generate', 'edit'],
     maxPromptLength: 32000,
     maxReferences: 14,
-    sizes: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3'],
+    sizes: [
+      'auto',
+      '21:9',
+      '16:9',
+      '3:2',
+      '4:3',
+      '5:4',
+      '1:1',
+      '4:5',
+      '3:4',
+      '2:3',
+      '9:16',
+      '4:1',
+      '1:4',
+      '8:1',
+      '1:8',
+    ],
     qualities: [],
+    resolutions: ['1K', '2K', '4K'],
+    resolutionCredits: { '1K': 8, '2K': 12, '4K': 28 },
     sizeParameter: 'aspect_ratio',
-    // Fixed single-image, provider-default 1K request. Larger resolutions are
-    // intentionally not exposed at this quote.
+    // Default 1K stays at 8 credits. Higher resolutions have explicit quotes;
+    // Fal's measured 2K/4K costs are approximately 1.5x/3.4x the 1K cost.
+    // https://fal.ai/nano-banana-2.1 (checked 2026-10-11)
     credits: { generate: 8, edit: 8 },
     productionEnabled: true,
     commercialUse: 'approved',
@@ -393,6 +414,38 @@ export function requireCreativeModel(id: string, operation: CreativeOperation) {
   return model;
 }
 
+// These Fal Nano Banana schemas support num_images for generation and edits.
+// https://fal.ai/models/google/nano-banana-2.1/api
+// https://fal.ai/models/fal-ai/nano-banana-2/api
+// https://fal.ai/models/fal-ai/nano-banana-pro/api
+// https://fal.ai/models/google/nano-banana-2-lite/api
+export function getCreativeOutputLimit(modelId: string): number {
+  return [
+    'nano-banana-2.1',
+    'nano-banana-2',
+    'nano-banana-pro',
+    'nano-banana-2-lite',
+  ].includes(modelId)
+    ? 4
+    : 1;
+}
+
+export function getCreativeUnitCredits(
+  model: CreativeModelDefinition,
+  operation: CreativeOperation,
+  resolution?: string
+) {
+  if (model.resolutions?.length) {
+    const selected = resolution ?? model.resolutions[0];
+    if (!model.resolutions.includes(selected))
+      throw new Error(`Unsupported resolution for ${model.label}`);
+    return model.resolutionCredits?.[selected];
+  }
+  if (resolution !== undefined)
+    throw new Error(`${model.label} uses its default output resolution`);
+  return model.credits[operation];
+}
+
 export function validateCreativeRequest(input: {
   model: string;
   operation: string;
@@ -400,10 +453,24 @@ export function validateCreativeRequest(input: {
   imageUrls?: unknown;
   size?: unknown;
   quality?: unknown;
+  resolution?: unknown;
   outputFormat?: unknown;
+  outputCount?: unknown;
 }) {
   const operation = input.operation as CreativeOperation;
   const model = requireCreativeModel(input.model, operation);
+  const outputCount = input.outputCount === undefined ? 1 : input.outputCount;
+  const outputLimit = getCreativeOutputLimit(model.id);
+  if (
+    typeof outputCount !== 'number' ||
+    !Number.isInteger(outputCount) ||
+    outputCount < 1 ||
+    outputCount > outputLimit
+  ) {
+    throw new Error(
+      `Output count must be an integer between 1 and ${outputLimit}`
+    );
+  }
   const prompt = (input.prompt || '').trim();
   if (!prompt || prompt.length > model.maxPromptLength) {
     throw new Error(
@@ -449,7 +516,12 @@ export function validateCreativeRequest(input: {
   if (!providerModel) {
     throw new Error(`${model.label} has no ${operation} endpoint`);
   }
-  const credits = model.credits[operation];
+  if (input.resolution !== undefined && typeof input.resolution !== 'string')
+    throw new Error('Resolution must be a string');
+  const resolution = model.resolutions?.length
+    ? ((input.resolution as string | undefined) ?? model.resolutions[0])
+    : (input.resolution as string | undefined);
+  const credits = getCreativeUnitCredits(model, operation, resolution);
   if (!credits) {
     throw new Error(`No billing rule exists for ${model.label} ${operation}`);
   }
@@ -460,8 +532,10 @@ export function validateCreativeRequest(input: {
     imageUrls,
     size,
     quality,
+    resolution,
     outputFormat,
     providerModel,
-    credits,
+    outputCount,
+    credits: credits * outputCount,
   };
 }

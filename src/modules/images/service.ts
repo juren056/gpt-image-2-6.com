@@ -76,6 +76,8 @@ import {
   shouldQuarantineGeneratedOutput,
   type SafetyDecision,
 } from '@/modules/images/content-safety';
+import { buildCreativeImageOptions } from '@/lib/creative-image-options';
+import { imageModerationConfig as moderationConfig } from '@/lib/image-moderation-config';
 import {
   MATCHA_COLORIZATION_STRENGTH,
   shouldRunMatchaColorization,
@@ -95,14 +97,6 @@ function allowedSafetyMetadata(decision: SafetyDecision) {
     safetyConfidence: decision.confidence,
     safetyReviewStatus: 'not_required',
     safetyAction: 'allowed',
-  };
-}
-
-function moderationConfig(configs: ConfigMap) {
-  return {
-    apiKey: configs.openai_api_key || '',
-    baseUrl: configs.openai_base_url || 'https://api.openai.com/v1',
-    model: configs.content_safety_openai_model || 'omni-moderation-latest',
   };
 }
 
@@ -698,7 +692,12 @@ async function assertPaidGenerationAllowed(userId: string) {
   }
 }
 
-export async function getOwnedImageDownload(taskId: string, userId: string) {
+export async function getOwnedImageDownload(
+  taskId: string,
+  userId: string,
+  imageIndex = 0
+) {
+  if (!Number.isSafeInteger(imageIndex) || imageIndex < 0) return null;
   const task = await findTask(taskId);
   if (
     !task ||
@@ -710,7 +709,7 @@ export async function getOwnedImageDownload(taskId: string, userId: string) {
     return null;
   }
 
-  const imageUrl = parseTaskResult(task).images[0]?.imageUrl;
+  const imageUrl = parseTaskResult(task).images[imageIndex]?.imageUrl;
   if (!imageUrl) return null;
 
   return {
@@ -890,7 +889,9 @@ export async function runCreativeImage(params: {
   imageUrls?: string[];
   size?: string;
   quality?: string;
+  resolution?: unknown;
   outputFormat?: string;
+  outputCount?: unknown;
   maskUrl?: string;
   conversationParts?: Array<Record<string, unknown>>;
 }) {
@@ -904,25 +905,7 @@ export async function runCreativeImage(params: {
     );
   }
   const provider = resolveProvider(configs, request.model.provider);
-  const options: Record<string, unknown> = {
-    ...(request.size ? { [request.model.sizeParameter]: request.size } : {}),
-    ...(request.quality ? { quality: request.quality } : {}),
-    output_format: request.outputFormat,
-    num_images: 1,
-  };
-  if (request.model.id === 'nano-banana-2.1') {
-    options.resolution = '1K';
-    options.limit_generations = true;
-    options.safety_tolerance = '4';
-  }
-  if (request.providerModel.startsWith('bytedance/seedream/')) {
-    // Fal image endpoints that expose this option default to true. Sending it
-    // explicitly prevents a future endpoint/default change from disabling it.
-    options.enable_safety_checker = true;
-  }
-  if (request.imageUrls.length) {
-    options.image_urls = request.imageUrls;
-  }
+  const options = buildCreativeImageOptions(request);
   if (params.conversationParts && request.model.provider === 'gemini') {
     options.conversation_parts = params.conversationParts;
   }

@@ -28,9 +28,7 @@ import { ReferralClaimEffect } from '@/components/referral-claim-effect';
 import { Toaster } from '@/components/ui/sonner';
 
 import '@fontsource-variable/inter';
-import '@fontsource/libre-baskerville/400.css';
-import '@fontsource/libre-baskerville/700.css';
-import '@fontsource/libre-baskerville/400-italic.css';
+import '@fontsource-variable/noto-sans-sc';
 import '@/styles/globals.css';
 
 export const Route = createRootRoute({

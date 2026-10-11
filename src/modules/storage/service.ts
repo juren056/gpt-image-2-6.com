@@ -1,4 +1,6 @@
 import { R2Provider, StorageManager } from '@/core/storage';
+import { getImageBucket, R2BindingProvider } from '@/core/storage/r2-binding';
+import { envConfigs } from '@/config';
 import { getAllConfigs, type ConfigMap } from '@/modules/config/service';
 
 /**
@@ -31,14 +33,23 @@ function buildManager(configs: ConfigMap): StorageManager {
 }
 
 export async function isStorageConfigured(): Promise<boolean> {
-  return isConfigured(await getAllConfigs());
+  return Boolean(getImageBucket()) || isConfigured(await getAllConfigs());
 }
 
 /**
  * Returns a configured StorageManager, or null when storage is not configured
- * (caller should fall back to local/inline handling).
+ * Local disk fallback is only allowed during development.
  */
 export async function getStorage(): Promise<StorageManager | null> {
+  const bucket = getImageBucket();
+  if (bucket) {
+    const manager = new StorageManager();
+    manager.addProvider(
+      new R2BindingProvider(bucket, envConfigs.app_url),
+      true
+    );
+    return manager;
+  }
   const configs = await getAllConfigs();
   if (!isConfigured(configs)) return null;
   return buildManager(configs);

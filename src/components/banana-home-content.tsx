@@ -1,5 +1,7 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
+  ArrowLeftRight,
+  ArrowRight,
   ArrowUpRight,
   Download,
   ImagePlus,
@@ -11,19 +13,136 @@ import {
   Sparkles,
   Type,
   Users,
+  Zap,
 } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
-import { prepareBananaGenerator } from '@/lib/banana-generator-navigation';
+import {
+  prepareBananaGenerator,
+  type BananaGeneratorSelection,
+} from '@/lib/banana-generator-navigation';
 
 export type BananaCard = { title: string; body: string };
 export type BananaModelCard = BananaCard & {
   id: string;
   name: string;
   references: string;
+  outputSize: string;
   credits: string;
   href: string;
 };
+
+/** Content stays visible before hydration and when motion is reduced. */
+function useCardReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => {
+    if (
+      !ref.current ||
+      !('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
+      return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.08 }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  return { ref, revealed };
+}
+
+function CapabilitySketch({ kind }: { kind: number }) {
+  return (
+    <svg
+      viewBox="0 0 120 100"
+      fill="none"
+      aria-hidden="true"
+      className="banana-capability-sketch"
+    >
+      {kind === 0 && (
+        <>
+          <rect x="10" y="14" width="100" height="72" rx="9" />
+          <text
+            x="23"
+            y="54"
+            stroke="none"
+            fill="currentColor"
+            fontSize="30"
+            fontWeight="600"
+          >
+            Aa
+          </text>
+          <path d="M24 66h55M24 74h32" />
+          <path
+            className="banana-sketch-accent"
+            d="M88 32v24"
+            strokeWidth="3"
+          />
+        </>
+      )}
+      {kind === 1 && (
+        <>
+          <rect x="8" y="18" width="54" height="61" rx="7" />
+          <path d="m17 65 14-19 12 12 9-9" />
+          <circle cx="44" cy="33" r="5" />
+          <rect
+            className="banana-sketch-accent"
+            x="54"
+            y="29"
+            width="58"
+            height="61"
+            rx="7"
+          />
+          <path className="banana-sketch-accent" d="m64 77 14-19 12 12 12-15" />
+          <path d="M81 10v9m-5-4h10" />
+        </>
+      )}
+      {kind === 2 && (
+        <>
+          {[10, 45, 80].map((x) => (
+            <g key={x}>
+              <rect x={x} y="23" width="30" height="57" rx="7" />
+              <circle
+                className="banana-sketch-accent"
+                cx={x + 15}
+                cy="42"
+                r="6"
+              />
+              <path
+                className="banana-sketch-accent"
+                d={`M${x + 6} 68v-7a9 9 0 0 1 18 0v7`}
+              />
+            </g>
+          ))}
+          <path d="M25 13h70" strokeDasharray="2 5" />
+        </>
+      )}
+      {kind === 3 && (
+        <>
+          <rect x="10" y="17" width="100" height="69" rx="9" />
+          <path
+            className="banana-sketch-accent"
+            d="M29 34h-8v11h9v-6h-4m27-5h-8v11h9v-6h-4"
+            strokeWidth="2.5"
+          />
+          <path d="M24 60h70M24 69h48" />
+          <path
+            className="banana-sketch-accent"
+            d="M24 77h70"
+            strokeWidth="3"
+          />
+        </>
+      )}
+    </svg>
+  );
+}
 
 export function BananaHero({
   badge,
@@ -107,21 +226,36 @@ export function BananaSteps({
   start: string;
 }) {
   const icons = [Pencil, ImagePlus, Settings2, Download];
+  const reveal = useCardReveal();
   return (
-    <section className="banana-paper banana-section">
-      <div className="banana-container">
+    <section className="banana-paper banana-section banana-steps-section">
+      <div
+        className="banana-container banana-card-reveal"
+        ref={reveal.ref}
+        data-revealed={reveal.revealed}
+      >
         <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
-        <ol className="banana-step-grid mt-16">
+        <ol className="banana-step-grid">
           {steps.map((step, index) => {
             const Icon = icons[index];
             return (
               <li key={step.title} className="banana-step-card">
-                <span className="banana-step-number">{index + 1}</span>
-                <Icon aria-hidden="true" className="mx-auto mb-4 size-6" />
-                <h3 className="text-lg font-semibold">{step.title}</h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-6">
-                  {step.body}
-                </p>
+                <div className="banana-step-topline">
+                  <span className="banana-step-icon">
+                    <Icon aria-hidden="true" />
+                  </span>
+                  <span className="banana-step-number">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+                {index < steps.length - 1 && (
+                  <ArrowRight
+                    className="banana-step-connector"
+                    aria-hidden="true"
+                  />
+                )}
               </li>
             );
           })}
@@ -152,15 +286,22 @@ export function BananaModelComparison({
   labels: {
     best: string;
     references: string;
+    outputSize: string;
     credits: string;
     default: string;
   };
   select: string;
   comparison: { title: string; body: string; link: string };
 }) {
+  const reveal = useCardReveal();
+  const modelIcons = [Sparkles, ImagePlus, Layers, Zap];
   return (
-    <section className="banana-section">
-      <div className="banana-container">
+    <section className="banana-section banana-model-section">
+      <div
+        className="banana-container banana-card-reveal"
+        ref={reveal.ref}
+        data-revealed={reveal.revealed}
+      >
         <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
         <div
           className="banana-model-table-wrap mt-12"
@@ -172,77 +313,136 @@ export function BananaModelComparison({
             <thead>
               <tr>
                 <th scope="col">
-                  <span className="sr-only">{labels.best}</span>
+                  <span className="banana-model-axis">{labels.best}</span>
                 </th>
-                {models.map((model) => (
-                  <th
-                    key={model.name}
-                    scope="col"
-                    className={
-                      model.id === 'nano-banana-pro'
-                        ? 'banana-model-selected'
-                        : ''
-                    }
-                  >
-                    {model.id === 'nano-banana-pro' && (
-                      <span className="mb-2 inline-block rounded-full bg-yellow-400 px-2 py-1 text-[10px] text-black">
-                        {labels.default}
-                      </span>
-                    )}
-                    <div className="text-lg font-semibold">{model.name}</div>
-                    <p className="text-muted-foreground mt-2 text-xs leading-5 font-normal">
-                      {model.title}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        prepareBananaGenerator({ model: model.id })
+                {models.map((model, index) => {
+                  const Icon = modelIcons[index] || Sparkles;
+                  return (
+                    <th
+                      key={model.name}
+                      scope="col"
+                      data-model={model.id}
+                      className={
+                        model.id === 'nano-banana-2.1'
+                          ? 'banana-model-selected'
+                          : ''
                       }
-                      className="mt-4 inline-flex min-h-10 items-center gap-1 text-xs font-medium underline underline-offset-4"
                     >
-                      {select}
-                      <ArrowUpRight className="size-3" />
-                    </button>
-                  </th>
-                ))}
+                      <div className="banana-model-topline">
+                        <span className="banana-model-icon">
+                          <Icon aria-hidden="true" />
+                        </span>
+                        {model.id === 'nano-banana-2.1' && (
+                          <span className="banana-model-default">
+                            {labels.default}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-lg font-semibold">{model.name}</div>
+                      <p className="text-muted-foreground mt-2 text-xs leading-5 font-normal">
+                        {model.title}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          prepareBananaGenerator({ model: model.id })
+                        }
+                        className="banana-model-pick mt-4 inline-flex min-h-10 items-center gap-1 text-xs font-medium"
+                      >
+                        {select}
+                        <ArrowUpRight className="size-3" />
+                      </button>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">{labels.best}</th>
                 {models.map((model) => (
-                  <td key={model.name}>{model.body}</td>
+                  <td
+                    key={model.name}
+                    data-model={model.id}
+                    className={
+                      model.id === 'nano-banana-2.1'
+                        ? 'banana-model-selected'
+                        : ''
+                    }
+                  >
+                    {model.body}
+                  </td>
                 ))}
               </tr>
               <tr>
                 <th scope="row">{labels.references}</th>
                 {models.map((model) => (
-                  <td key={model.name}>{model.references}</td>
+                  <td
+                    key={model.name}
+                    data-model={model.id}
+                    className={
+                      model.id === 'nano-banana-2.1'
+                        ? 'banana-model-selected'
+                        : ''
+                    }
+                  >
+                    {model.references}
+                  </td>
                 ))}
               </tr>
               <tr>
                 <th scope="row">{labels.credits}</th>
                 {models.map((model) => (
-                  <td key={model.name}>{model.credits}</td>
+                  <td
+                    key={model.name}
+                    data-model={model.id}
+                    className={
+                      model.id === 'nano-banana-2.1'
+                        ? 'banana-model-selected'
+                        : ''
+                    }
+                  >
+                    {model.credits}
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <th scope="row">{labels.outputSize}</th>
+                {models.map((model) => (
+                  <td
+                    key={model.name}
+                    data-model={model.id}
+                    className={
+                      model.id === 'nano-banana-2.1'
+                        ? 'banana-model-selected'
+                        : ''
+                    }
+                  >
+                    {model.outputSize}
+                  </td>
                 ))}
               </tr>
             </tbody>
           </table>
         </div>
-        <Link
-          href="/vs-2"
-          className="banana-comparison-link border-border mt-20 block rounded-xl border p-6 sm:p-10"
-        >
-          <span className="banana-eyebrow">2.1 / 2</span>
-          <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">
-            {comparison.title}
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl leading-7">
-            {comparison.body}
-          </p>
-          <span className="text-primary mt-5 inline-flex min-h-10 items-center gap-2 text-sm">
-            {comparison.link}
-            <ArrowUpRight className="size-4" />
+        <Link href="/vs-2" className="banana-comparison-link">
+          <div className="banana-comparison-visual" aria-hidden="true">
+            <span>2.1</span>
+            <ArrowLeftRight />
+            <span>2</span>
+          </div>
+          <div className="banana-comparison-content">
+            <h2>{comparison.title}</h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl leading-7">
+              {comparison.body}
+            </p>
+            <span className="text-primary mt-5 inline-flex min-h-10 items-center gap-2 text-sm">
+              {comparison.link}
+              <ArrowUpRight className="size-4" />
+            </span>
+          </div>
+          <span className="banana-comparison-arrow" aria-hidden="true">
+            <ArrowUpRight />
           </span>
         </Link>
       </div>
@@ -262,23 +462,31 @@ export function BananaCapabilities({
   items: BananaCard[];
 }) {
   const icons = [Type, ImagePlus, Users, Layers];
+  const reveal = useCardReveal();
   return (
-    <section className="banana-section banana-section-compact">
-      <div className="banana-container">
+    <section className="banana-section banana-section-compact banana-capabilities-section">
+      <div
+        className="banana-container banana-card-reveal"
+        ref={reveal.ref}
+        data-revealed={reveal.revealed}
+      >
         <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
-        <ul className="mt-12 grid list-none gap-6 md:grid-cols-2">
+        <ul className="banana-capability-grid">
           {items.map((item, index) => {
             const Icon = icons[index];
             return (
               <li
                 key={item.title}
-                className="border-border bg-card rounded-xl border p-6"
+                className={`banana-capability-card banana-capability-card-${index}`}
               >
-                <Icon className="text-primary mb-5 size-6" aria-hidden="true" />
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-7">
-                  {item.body}
-                </p>
+                <div className="banana-capability-content">
+                  <span className="banana-capability-icon">
+                    <Icon aria-hidden="true" />
+                  </span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </div>
+                <CapabilitySketch kind={index} />
               </li>
             );
           })}
@@ -294,12 +502,21 @@ export function BananaUseCases({
   intro,
   items,
   caption,
+  usePromptLabel,
 }: {
   eyebrow: string;
   title: string;
   intro: string;
-  items: Array<BananaCard & { image: string; alt: string; href: string }>;
+  items: Array<
+    BananaCard & {
+      image: string;
+      alt: string;
+      href: string;
+      selection: BananaGeneratorSelection;
+    }
+  >;
   caption: string;
+  usePromptLabel: string;
 }) {
   const icons = [ShoppingBag, Users, Type, Sparkles];
   return (
@@ -311,29 +528,37 @@ export function BananaUseCases({
             const Icon = icons[index];
             return (
               <li key={item.title}>
-                <Link
-                  href={item.href}
-                  className="banana-case-card border-border bg-card block h-full overflow-hidden rounded-xl border"
-                >
-                  <div className="overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.alt}
-                      width={800}
-                      height={600}
-                      loading="lazy"
-                      decoding="async"
-                      className="aspect-[4/3] h-auto w-full object-cover"
-                    />
+                <article className="banana-case-card border-border bg-card h-full overflow-hidden rounded-xl border">
+                  <Link href={item.href} className="block">
+                    <div className="overflow-hidden">
+                      <img
+                        src={item.image}
+                        alt={item.alt}
+                        width={1280}
+                        height={720}
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-video h-auto w-full object-cover"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <Icon className="mb-4 size-6" aria-hidden="true" />
+                      <h3 className="text-lg font-semibold">{item.title}</h3>
+                      <p className="text-muted-foreground mt-3 text-sm leading-6">
+                        {item.body}
+                      </p>
+                    </div>
+                  </Link>
+                  <div className="px-6 pb-6">
+                    <button
+                      type="button"
+                      className="banana-button"
+                      onClick={() => prepareBananaGenerator(item.selection)}
+                    >
+                      {usePromptLabel} <span aria-hidden>↗</span>
+                    </button>
                   </div>
-                  <div className="p-6">
-                    <Icon className="mb-4 size-6" aria-hidden="true" />
-                    <h3 className="text-lg font-semibold">{item.title}</h3>
-                    <p className="text-muted-foreground mt-3 text-sm leading-6">
-                      {item.body}
-                    </p>
-                  </div>
-                </Link>
+                </article>
               </li>
             );
           })}

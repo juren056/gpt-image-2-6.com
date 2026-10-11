@@ -1,5 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 
 // Load production settings before Vite or db-setup can load local defaults.
 if (existsSync('.env.production')) {
@@ -21,10 +22,17 @@ function run(entry, args) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
+run(
+  'scripts/verify-homepage-baseline.mjs',
+  process.argv.includes('--prebuilt') ? ['--built'] : []
+);
 if (process.argv.includes('--prebuilt')) {
   // Retry an interrupted upload without rebuilding the already checked bundle.
   const config = JSON.parse(
-    readFileSync('.output/server/wrangler.json', 'utf8')
+    readFileSync(
+      `${process.env.NITRO_OUTPUT_DIR || '.output'}/server/wrangler.json`,
+      'utf8'
+    )
   );
   if (!config.d1_databases && !config.hyperdrive) {
     throw new Error(
@@ -35,8 +43,26 @@ if (process.argv.includes('--prebuilt')) {
   run('scripts/db-setup.mjs', []);
   run('node_modules/vite/bin/vite.js', ['build']);
   run('scripts/prerender-public.mjs', []);
+  run('scripts/verify-homepage-baseline.mjs', ['--built']);
 }
 if (process.argv[2] === 'deploy') {
+  const productionConfig = JSON.parse(
+    readFileSync(
+      `${process.env.NITRO_OUTPUT_DIR || '.output'}/server/wrangler.json`,
+      'utf8'
+    )
+  );
+  if (
+    !productionConfig.r2_buckets?.some(
+      (bucket) =>
+        bucket.binding === 'IMAGE_BUCKET' &&
+        bucket.bucket_name === 'nanobanana21pro-uploads'
+    )
+  ) {
+    throw new Error(
+      'Deployment blocked: the production image upload bucket is missing or belongs to another site'
+    );
+  }
   const releaseConfigIndex = process.argv.indexOf('--release-config');
   const releaseConfigPath =
     releaseConfigIndex >= 0 ? process.argv[releaseConfigIndex + 1] : undefined;
@@ -44,14 +70,24 @@ if (process.argv[2] === 'deploy') {
     throw new Error('Missing release config path');
   if (releaseConfigPath) {
     const release = JSON.parse(readFileSync(releaseConfigPath, 'utf8'));
+    run('scripts/verify-homepage-baseline.mjs', [
+      '--built',
+      '--public-dir',
+      path.resolve(path.dirname(releaseConfigPath), release.assets.directory),
+    ]);
     const generated = JSON.parse(
-      readFileSync('.output/server/wrangler.json', 'utf8')
+      readFileSync(
+        `${process.env.NITRO_OUTPUT_DIR || '.output'}/server/wrangler.json`,
+        'utf8'
+      )
     );
     if (
       release.name !== generated.name ||
       JSON.stringify(release.routes) !== JSON.stringify(generated.routes) ||
       JSON.stringify(release.d1_databases) !==
         JSON.stringify(generated.d1_databases) ||
+      JSON.stringify(release.r2_buckets) !==
+        JSON.stringify(generated.r2_buckets) ||
       release.vars.VITE_APP_URL !== generated.vars.VITE_APP_URL
     ) {
       throw new Error(

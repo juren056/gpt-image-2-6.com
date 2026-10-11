@@ -1,0 +1,85 @@
+{
+  "revision": "creative-refresh-20261011",
+  "purpose": "Original illustrative website examples; not Fal model benchmarks or user generation history",
+  "candidateCount": 14,
+  "selectedCount": 7,
+  "images": [
+    {
+      "id": "feature-references",
+      "file": "public/images/banana21/feature-references.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 141576,
+      "candidate": "a",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "A polished editorial photo composition demonstrating references blended into one picture. Wide 16:9 landscape. Main scene on right three quarters: a curly-haired young adult woman wearing a mustard knit cardigan sits beside a small cream terrier in a bright oak living room, holding a matte yellow water bottle. Natural morning window light, realistic skin and fabric, original people no celebrities. Left quarter contains three clean small reference-photo tiles vertically: the same woman portrait, same terrier, same plain yellow bottle. Main scene retains all three exact identities. Subtle warm charcoal and banana yellow accents. No text, no watermark, no interface, all subjects fully visible with wide safe margins. Candidate A: balanced restrained warm daylight and crisp editorial composition. This is an original website example asset, not a screenshot.",
+      "sha256": "5e647bd85fd7a2911ce033b79bace0ae89f2e6cff3f718bfb9b104324334128e"
+    },
+    {
+      "id": "feature-text",
+      "file": "public/images/banana21/feature-text.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 70578,
+      "candidate": "a",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "An original high-end typographic coffee campaign poster, wide 16:9 landscape, photographed straight on filling the frame. Warm pale ivory paper with strong banana yellow block and black modern sans-serif lettering. Large perfectly spelled exact headline \"FRESH COFFEE\", smaller exact line \"Every morning, made for you\". A photoreal ceramic yellow espresso cup with natural crema sits beside the lettering. Precise editorial grid, beautiful optical spacing, subtle paper grain, sophisticated product photography, no third-party logo, no extra text, no watermarks. Keep all lettering in central safe area. Candidate A: balanced restrained warm daylight and crisp editorial composition. This is an original website example asset, not a screenshot.",
+      "sha256": "3ff2eb5fee292849e20401952da20988cfd1542973801e733a815ff37d96877a"
+    },
+    {
+      "id": "feature-ratios",
+      "file": "public/images/banana21/feature-ratios.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 45652,
+      "candidate": "a",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "A high-end photographic campaign contact sheet on a dark charcoal backdrop, wide 16:9 landscape. Three finished image crops arranged side by side: square, landscape and tall portrait, each featuring the same matte yellow reusable water bottle on light limestone with one green leaf and softly lit yellow fabric. Each crop has intentional composition preserving the whole product. Thin neutral separators, no picture frames, no labels, no text, no logos, no watermark. Natural realistic studio lighting, fine texture, visual demonstration of adapting an image to three formats. Candidate A: balanced restrained warm daylight and crisp editorial composition. This is an original website example asset, not a screenshot.",
+      "sha256": "86000a97ee8056229b2a74a785acd61e97c7698f2a5d51924ff1f16d28fdd62e"
+    },
+    {
+      "id": "case-product",
+      "file": "public/images/banana21/case-product.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 54560,
+      "candidate": "b",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "A premium product-photography comparison diptych, wide 16:9 landscape. On the left a plain matte yellow cosmetic dropper bottle with black cap on neutral white studio background. On the right the identical bottle photographed on pale limestone with a small curved lemon peel and water droplets, warm directional window light, soft botanical shadow. Same bottle silhouette and cap on both sides. Luxurious art direction, photo-real materials, simple elegant composition, no brand names, no lettering, no logos or watermark, generous safe framing. Candidate B: alternate original composition with richer directional light and slightly more cinematic shadows; retain all exact required text and subjects. This is an original website example asset, not a screenshot.",
+      "sha256": "342eb05738c582a2afc2b2ff36ad0ba19564e008bf748e2c0cbe9cdfaae85513"
+    },
+    {
+      "id": "case-character",
+      "file": "public/images/banana21/case-character.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 150976,
+      "candidate": "b",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "An original editorial cinematic character contact sheet with four equal photographic panels in a 2-by-2 grid, wide 16:9 landscape overall. Same fictional adult woman with short dark curly hair, warm brown eyes and mustard cardigan in every panel: reading beside a window, walking through a leafy street, sketching in a quiet cafe, standing beside a bookshop. Identical facial identity, hair and clothes across panels; natural expressions. Contemporary film photography, warm but realistic daylight, narrow clean gutters, no text, no celebrities, no logos or watermark. Keep face visible in each panel. Candidate B: alternate original composition with richer directional light and slightly more cinematic shadows; retain all exact required text and subjects. This is an original website example asset, not a screenshot.",
+      "sha256": "483376779c82c9cda1f28fbb8286f768d99a91249d05617950ddf768ffc43244"
+    },
+    {
+      "id": "case-localize",
+      "file": "public/images/banana21/case-localize.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 36232,
+      "candidate": "a",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "A premium original bilingual packaging comparison photograph, wide 16:9 landscape. Two identical cream-and-yellow stand-up banana snack pouches side by side on matte warm charcoal. Left pouch exact readable short text \"BANANA BITES\" and \"CRISP & SIMPLE\". Right pouch matching identical label design with exact readable text \"BOUCHEES DE BANANE\" and \"CROQUANT & SIMPLE\". A small simple banana silhouette is centered on each pouch. Preserve pouch shape, colors, typography hierarchy and spacing. Natural studio product lighting, clean readable letters, no other writing, no third-party logo, no watermark, wide safe margins. Candidate A: balanced restrained warm daylight and crisp editorial composition. This is an original website example asset, not a screenshot.",
+      "sha256": "90d76417d01c9c6101a3374ebc249a25efcc6f50c4dc0336c4a5aad1ccc3016d"
+    },
+    {
+      "id": "case-social",
+      "file": "public/images/banana21/case-social.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 118970,
+      "candidate": "b",
+      "generator": "Built-in image_gen.imagegen",
+      "prompt": "An original social campaign image collection, wide 16:9 landscape. Three tidy borderless photographic panels arranged as a square post, portrait story and wide cover. Same overhead sunny breakfast scene with a yellow ceramic bowl of yogurt, fresh banana slices, blueberries and a small yellow mug on an ivory linen table. Consistent ingredients and light, each composition recentered to protect the subject in its format. Real food photography, sophisticated restrained design, subtle warm yellow accent, no text, no interface, no logo, no watermark. Candidate B: alternate original composition with richer directional light and slightly more cinematic shadows; retain all exact required text and subjects. This is an original website example asset, not a screenshot.",
+      "sha256": "2b074dabeaa3a937bddb83bacfcbb8f8db27e8efd45216fa721d318dfc302841"
+    }
+  ]
+}

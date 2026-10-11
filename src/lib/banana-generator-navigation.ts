@@ -5,6 +5,7 @@ export type BananaGeneratorSelection = {
   focus?: 'prompt' | 'shape';
   aspectRatio?: string;
   scene?: string;
+  imageUrls?: string[];
 };
 
 /** Prepare the visible generator without submitting a paid request. */

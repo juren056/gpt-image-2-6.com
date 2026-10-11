@@ -11,7 +11,7 @@
   --account-fg: #18181b;
   --account-muted: #71717a;
   --account-hover: #eeeeef;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body);
   color: var(--account-fg);
 }
 .dark .banana-account-shell,
@@ -32,8 +32,8 @@
   display: flex;
   min-height: 100dvh;
   background: var(--account-bg);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: var(--ui-leading);
   --primary: #facc15;
   --primary-foreground: #18181b;
   --background: var(--account-bg);
@@ -42,7 +42,7 @@
   --border: var(--account-border);
   --card: var(--account-panel);
   --popover: var(--account-panel);
-  --font-serif: ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-body);
 }
 .banana-account-sidebar {
   display: flex;
@@ -248,7 +248,7 @@
 .banana-account-main h1,
 .banana-account-main h2,
 .banana-account-main h3 {
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body);
 }
 .banana-account-shell--collapsed .banana-account-sidebar {
   width: 0;
@@ -575,43 +575,6 @@
 .banana-upgrade-footer a:hover,
 .banana-upgrade-footer button:hover {
   color: var(--account-fg);
-}
-.banana-reward-dialog {
-  background: var(--account-panel);
-  color: var(--account-fg);
-  padding: 24px;
-  gap: 16px;
-}
-.banana-reward-dialog [data-slot='dialog-description'] {
-  color: var(--account-muted);
-  line-height: 1.5;
-}
-.banana-reward-streak {
-  font-weight: 600;
-}
-.banana-reward-days {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
-}
-.banana-reward-days li {
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  padding: 10px 3px;
-  border: 1px solid var(--account-border);
-  border-radius: 7px;
-}
-.banana-reward-days small {
-  font-size: 9px;
-  color: var(--account-muted);
-}
-.banana-reward-days strong {
-  font-size: 14px;
-}
-.banana-reward-days li.is-complete {
-  background: #facc1514;
-  border-color: #facc1550;
 }
 .banana-account-loading {
   background: var(--account-bg);

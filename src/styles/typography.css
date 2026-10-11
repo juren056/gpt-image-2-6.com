@@ -1,0 +1,137 @@
+/* Product type rhythm: preserve component sizing, unify reading and controls. */
+:is(
+  .banana-app,
+  .nano-site,
+  .banana-account,
+  .banana-account-shell,
+  .banana-checkout,
+  .nano-auth,
+  .creative-home
+) {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 460;
+  line-height: var(--ui-leading);
+  letter-spacing: -0.011em;
+  font-kerning: normal;
+}
+:is(.banana-account-shell, .studio-desk) {
+  font-size: 15px;
+}
+:is(
+    .banana-app,
+    .nano-site,
+    .banana-account,
+    .banana-account-shell,
+    .banana-checkout,
+    .nano-auth,
+    .creative-home
+  )
+  :is(h1, h2, h3, h4) {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: var(--ui-heading-tracking);
+  text-wrap: balance;
+}
+:is(
+    .banana-app,
+    .nano-site,
+    .banana-account,
+    .banana-account-shell,
+    .banana-checkout,
+    .nano-auth,
+    .creative-home
+  )
+  :is(p, textarea) {
+  line-height: var(--ui-leading);
+}
+:is(
+    .banana-app,
+    .nano-site,
+    .banana-account,
+    .banana-account-shell,
+    .banana-checkout,
+    .nano-auth,
+    .creative-home,
+    .banana-account-menu,
+    .banana-upgrade-dialog,
+    .banana-reward-dialog
+  )
+  :is(button, input, textarea, select, [role='menuitem']) {
+  font-family: var(--font-body);
+  letter-spacing: 0;
+}
+:is(
+    .banana-app,
+    .nano-site,
+    .banana-account,
+    .banana-account-shell,
+    .banana-checkout,
+    .nano-auth,
+    .creative-home
+  )
+  :is(button, label, select, [role='tab']) {
+  font-weight: 500;
+}
+.banana-account-nav > a {
+  font-size: 15px;
+  font-weight: 500;
+}
+.banana-account-header,
+.banana-account-brand > a {
+  font-weight: 600;
+}
+.studio-desk .studio-tool-trigger {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.studio-tool-menu .studio-tool-menu-item {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.studio-desk .studio-tool-groups button {
+  font-size: 14px;
+}
+:is(.banana-account-shell, .banana-checkout, .nano-site, .banana-app)
+  :is(
+    table,
+    [class*='price'],
+    [class*='credit-amount'],
+    [class*='balance'],
+    [class*='cost'],
+    [class*='total'],
+    [class*='stat-value']
+  ) {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+html[lang='zh']
+  :is(
+    .banana-app,
+    .nano-site,
+    .banana-account,
+    .banana-account-shell,
+    .banana-checkout,
+    .nano-auth,
+    .creative-home
+  )
+  :is(h1, h2, h3, h4, p, a, label, button, [role='tab']) {
+  letter-spacing: 0;
+}
+@media (max-width: 640px) {
+  :is(
+      .banana-app,
+      .nano-site,
+      .banana-account,
+      .banana-account-shell,
+      .banana-checkout,
+      .nano-auth,
+      .creative-home
+    )
+    :is(input:not([type='checkbox']):not([type='radio']), textarea, select) {
+    font-size: 16px;
+  }
+  .studio-desk .studio-tool-trigger {
+    font-size: 18px;
+  }
+}

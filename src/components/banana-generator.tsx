@@ -1,18 +1,20 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   AccountCreditBalance,
   AccountImageTask,
 } from '@/types/banana-account';
-import { Combobox } from '@base-ui/react/combobox';
 import {
+  ArrowUpRight,
   Check,
   ChevronDown,
   Copy,
   Download,
+  ImagePlus,
   Images,
   Loader2,
+  Maximize2,
   Search,
   Sparkles,
   Type,
@@ -24,11 +26,16 @@ import { useSession } from '@/core/auth/client';
 import { Link } from '@/core/i18n/navigation';
 import {
   CREATIVE_MODELS,
+  getCreativeOutputLimit,
+  getCreativeUnitCredits,
   type CreativeModelId,
 } from '@/config/creative-studio';
 import { trackFunnelEvent } from '@/lib/analytics-events';
 import { apiGet, apiPost } from '@/lib/api-client';
-import type { BananaGeneratorSelection } from '@/lib/banana-generator-navigation';
+import {
+  prepareBananaGenerator,
+  type BananaGeneratorSelection,
+} from '@/lib/banana-generator-navigation';
 import {
   normalizeCreativeScene,
   parseActiveCreativeTask,
@@ -48,12 +55,110 @@ type Task = {
   errorMessage?: string;
 };
 export type NanoRecipe = { id: string; title: string; prompt: string };
+export type GeneratorExample = {
+  id: string;
+  title: string;
+  image: string;
+  alt: string;
+  selection: BananaGeneratorSelection;
+};
+
+function displayRatio(size: string) {
+  return (
+    (
+      {
+        square_hd: '1:1',
+        square: '1:1',
+        landscape_4_3: '4:3',
+        landscape_16_9: '16:9',
+        portrait_4_3: '3:4',
+        portrait_16_9: '9:16',
+      } as Record<string, string>
+    )[size] || size
+  );
+}
+function RatioIcon({ ratio }: { ratio: string }) {
+  ratio = displayRatio(ratio);
+  const [width, height] =
+    ratio === 'auto' ? [1, 1] : ratio.split(':').map(Number);
+  const longest = Math.max(width || 1, height || 1);
+  return (
+    <span
+      className="banana-generator__ratio-icon"
+      aria-hidden
+      style={{
+        width: (18 * (width || 1)) / longest,
+        height: (18 * (height || 1)) / longest,
+      }}
+    />
+  );
+}
+
+function moveChoice(
+  event: KeyboardEvent<HTMLButtonElement>,
+  values: readonly string[],
+  current: string,
+  choose: (value: string) => void
+) {
+  if (
+    ![
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowUp',
+      'ArrowDown',
+      'Home',
+      'End',
+    ].includes(event.key)
+  )
+    return;
+  event.preventDefault();
+  const index = values.indexOf(current);
+  const next =
+    event.key === 'Home'
+      ? 0
+      : event.key === 'End'
+        ? values.length - 1
+        : (index +
+            (event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1) +
+            values.length) %
+          values.length;
+  choose(values[next]);
+  const buttons = event.currentTarget
+    .closest('[role="radiogroup"]')
+    ?.querySelectorAll<HTMLButtonElement>('[role="radio"]');
+  [...(buttons || [])]
+    .find((button) => button.dataset.value === values[next])
+    ?.focus();
+}
 const WORKBENCH_MODELS = [
   'nano-banana-2.1',
   'nano-banana-2',
   'nano-banana-pro',
   'nano-banana-2-lite',
 ] as const;
+
+function GoogleModelIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.39a4.6 4.6 0 0 1-2 3.02v2.5h3.24c1.9-1.75 2.97-4.33 2.97-7.37Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 22c2.7 0 4.96-.9 6.63-2.43l-3.24-2.5c-.9.6-2.04.96-3.39.96-2.61 0-4.82-1.76-5.61-4.12H3.05v2.59A10 10 0 0 0 12 22Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6.39 13.91A6 6 0 0 1 6.08 12c0-.67.11-1.32.31-1.91V7.5H3.05A10 10 0 0 0 2 12c0 1.61.38 3.14 1.05 4.5l3.34-2.59Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.97c1.47 0 2.79.51 3.83 1.51l2.87-2.87A9.65 9.65 0 0 0 12 2a10 10 0 0 0-8.95 5.5l3.34 2.59C7.18 7.73 9.39 5.97 12 5.97Z"
+      />
+    </svg>
+  );
+}
 
 export function BananaGenerator({
   copy,
@@ -62,6 +167,7 @@ export function BananaGenerator({
   initialMode = 'generate',
   returnPath = '/',
   allModels = false,
+  examples = [],
 }: {
   copy: Record<string, string>;
   recipes: NanoRecipe[];
@@ -69,12 +175,25 @@ export function BananaGenerator({
   initialMode?: 'generate' | 'edit';
   returnPath?: string;
   allModels?: boolean;
+  examples?: GeneratorExample[];
 }) {
   const { data: session } = useSession();
   const fieldId = useId();
   const [modelId, setModelId] = useState<CreativeModelId>(initialModel);
   const [mode, setMode] = useState(initialMode);
-  const [ratio, setRatio] = useState('1:1');
+  const [ratio, setRatio] = useState(
+    () =>
+      CREATIVE_MODELS.find((item) => item.id === initialModel)?.sizes[0] ||
+      '1:1'
+  );
+  const [outputCount, setOutputCount] = useState(1);
+  const [resolution, setResolution] = useState(
+    CREATIVE_MODELS.find((item) => item.id === initialModel)?.resolutions?.[0]
+  );
+  const [showAllRatios, setShowAllRatios] = useState(false);
+  const [modelPickerOpen, setModelPickerOpen] = useState(false);
+  const [modelSearch, setModelSearch] = useState('');
+  const [resultIndex, setResultIndex] = useState(0);
   const [references, setReferences] = useState<ImageUploaderValue[]>([]);
   const [taskId, setTaskId] = useState<string>();
   const [draftLoaded, setDraftLoaded] = useState(false);
@@ -103,7 +222,24 @@ export function BananaGenerator({
   const state = availability.data?.find((item) => item.id === modelId);
   const ready =
     model.productionEnabled && Boolean(state?.configured && state.enabled);
-  const cost = model.credits[mode];
+  const supportsBatch = getCreativeOutputLimit(modelId) > 1;
+  const count = supportsBatch ? outputCount : 1;
+  const selectedResolution = model.resolutions?.includes(resolution || '')
+    ? resolution
+    : model.resolutions?.[0];
+  const unitCost = getCreativeUnitCredits(model, mode, selectedResolution);
+  const cost = unitCost ? unitCost * count : undefined;
+  const commonRatios = model.sizes.filter((size) =>
+    ['auto', '1:1', '16:9', '9:16'].includes(displayRatio(size))
+  );
+  const visibleRatios = showAllRatios
+    ? model.sizes
+    : [
+        ...new Set([
+          ...commonRatios,
+          ...(commonRatios.includes(ratio) ? [] : [ratio]),
+        ]),
+      ];
   const balance = useQuery({
     queryKey: ['account-balance', session?.user?.id],
     queryFn: () => apiGet<AccountCreditBalance>('/api/credits'),
@@ -148,7 +284,9 @@ export function BananaGenerator({
         operation: mode,
         prompt,
         size: ratio,
+        resolution: selectedResolution,
         outputFormat: 'png',
+        outputCount: count,
         imageUrls:
           mode === 'edit'
             ? references
@@ -159,12 +297,28 @@ export function BananaGenerator({
     onSuccess: (data) => {
       setSelectedHistory(undefined);
       setTaskId(data.id);
+      if (window.matchMedia('(max-width: 1023px)').matches)
+        document.getElementById(`${fieldId}-preview`)?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+            .matches
+            ? 'instant'
+            : 'smooth',
+          block: 'start',
+        });
       setRequestContext({ model: modelId, mode, scene });
       trackFunnelEvent('generate_started', { model: modelId, mode, scene });
       try {
         sessionStorage.setItem(
           `banana:active-task:${session?.user?.id}`,
-          JSON.stringify({ id: data.id, model: modelId, mode, scene, ratio })
+          JSON.stringify({
+            id: data.id,
+            model: modelId,
+            mode,
+            scene,
+            ratio,
+            resolution: selectedResolution,
+            outputCount: count,
+          })
         );
       } catch {
         /* Resume remains available in history. */
@@ -259,11 +413,26 @@ export function BananaGenerator({
                 )
               : CREATIVE_MODELS.find((item) => item.id === initialModel);
           if (
+            'resolution' in draft &&
+            typeof draft.resolution === 'string' &&
+            restoredModel?.resolutions?.includes(draft.resolution)
+          )
+            setResolution(draft.resolution);
+          if (
             'aspectRatio' in draft &&
             typeof draft.aspectRatio === 'string' &&
             restoredModel?.sizes.includes(draft.aspectRatio)
           )
             setRatio(draft.aspectRatio);
+          if (
+            'outputCount' in draft &&
+            typeof draft.outputCount === 'number' &&
+            Number.isInteger(draft.outputCount) &&
+            draft.outputCount >= 1 &&
+            draft.outputCount <=
+              getCreativeOutputLimit(restoredModel?.id || initialModel)
+          )
+            setOutputCount(draft.outputCount);
         }
       }
     } catch {
@@ -332,6 +501,8 @@ export function BananaGenerator({
             model: modelId,
             operation: mode,
             aspectRatio: ratio,
+            resolution: selectedResolution,
+            outputCount: count,
             imageUrls: references
               .filter(
                 (item) =>
@@ -347,7 +518,19 @@ export function BananaGenerator({
     save();
     const subscription = form.store.subscribe(save);
     return () => subscription.unsubscribe();
-  }, [draftLoaded, form, modelId, mode, ratio, references]);
+  }, [
+    draftLoaded,
+    form,
+    modelId,
+    mode,
+    ratio,
+    selectedResolution,
+    count,
+    references,
+  ]);
+  useEffect(() => {
+    if (resolution !== selectedResolution) setResolution(selectedResolution);
+  }, [resolution, selectedResolution]);
   useEffect(() => {
     if (!model.sizes.includes(ratio)) setRatio(model.sizes[0] || '1:1');
   }, [model, ratio]);
@@ -381,7 +564,7 @@ export function BananaGenerator({
   useEffect(() => {
     if (!restoringTask.current) setTaskId(undefined);
     restoringTask.current = false;
-  }, [modelId, mode, ratio]);
+  }, [modelId, mode, ratio, selectedResolution]);
   useEffect(() => {
     if (previousUser.current === session?.user?.id) return;
     previousUser.current = session?.user?.id;
@@ -402,11 +585,16 @@ export function BananaGenerator({
       if (!allModels && !WORKBENCH_MODELS.some((id) => id === selected.id))
         return;
       restoringTask.current =
-        selected.id !== modelId || saved.mode !== mode || saved.ratio !== ratio;
+        selected.id !== modelId ||
+        saved.mode !== mode ||
+        saved.ratio !== ratio ||
+        saved.resolution !== selectedResolution;
       setModelId(selected.id);
       setMode(saved.mode);
       if (selected.sizes.includes(saved.ratio)) setRatio(saved.ratio);
       setTaskId(saved.id);
+      setOutputCount(saved.outputCount);
+      setResolution(saved.resolution);
       setRequestContext({
         model: selected.id,
         mode: saved.mode,
@@ -456,6 +644,8 @@ export function BananaGenerator({
           model: modelId,
           operation: mode,
           aspectRatio: ratio,
+          resolution: selectedResolution,
+          outputCount: count,
           imageUrls: references
             .filter(
               (item) =>
@@ -484,6 +674,8 @@ export function BananaGenerator({
       operation: mode,
       prompt: form.state.values.prompt,
       aspectRatio: ratio,
+      resolution: selectedResolution,
+      outputCount: count,
     };
     const url = URL.createObjectURL(
       new Blob([JSON.stringify(brief, null, 2)], { type: 'application/json' })
@@ -494,13 +686,15 @@ export function BananaGenerator({
     link.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
-  const rawResult =
+  const resultImages =
     task.data?.status === 'success'
-      ? task.data.images?.[0]?.imageUrl
+      ? task.data.images || []
       : !taskId && selectedHistory?.status === 'success'
-        ? selectedHistory.images[0]?.imageUrl
-        : undefined;
+        ? selectedHistory.images
+        : [];
+  const rawResult = (resultImages[resultIndex] || resultImages[0])?.imageUrl;
   const result = rawResult?.startsWith('https://') ? rawResult : undefined;
+  useEffect(() => setResultIndex(0), [taskId, selectedHistory?.id]);
   const pendingCopy = availability.isPending
     ? copy.checking
     : availability.isError
@@ -515,10 +709,14 @@ export function BananaGenerator({
     : WORKBENCH_MODELS.map(
         (id) => CREATIVE_MODELS.find((item) => item.id === id)!
       );
+  const filteredModelOptions = modelOptions.filter((option) =>
+    option.label.toLowerCase().includes(modelSearch.toLowerCase())
+  );
   useEffect(() => {
     const prepare = (event: Event) => {
       if (working) return;
       const detail = (event as CustomEvent<BananaGeneratorSelection>).detail;
+      if (!detail) return;
       const selected = CREATIVE_MODELS.find((item) => item.id === detail.model);
       if (
         selected &&
@@ -534,7 +732,19 @@ export function BananaGenerator({
       if (detail.scene) setScene(normalizeCreativeScene(detail.scene));
       if (typeof detail.prompt === 'string')
         form.setFieldValue('prompt', detail.prompt.slice(0, 32000));
+      if (typeof detail.prompt === 'string') setOutputCount(1);
+      if (typeof detail.prompt === 'string')
+        setResolution((selected || model).resolutions?.[0]);
+      if (Array.isArray(detail.imageUrls))
+        setInitialReferenceUrls(
+          detail.imageUrls
+            .filter(
+              (url) => typeof url === 'string' && url.startsWith('https://')
+            )
+            .slice(0, (selected || model).maxReferences)
+        );
       setTaskId(undefined);
+      setSelectedHistory(undefined);
       const field = document.getElementById(
         detail.focus === 'shape' ? `${fieldId}-shape` : `${fieldId}-prompt`
       );
@@ -623,89 +833,160 @@ export function BananaGenerator({
             void form.handleSubmit();
           }}
         >
-          <div className="banana-generator__studio" hidden>
-            <h3>
-              <Sparkles size={14} aria-hidden /> {copy.studio_title}
-            </h3>
-            <p>{copy.studio_description}</p>
-            <Link href="/settings">
-              {copy.studio_link} <span aria-hidden>↗</span>
+          <div className="banana-generator__studio">
+            <Link href="/settings" title={copy.studio_description}>
+              <Sparkles size={16} aria-hidden /> {copy.studio_title}
+              <ArrowUpRight size={16} aria-hidden />
             </Link>
           </div>
           <div className="banana-generator__field">
-            <Combobox.Root
-              items={modelOptions}
-              value={model}
-              onValueChange={(value) => {
-                if (value) {
-                  setModelId(value.id);
-                  setInitialReferenceUrls([]);
-                }
-              }}
-              itemToStringLabel={(item) => item.label}
-              isItemEqualToValue={(item, selected) => item.id === selected.id}
+            <span id={`${fieldId}-model-label`}>{copy.model}</span>
+            <button
+              type="button"
+              id={`${fieldId}-model-trigger`}
+              className="banana-generator__model"
+              aria-label={copy.model}
+              aria-expanded={modelPickerOpen}
+              aria-controls={`${fieldId}-model-options`}
               disabled={working}
-              autoHighlight
+              onClick={() => {
+                setModelPickerOpen((value) => !value);
+                setModelSearch('');
+              }}
             >
-              <Combobox.Label>{copy.model}</Combobox.Label>
-              <Combobox.Trigger className="banana-generator__model">
-                <span className="banana-generator__brand" aria-hidden>
-                  {model.id.startsWith('nano-banana') ? (
-                    'G'
-                  ) : (
-                    <Sparkles size={20} />
-                  )}
-                </span>
-                <span className="banana-generator__model-copy">
-                  <strong>{model.label}</strong>
-                  <small>{modelSummary(modelId)}</small>
-                </span>
-                <ChevronDown size={16} aria-hidden />
-              </Combobox.Trigger>
-              <Combobox.Portal>
-                <Combobox.Positioner
-                  sideOffset={6}
-                  className="banana-generator__positioner"
+              <span className="banana-generator__brand" aria-hidden>
+                {model.id.startsWith('nano-banana') ? (
+                  <GoogleModelIcon />
+                ) : (
+                  <Sparkles size={20} />
+                )}
+              </span>
+              <span className="banana-generator__model-copy">
+                <strong>{model.label}</strong>
+                <small>{modelSummary(modelId)}</small>
+              </span>
+              <ChevronDown size={16} aria-hidden />
+            </button>
+            {modelPickerOpen && (
+              <fieldset
+                id={`${fieldId}-model-options`}
+                className="banana-generator__inline-models"
+                disabled={working}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    event.preventDefault();
+                    setModelPickerOpen(false);
+                    document
+                      .getElementById(`${fieldId}-model-trigger`)
+                      ?.focus();
+                  }
+                }}
+              >
+                <div className="banana-generator__search">
+                  <Search size={16} aria-hidden />
+                  <input
+                    autoFocus
+                    type="search"
+                    value={modelSearch}
+                    onChange={(event) => setModelSearch(event.target.value)}
+                    aria-label={copy.search_models}
+                    placeholder={copy.search_models}
+                    onKeyDown={(event) => {
+                      if (
+                        event.key === 'ArrowDown' ||
+                        event.key === 'ArrowUp'
+                      ) {
+                        event.preventDefault();
+                        const items = document
+                          .getElementById(`${fieldId}-model-options`)
+                          ?.querySelectorAll<HTMLButtonElement>(
+                            '[role="radio"]'
+                          );
+                        if (items?.length)
+                          items[
+                            event.key === 'ArrowDown' ? 0 : items.length - 1
+                          ]?.focus();
+                      }
+                    }}
+                  />
+                </div>
+                <div
+                  role="radiogroup"
+                  aria-labelledby={`${fieldId}-model-label`}
                 >
-                  <Combobox.Popup className="banana-generator__model-menu">
-                    <div className="banana-generator__search">
-                      <Search size={16} aria-hidden />
-                      <Combobox.Input
-                        aria-label={copy.search_models}
-                        placeholder={copy.search_models}
-                      />
-                    </div>
-                    <Combobox.Empty className="banana-generator__no-models">
-                      {copy.no_models}
-                    </Combobox.Empty>
-                    <Combobox.List>
-                      {(option: (typeof modelOptions)[number]) => (
-                        <Combobox.Item
-                          key={option.id}
-                          value={option}
-                          className="banana-generator__model-option"
-                        >
-                          <span className="banana-generator__brand" aria-hidden>
-                            {option.id.startsWith('nano-banana') ? (
-                              'G'
-                            ) : (
-                              <Sparkles size={20} />
-                            )}
-                          </span>
-                          <span className="banana-generator__model-copy">
-                            <strong>{option.label}</strong>
-                            <small>{modelSummary(option.id)}</small>
-                          </span>
-                          <Combobox.ItemIndicator>
-                            <Check size={16} aria-hidden />
-                          </Combobox.ItemIndicator>
-                        </Combobox.Item>
-                      )}
-                    </Combobox.List>
-                  </Combobox.Popup>
-                </Combobox.Positioner>
-              </Combobox.Portal>
-            </Combobox.Root>
+                  {filteredModelOptions.map((option, index) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      role="radio"
+                      data-value={option.id}
+                      aria-label={option.label}
+                      aria-checked={modelId === option.id}
+                      tabIndex={
+                        modelId === option.id ||
+                        (!filteredModelOptions.some(
+                          (item) => item.id === modelId
+                        ) &&
+                          index === 0)
+                          ? 0
+                          : -1
+                      }
+                      className="banana-generator__model-option"
+                      onClick={() => {
+                        setModelId(option.id);
+                        setResolution(option.resolutions?.[0]);
+                        setInitialReferenceUrls([]);
+                        setModelPickerOpen(false);
+                        document
+                          .getElementById(`${fieldId}-model-trigger`)
+                          ?.focus();
+                      }}
+                      onKeyDown={(event) =>
+                        moveChoice(
+                          event,
+                          modelOptions
+                            .filter((item) =>
+                              item.label
+                                .toLowerCase()
+                                .includes(modelSearch.toLowerCase())
+                            )
+                            .map((item) => item.id),
+                          option.id,
+                          (id) => {
+                            const next = modelOptions.find(
+                              (item) => item.id === id
+                            )!;
+                            setModelId(next.id);
+                            setResolution(next.resolutions?.[0]);
+                            setInitialReferenceUrls([]);
+                          }
+                        )
+                      }
+                    >
+                      <span className="banana-generator__brand" aria-hidden>
+                        {option.id.startsWith('nano-banana') ? (
+                          <GoogleModelIcon />
+                        ) : (
+                          <Sparkles size={20} />
+                        )}
+                      </span>
+                      <span className="banana-generator__model-copy">
+                        <strong>{option.label}</strong>
+                        <small>{modelSummary(option.id)}</small>
+                      </span>
+                      {modelId === option.id && <Check size={16} aria-hidden />}
+                    </button>
+                  ))}
+                </div>
+                {!modelOptions.some((option) =>
+                  option.label.toLowerCase().includes(modelSearch.toLowerCase())
+                ) && (
+                  <p className="banana-generator__no-models" role="status">
+                    {copy.no_models}
+                  </p>
+                )}
+              </fieldset>
+            )}
           </div>
           {mode === 'edit' && (
             <div className="banana-generator__uploader">
@@ -756,7 +1037,10 @@ export function BananaGenerator({
                   aria-required="true"
                   aria-invalid={field.state.meta.errors.length > 0}
                 />
-                <span className="banana-generator__character-count">
+                <span
+                  className="banana-generator__character-count"
+                  hidden={!field.state.value.length}
+                >
                   {field.state.value.length}/{model.maxPromptLength}
                 </span>
                 {field.state.meta.errors.length > 0 && (
@@ -767,52 +1051,183 @@ export function BananaGenerator({
               </label>
             )}
           </form.Field>
-          <details className="banana-generator__advanced">
-            <summary>{copy.flow_advanced}</summary>
-            <div className="banana-generator__settings">
-              <label className="banana-generator__field">
-                <span>{copy.shape}</span>
-                <select
-                  id={`${fieldId}-shape`}
-                  aria-label={copy.shape}
+          <div
+            className="banana-generator__starters"
+            aria-label={copy.starter_title}
+          >
+            {recipes
+              .filter((recipe) => recipe.id !== 'edit')
+              .slice(0, 6)
+              .map((recipe) => (
+                <button
+                  key={recipe.id}
+                  type="button"
                   disabled={working}
-                  value={ratio}
-                  onChange={(e) => setRatio(e.target.value)}
+                  onClick={() => {
+                    form.setFieldValue('prompt', recipe.prompt);
+                    setScene(
+                      normalizeCreativeScene(
+                        recipe.id === 'portrait'
+                          ? 'character'
+                          : recipe.id === 'story'
+                            ? 'social'
+                            : recipe.id
+                      )
+                    );
+                    document
+                      .getElementById(`${fieldId}-prompt`)
+                      ?.focus({ preventScroll: true });
+                  }}
                 >
-                  {model.sizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
+                  {recipe.title}
+                </button>
+              ))}
+          </div>
+          <div className="banana-generator__settings banana-generator__settings--choices">
+            <fieldset
+              className="banana-generator__choice-field"
+              disabled={working}
+            >
+              <legend id={`${fieldId}-shape-label`}>{copy.shape}</legend>
+              <div
+                role="radiogroup"
+                aria-labelledby={`${fieldId}-shape-label`}
+                className="banana-generator__ratio-grid"
+              >
+                {visibleRatios.map((size) => (
+                  <button
+                    key={size}
+                    id={ratio === size ? `${fieldId}-shape` : undefined}
+                    type="button"
+                    role="radio"
+                    data-value={size}
+                    aria-label={
+                      size === 'auto' ? copy.auto_label : displayRatio(size)
+                    }
+                    aria-checked={ratio === size}
+                    tabIndex={ratio === size ? 0 : -1}
+                    onClick={() => setRatio(size)}
+                    onKeyDown={(event) =>
+                      moveChoice(event, visibleRatios, size, setRatio)
+                    }
+                  >
+                    <span className="banana-generator__ratio-drawing">
+                      <RatioIcon ratio={size} />
+                    </span>
+                    <span>
+                      {size === 'auto' ? copy.auto_label : displayRatio(size)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {model.sizes.length > commonRatios.length && (
+                <button
+                  type="button"
+                  className="banana-generator__more-ratios"
+                  aria-expanded={showAllRatios}
+                  onClick={() => setShowAllRatios((value) => !value)}
+                >
+                  {showAllRatios ? copy.fewer_ratios : copy.more_ratios}
+                  <ChevronDown size={14} aria-hidden />
+                </button>
+              )}
+            </fieldset>
+            <fieldset
+              className="banana-generator__choice-field"
+              disabled={working}
+            >
+              <legend id={`${fieldId}-resolution-label`}>
+                {copy.resolution}
+              </legend>
+              {model.resolutions?.length ? (
+                <div
+                  role="radiogroup"
+                  aria-labelledby={`${fieldId}-resolution-label`}
+                  className="banana-generator__resolution-grid"
+                >
+                  {model.resolutions.map((value) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="radio"
+                      data-value={value}
+                      aria-label={value}
+                      aria-checked={selectedResolution === value}
+                      tabIndex={selectedResolution === value ? 0 : -1}
+                      onClick={() => setResolution(value)}
+                      onKeyDown={(event) =>
+                        moveChoice(
+                          event,
+                          model.resolutions!,
+                          value,
+                          setResolution
+                        )
+                      }
+                    >
+                      <strong>{value}</strong>
+                      <small>
+                        {getCreativeUnitCredits(model, mode, value)}{' '}
+                        {copy.credits}
+                      </small>
+                    </button>
                   ))}
-                </select>
-              </label>
-              <label className="banana-generator__field">
-                <span>{copy.resolution}</span>
-                <select aria-label={copy.resolution} disabled value="default">
-                  <option value="default">{copy.provider_default}</option>
-                </select>
-              </label>
-            </div>
-          </details>
-          <div className="banana-generator__field">
+                </div>
+              ) : (
+                <div className="banana-generator__fixed-resolution">
+                  {copy.provider_default}
+                </div>
+              )}
+              <p className="banana-generator__option-hint">
+                {model.resolutions?.length
+                  ? copy.resolution_hint
+                  : copy.resolution_fixed}
+              </p>
+            </fieldset>
+          </div>
+          <div className="banana-generator__field banana-generator__output-card">
             <span id={`${fieldId}-outputs`}>{copy.output_count}</span>
             <div
               className="banana-generator__outputs"
-              role="group"
+              role="radiogroup"
               aria-labelledby={`${fieldId}-outputs`}
             >
-              {[1].map((count) => (
+              {[1, 2, 3, 4].map((number) => (
                 <button
-                  key={count}
+                  key={number}
                   type="button"
-                  disabled={count !== 1 || working}
-                  aria-pressed={count === 1}
+                  role="radio"
+                  aria-label={`×${number}`}
+                  disabled={working || (!supportsBatch && number !== 1)}
+                  aria-checked={count === number}
+                  tabIndex={count === number ? 0 : -1}
+                  onClick={() => setOutputCount(number)}
+                  onKeyDown={(event) => {
+                    if (
+                      !supportsBatch ||
+                      !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(
+                        event.key
+                      )
+                    )
+                      return;
+                    event.preventDefault();
+                    const next =
+                      event.key === 'Home'
+                        ? 1
+                        : event.key === 'End'
+                          ? 4
+                          : event.key === 'ArrowRight'
+                            ? (number % 4) + 1
+                            : ((number + 2) % 4) + 1;
+                    setOutputCount(next);
+                    event.currentTarget.parentElement
+                      ?.querySelectorAll<HTMLButtonElement>('[role="radio"]')
+                      [next - 1]?.focus();
+                  }}
                 >
-                  {count}
+                  ×{number}
                 </button>
               ))}
             </div>
-            <small>{copy.outputs_hint}</small>
           </div>
           <section
             className="banana-generator__quote"
@@ -820,7 +1235,7 @@ export function BananaGenerator({
           >
             <dl>
               <div>
-                <dt>{copy.flow_cost}</dt>
+                <dt>{copy.cost_label || copy.flow_cost}</dt>
                 <dd>
                   {ready && typeof cost === 'number'
                     ? `${cost} ${copy.credits}`
@@ -830,11 +1245,11 @@ export function BananaGenerator({
               {session?.user && (
                 <>
                   <div>
-                    <dt>{copy.flow_balance}</dt>
+                    <dt>{copy.balance_label || copy.flow_balance}</dt>
                     <dd>{balance.data?.balance ?? '—'}</dd>
                   </div>
                   <div>
-                    <dt>{copy.flow_after}</dt>
+                    <dt>{copy.after_label || copy.flow_after}</dt>
                     <dd>
                       {ready && typeof cost === 'number' && balance.data
                         ? Math.max(0, balance.data.balance - cost)
@@ -862,7 +1277,7 @@ export function BananaGenerator({
           <form.Subscribe selector={(s) => s.values.prompt}>
             {(prompt) => (
               <>
-                {!session?.user ? (
+                {!session?.user && prompt.trim() ? (
                   <Link
                     href={`/sign-in?callbackUrl=${encodeURIComponent(returnPath + '#generator')}`}
                     onClick={remember}
@@ -889,36 +1304,52 @@ export function BananaGenerator({
                     {working ? (
                       <Loader2 size={16} className="animate-spin" aria-hidden />
                     ) : (
-                      <Sparkles size={16} aria-hidden />
+                      prompt.trim() && <Sparkles size={16} aria-hidden />
                     )}
-                    {working ? copy.working : copy.run}
+                    {working
+                      ? copy.working
+                      : mode === 'edit' &&
+                          !references.some(
+                            (item) => item.status === 'uploaded' && item.url
+                          )
+                        ? copy.upload_first
+                        : !prompt.trim()
+                          ? copy.prompt_first
+                          : insufficient
+                            ? copy.need_credits
+                            : copy.run}
                   </button>
                 )}
-                <p className="banana-generator__status" role="status">
-                  {pendingCopy}
-                  {ready && cost ? ` ${cost} ${copy.credits}.` : ''}
-                </p>
-                <p className="banana-generator__draft">
-                  {draftRestored ? copy.draft_restored : copy.draft_saved}
-                </p>
-                <div className="banana-generator__utilities">
-                  <button
-                    type="button"
-                    onClick={copyPrompt}
-                    disabled={!prompt.trim()}
-                  >
-                    <Copy size={13} aria-hidden />
-                    {copy.copy}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={downloadBrief}
-                    disabled={!prompt.trim()}
-                  >
-                    <Download size={13} aria-hidden />
-                    {copy.save}
-                  </button>
-                </div>
+                {(availability.isError || !ready || working) && (
+                  <p className="banana-generator__status" role="status">
+                    {pendingCopy}
+                    {ready && cost ? ` ${cost} ${copy.credits}.` : ''}
+                  </p>
+                )}
+                <details className="banana-generator__extras">
+                  <summary>{copy.prompt_tools}</summary>
+                  <p className="banana-generator__draft">
+                    {draftRestored ? copy.draft_restored : copy.draft_saved}
+                  </p>
+                  <div className="banana-generator__utilities">
+                    <button
+                      type="button"
+                      onClick={copyPrompt}
+                      disabled={!prompt.trim()}
+                    >
+                      <Copy size={13} aria-hidden />
+                      {copy.copy}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={downloadBrief}
+                      disabled={!prompt.trim()}
+                    >
+                      <Download size={13} aria-hidden />
+                      {copy.save}
+                    </button>
+                  </div>
+                </details>
               </>
             )}
           </form.Subscribe>
@@ -960,34 +1391,68 @@ export function BananaGenerator({
           )}
         </form>
         <div
+          id={`${fieldId}-preview`}
           className="banana-generator__preview"
           aria-live="polite"
           aria-busy={working}
         >
-          <h3>{copy.preview_heading}</h3>
+          <div className="banana-generator__preview-heading">
+            <h3>{copy.preview_heading}</h3>
+            <span className="banana-generator__state" data-ready={ready}>
+              {working ? copy.working : pendingCopy}
+            </span>
+          </div>
           {result ? (
             <>
               <button
                 type="button"
                 onClick={() => setPreviewOpen(true)}
-                aria-label={copy.preview}
-                className="w-full"
+                aria-label={copy.view_result}
+                className="banana-generator__result-canvas"
               >
                 <img
                   src={result}
                   alt={copy.result}
                   className="banana-generator__result-image"
                 />
+                <span className="banana-generator__zoom">
+                  <Maximize2 size={16} aria-hidden />
+                  {copy.view_result}
+                </span>
               </button>
               <a
-                href={`/api/images/${encodeURIComponent(taskId || selectedHistory?.id || '')}/download`}
+                href={`/api/images/${encodeURIComponent(taskId || selectedHistory?.id || '')}/download?index=${resultIndex}`}
                 className="banana-generator__download"
                 onClick={() =>
                   trackFunnelEvent('image_download', { model: modelId, scene })
                 }
               >
-                {copy.download} <Download size={14} aria-hidden />
+                {copy.download_image} <Download size={14} aria-hidden />
               </a>
+              {resultImages.length > 1 && (
+                <div
+                  className="banana-generator__batch-results"
+                  aria-label={copy.batch_results}
+                >
+                  {resultImages.map(
+                    (image, index) =>
+                      image.imageUrl?.startsWith('https://') && (
+                        <button
+                          key={`${index}:${image.imageUrl}`}
+                          type="button"
+                          aria-label={`${copy.result} ${index + 1}`}
+                          aria-pressed={resultIndex === index}
+                          onClick={() => setResultIndex(index)}
+                        >
+                          <img
+                            src={image.imageUrl}
+                            alt={`${copy.result} ${index + 1}`}
+                          />
+                        </button>
+                      )
+                  )}
+                </div>
+              )}
               <div className="banana-result-actions">
                 <button
                   type="button"
@@ -996,6 +1461,7 @@ export function BananaGenerator({
                     setMode('edit');
                     setInitialReferenceUrls([result]);
                     setTaskId(undefined);
+                    setSelectedHistory(undefined);
                     form.setFieldValue('prompt', '');
                     trackFunnelEvent('image_edit_started', {
                       model: modelId,
@@ -1022,14 +1488,87 @@ export function BananaGenerator({
                 </button>
                 <Link href="/settings/assets">{copy.flow_assets}</Link>
               </div>
-              <p>{copy.flow_prompt_warning}</p>
+              <p className="banana-generator__result-hint">
+                {copy.flow_prompt_warning}
+              </p>
             </>
+          ) : working ? (
+            <div className="banana-generator__processing" role="status">
+              <div className="banana-generator__processing-icon">
+                <Loader2 size={28} className="animate-spin" aria-hidden />
+              </div>
+              <h4>{copy.preview_working}</h4>
+              <p>{copy.preview_working_hint}</p>
+              <div className="banana-generator__request-details">
+                <span>{model.label}</span>
+                <span>{ratio === 'auto' ? copy.auto_label : ratio}</span>
+                <span>×{count}</span>
+              </div>
+            </div>
+          ) : task.data?.status === 'failed' ||
+            selectedHistory?.status === 'failed' ? (
+            <div className="banana-generator__processing" role="alert">
+              <ImagePlus size={28} aria-hidden />
+              <h4>{copy.preview_failed_title}</h4>
+              <p>
+                {task.data?.errorMessage ||
+                  selectedHistory?.errorMessage ||
+                  copy.preview_failed}
+              </p>
+              <button
+                type="button"
+                className="banana-generator__retry"
+                onClick={() => {
+                  setTaskId(undefined);
+                  setSelectedHistory(undefined);
+                  document.getElementById(`${fieldId}-prompt`)?.focus();
+                }}
+              >
+                {copy.reuse_prompt}
+              </button>
+            </div>
           ) : (
-            <div className="banana-generator__empty">
-              {working && (
-                <Loader2 size={16} className="animate-spin" aria-hidden />
+            <div className="banana-generator__showcase">
+              <div className="banana-generator__showcase-intro">
+                <span className="banana-generator__eyebrow">
+                  {copy.example_label}
+                </span>
+                <h4>{copy.starter_title}</h4>
+                <p>{copy.preview_hint}</p>
+              </div>
+              {examples.length > 0 ? (
+                <div className="banana-generator__example-grid">
+                  {examples.slice(0, 4).map((example) => (
+                    <button
+                      type="button"
+                      key={example.id}
+                      className="banana-generator__example"
+                      onClick={() => prepareBananaGenerator(example.selection)}
+                    >
+                      <img
+                        src={example.image}
+                        alt={example.alt}
+                        width={1280}
+                        height={720}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span>
+                        <strong>{example.title}</strong>
+                        <ArrowUpRight size={16} aria-hidden />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="banana-generator__empty">
+                  <ImagePlus size={28} aria-hidden />
+                  <span>{copy.empty}</span>
+                </div>
               )}
-              {working ? copy.working : copy.empty}
+              <p className="banana-generator__example-note">
+                {copy.example_note}
+              </p>
             </div>
           )}
           {session?.user && (
@@ -1053,6 +1592,8 @@ export function BananaGenerator({
                     <button
                       type="button"
                       key={item.id}
+                      disabled={working}
+                      aria-pressed={selectedHistory?.id === item.id}
                       onClick={() => {
                         setSelectedHistory(item);
                         setTaskId(undefined);
@@ -1072,7 +1613,7 @@ export function BananaGenerator({
                         <span>
                           {['pending', 'processing'].includes(item.status)
                             ? copy.working
-                            : copy.failed}
+                            : copy.preview_failed_title}
                         </span>
                       )}
                     </button>
@@ -1120,7 +1661,7 @@ export function BananaGenerator({
         onOpenChange={setPreviewOpen}
         imageUrl={result}
         alt={copy.result}
-        title={copy.preview}
+        title={copy.view_result}
       />
       <FirstGenerationFeedback
         taskId={taskId}

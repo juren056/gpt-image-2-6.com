@@ -1,5 +1,6 @@
 import {
   CREATIVE_MODELS,
+  getCreativeOutputLimit,
   type CreativeModelDefinition,
 } from '@/config/creative-studio';
 
@@ -23,6 +24,8 @@ type ActiveCreativeTask = {
   mode: 'generate' | 'edit';
   ratio: string;
   scene: string;
+  outputCount: number;
+  resolution?: string;
 };
 
 export function parseActiveCreativeTask(
@@ -57,6 +60,21 @@ export function parseActiveCreativeTask(
       model,
       mode: saved.mode,
       ratio,
+      resolution: model.resolutions?.length
+        ? 'resolution' in saved &&
+          typeof saved.resolution === 'string' &&
+          model.resolutions.includes(saved.resolution)
+          ? saved.resolution
+          : model.resolutions[0]
+        : undefined,
+      outputCount:
+        'outputCount' in saved &&
+        typeof saved.outputCount === 'number' &&
+        Number.isInteger(saved.outputCount) &&
+        saved.outputCount >= 1 &&
+        saved.outputCount <= getCreativeOutputLimit(model.id)
+          ? saved.outputCount
+          : 1,
       scene: normalizeCreativeScene('scene' in saved ? saved.scene : undefined),
     };
   } catch {

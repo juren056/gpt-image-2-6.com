@@ -1,11 +1,12 @@
-'use client';
-
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ImageIcon, RefreshCw, Upload, X } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { uploadImageFile } from '@/lib/image-upload-client';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+
+export { uploadImageFile } from '@/lib/image-upload-client';
 
 export type UploadStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
 
@@ -65,27 +66,6 @@ const formatBytes = (bytes?: number) => {
   if (kb < 1024) return `${kb.toFixed(2)} KB`;
   const mb = kb / 1024;
   return `${mb.toFixed(2)} MB`;
-};
-
-export const uploadImageFile = async (file: File) => {
-  const formData = new FormData();
-  formData.append('files', file);
-
-  const response = await fetch('/api/storage/upload-image', {
-    method: 'POST',
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Upload failed with status ${response.status}`);
-  }
-
-  const result = await response.json();
-  if (result.code !== 0 || !result.data?.urls?.length) {
-    throw new Error(result.message || 'Upload failed');
-  }
-
-  return result.data.urls[0] as string;
 };
 
 export function ImageUploader({

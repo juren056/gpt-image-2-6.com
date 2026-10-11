@@ -96,6 +96,8 @@ export interface PaymentOrder {
   plan?: PaymentPlan; // required for subscription
   /** Restrict Checkout to an explicit set of payment methods when required. */
   paymentMethodTypes?: string[];
+  /** Stripe's on-site form; hosted checkout remains the default for other callers. */
+  checkoutUi?: 'hosted' | 'embedded';
   customFields?: PaymentCustomField[]; // optional for custom fields
 }
 
@@ -105,6 +107,8 @@ export interface PaymentOrder {
 export interface CheckoutInfo {
   sessionId: string;
   checkoutUrl: string;
+  /** Only return to the authenticated purchaser; do not persist this secret. */
+  clientSecret?: string;
 }
 
 export enum SubscriptionCycleType {

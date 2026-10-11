@@ -1,4 +1,9 @@
 import { CREATIVE_MODELS } from '@/config/creative-studio';
+import {
+  HOMEPAGE_EXAMPLES,
+  homepageExampleSelection,
+  homepageImage,
+} from '@/config/homepage-examples';
 import { getLocale } from '@/paraglide/runtime.js';
 import { BananaFeatures } from '@/blocks/banana-features';
 import { bananaText } from '@/blocks/banana-messages';
@@ -23,6 +28,21 @@ import {
 } from '@/components/banana-home-content';
 
 export const BANANA_GENERATOR_KEYS = [
+  'more_ratios',
+  'fewer_ratios',
+  'resolution_hint',
+  'resolution_fixed',
+  'starter_title',
+  'preview_hint',
+  'example_label',
+  'example_note',
+  'use_example',
+  'preview_working',
+  'preview_working_hint',
+  'preview_failed',
+  'preview_failed_title',
+  'view_result',
+  'download_image',
   'operation',
   'generate_mode',
   'edit_mode',
@@ -38,6 +58,16 @@ export const BANANA_GENERATOR_KEYS = [
   'resolution',
   'provider_default',
   'output_count',
+  'new_label',
+  'auto_label',
+  'prompt_first',
+  'upload_first',
+  'need_credits',
+  'prompt_tools',
+  'batch_results',
+  'cost_label',
+  'balance_label',
+  'after_label',
   'outputs_hint',
   'preview_heading',
   'empty',
@@ -82,6 +112,7 @@ export function BananaHome({
       title: text(`models.${index}.title`),
       body: text(`models.${index}.body`),
       references: String(model.maxReferences),
+      outputSize: model.resolutions?.join(' / ') || text('provider_default'),
       credits: model.credits.generate
         ? String(model.credits.generate)
         : text('models.pending'),
@@ -97,9 +128,10 @@ export function BananaHome({
   ];
   const cases = cards('cases', 4).map((card, index) => ({
     ...card,
-    image: `/images/workflows/case-${caseImages[index]}.svg`,
+    image: homepageImage(`case-${caseImages[index]}`),
     alt: text(`cases.${index}.alt`),
     href: caseLinks[index],
+    selection: homepageExampleSelection(HOMEPAGE_EXAMPLES[index + 3]),
   }));
   return (
     <div className="banana-app">
@@ -129,6 +161,18 @@ export function BananaHome({
               ),
             }}
             recipes={recipes}
+            examples={HOMEPAGE_EXAMPLES.filter((example) =>
+              ['product', 'character', 'text', 'social'].includes(example.id)
+            ).map((example) => ({
+              id: example.id,
+              image: homepageImage(example.imageId),
+              selection: homepageExampleSelection(example),
+              title: text(`example_${example.id}`),
+              alt:
+                example.id === 'text'
+                  ? text('features.text.alt')
+                  : text(`cases.${caseImages.indexOf(example.id)}.alt`),
+            }))}
           />
         </div>
       </div>
@@ -155,6 +199,7 @@ export function BananaHome({
           labels={{
             best: text('models.best'),
             references: text('models.references'),
+            outputSize: text('resolution'),
             credits: text('models.credits'),
             default: text('models.default'),
           }}
@@ -177,6 +222,7 @@ export function BananaHome({
           intro={text('cases.intro')}
           items={cases}
           caption={text('cases.caption')}
+          usePromptLabel={text('use_example')}
         />
         <section className="banana-section banana-pricing">
           <div className="banana-container">

@@ -196,16 +196,26 @@ export class StripeProvider implements PaymentProvider {
         }
       }
 
-      if (order.successUrl) {
-        sessionParams.success_url = order.successUrl;
-      }
-
-      if (order.cancelUrl) {
-        sessionParams.cancel_url = order.cancelUrl;
+      if (order.checkoutUi === 'embedded') {
+        if (!this.configs.publishableKey || !order.successUrl) {
+          throw new Error('Embedded checkout is not configured');
+        }
+        sessionParams.ui_mode = 'embedded';
+        sessionParams.return_url = order.successUrl;
+        // Return through the same verified callback for cards and redirect methods.
+        sessionParams.redirect_on_completion = 'always';
+      } else {
+        if (order.successUrl) sessionParams.success_url = order.successUrl;
+        if (order.cancelUrl) sessionParams.cancel_url = order.cancelUrl;
       }
 
       const session = await this.client.checkout.sessions.create(sessionParams);
-      if (!session.id || !session.url) {
+      if (
+        !session.id ||
+        (order.checkoutUi === 'embedded'
+          ? !session.client_secret
+          : !session.url)
+      ) {
         throw new Error('create payment failed');
       }
 
@@ -214,7 +224,10 @@ export class StripeProvider implements PaymentProvider {
         checkoutParams: sessionParams,
         checkoutInfo: {
           sessionId: session.id,
-          checkoutUrl: session.url,
+          checkoutUrl: session.url || '',
+          ...(order.checkoutUi === 'embedded'
+            ? { clientSecret: session.client_secret! }
+            : {}),
         },
         checkoutResult: session,
         metadata: order.metadata || {},
@@ -526,7 +539,7 @@ export class StripeProvider implements PaymentProvider {
           ? (session.payment_intent as string)
           : undefined,
       },
-      paymentResult: session,
+      paymentResult: { ...session, client_secret: undefined },
       metadata: session.metadata,
     };
 

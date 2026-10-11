@@ -28,6 +28,10 @@ function safeSameOriginPath(
 }
 
 async function POST({ request }: { request: Request }) {
+  const origin = request.headers.get('origin');
+  if (origin && origin !== new URL(request.url).origin) {
+    return respErr('Forbidden', { status: 403 });
+  }
   const limited = await enforceMinIntervalRateLimit(request, {
     intervalMs: 1000,
     keyPrefix: 'checkout',
@@ -43,7 +47,14 @@ async function POST({ request }: { request: Request }) {
     }
 
     const body = await request.json().catch(() => ({}));
-    const { product_id, payment_provider, redirect } = body;
+    const { product_id, payment_provider, redirect, ui_mode } = body;
+    if (
+      ui_mode !== undefined &&
+      ui_mode !== 'embedded' &&
+      ui_mode !== 'hosted'
+    ) {
+      return respErr('Invalid checkout mode', { status: 400 });
+    }
 
     if (!product_id || typeof product_id !== 'string') {
       return respErr('Missing product_id');
@@ -85,6 +96,17 @@ async function POST({ request }: { request: Request }) {
         }
       );
     }
+    if (ui_mode === 'embedded' && providerKey !== 'stripe') {
+      return respErr('Embedded checkout requires Stripe', { status: 400 });
+    }
+    if (
+      ui_mode === 'embedded' &&
+      !configs.stripe_publishable_key?.startsWith('pk_')
+    ) {
+      return respErr('Stripe publishable key is not configured', {
+        status: 503,
+      });
+    }
     const testAmountRaw = providerKey
       ? configs[`${providerKey}_test_amount`]
       : undefined;
@@ -103,7 +125,7 @@ async function POST({ request }: { request: Request }) {
     const finalRedirect = redirect
       ? `${baseUrl}/auth-callback?redirect=${encodeURIComponent(`${baseUrl}${safeRedirectPath}`)}`
       : `${baseUrl}/settings/billing?purchase=success`;
-    const successUrl = `${baseUrl}/api/payment/callback?redirect=${encodeURIComponent(finalRedirect)}`;
+    const successUrl = finalRedirect;
     const cancelUrl = `${baseUrl}/checkout?product=${encodeURIComponent(product.productId)}&redirect=${encodeURIComponent(safeRedirectPath)}`;
 
     const checkout = await createCheckout({
@@ -132,11 +154,21 @@ async function POST({ request }: { request: Request }) {
             }
           : undefined,
         paymentMethodTypes: product.paymentMethodTypes,
+        checkoutUi: ui_mode === 'embedded' ? 'embedded' : 'hosted',
       },
       provider: providerKey,
     });
 
-    return respData({ checkout_url: checkout.checkoutInfo.checkoutUrl });
+    const payload =
+      ui_mode === 'embedded'
+        ? {
+            client_secret: checkout.checkoutInfo.clientSecret,
+            publishable_key: configs.stripe_publishable_key,
+          }
+        : { checkout_url: checkout.checkoutInfo.checkoutUrl };
+    return respData(payload, {
+      headers: { 'Cache-Control': 'private, no-store' },
+    });
   } catch (error: any) {
     console.error('checkout error:', error);
     return respErr(error.message || 'Checkout failed');

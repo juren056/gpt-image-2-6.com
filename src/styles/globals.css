@@ -10,6 +10,7 @@
 @import './banana-account-pages.css';
 @import './banana-account-shell.css';
 @import './banana-checkout.css';
+@import './typography.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -51,24 +52,17 @@
   color: var(--primary);
 }
 
-/* Locale-aware typography. Latin-script marketing headings keep the branded
-   Libre Baskerville face. Scripts that it does not cover use familiar modern
-   UI sans faces, preventing mixed serif/sans glyphs inside one heading. */
+/* Reference site typography: use the platform's system UI sans-serif. */
 :root {
-  --font-body:
-    'Inter Variable', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Helvetica, Arial, sans-serif;
-  --font-display:
-    'Libre Baskerville', Georgia, Cambria, 'Times New Roman', serif;
+  --font-ui: ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-ui);
+  --font-display: var(--font-body);
+  --ui-leading: 1.5;
+  --ui-heading-tracking: -0.025em;
 }
-
 html[lang='zh'] {
-  --font-body:
-    'Microsoft YaHei UI', 'PingFang SC', 'Noto Sans CJK SC',
-    'Source Han Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
-  --font-display:
-    'Microsoft YaHei UI', 'PingFang SC', 'Noto Sans CJK SC',
-    'Source Han Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --ui-leading: 1.65;
+  --ui-heading-tracking: 0;
 }
 
 html[lang='zh-TW'] {
@@ -118,7 +112,7 @@ html[lang='th'] {
 html:is([lang='zh'], [lang='zh-TW'], [lang='ja'], [lang='ko'])
   :is(h1, h2, h3).font-serif {
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
 }
 @theme inline {
   --color-background: var(--background);

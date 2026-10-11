@@ -335,8 +335,15 @@ export async function createCheckout(params: {
       paymentInterval: paymentOrder.plan?.interval || 'one-time',
       paymentProvider: session.provider,
       paymentSessionId: session.checkoutInfo.sessionId,
-      checkoutInfo: JSON.stringify(session.checkoutInfo),
-      checkoutResult: JSON.stringify(session.checkoutResult),
+      checkoutInfo: JSON.stringify({
+        ...session.checkoutInfo,
+        clientSecret: undefined,
+      }),
+      checkoutResult: JSON.stringify(
+        session.provider === 'stripe'
+          ? { ...session.checkoutResult, client_secret: undefined }
+          : session.checkoutResult
+      ),
       checkoutUrl: session.checkoutInfo.checkoutUrl,
       description: paymentOrder.description || '',
     });

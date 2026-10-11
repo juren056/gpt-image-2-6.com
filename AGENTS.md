@@ -525,3 +525,44 @@ Keep `.env.example` minimal; don't add provider keys to it.
 7. **Always verify `pnpm build` passes** after making changes
 8. **Return `respData`/`respErr`** from API routes
 9. **Run the `security-scan` skill before every `git commit`** — it checks for leaked secrets, injection/XSS/logic vulnerabilities in the diff, and `.gitignore`/`.dockerignore` gaps. HIGH findings block the commit.
+
+## Owner-approved homepage boundary (2026-10-11)
+
+The owner requires the black/yellow `nanobanana21.com` homepage composition with
+the seven photographic examples restored in both local source and production.
+Read `docs/homepage-restoration.md` and `docs/homepage-baseline.json` before any
+homepage change or deployment. This scoped boundary takes precedence over older
+homepage directions in `DESIGN.md` (task selectors or vector workflow diagrams).
+Do not silently update the baseline to bypass a failed check; changing the
+homepage composition requires a new explicit owner request and visual review.
+
+Preserve the repaired administrator access, payments, Fal generation, tool icon
+picker and Chat Studio. Restore individual homepage files rather than rolling
+back the entire application. Use `pnpm cf:build` / `pnpm cf:deploy` so source and
+the actual release assets are checked. Concurrent builds must use separate
+`NITRO_BUILD_DIR` and `NITRO_OUTPUT_DIR` directories. Deploy only the Nano Banana
+Worker/domain/database identity recorded in the restoration document.
+
+The owner's subsequent reference-matching request also covers typography, the
+homepage generator and its model comparison table. Read
+`docs/generator-reference-restoration.md` for the measured system font, controls
+and billing boundary. Their reviewed source is part of the same baseline; do not
+replace it with the previous collapsed generator or global Manrope direction.
+Nano Banana 2.1 defaults to 1K; a higher-resolution selector requires its own
+server pricing, not only a visual change. Batch outputs multiply the selected
+resolution's unit credit cost on the server. The owner's subsequent option repair
+request authorizes the direct ratio controls and 1K/2K/4K options documented in
+`docs/generator-options-repair.md` (8/12/28 credits per image, server validated).
+
+The owner subsequently authorized original homepage image replacement and a
+generator redesign within this same composition (2026-10-11). Read
+`docs/homepage-refresh.md` and the updated baseline for the seven original photos,
+example-to-prompt interaction and generator states. Do not restore the earlier
+competitor photos or the plain empty preview over this reviewed refresh. Preserve
+the hero, system font, section order and model table, together with the repaired
+administrator, embedded Stripe checkout, Fal generation, tool picker and chat.
+
+The owner subsequently authorized the card layout and motion changes limited to
+the four-step guidance, model comparison/banner and creative capabilities. Read
+`docs/homepage-card-polish.md` and its updated baseline. Preserve all other
+homepage sections and repaired business functions during future releases.

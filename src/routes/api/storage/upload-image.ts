@@ -39,7 +39,11 @@ function hasExpectedImageSignature(bytes: Uint8Array, mimeType: string) {
       bytes[0] === 0x89 &&
       bytes[1] === 0x50 &&
       bytes[2] === 0x4e &&
-      bytes[3] === 0x47
+      bytes[3] === 0x47 &&
+      bytes[4] === 0x0d &&
+      bytes[5] === 0x0a &&
+      bytes[6] === 0x1a &&
+      bytes[7] === 0x0a
     );
   }
   if (mimeType === 'image/webp') {
@@ -63,11 +67,37 @@ async function POST({ request }: { request: Request }) {
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) return respErr('Unauthorized');
 
+    const origin = request.headers.get('origin');
+    if (origin && origin !== new URL(request.url).origin)
+      return respErr('Invalid upload origin');
+
+    if (Number(request.headers.get('content-length') || 0) > 31 * 1024 * 1024) {
+      return respErr('Upload at most 30MB per request');
+    }
+
     const formData = await request.formData();
-    const files = formData.getAll('files') as File[];
+    const entries = formData.getAll('files');
+    if (entries.some((entry) => typeof entry === 'string'))
+      return respErr('Invalid file upload');
+    const files = entries as File[];
     if (!files.length) return respErr('No files provided');
+    if (
+      files.length > 14 ||
+      files.reduce((total, file) => total + file.size, 0) > 30 * 1024 * 1024
+    ) {
+      return respErr('Upload at most 14 images and 30MB per request');
+    }
 
     const storage = await getStorage();
+    if (
+      !storage &&
+      (process.env.NODE_ENV !== 'development' ||
+        envConfigs.database_provider === 'd1')
+    ) {
+      return respErr(
+        'Image storage is not configured. Contact support or configure R2 in Admin > Settings > Storage.'
+      );
+    }
     const uploadResults: Array<{
       url: string;
       key: string;
@@ -91,7 +121,11 @@ async function POST({ request }: { request: Request }) {
         );
       }
 
-      const digest = md5(body);
+      // Native R2 uses random capability URLs. Avoid hashing megabytes in JS on
+      // Workers Free; keep content-addressed deduplication for legacy storage.
+      const digest = storage?.getProvider('r2-binding')
+        ? crypto.randomUUID()
+        : md5(body);
       const ext =
         (extFromMime(file.type) || file.name.split('.').pop() || 'bin').replace(
           /[^a-zA-Z0-9]/g,
@@ -160,9 +194,13 @@ async function POST({ request }: { request: Request }) {
       urls: uploadResults.map((r) => r.url),
       results: uploadResults,
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('upload image failed:', e);
-    return respErr(e?.message || 'upload image failed');
+    return respErr(
+      process.env.NODE_ENV === 'development' && e instanceof Error
+        ? e.message
+        : 'Image upload could not be completed. Please retry or contact support.'
+    );
   }
 }
 

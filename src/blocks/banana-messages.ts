@@ -5,6 +5,64 @@ import { getLocale } from '@/paraglide/runtime.js';
 export function bananaText(key: string, locale: string = getLocale()): string {
   const language = locale === 'zh' ? 'zh' : 'en';
   switch (key) {
+    case 'view_result':
+      return m['banana.view_result']({}, { locale: language });
+    case 'download_image':
+      return m['banana.download_image']({}, { locale: language });
+    case 'preview_failed_title':
+      return m['banana.preview_failed_title']({}, { locale: language });
+    case 'more_ratios':
+      return m['banana.more_ratios']({}, { locale: language });
+    case 'fewer_ratios':
+      return m['banana.fewer_ratios']({}, { locale: language });
+    case 'resolution_hint':
+      return m['banana.resolution_hint']({}, { locale: language });
+    case 'resolution_fixed':
+      return m['banana.resolution_fixed']({}, { locale: language });
+    case 'starter_title':
+      return m['banana.starter_title']({}, { locale: language });
+    case 'preview_hint':
+      return m['banana.preview_hint']({}, { locale: language });
+    case 'example_label':
+      return m['banana.example_label']({}, { locale: language });
+    case 'example_note':
+      return m['banana.example_note']({}, { locale: language });
+    case 'use_example':
+      return m['banana.use_example']({}, { locale: language });
+    case 'preview_working':
+      return m['banana.preview_working']({}, { locale: language });
+    case 'preview_working_hint':
+      return m['banana.preview_working_hint']({}, { locale: language });
+    case 'preview_failed':
+      return m['banana.preview_failed']({}, { locale: language });
+    case 'example_product':
+      return m['banana.example_product']({}, { locale: language });
+    case 'example_character':
+      return m['banana.example_character']({}, { locale: language });
+    case 'example_text':
+      return m['banana.example_text']({}, { locale: language });
+    case 'example_social':
+      return m['banana.example_social']({}, { locale: language });
+    case 'cost_label':
+      return m['banana.cost_label']({}, { locale: language });
+    case 'balance_label':
+      return m['banana.balance_label']({}, { locale: language });
+    case 'after_label':
+      return m['banana.after_label']({}, { locale: language });
+    case 'new_label':
+      return m['banana.new_label']({}, { locale: language });
+    case 'auto_label':
+      return m['banana.auto_label']({}, { locale: language });
+    case 'prompt_first':
+      return m['banana.prompt_first']({}, { locale: language });
+    case 'upload_first':
+      return m['banana.upload_first']({}, { locale: language });
+    case 'need_credits':
+      return m['banana.need_credits']({}, { locale: language });
+    case 'prompt_tools':
+      return m['banana.prompt_tools']({}, { locale: language });
+    case 'batch_results':
+      return m['banana.batch_results']({}, { locale: language });
     case 'account.credit_changes':
       return m['banana.account.credit_changes']({}, { locale: language });
     case 'account.current_balance':
