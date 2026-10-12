@@ -3622,5 +3622,11 @@
   "settings.profile.google_link_failed": "Google could not be connected. Try again while signed in, or keep using your password.",
   "settings.profile.google_email_mismatch": "Choose the Google account with the same email as this account, then try again.",
   "settings.profile.google_link_conflict": "This Google account is already connected to another account. Sign in to that account or contact support.",
-  "settings.profile.google_link_success": "Continue creating"
+  "settings.profile.google_link_success": "Continue creating",
+  "common.sign.one_tap_title": "Google One Tap sign-in failed",
+  "common.sign.one_tap_token": "Google could not verify this sign-in credential. Try signing in with Google again.",
+  "common.sign.one_tap_signup_disabled": "New account registration is currently unavailable. Use an existing account or contact support.",
+  "common.sign.one_tap_network": "Google sign-in could not reach the service. Check your connection and use the sign-in page to retry.",
+  "common.sign.one_tap_failed": "Google sign-in could not be completed. Try again from the sign-in page.",
+  "common.sign.one_tap_dismiss": "Dismiss sign-in message"
 }

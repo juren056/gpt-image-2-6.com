@@ -172,6 +172,31 @@ try {
     'account_already_linked_to_different_user'
   );
   assert.equal(database.account.at(-1)?.userId, 'another-test-user');
+  cookies.clear();
+  providerUser = {
+    id: 'fresh-google-fixture',
+    name: 'New Google User',
+    email: 'new-google-user@example.test',
+    emailVerified: true,
+  };
+  const fresh = await oauth('/sign-in/social');
+  assert.equal(fresh.searchParams.get('error'), null);
+  const freshSession = await (await request('/get-session')).json();
+  assert.equal(freshSession.user.email, providerUser.email);
+  assert.equal(freshSession.user.emailVerified, true);
+  const freshUserId = freshSession.user.id;
+  const usersAfterSignup = database.user.length;
+  cookies.clear();
+  await oauth('/sign-in/social');
+  assert.equal(
+    (await (await request('/get-session')).json()).user.id,
+    freshUserId
+  );
+  assert.equal(
+    database.user.length,
+    usersAfterSignup,
+    'Returning Google user must not be registered twice'
+  );
   console.log(
     'Google linking integration passed: implicit rejection, authenticated same-email linking, subsequent login, anonymous rejection, email mismatch, unverified provider and account conflict. No production accounts or external services used.'
   );

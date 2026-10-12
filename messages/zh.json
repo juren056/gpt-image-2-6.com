@@ -3622,5 +3622,11 @@
   "settings.profile.google_link_failed": "未能关联 Google。请保持登录后重试，也可以继续使用原密码登录。",
   "settings.profile.google_email_mismatch": "请选择与当前账号邮箱一致的 Google 账号，再次关联。",
   "settings.profile.google_link_conflict": "这个 Google 账号已经关联其他账号。请登录对应账号，或联系支持。",
-  "settings.profile.google_link_success": "继续创作"
+  "settings.profile.google_link_success": "继续创作",
+  "common.sign.one_tap_title": "Google 一键登录失败",
+  "common.sign.one_tap_token": "Google 未能验证这次登录凭证，请在登录页重新使用 Google 登录。",
+  "common.sign.one_tap_signup_disabled": "目前无法创建新账号，请使用已有账号或联系支持。",
+  "common.sign.one_tap_network": "Google 登录服务连接失败，请检查网络并在登录页重试。",
+  "common.sign.one_tap_failed": "未能完成 Google 登录，请在登录页重试。",
+  "common.sign.one_tap_dismiss": "关闭登录提示"
 }
