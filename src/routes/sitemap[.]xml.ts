@@ -8,6 +8,7 @@ import {
   PUBLIC_TOOL_PAGES,
 } from '@/config/public-creative';
 import { isSearchExcludedPath } from '@/config/search-indexing';
+import { sitemapLastModified } from '@/config/sitemap-updates';
 import { INDEXABLE_LOCALES, seoLanguageTag } from '@/lib/seo';
 import { baseLocale, locales, localizeUrl } from '@/paraglide/runtime.js';
 import { getLocalPosts, mergePosts } from '@/content/posts';
@@ -256,6 +257,7 @@ export const Route = createFileRoute('/sitemap.xml')({
             title: row.title || row.slug,
             description: row.description || '',
             createdAt: new Date(row.createdAt).toISOString(),
+            updatedAt: new Date(row.updatedAt).toISOString(),
             source: 'db' as const,
           }));
           const posts = mergePosts(dbPosts, getLocalPosts(baseLocale));
@@ -283,7 +285,16 @@ export const Route = createFileRoute('/sitemap.xml')({
           new Map(
             entries
               .filter((entry) => !isSearchExcludedPath(entry.path))
-              .map((entry) => [entry.path, entry])
+              .map((entry) => [
+                entry.path,
+                {
+                  ...entry,
+                  lastModified: sitemapLastModified(
+                    entry.path,
+                    entry.lastModified
+                  ),
+                },
+              ])
           ).values()
         );
 
@@ -303,7 +314,7 @@ export const Route = createFileRoute('/sitemap.xml')({
           headers: {
             'Content-Type': 'application/xml; charset=utf-8',
             'Cache-Control':
-              'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400',
+              'public, max-age=0, s-maxage=300, stale-while-revalidate=300',
           },
         });
       },

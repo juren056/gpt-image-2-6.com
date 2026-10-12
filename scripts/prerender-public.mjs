@@ -82,7 +82,8 @@ try {
   await writeFile(
     resolve(publicDir, '_headers'),
     '/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n' +
-      '/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n  X-Content-Type-Options: nosniff\n'
+      '/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n  X-Content-Type-Options: nosniff\n' +
+      '/sitemap.xml\n  Cache-Control: public, max-age=0, must-revalidate\n  Content-Type: application/xml; charset=utf-8\n'
   );
   console.log(
     `Static output complete: ${completed} public pages, sitemap and robots.`
