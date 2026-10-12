@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Ga verder met je volgende creatie.",
+  "common.sign.gallery_signup_headline": "Van een idee naar je eerste afbeelding.",
+  "common.sign.gallery_disclosure": "Originele illustratieve voorbeelden.",
+  "common.sign.gallery_show_password": "Wachtwoord tonen",
+  "common.sign.gallery_hide_password": "Wachtwoord verbergen",
+  "common.sign.gallery_brand_label": "Merkcampagnes",
+  "common.sign.gallery_space_label": "Ruimteconcepten",
+  "common.sign.gallery_social_label": "Sociale content",
+  "common.sign.gallery_brand_alt": "Originele zwart-gele koptelefooncampagne met de tekst MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Originele architectuurvisualisatie met een gele loungestoel en een boograam.",
+  "common.sign.gallery_social_alt": "Originele sociale campagne met een man in een gele jas naast een skateboard."
 }

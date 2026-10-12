@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-12",
+  "tool": "Built-in image_gen",
+  "purpose": "Independent artwork for sign-in/sign-up; fictional original examples, not actual user history or model benchmarks.",
+  "assets": [
+    {
+      "file": "public/images/auth-gallery/brand-audio-20261012.webp",
+      "prompt": "Use case: ads-marketing. Asset type: original wide 16:9 artwork for the login gallery of a black-and-banana-yellow AI image creation website. Create a striking premium sports audio brand campaign, a sculptural banana-yellow over-ear headphone hovering above a glossy obsidian pedestal, fine speaker grille texture, black background, curved yellow sound-wave ribbons, bold editorial typography, polished photographic product advertising with graphic design integrated. Exact text, large and very legible: \"MAKE SOME NOISE\". Only those three words, no additional copy. Keep the headline and headphones in the central 80% so a horizontal mobile crop works. Dominant banana yellow #facc15 and charcoal black, tiny warm ivory accents, confident studio lighting, commercially polished. No banana fruit, no coffee cup, no existing brand logos, no watermarks, no screenshot or page UI. One finished campaign image, not a collage.",
+      "sha256": "2d42a3a2ca6dec1cceb915389059f4d88f9c7f5b5af325ac42c7157f4ed5dffa",
+      "bytes": 74244
+    },
+    {
+      "file": "public/images/auth-gallery/space-studio-20261012.webp",
+      "prompt": "Use case: stylized-concept. Asset type: original wide 16:9 architectural visualization for a black-and-yellow AI creation website login artwork gallery. A dramatic modern creative studio interior, tall charcoal walls, double-height arched window revealing a green garden, a floating pale travertine workbench and a sculptural banana-yellow curved lounge chair as the focus, a subtle warm yellow light line around the arch, one design book and ceramic object. Photorealistic architectural rendering with beautiful material texture and soft afternoon light. Warm ivory, charcoal, banana yellow #facc15, restrained forest green. Strong architectural composition that remains legible as a small thumbnail, premium and inviting, no people, no text, no logos, no watermarks. Distinct from a product advertising photograph. One scene only.",
+      "sha256": "445a83ce98210c33fdaec8e11f2e14e72c8fdece09faa11c7c135a7375300f97",
+      "bytes": 65942
+    },
+    {
+      "file": "public/images/auth-gallery/social-streetwear-20261012.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: original wide 16:9 social media fashion campaign artwork for a black-and-yellow AI image website login gallery. An adult male streetwear creator with short dark hair wearing a vivid banana-yellow technical jacket over a black shirt, charcoal trousers and clean unbranded sneakers, leaning casually beside a yellow skateboard in a modern concrete city plaza. Wide editorial fashion photograph, candid confident expression, natural posture and realistic anatomy, mid-distance three-quarter full-body composition, late afternoon sun producing a long graphic shadow, slight low-angle camera. Banana yellow #facc15, charcoal black, warm concrete and subtle blue sky. Subject clearly visible in the center of frame, energetic social campaign aesthetic, no existing brand logos, no text, no watermarks. One finished photograph, no collage.",
+      "sha256": "e1c7ec2fb9f727a30444481a726c62323ccfef16f78d26d577c1b9877c6436e6",
+      "bytes": 45086
+    }
+  ],
+  "socialEdit": "Remove only the small translucent white geometric mark at the top-left of the generated social image; preserve the person, composition and lighting.",
+  "processing": "WebP conversion and responsive downscaling; a 640px variant of the brand artwork is supplied for mobile.",
+  "responsiveVariant": {
+    "file": "public/images/auth-gallery/brand-audio-640-20261012.webp",
+    "sha256": "2d76f399b08eb9c5c7b51c79caedd11f7789963af2298a174888345d40a5ff1b",
+    "bytes": 31816
+  }
+}

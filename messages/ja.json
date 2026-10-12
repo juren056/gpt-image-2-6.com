@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "次の作品を、ここから。",
+  "common.sign.gallery_signup_headline": "アイデアを、最初の一枚に。",
+  "common.sign.gallery_disclosure": "オリジナルの制作例。",
+  "common.sign.gallery_show_password": "パスワードを表示",
+  "common.sign.gallery_hide_password": "パスワードを隠す",
+  "common.sign.gallery_brand_label": "ブランド広告",
+  "common.sign.gallery_space_label": "空間デザイン",
+  "common.sign.gallery_social_label": "ソーシャルコンテンツ",
+  "common.sign.gallery_brand_alt": "MAKE SOME NOISE の文字を使った黒と黄色のオリジナルヘッドホン広告。",
+  "common.sign.gallery_space_alt": "黄色いラウンジチェアとアーチ窓を配したオリジナルの建築ビジュアル。",
+  "common.sign.gallery_social_alt": "黄色いジャケットの男性とスケートボードを写したオリジナルのSNS広告。"
 }

@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Tiếp tục tác phẩm tiếp theo.",
+  "common.sign.gallery_signup_headline": "Từ ý tưởng đến hình ảnh đầu tiên.",
+  "common.sign.gallery_disclosure": "Ví dụ minh họa nguyên bản.",
+  "common.sign.gallery_show_password": "Hiện mật khẩu",
+  "common.sign.gallery_hide_password": "Ẩn mật khẩu",
+  "common.sign.gallery_brand_label": "Chiến dịch thương hiệu",
+  "common.sign.gallery_space_label": "Thiết kế không gian",
+  "common.sign.gallery_social_label": "Nội dung mạng xã hội",
+  "common.sign.gallery_brand_alt": "Quảng cáo tai nghe nguyên bản màu đen và vàng với dòng chữ MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Phối cảnh kiến trúc nguyên bản với ghế thư giãn màu vàng và cửa sổ vòm.",
+  "common.sign.gallery_social_alt": "Chiến dịch mạng xã hội nguyên bản với người đàn ông mặc áo vàng cạnh ván trượt."
 }

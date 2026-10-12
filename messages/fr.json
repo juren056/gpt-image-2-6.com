@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Poursuivez votre prochaine création.",
+  "common.sign.gallery_signup_headline": "De l’idée à votre première image.",
+  "common.sign.gallery_disclosure": "Exemples illustratifs originaux.",
+  "common.sign.gallery_show_password": "Afficher le mot de passe",
+  "common.sign.gallery_hide_password": "Masquer le mot de passe",
+  "common.sign.gallery_brand_label": "Campagnes de marque",
+  "common.sign.gallery_space_label": "Concepts d’espace",
+  "common.sign.gallery_social_label": "Contenus sociaux",
+  "common.sign.gallery_brand_alt": "Campagne originale de casque noir et jaune avec le texte MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Visualisation architecturale originale avec un fauteuil jaune et une fenêtre en arche.",
+  "common.sign.gallery_social_alt": "Campagne sociale originale avec un homme en veste jaune près d’un skateboard."
 }

@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Continúa tu próxima creación.",
+  "common.sign.gallery_signup_headline": "De una idea a tu primera imagen.",
+  "common.sign.gallery_disclosure": "Ejemplos ilustrativos originales.",
+  "common.sign.gallery_show_password": "Mostrar contraseña",
+  "common.sign.gallery_hide_password": "Ocultar contraseña",
+  "common.sign.gallery_brand_label": "Campañas de marca",
+  "common.sign.gallery_space_label": "Diseño de espacios",
+  "common.sign.gallery_social_label": "Contenido social",
+  "common.sign.gallery_brand_alt": "Campaña original de auriculares negros y amarillos con el texto MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Visualización arquitectónica original con un sillón amarillo y una ventana arqueada.",
+  "common.sign.gallery_social_alt": "Campaña social original con un hombre de chaqueta amarilla junto a un monopatín."
 }

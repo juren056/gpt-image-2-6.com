@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "تابع إبداعك التالي.",
+  "common.sign.gallery_signup_headline": "من فكرة إلى صورتك الأولى.",
+  "common.sign.gallery_disclosure": "أمثلة توضيحية أصلية.",
+  "common.sign.gallery_show_password": "إظهار كلمة المرور",
+  "common.sign.gallery_hide_password": "إخفاء كلمة المرور",
+  "common.sign.gallery_brand_label": "حملات العلامات",
+  "common.sign.gallery_space_label": "تصميم المساحات",
+  "common.sign.gallery_social_label": "محتوى اجتماعي",
+  "common.sign.gallery_brand_alt": "إعلان أصلي لسماعات باللونين الأسود والأصفر مع عبارة MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "تصور معماري أصلي مع كرسي استرخاء أصفر ونافذة مقوسة.",
+  "common.sign.gallery_social_alt": "حملة اجتماعية أصلية لرجل يرتدي سترة صفراء بجوار لوح تزلج."
 }

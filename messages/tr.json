@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Bir sonraki eserinize devam edin.",
+  "common.sign.gallery_signup_headline": "Bir fikirden ilk görselinize.",
+  "common.sign.gallery_disclosure": "Özgün örnek görseller.",
+  "common.sign.gallery_show_password": "Şifreyi göster",
+  "common.sign.gallery_hide_password": "Şifreyi gizle",
+  "common.sign.gallery_brand_label": "Marka kampanyaları",
+  "common.sign.gallery_space_label": "Mekân tasarımları",
+  "common.sign.gallery_social_label": "Sosyal içerikler",
+  "common.sign.gallery_brand_alt": "MAKE SOME NOISE yazılı özgün siyah ve sarı kulaklık kampanyası.",
+  "common.sign.gallery_space_alt": "Sarı dinlenme koltuğu ve kemerli pencere içeren özgün mimari görselleştirme.",
+  "common.sign.gallery_social_alt": "Kaykay yanında sarı ceketli bir erkeği gösteren özgün sosyal medya kampanyası."
 }

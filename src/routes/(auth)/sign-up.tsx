@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { createFileRoute } from '@tanstack/react-router';
+import { Github, Loader2 } from 'lucide-react';
 import { z } from 'zod';
 
 import { authClient, signIn, signUp, useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
-import { envConfigs } from '@/config';
 import { trackFunnelEvent } from '@/lib/analytics-events';
 import { apiPost } from '@/lib/api-client';
 import { formatAuthError } from '@/lib/auth-error';
@@ -18,11 +18,12 @@ import {
 import { m } from '@/paraglide/messages.js';
 import { localizeHref } from '@/paraglide/runtime.js';
 import { usePublicConfig } from '@/hooks/use-public-config';
-import { AuthMarketingShell } from '@/components/auth-marketing-shell';
+import { AuthMarketingShell } from '@/blocks/auth-marketing-shell';
+import { AuthPasswordField } from '@/components/auth-password-field';
 import { TextField } from '@/components/form-field';
+import { GoogleIcon } from '@/components/google-icon';
 import { TurnstileWidget } from '@/components/turnstile-widget';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Field,
   FieldDescription,
@@ -36,6 +37,9 @@ function SignUpPage() {
   // Set right before we navigate so the already-signed-in effect doesn't also fire.
   const navigatingRef = useRef(false);
   const [error, setError] = useState('');
+  const [socialPending, setSocialPending] = useState<
+    'google' | 'github' | null
+  >(null);
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaResetSignal, setCaptchaResetSignal] = useState(0);
   const handleCaptchaToken = useCallback((token: string) => {
@@ -78,9 +82,13 @@ function SignUpPage() {
   }, [sessionPending, session?.user, router]);
 
   const configQuery = usePublicConfig();
-  const configs = configQuery.data ?? {};
+  // The root also requests public config. Its cache can resolve before this
+  // lazy route hydrates, so keep the first client render identical to SSR.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  const configs = hydrated ? (configQuery.data ?? {}) : {};
 
-  const configsLoaded = configQuery.isSuccess;
+  const configsLoaded = hydrated && configQuery.isSuccess;
   const emailEnabled = configs.email_auth_enabled !== 'false';
   const emailOtpEnabled = configs.email_otp_sign_in_enabled === 'true';
   const googleEnabled = configs.google_auth_enabled === 'true';
@@ -213,234 +221,240 @@ function SignUpPage() {
       afterLoginUrl,
       window.location.origin
     );
-    await signIn.social({ provider, callbackURL });
+    setError('');
+    setSocialPending(provider);
+    try {
+      const result = await signIn.social({ provider, callbackURL });
+      if (result.error)
+        setError(
+          formatAuthError(result.error, m['common.sign.error_sign_in_failed']())
+        );
+    } catch (err: unknown) {
+      setError(formatAuthError(err, m['common.sign.error_sign_in_failed']()));
+    } finally {
+      setSocialPending(null);
+    }
   }
 
   return (
-    <AuthMarketingShell starterCredits={starterCredits}>
-      <div className="flex w-full flex-col gap-6">
-        <Link href="/" className="self-center font-serif text-lg italic">
-          {envConfigs.app_name}
-        </Link>
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl">
-              {m['common.sign.sign_up_title']()}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {configsLoaded && !hasAnyMethod ? (
-              <div className="rounded-lg border border-dashed p-6 text-center">
-                <p className="text-sm font-medium">
-                  {m['common.sign.no_methods_title']()}
-                </p>
-                <p className="text-muted-foreground mt-1 text-sm">
-                  {m['common.sign.no_methods_description']()}
-                </p>
-              </div>
-            ) : (
-              <form
-                noValidate
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const validation = signUpSchema.safeParse(form.state.values);
-                  if (!validation.success) {
-                    setError(
-                      validation.error.issues[0]?.message ||
-                        m['common.sign.error_sign_up_failed']()
-                    );
-                    return;
-                  }
-                  form.handleSubmit();
-                }}
-              >
-                <FieldGroup>
-                  {error && (
-                    <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm">
-                      {error}
-                    </div>
-                  )}
+    <AuthMarketingShell starterCredits={starterCredits} mode="sign-up">
+      <section aria-labelledby="sign-up-title">
+        <div className="auth-form-heading">
+          <h1 id="sign-up-title">{m['common.sign.sign_up_title']()}</h1>
+          <p>{m['common.sign.sign_up_description']()}</p>
+        </div>
+        {!configsLoaded ? (
+          <div className="flex min-h-32 items-center justify-center">
+            <Loader2 className="size-5 animate-spin" />
+          </div>
+        ) : !hasAnyMethod ? (
+          <div className="rounded-lg border border-dashed p-6 text-center">
+            <p className="text-sm font-medium">
+              {m['common.sign.no_methods_title']()}
+            </p>
+            <p className="text-muted-foreground mt-1 text-sm">
+              {m['common.sign.no_methods_description']()}
+            </p>
+          </div>
+        ) : (
+          <form
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+              const validation = signUpSchema.safeParse(form.state.values);
+              if (!validation.success) {
+                setError(
+                  validation.error.issues[0]?.message ||
+                    m['common.sign.error_sign_up_failed']()
+                );
+                return;
+              }
+              form.handleSubmit();
+            }}
+          >
+            <FieldGroup>
+              {error && (
+                <div
+                  role="alert"
+                  className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm"
+                >
+                  {error}
+                </div>
+              )}
 
-                  {hasSocial && (
+              {hasSocial && (
+                <Field>
+                  {googleEnabled && (
+                    <Button
+                      variant="outline"
+                      data-auth-variant="outline"
+                      type="button"
+                      disabled={socialPending !== null}
+                      onClick={() => handleSocial('google')}
+                    >
+                      {socialPending === 'google' ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <GoogleIcon />
+                      )}
+                      {m['common.sign.google_sign_in']()}
+                    </Button>
+                  )}
+                  {githubEnabled && (
+                    <Button
+                      variant="outline"
+                      data-auth-variant="outline"
+                      type="button"
+                      disabled={socialPending !== null}
+                      onClick={() => handleSocial('github')}
+                    >
+                      {socialPending === 'github' ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Github className="size-4" />
+                      )}
+                      {m['common.sign.github_sign_in']()}
+                    </Button>
+                  )}
+                </Field>
+              )}
+
+              {hasSocial && (emailEnabled || emailOtpEnabled) && (
+                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                  {m['common.sign.or']()}
+                </FieldSeparator>
+              )}
+
+              {emailOtpEnabled && (
+                <Field>
+                  <Link
+                    href={`/sign-in${switchQuery}`}
+                    onClick={() => {
+                      trackFunnelEvent('email_signup_clicked', {
+                        source: 'signup_page',
+                      });
+                      window.sessionStorage.setItem(
+                        'image-studio:signup-pending',
+                        '1'
+                      );
+                    }}
+                    className="auth-email-link"
+                  >
+                    {m['common.sign.continue_with_email']()}
+                  </Link>
+                  <FieldDescription className="text-center">
+                    {m['common.sign.email_code_tip']()}
+                  </FieldDescription>
+                </Field>
+              )}
+
+              {emailEnabled && !emailOtpEnabled && (
+                <>
+                  <form.Field name="name">
+                    {(field) => (
+                      <TextField
+                        field={field}
+                        label={m['common.sign.name_title']()}
+                        type="text"
+                        autoComplete="name"
+                        required
+                        placeholder={m['common.sign.name_placeholder']()}
+                      />
+                    )}
+                  </form.Field>
+                  <form.Field name="email">
+                    {(field) => (
+                      <TextField
+                        field={field}
+                        label={m['common.sign.email_title']()}
+                        type="email"
+                        autoComplete="email"
+                        required
+                        placeholder={m['common.sign.email_placeholder']()}
+                      />
+                    )}
+                  </form.Field>
+                  <form.Field name="password">
+                    {(field) => (
+                      <AuthPasswordField
+                        showLabel={m['common.sign.gallery_show_password']()}
+                        hideLabel={m['common.sign.gallery_hide_password']()}
+                        field={field}
+                        label={m['common.sign.password_title']()}
+                        placeholder={m['common.sign.password_placeholder']()}
+                      />
+                    )}
+                  </form.Field>
+                  <form.Field name="confirmPassword">
+                    {(field) => (
+                      <AuthPasswordField
+                        showLabel={m['common.sign.gallery_show_password']()}
+                        hideLabel={m['common.sign.gallery_hide_password']()}
+                        field={field}
+                        label={m['common.sign.confirm_password_title']()}
+                        placeholder={m[
+                          'common.sign.confirm_password_placeholder'
+                        ]()}
+                      />
+                    )}
+                  </form.Field>
+                  {inviteCodeRequired && (
+                    <form.Field name="inviteCode">
+                      {(field) => (
+                        <TextField
+                          field={field}
+                          label={m['common.sign.invite_code_title']()}
+                          type="text"
+                          required
+                          placeholder={m[
+                            'common.sign.invite_code_placeholder'
+                          ]()}
+                        />
+                      )}
+                    </form.Field>
+                  )}
+                  {turnstileEnabled && turnstileSiteKey && (
                     <Field>
-                      {googleEnabled && (
-                        <Button
-                          variant="outline"
-                          type="button"
-                          onClick={() => handleSocial('google')}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            className="size-4"
-                          >
-                            <path
-                              d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          {m['common.sign.google_sign_in']()}
-                        </Button>
-                      )}
-                      {githubEnabled && (
-                        <Button
-                          variant="outline"
-                          type="button"
-                          onClick={() => handleSocial('github')}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            className="size-4"
-                          >
-                            <path
-                              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          {m['common.sign.github_sign_in']()}
-                        </Button>
-                      )}
+                      <TurnstileWidget
+                        siteKey={turnstileSiteKey}
+                        onTokenChange={handleCaptchaToken}
+                        resetSignal={captchaResetSignal}
+                      />
                     </Field>
                   )}
-
-                  {hasSocial && (emailEnabled || emailOtpEnabled) && (
-                    <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                      {m['common.sign.or']()}
-                    </FieldSeparator>
-                  )}
-
-                  {emailOtpEnabled && (
-                    <Field>
+                  <Field>
+                    <form.Subscribe selector={(s) => s.isSubmitting}>
+                      {(isSubmitting) => (
+                        <Button
+                          type="submit"
+                          disabled={
+                            isSubmitting || (turnstileEnabled && !captchaToken)
+                          }
+                        >
+                          {isSubmitting ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : (
+                            m['common.sign.sign_up_title']()
+                          )}
+                        </Button>
+                      )}
+                    </form.Subscribe>
+                    <FieldDescription className="text-center">
+                      {m['common.sign.already_have_account']()}{' '}
                       <Link
                         href={`/sign-in${switchQuery}`}
-                        onClick={() => {
-                          trackFunnelEvent('email_signup_clicked', {
-                            source: 'signup_page',
-                          });
-                          window.sessionStorage.setItem(
-                            'image-studio:signup-pending',
-                            '1'
-                          );
-                        }}
-                        className="bg-foreground text-background hover:bg-foreground/90 flex min-h-11 w-full items-center justify-center rounded-md px-4 text-sm font-medium"
+                        className="underline underline-offset-4"
                       >
-                        {m['common.sign.continue_with_email']()}
+                        {m['common.sign.sign_in_title']()}
                       </Link>
-                      <FieldDescription className="text-center">
-                        {m['common.sign.email_code_tip']()}
-                      </FieldDescription>
-                    </Field>
-                  )}
-
-                  {emailEnabled && !emailOtpEnabled && (
-                    <>
-                      <form.Field name="name">
-                        {(field) => (
-                          <TextField
-                            field={field}
-                            label={m['common.sign.name_title']()}
-                            type="text"
-                            required
-                            placeholder={m['common.sign.name_placeholder']()}
-                          />
-                        )}
-                      </form.Field>
-                      <form.Field name="email">
-                        {(field) => (
-                          <TextField
-                            field={field}
-                            label={m['common.sign.email_title']()}
-                            type="email"
-                            required
-                            placeholder={m['common.sign.email_placeholder']()}
-                          />
-                        )}
-                      </form.Field>
-                      <form.Field name="password">
-                        {(field) => (
-                          <TextField
-                            field={field}
-                            label={m['common.sign.password_title']()}
-                            type="password"
-                            required
-                            placeholder={m[
-                              'common.sign.password_placeholder'
-                            ]()}
-                          />
-                        )}
-                      </form.Field>
-                      <form.Field name="confirmPassword">
-                        {(field) => (
-                          <TextField
-                            field={field}
-                            label={m['common.sign.confirm_password_title']()}
-                            type="password"
-                            required
-                            placeholder={m[
-                              'common.sign.confirm_password_placeholder'
-                            ]()}
-                          />
-                        )}
-                      </form.Field>
-                      {inviteCodeRequired && (
-                        <form.Field name="inviteCode">
-                          {(field) => (
-                            <TextField
-                              field={field}
-                              label={m['common.sign.invite_code_title']()}
-                              type="text"
-                              required
-                              placeholder={m[
-                                'common.sign.invite_code_placeholder'
-                              ]()}
-                            />
-                          )}
-                        </form.Field>
-                      )}
-                      {turnstileEnabled && turnstileSiteKey && (
-                        <Field>
-                          <TurnstileWidget
-                            siteKey={turnstileSiteKey}
-                            onTokenChange={handleCaptchaToken}
-                            resetSignal={captchaResetSignal}
-                          />
-                        </Field>
-                      )}
-                      <Field>
-                        <form.Subscribe selector={(s) => s.isSubmitting}>
-                          {(isSubmitting) => (
-                            <Button
-                              type="submit"
-                              disabled={
-                                isSubmitting ||
-                                (turnstileEnabled && !captchaToken)
-                              }
-                            >
-                              {isSubmitting
-                                ? '...'
-                                : m['common.sign.sign_up_title']()}
-                            </Button>
-                          )}
-                        </form.Subscribe>
-                        <FieldDescription className="text-center">
-                          {m['common.sign.already_have_account']()}{' '}
-                          <Link
-                            href={`/sign-in${switchQuery}`}
-                            className="underline underline-offset-4"
-                          >
-                            {m['common.sign.sign_in_title']()}
-                          </Link>
-                        </FieldDescription>
-                      </Field>
-                    </>
-                  )}
-                </FieldGroup>
-              </form>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                    </FieldDescription>
+                  </Field>
+                </>
+              )}
+            </FieldGroup>
+          </form>
+        )}
+      </section>
     </AuthMarketingShell>
   );
 }

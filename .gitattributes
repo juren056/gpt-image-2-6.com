@@ -1,0 +1,2 @@
+# Preserve the reviewed homepage guard's byte hash on Windows checkouts.
+scripts/verify-homepage-baseline.mjs text eol=lf

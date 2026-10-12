@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Continue sua próxima criação.",
+  "common.sign.gallery_signup_headline": "Da ideia à sua primeira imagem.",
+  "common.sign.gallery_disclosure": "Exemplos ilustrativos originais.",
+  "common.sign.gallery_show_password": "Mostrar senha",
+  "common.sign.gallery_hide_password": "Ocultar senha",
+  "common.sign.gallery_brand_label": "Campanhas de marca",
+  "common.sign.gallery_space_label": "Conceitos de espaços",
+  "common.sign.gallery_social_label": "Conteúdo social",
+  "common.sign.gallery_brand_alt": "Campanha original de fones pretos e amarelos com o texto MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Visualização arquitetônica original com uma poltrona amarela e uma janela em arco.",
+  "common.sign.gallery_social_alt": "Campanha social original com um homem de jaqueta amarela ao lado de um skate."
 }

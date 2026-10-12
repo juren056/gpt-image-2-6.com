@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "다음 작품을 이어가세요.",
+  "common.sign.gallery_signup_headline": "아이디어에서 첫 이미지까지.",
+  "common.sign.gallery_disclosure": "직접 만든 예시 이미지.",
+  "common.sign.gallery_show_password": "비밀번호 표시",
+  "common.sign.gallery_hide_password": "비밀번호 숨기기",
+  "common.sign.gallery_brand_label": "브랜드 캠페인",
+  "common.sign.gallery_space_label": "공간 디자인",
+  "common.sign.gallery_social_label": "소셜 콘텐츠",
+  "common.sign.gallery_brand_alt": "MAKE SOME NOISE 문구가 있는 검정과 노랑의 오리지널 헤드폰 광고.",
+  "common.sign.gallery_space_alt": "노란 라운지 의자와 아치형 창문이 있는 오리지널 건축 시각화.",
+  "common.sign.gallery_social_alt": "스케이트보드 옆에 노란 재킷을 입은 남성이 등장하는 오리지널 소셜 광고."
 }

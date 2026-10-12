@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "繼續你的下一張作品。",
+  "common.sign.gallery_signup_headline": "從想法，到你的第一張作品。",
+  "common.sign.gallery_disclosure": "原創創作範例。",
+  "common.sign.gallery_show_password": "顯示密碼",
+  "common.sign.gallery_hide_password": "隱藏密碼",
+  "common.sign.gallery_brand_label": "品牌廣告",
+  "common.sign.gallery_space_label": "空間設計",
+  "common.sign.gallery_social_label": "社群內容",
+  "common.sign.gallery_brand_alt": "原創黑黃耳機廣告，文字為 MAKE SOME NOISE。",
+  "common.sign.gallery_space_alt": "原創建築空間效果圖，黃色躺椅搭配拱形落地窗。",
+  "common.sign.gallery_social_alt": "原創社群內容廣告，穿黃色外套的男子站在滑板旁。"
 }

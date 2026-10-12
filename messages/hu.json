@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Folytasd a következő alkotásod.",
+  "common.sign.gallery_signup_headline": "Az ötlettől az első képedig.",
+  "common.sign.gallery_disclosure": "Eredeti szemléltető példák.",
+  "common.sign.gallery_show_password": "Jelszó megjelenítése",
+  "common.sign.gallery_hide_password": "Jelszó elrejtése",
+  "common.sign.gallery_brand_label": "Márkakampányok",
+  "common.sign.gallery_space_label": "Térkoncepciók",
+  "common.sign.gallery_social_label": "Közösségi tartalom",
+  "common.sign.gallery_brand_alt": "Eredeti fekete-sárga fejhallgató-kampány MAKE SOME NOISE felirattal.",
+  "common.sign.gallery_space_alt": "Eredeti építészeti látványterv sárga pihenőszékkel és boltíves ablakkal.",
+  "common.sign.gallery_social_alt": "Eredeti közösségi kampány sárga kabátos férfival egy gördeszka mellett."
 }

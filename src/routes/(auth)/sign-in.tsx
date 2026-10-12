@@ -25,8 +25,10 @@ import {
 import { m } from '@/paraglide/messages.js';
 import { localizeHref } from '@/paraglide/runtime.js';
 import { usePublicConfig } from '@/hooks/use-public-config';
-import { AuthMarketingShell } from '@/components/auth-marketing-shell';
+import { AuthMarketingShell } from '@/blocks/auth-marketing-shell';
+import { AuthPasswordInput } from '@/components/auth-password-field';
 import { TextField } from '@/components/form-field';
+import { GoogleIcon } from '@/components/google-icon';
 import { Button } from '@/components/ui/button';
 import {
   Field,
@@ -38,29 +40,6 @@ import {
 import { Input } from '@/components/ui/input';
 
 const RESEND_COOLDOWN_SECONDS = 60;
-
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4">
-      <path
-        fill="#4285F4"
-        d="M21.35 12.23c0-.71-.06-1.4-.18-2.07H12v3.91h5.24a4.48 4.48 0 0 1-1.94 2.94v2.54h3.14c1.84-1.69 2.91-4.18 2.91-7.32Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.54c-.87.58-1.98.93-3.31.93-2.54 0-4.69-1.72-5.46-4.03H3.29v2.62A9.75 9.75 0 0 0 12 21.75Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M6.54 13.75A5.86 5.86 0 0 1 6.23 12c0-.61.1-1.2.31-1.75V7.63H3.29A9.74 9.74 0 0 0 2.25 12c0 1.57.38 3.06 1.04 4.37l3.25-2.62Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 6.22c1.43 0 2.71.49 3.72 1.45l2.79-2.79A9.35 9.35 0 0 0 12 2.25a9.75 9.75 0 0 0-8.71 5.38l3.25 2.62C7.31 7.94 9.46 6.22 12 6.22Z"
-      />
-    </svg>
-  );
-}
 
 function SignInPage() {
   const router = useRouter();
@@ -124,8 +103,12 @@ function SignInPage() {
   }, [cooldown]);
 
   const configQuery = usePublicConfig();
-  const configs = configQuery.data ?? {};
-  const configsLoaded = configQuery.isSuccess;
+  // The root also requests public config. Its cache can resolve before this
+  // lazy route hydrates, so keep the first client render identical to SSR.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  const configs = hydrated ? (configQuery.data ?? {}) : {};
+  const configsLoaded = hydrated && configQuery.isSuccess;
   const emailEnabled = configs.email_auth_enabled !== 'false';
   const emailOtpEnabled = configs.email_otp_sign_in_enabled === 'true';
   const googleEnabled = configs.google_auth_enabled === 'true';
@@ -317,21 +300,11 @@ function SignInPage() {
   }
 
   return (
-    <AuthMarketingShell starterCredits={starterCredits}>
+    <AuthMarketingShell starterCredits={starterCredits} mode="sign-in">
       <section className="w-full" aria-labelledby="sign-in-title">
-        <div className="mb-8 space-y-3 text-center">
-          <Link
-            href="/"
-            className="text-muted-foreground hover:text-foreground inline-block font-serif text-base italic transition-colors"
-          >
-            {envConfigs.app_name}
-          </Link>
-          <h1
-            id="sign-in-title"
-            className="text-foreground text-3xl font-bold tracking-tight"
-          >
-            {m['common.sign.login_to']({ appName: envConfigs.app_name })}
-          </h1>
+        <div className="auth-form-heading">
+          <h1 id="sign-in-title">{m['common.sign.sign_in_title']()}</h1>
+          <p>{m['common.sign.sign_in_description']()}</p>
         </div>
         <div>
           {!configsLoaded ? (
@@ -350,7 +323,10 @@ function SignInPage() {
           ) : otpStage === 'code' ? (
             <div className="space-y-4">
               {error && (
-                <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm">
+                <div
+                  role="alert"
+                  className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm"
+                >
                   {error}
                 </div>
               )}
@@ -399,6 +375,7 @@ function SignInPage() {
               <Button
                 type="button"
                 variant="outline"
+                data-auth-variant="outline"
                 className="w-full"
                 disabled={otpPending || cooldown > 0}
                 onClick={sendSignInCode}
@@ -412,6 +389,7 @@ function SignInPage() {
               <Button
                 type="button"
                 variant="ghost"
+                data-auth-variant="ghost"
                 className="w-full"
                 onClick={() => {
                   setError('');
@@ -426,7 +404,10 @@ function SignInPage() {
           ) : (
             <div className="space-y-4">
               {error && (
-                <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm">
+                <div
+                  role="alert"
+                  className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm"
+                >
                   {error}
                 </div>
               )}
@@ -436,6 +417,7 @@ function SignInPage() {
                   {googleEnabled && (
                     <Button
                       variant="outline"
+                      data-auth-variant="outline"
                       type="button"
                       className="h-11 w-full bg-transparent"
                       disabled={socialPending !== null}
@@ -452,6 +434,7 @@ function SignInPage() {
                   {githubEnabled && (
                     <Button
                       variant="outline"
+                      data-auth-variant="outline"
                       type="button"
                       className="h-11 w-full bg-transparent"
                       disabled={socialPending !== null}
@@ -474,7 +457,11 @@ function SignInPage() {
 
               {emailOtpEnabled && (
                 <div className="space-y-3">
+                  <label htmlFor="auth-otp-email" className="auth-email-label">
+                    {m['common.sign.email_title']()}
+                  </label>
                   <Input
+                    id="auth-otp-email"
                     type="email"
                     value={otpEmail}
                     onChange={(event) => setOtpEmail(event.target.value)}
@@ -511,6 +498,7 @@ function SignInPage() {
                 <Button
                   type="button"
                   variant="ghost"
+                  data-auth-variant="ghost"
                   className="mt-2 w-full"
                   onClick={() => setShowPassword(true)}
                 >
@@ -572,10 +560,15 @@ function SignInPage() {
                                 </Link>
                               )}
                             </div>
-                            <Input
+                            <AuthPasswordInput
+                              showLabel={m[
+                                'common.sign.gallery_show_password'
+                              ]()}
+                              hideLabel={m[
+                                'common.sign.gallery_hide_password'
+                              ]()}
                               id={field.name}
                               name={field.name}
-                              type="password"
                               value={field.state.value}
                               onChange={(event) =>
                                 field.handleChange(event.target.value)

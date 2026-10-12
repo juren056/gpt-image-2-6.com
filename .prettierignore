@@ -56,3 +56,7 @@ coverage
 
 # shadcn/ui components (auto-generated)
 src/components/ui
+
+# This reviewed guard is hash-protected by docs/homepage-baseline.json.
+# Formatting it on commit would invalidate the approved homepage gate.
+scripts/verify-homepage-baseline.mjs

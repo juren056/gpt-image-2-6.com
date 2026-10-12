@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Weiter mit deiner nächsten Kreation.",
+  "common.sign.gallery_signup_headline": "Von der Idee zum ersten Bild.",
+  "common.sign.gallery_disclosure": "Eigene illustrative Beispiele.",
+  "common.sign.gallery_show_password": "Passwort anzeigen",
+  "common.sign.gallery_hide_password": "Passwort verbergen",
+  "common.sign.gallery_brand_label": "Markenkampagnen",
+  "common.sign.gallery_space_label": "Raumkonzepte",
+  "common.sign.gallery_social_label": "Social-Media-Inhalte",
+  "common.sign.gallery_brand_alt": "Originale schwarz-gelbe Kopfhörerkampagne mit dem Text MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Originale Architekturvisualisierung mit gelbem Loungesessel und Rundbogenfenster.",
+  "common.sign.gallery_social_alt": "Originale Social-Media-Kampagne mit einem Mann in gelber Jacke neben einem Skateboard."
 }

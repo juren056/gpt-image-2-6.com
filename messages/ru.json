@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Продолжите создавать.",
+  "common.sign.gallery_signup_headline": "От идеи к первому изображению.",
+  "common.sign.gallery_disclosure": "Оригинальные иллюстративные примеры.",
+  "common.sign.gallery_show_password": "Показать пароль",
+  "common.sign.gallery_hide_password": "Скрыть пароль",
+  "common.sign.gallery_brand_label": "Кампании брендов",
+  "common.sign.gallery_space_label": "Дизайн пространств",
+  "common.sign.gallery_social_label": "Контент для соцсетей",
+  "common.sign.gallery_brand_alt": "Оригинальная чёрно-жёлтая реклама наушников с надписью MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Оригинальная архитектурная визуализация с жёлтым креслом и арочным окном.",
+  "common.sign.gallery_social_alt": "Оригинальная кампания для соцсетей с мужчиной в жёлтой куртке рядом со скейтбордом."
 }

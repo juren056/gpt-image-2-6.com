@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Kontynuuj tworzenie.",
+  "common.sign.gallery_signup_headline": "Od pomysłu do pierwszego obrazu.",
+  "common.sign.gallery_disclosure": "Oryginalne przykłady ilustracyjne.",
+  "common.sign.gallery_show_password": "Pokaż hasło",
+  "common.sign.gallery_hide_password": "Ukryj hasło",
+  "common.sign.gallery_brand_label": "Kampanie marki",
+  "common.sign.gallery_space_label": "Koncepcje przestrzeni",
+  "common.sign.gallery_social_label": "Treści społecznościowe",
+  "common.sign.gallery_brand_alt": "Oryginalna czarno-żółta kampania słuchawek z napisem MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Oryginalna wizualizacja architektoniczna z żółtym fotelem i łukowym oknem.",
+  "common.sign.gallery_social_alt": "Oryginalna kampania społecznościowa z mężczyzną w żółtej kurtce obok deskorolki."
 }

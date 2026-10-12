@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "All aspect ratios",
   "banana.fewer_ratios": "Show common ratios",
   "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-  "banana.resolution_fixed": "This model uses its default output resolution."
+  "banana.resolution_fixed": "This model uses its default output resolution.",
+  "common.sign.gallery_login_headline": "Continue your next creation.",
+  "common.sign.gallery_signup_headline": "From an idea to your first image.",
+  "common.sign.gallery_disclosure": "Original illustrative examples.",
+  "common.sign.gallery_show_password": "Show password",
+  "common.sign.gallery_hide_password": "Hide password",
+  "common.sign.gallery_brand_label": "Brand campaigns",
+  "common.sign.gallery_space_label": "Space concepts",
+  "common.sign.gallery_social_label": "Social content",
+  "common.sign.gallery_brand_alt": "Original black and yellow headphone campaign reading MAKE SOME NOISE.",
+  "common.sign.gallery_space_alt": "Original architectural visualization with a yellow lounge chair and arched window.",
+  "common.sign.gallery_social_alt": "Original social campaign with a man in a yellow jacket beside a skateboard."
 }

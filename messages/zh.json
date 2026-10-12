@@ -3594,5 +3594,16 @@
   "banana.more_ratios": "全部比例",
   "banana.fewer_ratios": "收起更多比例",
   "banana.resolution_hint": "此处为每张图片的积分，总额会随出图数量更新。",
-  "banana.resolution_fixed": "此模型采用默认输出分辨率。"
+  "banana.resolution_fixed": "此模型采用默认输出分辨率。",
+  "common.sign.gallery_login_headline": "继续你的下一张作品。",
+  "common.sign.gallery_signup_headline": "从想法，到你的第一张作品。",
+  "common.sign.gallery_disclosure": "原创创作示例。",
+  "common.sign.gallery_show_password": "显示密码",
+  "common.sign.gallery_hide_password": "隐藏密码",
+  "common.sign.gallery_brand_label": "品牌广告",
+  "common.sign.gallery_space_label": "空间设计",
+  "common.sign.gallery_social_label": "社交内容",
+  "common.sign.gallery_brand_alt": "原创黑黄耳机广告，文字为 MAKE SOME NOISE。",
+  "common.sign.gallery_space_alt": "原创建筑空间效果图，黄色躺椅搭配拱形落地窗。",
+  "common.sign.gallery_social_alt": "原创社交内容广告，穿黄色外套的男子站在滑板旁。"
 }
