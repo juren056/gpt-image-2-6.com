@@ -29,7 +29,7 @@
     "src/config/creative-studio.ts": "65e4fdf8847c836a8f2ce4edbaf5fcf0944d32a0e668c56a473369c73618837c",
     "src/lib/creative-image-options.ts": "6b7ca5976b7907e45a864f77bab1817eb01d8e935b9e7a24193e1746c0903145",
     "src/lib/banana-task-resume.ts": "361898b74e8f8de728cc20d5109b570a8a6f18d465a06d5c7a8aba3f0767c5d0",
-    "src/modules/images/service.ts": "43912a0d50a9306ac659183d0d751378fc2f3b6894eaef1fdb32e05c59df5d23",
+    "src/modules/images/service.ts": "7fdc3a0266cb0cf9b04b7a87deac78daeff6e4c7f7f5e8f593049c7e18aa99e4",
     "src/routes/api/studio/run.ts": "700e09d41eb94cab96a47b2372fb3c18f8f06c47dff235a28aee3949a8109e3d",
     "src/config/capability-examples.ts": "5ca4d55ddab031d9d94626cbeaff24391fd0c26dcd5c2abb8fa81e8add07b139",
     "public/images/capabilities/shoe-20261012.webp": "640bedf470e88bfc261b9f6f2062296f32cda886b3f46b7207a1760d5ef8612b",

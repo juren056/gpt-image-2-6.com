@@ -5,10 +5,11 @@ export type ModerationResult = {
   category: string;
   severity: 'none' | 'medium' | 'high' | 'critical';
   confidence: number;
-  detector: 'openai' | 'provider' | 'none';
+  detector: 'openai' | 'seeapi' | 'provider' | 'none';
   detectorVersion: string;
   reasonCode: string;
   scores: Record<string, number>;
+  labels?: { nsfw: string[]; special_care: string[] };
 };
 
 const ALLOWED: ModerationResult = {

@@ -3628,5 +3628,11 @@
   "common.sign.one_tap_signup_disabled": "New account registration is currently unavailable. Use an existing account or contact support.",
   "common.sign.one_tap_network": "Google sign-in could not reach the service. Check your connection and use the sign-in page to retry.",
   "common.sign.one_tap_failed": "Google sign-in could not be completed. Try again from the sign-in page.",
-  "common.sign.one_tap_dismiss": "Dismiss sign-in message"
+  "common.sign.one_tap_dismiss": "Dismiss sign-in message",
+  "admin.settings.groups.seeapi.title": "SeeAPI NSFW image review",
+  "admin.settings.groups.seeapi.description": "Save your SeeAPI API key to review reference and generated images. OpenAI prompt review stays independent. Default offset: 0.02; higher values are less strict. Strict special-care handling is on by default. Testing submits one paid image review; use a publicly accessible JPG, PNG or WebP URL. Reference-image review outages pause generation; output review outages retain the existing provider-safety fallback.",
+  "admin.settings.fields.content_safety_seeapi_enabled": "Enable SeeAPI image review",
+  "admin.settings.fields.seeapi_api_key": "SeeAPI API Key",
+  "admin.settings.fields.seeapi_threshold_offset": "NSFW threshold offset (higher = less strict)",
+  "admin.settings.fields.seeapi_strict_special_care": "Strict special-care handling"
 }

@@ -13,6 +13,7 @@
 /.output/
 /.output-*/
 /.nitro/
+/.nitro-*/
 /.tanstack/
 /dist/
 src/routeTree.gen.ts

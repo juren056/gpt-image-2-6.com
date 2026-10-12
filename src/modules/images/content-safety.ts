@@ -1,9 +1,10 @@
 import { and, desc, eq, gt, gte, ne } from 'drizzle-orm';
 
 import {
-  moderateWithOpenAIRetry,
-  type ModerationResult,
-} from '@/core/ai/moderation';
+  moderateConfiguredInput,
+  type ImageModerationConfig,
+} from '@/core/ai/image-moderation';
+import { type ModerationResult } from '@/core/ai/moderation';
 import { assertAccountAccessAllowed } from '@/core/auth/account-access';
 import { db } from '@/core/db';
 import {
@@ -26,6 +27,7 @@ export type SafetyDecision = {
   reviewStatus: 'not_required' | 'pending' | 'confirmed';
   publicMessage: string;
   reasonCode?: string;
+  labels?: ModerationResult['labels'];
 };
 
 type AutomatedSafetyReviewInput = Pick<
@@ -468,26 +470,20 @@ export async function moderateAndEnforce(params: {
   imageUrls?: string[];
   mediaType: string;
   model: string;
-  moderation?: {
-    apiKey?: string;
-    baseUrl?: string;
-    model?: string;
-  };
+  moderation?: ImageModerationConfig;
 }) {
   await assertUserSafetyAllowed(params.userId);
   let decision = classifyPromptLocally(params.prompt);
-  if (decision.allowed && params.moderation?.apiKey) {
-    const external = await moderateWithOpenAIRetry({
-      apiKey: params.moderation.apiKey,
-      baseUrl: params.moderation.baseUrl,
-      model: params.moderation.model,
+  if (decision.allowed && params.moderation) {
+    const external = await moderateConfiguredInput(params.moderation, {
       text: params.prompt,
       imageUrls: params.imageUrls,
     });
-    decision = resolveExternalInputModeration(
-      external,
-      Boolean(params.imageUrls?.length)
-    );
+    if (external)
+      decision = resolveExternalInputModeration(
+        external,
+        Boolean(params.imageUrls?.length)
+      );
   }
   if (decision.allowed) return decision;
 
@@ -515,6 +511,7 @@ export async function moderateAndEnforce(params: {
           ? 'MODERATION_UNAVAILABLE'
           : 'CONTENT_POLICY_BLOCKED',
         moderationReasonCode: decision.reasonCode || '',
+        ...(decision.labels ? { moderationCategories: decision.labels } : {}),
       }),
       costCredits: 0,
       safetyStatus: technicalFailure ? 'review' : 'blocked',
@@ -561,6 +558,7 @@ export function resolveExternalInputModeration(
     source: 'external',
     reviewStatus: 'pending',
     reasonCode: external.reasonCode,
+    labels: external.labels,
     publicMessage: unavailable
       ? 'Generation with reference images is temporarily unavailable while the safety check recovers. No credits were charged, and this is not counted as a policy violation.'
       : external.decision === 'block'

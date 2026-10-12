@@ -177,6 +177,12 @@ export function getSettingGroups(): SettingGroup[] {
       tab: 'ai',
     },
     { name: 'fal', title: 'Fal', description: 'Fal AI API', tab: 'ai' },
+    {
+      name: 'seeapi',
+      title: 'SeeAPI NSFW',
+      description: 'Reference and generated image moderation',
+      tab: 'ai',
+    },
 
     // Analytics
     {
@@ -860,6 +866,44 @@ export function getSettings(): Setting[] {
       placeholder: 'omni-moderation-latest',
       tip: 'When an OpenAI API key is configured, prompts and generated images are checked before they are exposed. Leave blank to use omni-moderation-latest.',
       group: 'openai',
+      tab: 'ai',
+    },
+
+    // SeeAPI is image-only; existing OpenAI prompt moderation remains independent.
+    {
+      name: 'content_safety_seeapi_enabled',
+      title: 'SeeAPI image review',
+      type: 'switch',
+      defaultValue: 'true',
+      group: 'seeapi',
+      tab: 'ai',
+    },
+    {
+      name: 'seeapi_api_key',
+      title: 'API Key',
+      type: 'password',
+      placeholder: 'SeeAPI API Key',
+      group: 'seeapi',
+      tab: 'ai',
+    },
+    {
+      name: 'seeapi_threshold_offset',
+      title: 'NSFW threshold offset (0–0.10, step 0.01)',
+      type: 'select',
+      defaultValue: '0.02',
+      options: Array.from({ length: 11 }, (_, i) => ({
+        label: (i / 100).toFixed(2),
+        value: (i / 100).toFixed(2),
+      })),
+      group: 'seeapi',
+      tab: 'ai',
+    },
+    {
+      name: 'seeapi_strict_special_care',
+      title: 'Strict special-care handling',
+      type: 'switch',
+      defaultValue: 'true',
+      group: 'seeapi',
       tab: 'ai',
     },
 

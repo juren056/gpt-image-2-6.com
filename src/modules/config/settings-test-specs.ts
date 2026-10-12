@@ -26,6 +26,18 @@ export interface TestResult {
 }
 
 export const testSpecs: Record<string, TestSpec> = {
+  seeapi: {
+    group: 'seeapi',
+    fields: [
+      {
+        name: 'imageUrl',
+        label: 'Image URL / 图片 URL',
+        type: 'text',
+        placeholder: 'https://your-domain.com/image.png',
+        required: true,
+      },
+    ],
+  },
   resend: {
     group: 'resend',
     fields: [

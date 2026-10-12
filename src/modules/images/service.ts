@@ -2,6 +2,7 @@ import { and, count, eq, gte, isNull, lt, ne } from 'drizzle-orm';
 
 import { FalProvider } from '@/core/ai/fal';
 import { GeminiProvider } from '@/core/ai/gemini';
+import { moderateConfiguredImages } from '@/core/ai/image-moderation';
 import {
   inspectProviderSafetyPayload,
   moderateWithOpenAIRetry,
@@ -108,7 +109,8 @@ function outputImageUrls(result: ModerationPayload) {
 
 async function inspectGeneratedOutput(
   configs: ConfigMap,
-  result: ModerationPayload
+  result: ModerationPayload,
+  taskId?: string
 ): Promise<{
   decision: ModerationResult | null;
   corroborated: boolean;
@@ -119,11 +121,11 @@ async function inspectGeneratedOutput(
   );
   const imageUrls = outputImageUrls(result);
   const moderation = moderationConfig(configs);
-  if (moderation.apiKey && imageUrls.length) {
-    const external = await moderateWithOpenAIRetry({
-      ...moderation,
-      imageUrls,
+  if ((moderation.apiKey || moderation.seeapi) && imageUrls.length) {
+    const external = await moderateConfiguredImages(moderation, imageUrls, {
+      idempotencyPrefix: taskId,
     });
+    if (!external) return { decision: providerDecision, corroborated: false };
     if (
       providerDecision?.decision === 'block' &&
       external.decision === 'block'
@@ -148,7 +150,10 @@ function blockedOutputSafety(
   decision: ModerationResult,
   corroborated: boolean
 ) {
-  const source = decision.detector === 'openai' ? 'external' : 'provider';
+  const source =
+    decision.detector === 'openai' || decision.detector === 'seeapi'
+      ? 'external'
+      : 'provider';
   const reviewStatus = automatedSafetyReviewStatus(
     {
       allowed: false,
@@ -177,7 +182,8 @@ async function completeTaskAfterOutputSafety(params: {
 }) {
   const assessment = await inspectGeneratedOutput(
     params.configs,
-    params.result
+    params.result,
+    params.taskId
   );
   const { decision, corroborated } = assessment;
   if (shouldQuarantineGeneratedOutput(decision)) {
@@ -192,6 +198,7 @@ async function completeTaskAfterOutputSafety(params: {
           'The result was withheld by the content safety system. Credits were refunded.',
         errorCode: 'OUTPUT_SAFETY_QUARANTINED',
         moderationReasonCode: decision.reasonCode,
+        ...(decision.labels ? { moderationCategories: decision.labels } : {}),
       },
       safety,
     });
@@ -231,7 +238,9 @@ async function completeTaskAfterOutputSafety(params: {
               safetyCategory: '',
               safetySeverity: 'none',
               safetySource:
-                decision.detector === 'openai' ? 'external' : decision.detector,
+                decision.detector === 'openai' || decision.detector === 'seeapi'
+                  ? 'external'
+                  : decision.detector,
               safetyConfidence: decision.confidence,
               safetyReviewStatus: 'not_required',
               safetyAction: 'output_allowed',
@@ -490,7 +499,7 @@ export async function queryAnonymousImage(
   });
 
   if (result.taskStatus === ProviderTaskStatus.SUCCESS) {
-    const safety = await inspectGeneratedOutput(configs, result);
+    const safety = await inspectGeneratedOutput(configs, result, taskId);
     if (shouldQuarantineGeneratedOutput(safety.decision)) {
       return {
         id: taskId,

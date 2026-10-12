@@ -10,6 +10,7 @@
 
 import { FalProvider } from '@/core/ai/fal';
 import { ReplicateProvider } from '@/core/ai/replicate';
+import { moderateWithSeeAPI } from '@/core/ai/seeapi-moderation';
 import { AIMediaType } from '@/core/ai/types';
 import { ResendProvider } from '@/core/email/resend';
 import {
@@ -23,6 +24,10 @@ import { PaymentType, type PaymentOrder } from '@/core/payment/types';
 import { R2Provider } from '@/core/storage/r2';
 import { envConfigs } from '@/config';
 import { getUniSeq } from '@/lib/hash';
+import {
+  seeapiModerationConfig,
+  validateImageModerationSettings,
+} from '@/lib/image-moderation-config';
 
 import type { TestResult } from './settings-test-specs';
 
@@ -36,6 +41,39 @@ export async function runTest(
 ): Promise<TestResult> {
   try {
     switch (group) {
+      case 'seeapi': {
+        validateImageModerationSettings(configs);
+        const options = seeapiModerationConfig({
+          ...configs,
+          content_safety_seeapi_enabled: 'true',
+        });
+        if (!options)
+          return { success: false, message: 'Missing config: seeapi_api_key' };
+        const imageUrl = inputs.imageUrl?.trim();
+        if (!imageUrl)
+          return {
+            success: false,
+            message: 'Image URL is required / 请填写图片 URL',
+          };
+        const result = await moderateWithSeeAPI({
+          ...options,
+          imageUrls: [imageUrl],
+        });
+        return {
+          success: result.category !== 'moderation_unavailable',
+          message:
+            result.category === 'moderation_unavailable'
+              ? `SeeAPI review unavailable / 审核不可用: ${result.reasonCode}`
+              : result.decision === 'block'
+                ? 'Connected: image flagged / 已连接：图片命中 NSFW'
+                : 'Connected: image passed / 已连接：图片审核通过',
+          details: {
+            Decision: result.decision,
+            Model: result.detectorVersion,
+            Categories: JSON.stringify(result.labels || {}),
+          },
+        };
+      }
       case 'resend':
         return await testResend(inputs, configs);
       case 'stripe':
