@@ -1,3 +1,4 @@
+import { envConfigs } from '@/config';
 import type { CreativeModelId } from '@/config/creative-studio';
 import type { CreativeToolId } from '@/config/creative-tools';
 import { findPublicModel, findPublicTool } from '@/config/public-creative';
@@ -21,8 +22,8 @@ export function publicModelRouteOptions(modelId: CreativeModelId) {
             title:
               page.seoTitle ||
               (isPreview
-                ? `${page.name} Image Generator — API Preview | AI Image Studio`
-                : `${page.name} Image Generator & Editor | AI Image Studio`),
+                ? `${page.name} Image Generator — API Preview | ${envConfigs.app_name}`
+                : `${page.name} Image Generator & Editor | ${envConfigs.app_name}`),
             description:
               page.seoDescription ||
               (isPreview
@@ -64,7 +65,8 @@ export function publicToolRouteOptions(toolId: CreativeToolId) {
         ? seoHead({
             locale: loaderData.locale,
             path: tool.path,
-            title: tool.seoTitle || `${tool.name} Online | AI Image Studio`,
+            title:
+              tool.seoTitle || `${tool.name} Online | ${envConfigs.app_name}`,
             description:
               tool.seoDescription ||
               `${tool.summary} Open a task-specific workspace with visible controls, result preview, and clear processing costs.`,

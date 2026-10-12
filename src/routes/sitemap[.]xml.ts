@@ -7,6 +7,7 @@ import {
   PUBLIC_MODEL_PAGES,
   PUBLIC_TOOL_PAGES,
 } from '@/config/public-creative';
+import { isSearchExcludedPath } from '@/config/search-indexing';
 import { INDEXABLE_LOCALES, seoLanguageTag } from '@/lib/seo';
 import { baseLocale, locales, localizeUrl } from '@/paraglide/runtime.js';
 import { getLocalPosts, mergePosts } from '@/content/posts';
@@ -279,7 +280,11 @@ export const Route = createFileRoute('/sitemap.xml')({
         }
 
         const uniqueEntries = Array.from(
-          new Map(entries.map((entry) => [entry.path, entry])).values()
+          new Map(
+            entries
+              .filter((entry) => !isSearchExcludedPath(entry.path))
+              .map((entry) => [entry.path, entry])
+          ).values()
         );
 
         const xml = [

@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { envConfigs } from '@/config';
 import { seoHead } from '@/lib/seo';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
@@ -13,7 +14,7 @@ export const Route = createFileRoute('/models')({
       ? seoHead({
           locale: loaderData.locale,
           path: '/models',
-          title: 'AI Image Models for Generation & Editing | AI Image Studio',
+          title: `AI Image Models for Generation & Editing | ${envConfigs.app_name}`,
           description:
             'Compare image generation and editing models, then open a dedicated generator with accurate inputs, limits, and credit pricing.',
           type: 'website',

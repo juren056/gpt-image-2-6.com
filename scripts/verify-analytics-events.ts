@@ -4,6 +4,10 @@ import {
   buildGa4PurchaseEvent,
   normalizeFunnelEvent,
 } from '../src/lib/analytics-events';
+import {
+  initializeGoogleAnalytics,
+  type AnalyticsWindow,
+} from '../src/lib/google-analytics';
 
 const normalized = normalizeFunnelEvent('pricing_viewed', {
   source: 'header',
@@ -41,3 +45,27 @@ assert.equal(
   null
 );
 console.log('Analytics event normalization and privacy verification passed.');
+
+const browser: AnalyticsWindow = {};
+assert.equal(initializeGoogleAnalytics(browser, ''), false);
+assert.equal(
+  initializeGoogleAnalytics(browser, "G-INVALID';alert(1)//"),
+  false
+);
+assert.equal(Object.hasOwn(browser, 'gtag'), false);
+assert.equal(initializeGoogleAnalytics(browser, ' G-3W5C23WYR3 '), true);
+assert.equal(typeof browser.gtag, 'function');
+assert.equal(browser.dataLayer?.length, 2);
+assert.deepEqual(Array.from(browser.dataLayer?.[1] as IArguments), [
+  'config',
+  'G-3W5C23WYR3',
+]);
+initializeGoogleAnalytics(browser, 'G-3W5C23WYR3');
+assert.equal(
+  browser.dataLayer?.length,
+  2,
+  'Remounts must not duplicate initialization'
+);
+browser.gtag?.('event', 'pricing_view', { source: 'test' });
+assert.equal(browser.dataLayer?.length, 3);
+console.log('GA4 delayed initialization, validation and deduplication passed.');

@@ -1,5 +1,6 @@
 import { envConfigs } from '@/config';
 import { brandAssetUrl } from '@/config/brand';
+import { isSearchExcludedPath } from '@/config/search-indexing';
 import { locales, localizeUrl } from '@/paraglide/runtime.js';
 
 export const DEFAULT_SOCIAL_IMAGE = brandAssetUrl(
@@ -116,8 +117,9 @@ export function seoHead(params: {
     indexableLocales = INDEXABLE_LOCALES,
   } = params;
   const socialImage = socialImageUrl(image);
-  const allowIndexing = indexableLocales.includes(locale);
-  const canonicalLocale = allowIndexing
+  const excluded = isSearchExcludedPath(path);
+  const allowIndexing = indexableLocales.includes(locale) && !excluded;
+  const canonicalLocale = indexableLocales.includes(locale)
     ? locale
     : (indexableLocales[0] ?? 'en');
   const urlFor = (loc: string) =>
@@ -220,12 +222,14 @@ export function seoHead(params: {
     ],
     links: [
       { rel: 'canonical', href: canonicalUrl },
-      ...indexableLocales.map((loc) => ({
+      ...(excluded ? [] : indexableLocales).map((loc) => ({
         rel: 'alternate',
         hreflang: seoLanguageTag(loc),
         href: urlFor(loc),
       })),
-      { rel: 'alternate', hreflang: 'x-default', href: urlFor('en') },
+      ...(!excluded
+        ? [{ rel: 'alternate', hreflang: 'x-default', href: urlFor('en') }]
+        : []),
     ],
   };
 }

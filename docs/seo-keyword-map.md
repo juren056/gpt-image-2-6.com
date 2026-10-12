@@ -1,16 +1,41 @@
 # SEO keyword ownership map
 
-Updated: 2026-09-20
+Updated: 2026-10-12
 
 This document defines the primary search intent owned by each public page family. Supporting copy may use related terms, but navigation anchors, Title, H1, introduction, FAQ, and structured data should reinforce the assigned intent instead of competing with another URL.
 
 ## Core hubs
 
-| URL      | Primary keyword            |
-| -------- | -------------------------- |
-| /models  | ai image models            |
-| /tools   | ai image tools             |
-| /prompts | ai image and video prompts |
+| URL      | Primary keyword           |
+| -------- | ------------------------- |
+| /models  | ai image models           |
+| /tools   | ai image tools            |
+| /prompts | nano banana image prompts |
+
+| Core image URL            | Primary search intent                 |
+| ------------------------- | ------------------------------------- |
+| /                         | nano banana 2.1 image generator       |
+| /nano-banana-pro          | nano banana pro reference editing     |
+| /ai-image-generator       | ai image generator                    |
+| /ai-image-editor          | ai image editor with reference images |
+| /ai-image-upscaler        | ai image upscaler / enlarge photos    |
+| /image-background-remover | image background remover              |
+| /guide                    | how to use nano banana                |
+
+### Legacy video search boundary
+
+`/ai-video-generator`, `/wan-3-0`, `/minimax-h3`, `/seedance-2-5` and
+`/seedance-2-5-draft-mode` remain usable but carry `noindex, follow` in every
+locale, have self-topic canonicals, omit hreflang, and are excluded from the
+sitemap. They are deliberately not blocked in robots.txt: Google needs to crawl
+the noindex directive. Keep image capabilities and existing workspaces intact.
+
+The owner's screenshot shows seven queries over a 24-hour window with about
+one impression per query. It is insufficient for conclusions about sustained
+ranking. Review query + landing-page pairs over 28 days and compare the next
+settled 28-day window after re-crawling. Separate image intent from video intent;
+track image impressions, clicks, CTR and position alongside GA4 generation and
+checkout events. Do not promise particular keywords, positions or crawl dates.
 
 ## Image model pages
 
@@ -55,21 +80,17 @@ This document defines the primary search intent owned by each public page family
 | /prompt-builder              | ai prompt builder           |
 | /image-workflow-builder      | image workflow builder      |
 
-## Video and scenario pages
+## Image scenario pages
 
 | URL                             | Primary keyword                |
 | ------------------------------- | ------------------------------ |
-| /wan-3-0                        | wan 3.0 ai video generator     |
-| /seedance-2-5                   | seedance 2.5 video generator   |
-| /minimax-h3                     | minimax h3 video generator     |
-| /ai-video-generator             | ai video generator             |
 | /ai-poster-generator            | ai poster generator            |
 | /ai-product-photo-generator     | ai product photo generator     |
 | /ai-youtube-thumbnail-generator | ai youtube thumbnail generator |
 
 ## Prompt categories
 
-The /prompts page is the broad mixed image-and-video library. Image category pages own only their exact category intent:
+The /prompts page owns Nano Banana image prompt discovery. Image category pages own only their exact category intent:
 
 - /prompts/poster — poster prompts
 - /prompts/product — product photography prompts
