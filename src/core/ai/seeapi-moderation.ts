@@ -97,7 +97,9 @@ export async function moderateWithSeeAPI(
             ...init?.headers,
           },
           signal: controller.signal,
-          redirect: 'error',
+          // Workers supports only manual/follow. Reject 3xx below so credentials
+          // are never forwarded to a redirect destination.
+          redirect: 'manual',
         });
       } catch {
         if (controller.signal.aborted) throw new Error('seeapi_timeout');

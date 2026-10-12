@@ -49,7 +49,7 @@ function mockReview(flaggedUrls: string[] = []) {
   const fetchImpl = (async (input, init) => {
     const url = String(input);
     calls.push({ url, init });
-    assert.equal(init?.redirect, 'error');
+    assert.equal(init?.redirect, 'manual');
     if (init?.method === 'POST') {
       const body = JSON.parse(String(init.body));
       assert.equal(body.model, 'nsfw-filter');

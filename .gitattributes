@@ -1,2 +1,6 @@
 # Preserve the reviewed homepage guard's byte hash on Windows checkouts.
 scripts/verify-homepage-baseline.mjs text eol=lf
+# Keep reviewed source byte hashes consistent between Windows and Linux CI.
+src/**/*.ts text eol=lf
+src/**/*.tsx text eol=lf
+src/**/*.css text eol=lf

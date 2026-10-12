@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nanobanana21pro-com",
+  "account_id": "6fb67fbbcc77120784b0fdd0cc09d148",
+  "routes": [{ "pattern": "nanobanana21pro.com", "custom_domain": true }],
+  "compatibility_date": "2026-06-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "vars": {
+    "DATABASE_PROVIDER": "d1",
+    "VITE_APP_URL": "https://nanobanana21pro.com",
+    "VITE_APP_NAME": "Nano Banana 2.1"
+  },
+  "r2_buckets": [
+    { "binding": "IMAGE_BUCKET", "bucket_name": "nanobanana21pro-uploads" }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nanobanana21pro-db",
+      "database_id": "342759c0-6eec-465f-a80c-717c500ab546",
+      "migrations_dir": "drizzle/d1"
+    }
+  ]
+}

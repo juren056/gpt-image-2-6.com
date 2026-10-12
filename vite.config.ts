@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import mdx from '@mdx-js/rollup';
@@ -27,10 +28,8 @@ const isCloudflareBuild = (process.env.NITRO_PRESET || '').includes(
 );
 const driverStub = new URL('./src/core/db/driver-stub.ts', import.meta.url)
   .pathname;
-const betterAuthCiphers = new URL(
-  './node_modules/@noble/ciphers/',
-  import.meta.url
-).pathname;
+// Resolve from better-auth's dependency tree, including a clean pnpm install.
+const betterAuthRequire = createRequire(import.meta.resolve('better-auth'));
 
 // Prefer wrangler.jsonc over the build-time env, which can be polluted by
 // .env.local (e.g. DATABASE_PROVIDER=sqlite for local dev).
@@ -212,12 +211,15 @@ export default defineConfig({
               '!require-in-the-middle',
             ]
           : undefined,
-      // better-auth requires @noble/ciphers v2 while another provider keeps
-      // v1 at the workspace root. Pin its two imports to the nested v2 copy so
-      // Rolldown cannot flatten them to the incompatible root package.
+      // Pin these imports to the version installed for better-auth; a clean
+      // pnpm checkout need not expose this transitive package at the root.
       alias: {
-        '@noble/ciphers/chacha.js': `${betterAuthCiphers}chacha.js`,
-        '@noble/ciphers/utils.js': `${betterAuthCiphers}utils.js`,
+        '@noble/ciphers/chacha.js': betterAuthRequire.resolve(
+          '@noble/ciphers/chacha.js'
+        ),
+        '@noble/ciphers/utils.js': betterAuthRequire.resolve(
+          '@noble/ciphers/utils.js'
+        ),
       },
     }),
   ],
