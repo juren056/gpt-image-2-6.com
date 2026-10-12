@@ -5,7 +5,9 @@ import { Coins, Gift, Users } from 'lucide-react';
 import { useSession } from '@/core/auth/client';
 import { Link } from '@/core/i18n/navigation';
 import { apiGet } from '@/lib/api-client';
+import { safeInternalAuthDestination } from '@/lib/auth-navigation';
 import { m } from '@/paraglide/messages.js';
+import { AccountLoginMethods } from '@/blocks/account-login-methods';
 import {
   AccountBalanceCard,
   AccountCard,
@@ -27,6 +29,7 @@ type PlanInfo = {
   status: string;
 };
 function SettingsPage() {
+  const search = Route.useSearch();
   const { data: session } = useSession();
   const userId = session?.user.id;
   const userQuery = useQuery({
@@ -97,6 +100,11 @@ function SettingsPage() {
           </div>
         )}
       </AccountCard>
+      <AccountLoginMethods
+        connectRequested={search.connect === 'google'}
+        errorCode={search.authError === 'oauth' ? search.error : undefined}
+        returnTo={search.returnTo}
+      />
       <div className="banana-account-metrics">
         <AccountCard>
           <Coins size={18} />
@@ -222,5 +230,14 @@ function SettingsPage() {
   );
 }
 export const Route = createFileRoute('/settings/profile')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    connect: search.connect === 'google' ? 'google' : undefined,
+    authError: search.authError === 'oauth' ? 'oauth' : undefined,
+    error: typeof search.error === 'string' ? search.error : undefined,
+    returnTo:
+      safeInternalAuthDestination(
+        typeof search.returnTo === 'string' ? search.returnTo : undefined
+      ) || '/settings/generate',
+  }),
   component: SettingsPage,
 });

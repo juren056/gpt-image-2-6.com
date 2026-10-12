@@ -18,6 +18,7 @@ import { trackFunnelEvent } from '@/lib/analytics-events';
 import { formatAuthError } from '@/lib/auth-error';
 import {
   buildAuthSwitchQuery,
+  googleLinkRecoveryDestination,
   resolvePostAuthDestination,
   toAbsoluteAuthCallbackURL,
   validateAuthSearch,
@@ -90,9 +91,13 @@ function SignInPage() {
 
   useEffect(() => {
     if (search.authError === 'oauth') {
-      setError(m['common.sign.oauth_failed']());
+      setError(
+        search.error === 'account_not_linked'
+          ? m['common.sign.oauth_account_not_linked']()
+          : m['common.sign.oauth_failed']()
+      );
     }
-  }, [search.authError]);
+  }, [search.authError, search.error]);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -334,6 +339,16 @@ function SignInPage() {
                   className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm"
                 >
                   {error}
+                  {search.authError === 'oauth' &&
+                    search.error === 'account_not_linked' &&
+                    googleEnabled && (
+                      <Link
+                        className="mt-3 block font-medium underline underline-offset-4"
+                        href={`/sign-in${buildAuthSwitchQuery(googleLinkRecoveryDestination(afterLoginUrl))}`}
+                      >
+                        {m['common.sign.oauth_recover_google']()}
+                      </Link>
+                    )}
                 </div>
               )}
               <div className="space-y-1 text-center">
@@ -415,6 +430,16 @@ function SignInPage() {
                   className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm"
                 >
                   {error}
+                  {search.authError === 'oauth' &&
+                    search.error === 'account_not_linked' &&
+                    googleEnabled && (
+                      <Link
+                        className="mt-3 block font-medium underline underline-offset-4"
+                        href={`/sign-in${buildAuthSwitchQuery(googleLinkRecoveryDestination(afterLoginUrl))}`}
+                      >
+                        {m['common.sign.oauth_recover_google']()}
+                      </Link>
+                    )}
                 </div>
               )}
 

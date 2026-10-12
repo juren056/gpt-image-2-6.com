@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 
 import {
+  classifyOAuthLinkError,
+  googleLinkRecoveryDestination,
   safeInternalAuthDestination,
   toAbsoluteAuthCallbackURL,
 } from '../src/lib/auth-navigation';
@@ -35,6 +37,26 @@ assert.equal(
 assert.equal(safeInternalAuthDestination('/#generator'), '/#generator');
 assert.equal(safeInternalAuthDestination('//evil.example'), null);
 assert.equal(safeInternalAuthDestination('/sign-in'), null);
+const recovery = new URL(
+  googleLinkRecoveryDestination('/#tool-generator'),
+  origin
+);
+assert.equal(recovery.pathname, '/settings/profile');
+assert.equal(recovery.searchParams.get('returnTo'), '/#tool-generator');
+assert.equal(
+  new URL(
+    googleLinkRecoveryDestination('//evil.example'),
+    origin
+  ).searchParams.get('returnTo'),
+  '/settings/generate'
+);
+assert.equal(classifyOAuthLinkError('account_not_linked'), 'not-linked');
+assert.equal(classifyOAuthLinkError("email_doesn't_match"), 'different-email');
+assert.equal(
+  classifyOAuthLinkError('account_already_linked_to_different_user'),
+  'conflict'
+);
+assert.equal(classifyOAuthLinkError('<script>alert(1)</script>'), 'generic');
 
 assert.deepEqual(
   parseEditorDraft(

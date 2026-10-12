@@ -3611,5 +3611,16 @@
   "banana.capabilities.2.alt": "同一位成年男摄影师在摄影棚、城市街道和书店的三场景分镜",
   "banana.capabilities.3.alt": "黑黄配色活动海报，展示 FRESH IDEAS、CREATIVE NIGHT 和 24 OCTOBER 文字",
   "banana.capabilities.before": "修改前",
-  "banana.capabilities.after": "修改后"
+  "banana.capabilities.after": "修改后",
+  "common.sign.oauth_account_not_linked": "这个邮箱已有账号，但尚未关联当前登录方式。请先使用原密码登录。",
+  "common.sign.oauth_recover_google": "使用原密码登录，再关联 Google",
+  "settings.profile.login_methods": "登录方式",
+  "settings.profile.google_link_description": "将 Google 关联到现有账号。请选择与下方邮箱一致的 Google 账号，项目和积分会保留在同一个账号中。",
+  "settings.profile.google_connect": "关联 Google",
+  "settings.profile.google_connected": "已关联",
+  "settings.profile.google_pending": "正在打开 Google…",
+  "settings.profile.google_link_failed": "未能关联 Google。请保持登录后重试，也可以继续使用原密码登录。",
+  "settings.profile.google_email_mismatch": "请选择与当前账号邮箱一致的 Google 账号，再次关联。",
+  "settings.profile.google_link_conflict": "这个 Google 账号已经关联其他账号。请登录对应账号，或联系支持。",
+  "settings.profile.google_link_success": "继续创作"
 }

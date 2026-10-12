@@ -2,6 +2,7 @@ export type AuthSearch = {
   callbackUrl?: string;
   redirect?: string;
   authError?: string;
+  error?: string;
 };
 
 export function validateAuthSearch(
@@ -13,6 +14,7 @@ export function validateAuthSearch(
     redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
     authError:
       typeof search.authError === 'string' ? search.authError : undefined,
+    error: typeof search.error === 'string' ? search.error : undefined,
   };
 }
 
@@ -73,4 +75,23 @@ export function toAbsoluteAuthCallbackURL(
 export function buildAuthSwitchQuery(destination: string): string {
   const query = new URLSearchParams({ callbackUrl: destination });
   return `?${query.toString()}`;
+}
+
+export function googleLinkRecoveryDestination(destination?: string): string {
+  const query = new URLSearchParams({
+    connect: 'google',
+    returnTo: safeInternalAuthDestination(destination) || '/settings/generate',
+  });
+  return `/settings/profile?${query.toString()}`;
+}
+
+export function classifyOAuthLinkError(error?: string) {
+  if (error === 'account_not_linked') return 'not-linked';
+  if (
+    error === "email_doesn't_match" ||
+    error === 'LINKING_DIFFERENT_EMAILS_NOT_ALLOWED'
+  )
+    return 'different-email';
+  if (error === 'account_already_linked_to_different_user') return 'conflict';
+  return 'generic';
 }
