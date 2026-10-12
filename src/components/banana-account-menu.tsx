@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  ArrowUpRight,
   ChevronsUpDown,
   Coins,
   CreditCard,
@@ -121,52 +122,71 @@ export function BananaAccountMenu({
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel className="banana-account-menu-identity">
-            <strong>{name}</strong>
-            <span>{email}</span>
+            <Avatar className="banana-account-menu-avatar">
+              <AvatarImage src={image || undefined} alt="" />
+              <AvatarFallback>{name.charAt(0).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <div className="banana-account-menu-person">
+              <strong title={name}>{name}</strong>
+              <span title={email}>{email}</span>
+            </div>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <div className="banana-account-plan">
-          <span>{plan}</span>
-          <p>
-            <strong>{balance === null ? '—' : balance.toLocaleString()}</strong>{' '}
-            {copy.credits}
+          <div className="banana-account-pass-heading">
+            <span className="banana-account-pass-mark" aria-hidden="true">
+              <Coins size={18} />
+            </span>
+            <span className="banana-account-plan-badge" title={plan}>
+              {plan}
+            </span>
+          </div>
+          <p className="banana-account-pass-balance" aria-live="polite">
+            <span>{copy.credits}</span>
+            <strong>{balance === null ? '—' : balance.toLocaleString()}</strong>
           </p>
           <DropdownMenuItem
             className="banana-account-plan-upgrade"
             onClick={() => runOutsideMenu(onUpgrade)}
           >
             <Zap size={15} />
-            {copy.upgrade}
+            <span>{copy.upgrade}</span>
+            <ArrowUpRight
+              className="banana-account-upgrade-arrow"
+              aria-hidden="true"
+            />
           </DropdownMenuItem>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/settings/credits" />}>
           <CreditCard />
-          {copy.billing}
+          <span>{copy.billing}</span>
           <span className="banana-account-menu-trailing">
             {balance === null ? '—' : balance.toLocaleString()}
           </span>
         </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/settings/assets" />}>
-          <Images />
-          {copy.assets}
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/settings/referrals" />}>
-          <Gift />
-          {copy.referral}
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/settings/profile" />}>
-          <User />
-          {copy.profile}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => runOutsideMenu(onCheckIn)}>
-          <Gift />
-          {copy.checkIn}
-        </DropdownMenuItem>
+        <DropdownMenuGroup className="banana-account-shortcuts">
+          <DropdownMenuItem render={<Link href="/settings/assets" />}>
+            <Images />
+            <span>{copy.assets}</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/settings/referrals" />}>
+            <Gift />
+            <span>{copy.referral}</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/settings/profile" />}>
+            <User />
+            <span>{copy.profile}</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => runOutsideMenu(onCheckIn)}>
+            <Gift />
+            <span>{copy.checkIn}</span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onThemeChange}>
           {dark ? <Moon /> : <Sun />}
-          {copy.theme}
+          <span>{copy.theme}</span>
           <span className="banana-account-menu-trailing">
             {dark ? copy.dark : copy.light}
           </span>
@@ -174,7 +194,7 @@ export function BananaAccountMenu({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Languages />
-            {copy.language}
+            <span>{copy.language}</span>
             <span className="banana-account-menu-trailing">
               {languages.find((item) => item.code === language)?.label}
             </span>
@@ -192,20 +212,22 @@ export function BananaAccountMenu({
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/settings/tickets" />}>
-          <LifeBuoy />
-          {copy.help}
-        </DropdownMenuItem>
-        {isAdmin && (
-          <DropdownMenuItem render={<Link href="/admin" />}>
-            <Shield />
-            {copy.admin}
+        <DropdownMenuGroup className="banana-account-menu-footer">
+          <DropdownMenuItem render={<Link href="/settings/tickets" />}>
+            <LifeBuoy />
+            <span>{copy.help}</span>
           </DropdownMenuItem>
-        )}
-        <DropdownMenuItem onClick={onSignOut}>
-          <LogOut />
-          {copy.logout}
-        </DropdownMenuItem>
+          {isAdmin && (
+            <DropdownMenuItem render={<Link href="/admin" />}>
+              <Shield />
+              <span>{copy.admin}</span>
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem onClick={onSignOut}>
+            <LogOut />
+            <span>{copy.logout}</span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

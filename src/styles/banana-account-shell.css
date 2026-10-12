@@ -309,72 +309,224 @@
   font-size: 10px;
   color: var(--account-muted);
 }
+/* A compact studio pass: identity, balance, then a detachable yellow action. */
 .banana-account-menu {
-  width: 280px;
+  width: 320px;
   max-width: calc(100vw - 24px);
-  padding: 4px;
+  max-height: min(calc(100dvh - 24px), var(--available-height, 100dvh));
+  overflow-y: auto;
+  padding: 8px;
   background: var(--account-panel);
   color: var(--account-fg);
   border: 1px solid var(--account-border);
-  box-shadow: 0 14px 44px #0003;
-  border-radius: 8px;
+  box-shadow: 0 20px 60px #0004;
+  border-radius: 18px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--account-border) transparent;
 }
 .banana-account-menu-identity {
-  display: grid;
-  gap: 2px;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px 16px;
   font-weight: 400;
 }
-.banana-account-menu-identity strong {
+.banana-account-menu-avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 1px solid #facc1555;
+  background: #facc1514;
+  color: var(--account-fg);
+  border-radius: 14px;
+}
+.banana-account-menu-avatar [data-slot='avatar-fallback'] {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border-radius: inherit;
+  font-weight: 600;
+}
+.banana-account-menu-person {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.banana-account-menu-person strong {
   font-size: 14px;
   font-weight: 650;
-  color: var(--account-fg);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.banana-account-menu-identity span {
+.banana-account-menu-person > span {
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--account-muted);
 }
 .banana-account-plan {
-  padding: 10px;
-  margin: 0 2px 8px;
-  border-radius: 8px;
-  border: 1px solid #facc1550;
-  background: #facc1514;
+  position: relative;
+  margin: 0 2px 12px;
+  padding: 18px 16px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--account-border);
+  background: var(--account-bg);
+  overflow: hidden;
 }
-.banana-account-plan > span {
-  font-size: 10px;
-  font-family: ui-monospace, monospace;
+.banana-account-pass-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.banana-account-pass-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #facc15;
+  color: #18181b;
+}
+.banana-account-plan-badge {
+  max-width: 75%;
+  padding: 5px 10px;
+  border: 1px solid var(--account-border);
+  border-radius: 20px;
+  color: var(--account-fg);
+  font-size: 11px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.banana-account-pass-balance {
+  display: grid;
+  gap: 6px;
+  margin: 18px 0 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed var(--account-border);
+}
+.banana-account-pass-balance > span {
   color: var(--account-muted);
-}
-.banana-account-plan p {
   font-size: 12px;
-  margin: 8px 0;
+}
+.banana-account-pass-balance strong {
+  font-size: clamp(26px, 7vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.banana-account-plan::before,
+.banana-account-plan::after {
+  content: '';
+  position: absolute;
+  bottom: 68px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--account-border);
+  border-radius: 50%;
+  background: var(--account-panel);
+  pointer-events: none;
+}
+.banana-account-plan::before {
+  left: -9px;
+}
+.banana-account-plan::after {
+  right: -9px;
 }
 .banana-account-plan > .banana-account-plan-upgrade {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 32px;
+  gap: 9px;
+  justify-content: flex-start;
+  min-height: 44px;
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 8px;
   background: #facc15;
   color: #18181b;
-  border-radius: 5px;
-  width: 100%;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 650;
+  white-space: normal;
+}
+.banana-account-upgrade-arrow {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  transition: transform 160ms ease;
+}
+.banana-account-plan-upgrade:is(:hover, [data-highlighted])
+  .banana-account-upgrade-arrow {
+  transform: translate(2px, -2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .banana-account-upgrade-arrow {
+    transition: none;
+  }
 }
 .banana-account-menu [data-slot='dropdown-menu-item'],
 .banana-account-menu [data-slot='dropdown-menu-sub-trigger'] {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: start;
   min-height: 40px;
   padding: 8px 10px;
   gap: 8px;
   font-size: 14px;
   border-radius: 5px;
+}
+.banana-account-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 8px 2px 10px;
+}
+.banana-account-shortcuts [data-slot='dropdown-menu-item'] {
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px;
+  border-radius: 9px;
+  border: 1px solid var(--account-border);
+  background: var(--account-bg);
+  font-size: 12px;
+  font-weight: 550;
+}
+.banana-account-shortcuts [data-slot='dropdown-menu-item'] svg {
+  color: var(--account-fg);
+}
+.banana-account-menu-footer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 4px;
+}
+.banana-account-menu-footer [data-slot='dropdown-menu-item'] {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 58px;
+  padding: 8px 4px;
+  font-size: 11px;
+  text-align: center;
+  border-radius: 9px;
+}
+.banana-account-menu [data-slot='dropdown-menu-item'][data-highlighted],
+.banana-account-menu [data-slot='dropdown-menu-sub-trigger'][data-highlighted] {
+  background: var(--account-hover);
+  color: var(--account-fg);
+  box-shadow: inset 0 0 0 1px #facc1570;
+}
+.banana-account-menu .banana-account-plan-upgrade[data-highlighted] {
+  background: #facc15;
+  color: #18181b;
+  box-shadow: inset 0 0 0 2px #18181b;
 }
 .banana-account-menu [data-slot='dropdown-menu-item']:focus,
 .banana-account-menu [data-slot='dropdown-menu-sub-trigger']:focus {
@@ -398,12 +550,6 @@
 }
 .banana-account-language {
   width: 190px;
-}
-.banana-account-menu .banana-account-plan-upgrade {
-  min-height: 32px;
-  font-size: 12px;
-  background: #facc15;
-  color: #18181b;
 }
 .banana-account-menu .banana-account-plan-upgrade:focus {
   background: #eab308;
