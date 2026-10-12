@@ -47,6 +47,7 @@ import {
   type ImageUploaderValue,
 } from '@/components/image-uploader';
 import { ModelPicker } from '@/components/model-picker';
+import { SiteSelect } from '@/components/site-select';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -864,7 +865,7 @@ export function CreativeStudioWorkspace() {
             ) : null}
             {toolId === 'T21' ? (
               <div className="grid gap-2 sm:grid-cols-3">
-                <select
+                <SiteSelect
                   value={templateId}
                   onChange={(e) => setTemplateId(e.target.value)}
                   className="border-input rounded-lg border px-2"
@@ -874,7 +875,7 @@ export function CreativeStudioWorkspace() {
                       {item.label}
                     </option>
                   ))}
-                </select>
+                </SiteSelect>
                 <Input
                   value={templateProduct}
                   onChange={(e) => setTemplateProduct(e.target.value)}
@@ -897,7 +898,7 @@ export function CreativeStudioWorkspace() {
             ) : null}
             {['T07', 'T08', 'T09', 'T22', 'T23'].includes(toolId) ? (
               <div className="flex flex-wrap items-center gap-2">
-                <select
+                <SiteSelect
                   value={maskMode}
                   onChange={(e) =>
                     setMaskMode(e.target.value as 'brush' | 'lasso')
@@ -906,7 +907,7 @@ export function CreativeStudioWorkspace() {
                 >
                   <option value="brush">Brush</option>
                   <option value="lasso">Lasso points</option>
-                </select>
+                </SiteSelect>
                 {maskMode === 'lasso' ? (
                   <Button
                     type="button"

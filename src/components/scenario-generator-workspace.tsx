@@ -25,6 +25,7 @@ import { apiGet, apiPost } from '@/lib/api-client';
 import type { ScenarioToolKind } from '@/lib/tools';
 import { cn } from '@/lib/utils';
 import { FirstGenerationFeedback } from '@/components/first-generation-feedback';
+import { SiteSelect } from '@/components/site-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -594,7 +595,7 @@ export function ScenarioGeneratorWorkspace({
                   ? copy.poster.purposeLabel
                   : copy.productPhoto.settingLabel}
               </Label>
-              <select
+              <SiteSelect
                 id={`${kind}-first-option`}
                 value={firstOption}
                 onChange={(event) => setFirstOption(event.target.value)}
@@ -606,7 +607,7 @@ export function ScenarioGeneratorWorkspace({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </div>
             <div>
               <Label htmlFor={`${kind}-second-option`}>
@@ -614,7 +615,7 @@ export function ScenarioGeneratorWorkspace({
                   ? copy.poster.styleLabel
                   : copy.productPhoto.lightingLabel}
               </Label>
-              <select
+              <SiteSelect
                 id={`${kind}-second-option`}
                 value={secondOption}
                 onChange={(event) => setSecondOption(event.target.value)}
@@ -626,7 +627,7 @@ export function ScenarioGeneratorWorkspace({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </div>
           </div>
 

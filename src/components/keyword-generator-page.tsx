@@ -22,6 +22,7 @@ import {
   type ShirtColor,
 } from '@/lib/keyword-image-tools';
 import { FirstGenerationFeedback } from '@/components/first-generation-feedback';
+import { SiteSelect } from '@/components/site-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -144,7 +145,7 @@ function MockupWorkspace() {
         />
         <label className="block space-y-2 text-sm font-semibold">
           {t('color')}
-          <select
+          <SiteSelect
             value={shirtColor}
             onChange={(event) =>
               setShirtColor(event.target.value as ShirtColor)
@@ -155,7 +156,7 @@ function MockupWorkspace() {
             <option value="#1b2232">{t('color_navy')}</option>
             <option value="#d6d9df">{t('color_gray')}</option>
             <option value="#d94f45">{t('color_coral')}</option>
-          </select>
+          </SiteSelect>
         </label>
         <label className="block space-y-2 text-sm font-semibold">
           {t('scale')} · {printScale}%
@@ -396,7 +397,7 @@ function PixelWorkspace() {
         </label>
         <label className="block space-y-2 text-sm font-semibold">
           {t('palette')}
-          <select
+          <SiteSelect
             value={palette}
             onChange={(event) =>
               setPalette(Number(event.target.value) as 4 | 8 | 16 | 32)
@@ -408,7 +409,7 @@ function PixelWorkspace() {
                 {value}
               </option>
             ))}
-          </select>
+          </SiteSelect>
         </label>
         <Button
           type="button"

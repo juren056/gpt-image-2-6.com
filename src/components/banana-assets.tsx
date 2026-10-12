@@ -31,6 +31,7 @@ import { useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { apiGet, apiPost } from '@/lib/api-client';
 import { TextField } from '@/components/form-field';
+import { SiteSelect } from '@/components/site-select';
 import {
   Dialog,
   DialogContent,
@@ -612,7 +613,7 @@ export function BananaAssets({
               </button>
               <label>
                 {copy.kind}
-                <select
+                <SiteSelect
                   value={selectedMeta.kind || ''}
                   disabled={update.isPending}
                   onChange={(event) =>
@@ -630,11 +631,11 @@ export function BananaAssets({
                       {copy[kind]}
                     </option>
                   ))}
-                </select>
+                </SiteSelect>
               </label>
               <label>
                 {copy.collection}
-                <select
+                <SiteSelect
                   value={selectedMeta.collectionId || ''}
                   disabled={update.isPending}
                   onChange={(event) =>
@@ -650,7 +651,7 @@ export function BananaAssets({
                       {collection.name}
                     </option>
                   ))}
-                </select>
+                </SiteSelect>
               </label>
             </div>
           )}

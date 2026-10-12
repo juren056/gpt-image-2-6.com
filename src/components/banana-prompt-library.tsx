@@ -9,6 +9,7 @@ import {
   type PromptCatalog,
   type PromptExample,
 } from '@/lib/prompt-library';
+import { SiteSelect } from '@/components/site-select';
 import {
   Dialog,
   DialogContent,
@@ -157,7 +158,7 @@ export function BananaPromptLibrary({
         </label>
         <label className="banana-workflow-select">
           {copy.type}
-          <select
+          <SiteSelect
             value={operation}
             onChange={(event) => {
               setOperation(event.target.value);
@@ -167,11 +168,11 @@ export function BananaPromptLibrary({
             <option value="all">{copy.all}</option>
             <option value="generate">{copy.generate}</option>
             <option value="edit">{copy.edit}</option>
-          </select>
+          </SiteSelect>
         </label>
         <label className="banana-workflow-select">
           {copy.model}
-          <select
+          <SiteSelect
             value={model}
             onChange={(event) => {
               setModel(event.target.value);
@@ -184,11 +185,11 @@ export function BananaPromptLibrary({
                 {value}
               </option>
             ))}
-          </select>
+          </SiteSelect>
         </label>
         <label className="banana-workflow-select">
           {copy.sort}
-          <select
+          <SiteSelect
             value={sort}
             onChange={(event) => {
               setSort(event.target.value);
@@ -198,7 +199,7 @@ export function BananaPromptLibrary({
             <option value="featured">{copy.featured}</option>
             <option value="name">{copy.name}</option>
             <option value="newest">{copy.newest}</option>
-          </select>
+          </SiteSelect>
         </label>
       </div>
       <div className="banana-workflow-categories">

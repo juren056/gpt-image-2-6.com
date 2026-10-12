@@ -1,4 +1,7 @@
 import { createRouter } from '@tanstack/react-router';
+
+import '@/styles/site-dropdowns.css';
+
 import * as Sentry from '@sentry/tanstackstart-react';
 
 import { deLocalizeUrl, localizeUrl } from '@/paraglide/runtime.js';

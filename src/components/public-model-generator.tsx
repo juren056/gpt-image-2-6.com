@@ -32,6 +32,7 @@ import {
   ImageUploader,
   type ImageUploaderValue,
 } from '@/components/image-uploader';
+import { SiteSelect } from '@/components/site-select';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -255,7 +256,7 @@ export function PublicModelGenerator({
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="text-sm font-semibold">
             Shape
-            <select
+            <SiteSelect
               value={size}
               onChange={(event) => setSize(event.target.value)}
               className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3 text-sm"
@@ -265,12 +266,12 @@ export function PublicModelGenerator({
                   {value.replaceAll('_', ' ')}
                 </option>
               ))}
-            </select>
+            </SiteSelect>
           </label>
           {model.qualities.length ? (
             <label className="text-sm font-semibold">
               Quality
-              <select
+              <SiteSelect
                 value={quality}
                 onChange={(event) => setQuality(event.target.value)}
                 className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3 text-sm"
@@ -280,7 +281,7 @@ export function PublicModelGenerator({
                     {value}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </label>
           ) : null}
         </div>

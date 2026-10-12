@@ -27,6 +27,7 @@ import { Link } from '@/core/i18n/navigation';
 import { apiGet, apiPatch } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
+import { SiteSelect } from '@/components/site-select';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -164,14 +165,14 @@ function FilterSelect({
   return (
     <label className="min-w-36 flex-1 sm:flex-none">
       <span className="sr-only">{label}</span>
-      <select
+      <SiteSelect
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm shadow-xs sm:w-44"
         aria-label={label}
       >
         {children}
-      </select>
+      </SiteSelect>
     </label>
   );
 }

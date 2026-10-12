@@ -14,6 +14,7 @@ import { Link } from '@/core/i18n/navigation';
 import { getSeedance25GenerationCost } from '@/config/media-tools';
 import { consumeStagedVideoPrompt } from '@/lib/prompt-navigation';
 import { cn } from '@/lib/utils';
+import { SiteSelect } from '@/components/site-select';
 import {
   VideoGeneratorWorkspace,
   type VideoWorkspaceCopy,
@@ -139,7 +140,7 @@ function SeedanceHeroWorkspace({ copy }: { copy: SeedanceLandingCopy }) {
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <Label htmlFor="seedance-camera">{copy.cameraLabel}</Label>
-              <select
+              <SiteSelect
                 id="seedance-camera"
                 value={camera}
                 onChange={(event) => setCamera(event.target.value)}
@@ -150,11 +151,11 @@ function SeedanceHeroWorkspace({ copy }: { copy: SeedanceLandingCopy }) {
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </div>
             <div>
               <Label htmlFor="seedance-rhythm">{copy.rhythmLabel}</Label>
-              <select
+              <SiteSelect
                 id="seedance-rhythm"
                 value={rhythm}
                 onChange={(event) => setRhythm(event.target.value)}
@@ -165,7 +166,7 @@ function SeedanceHeroWorkspace({ copy }: { copy: SeedanceLandingCopy }) {
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </div>
           </div>
 

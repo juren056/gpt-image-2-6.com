@@ -55,6 +55,7 @@ import {
   type ImageUploaderValue,
 } from '@/components/image-uploader';
 import { ModelPicker } from '@/components/model-picker';
+import { SiteSelect } from '@/components/site-select';
 import { StudioToolStage } from '@/components/studio-tool-stage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -1360,7 +1361,7 @@ export function DedicatedToolWorkspace({
         {toolId === 'T06' ? (
           <>
             <FieldTitle>Lighting setup</FieldTitle>
-            <select
+            <SiteSelect
               value={lighting}
               onChange={(event) => setLighting(event.target.value)}
               className="border-border bg-background min-h-11 w-full rounded-xl border px-3"
@@ -1368,7 +1369,7 @@ export function DedicatedToolWorkspace({
               <option>Warm window light</option>
               <option>Clean product studio</option>
               <option>Soft overcast daylight</option>
-            </select>
+            </SiteSelect>
           </>
         ) : null}
         {['T07', 'T08'].includes(toolId) ? (
@@ -1530,7 +1531,7 @@ export function DedicatedToolWorkspace({
         {toolId === 'T15' ? (
           <>
             <FieldTitle>Output set</FieldTitle>
-            <select
+            <SiteSelect
               value={outputSet}
               onChange={(event) => setOutputSet(event.target.value)}
               className="border-border bg-background min-h-11 w-full rounded-xl border px-3"
@@ -1538,7 +1539,7 @@ export function DedicatedToolWorkspace({
               <option value="social">Instagram post + story</option>
               <option value="youtube">YouTube thumbnail + community</option>
               <option value="store">Store square + landscape</option>
-            </select>
+            </SiteSelect>
             <div className="grid grid-cols-3 gap-2">
               {(['contain', 'cover', 'extend'] as const).map((value) => (
                 <button
@@ -1597,7 +1598,7 @@ export function DedicatedToolWorkspace({
             </p>
             <label className="block text-sm font-semibold">
               Model
-              <select
+              <SiteSelect
                 value={modelId}
                 onChange={(event) => setModelId(event.target.value)}
                 className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3"
@@ -1609,7 +1610,7 @@ export function DedicatedToolWorkspace({
                     {model.label} · {model.credits.edit} credits each
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </label>
             <Textarea
               value={prompt}
@@ -1664,7 +1665,7 @@ export function DedicatedToolWorkspace({
             </label>
             <label className="block text-sm font-semibold">
               Logo type
-              <select
+              <SiteSelect
                 value={logoStyle}
                 onChange={(event) => setLogoStyle(event.target.value)}
                 className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3"
@@ -1672,7 +1673,7 @@ export function DedicatedToolWorkspace({
                 <option>Wordmark</option>
                 <option>Icon</option>
                 <option>Combination mark</option>
-              </select>
+              </SiteSelect>
             </label>
           </>
         ) : null}
@@ -1761,7 +1762,7 @@ export function DedicatedToolWorkspace({
         {toolId === 'T24' ? (
           <>
             <FieldTitle>Prompt recipe</FieldTitle>
-            <select
+            <SiteSelect
               value={template}
               onChange={(event) => setTemplate(event.target.value)}
               className="border-border bg-background min-h-11 w-full rounded-xl border px-3"
@@ -1769,7 +1770,7 @@ export function DedicatedToolWorkspace({
               <option>Product campaign</option>
               <option>Poster</option>
               <option>Editorial scene</option>
-            </select>
+            </SiteSelect>
             <Input
               value={brand.name}
               onChange={(event) =>
@@ -1827,7 +1828,7 @@ export function DedicatedToolWorkspace({
             {steps.includes('Relight') ? (
               <label className="block text-sm font-semibold">
                 Relight model
-                <select
+                <SiteSelect
                   value={modelId}
                   onChange={(event) => setModelId(event.target.value)}
                   className="border-border bg-background mt-2 min-h-11 w-full rounded-xl border px-3"
@@ -1839,7 +1840,7 @@ export function DedicatedToolWorkspace({
                       {model.label} · {model.credits.relight} credits
                     </option>
                   ))}
-                </select>
+                </SiteSelect>
               </label>
             ) : null}
             {steps.includes('Add text') ? (
@@ -2667,7 +2668,7 @@ function BrandFields({
       />
       <label className="block text-sm font-semibold">
         Font
-        <select
+        <SiteSelect
           value={brand.font}
           onChange={(event) =>
             setBrand((current) => ({ ...current, font: event.target.value }))
@@ -2677,7 +2678,7 @@ function BrandFields({
           <option>Inter</option>
           <option>Libre Baskerville</option>
           <option>System Sans</option>
-        </select>
+        </SiteSelect>
       </label>
       <div className="grid grid-cols-2 gap-3">
         <Color
@@ -2884,7 +2885,8 @@ function WorkflowFields({
           </div>
         ))}
       </div>
-      <select
+      <SiteSelect
+        value=""
         onChange={(event) => {
           if (event.target.value)
             setSteps((items) => [...items, event.target.value]);
@@ -2898,7 +2900,7 @@ function WorkflowFields({
         <option>Upscale</option>
         <option>Add text</option>
         <option>Export</option>
-      </select>
+      </SiteSelect>
       <p className="text-muted-foreground text-xs">
         Review every step and its cost before running. Completed steps remain
         inspectable.

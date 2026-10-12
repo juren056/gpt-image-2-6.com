@@ -29,6 +29,7 @@ import {
 } from '@/lib/api-client';
 import { m } from '@/paraglide/messages.js';
 import { DataTable, type Column } from '@/components/data-table';
+import { SiteSelect } from '@/components/site-select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -778,7 +779,7 @@ function UsersPage() {
               <label className="text-sm font-medium">
                 {m['admin.users.status_scope']()}
               </label>
-              <select
+              <SiteSelect
                 className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
                 value={statusScope}
                 onChange={(event) =>
@@ -790,7 +791,7 @@ function UsersPage() {
                 <option value="account">Account access</option>
                 <option value="generation">Generation only</option>
                 <option value="both">Both</option>
-              </select>
+              </SiteSelect>
             </div>
 
             {(statusScope === 'account' || statusScope === 'both') && (
@@ -798,7 +799,7 @@ function UsersPage() {
                 <label className="text-sm font-medium">
                   {m['admin.users.account_status_col']()}
                 </label>
-                <select
+                <SiteSelect
                   className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
                   value={accountStatus}
                   onChange={(event) =>
@@ -810,7 +811,7 @@ function UsersPage() {
                   <option value="active">Active</option>
                   <option value="suspended">Suspended</option>
                   <option value="banned">Banned</option>
-                </select>
+                </SiteSelect>
               </div>
             )}
 
@@ -819,7 +820,7 @@ function UsersPage() {
                 <label className="text-sm font-medium">
                   {m['admin.users.generation_status_col']()}
                 </label>
-                <select
+                <SiteSelect
                   className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
                   value={generationStatus}
                   onChange={(event) =>
@@ -833,7 +834,7 @@ function UsersPage() {
                   <option value="restricted">Restricted</option>
                   <option value="suspended">Suspended</option>
                   <option value="banned">Banned</option>
-                </select>
+                </SiteSelect>
               </div>
             )}
 
@@ -841,7 +842,7 @@ function UsersPage() {
               <label className="text-sm font-medium">
                 {m['admin.users.status_reason_code']()}
               </label>
-              <select
+              <SiteSelect
                 className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
                 value={statusReasonCode}
                 onChange={(event) => setStatusReasonCode(event.target.value)}
@@ -851,7 +852,7 @@ function UsersPage() {
                 <option value="payment_risk">Payment risk</option>
                 <option value="user_appeal">Appeal approved</option>
                 <option value="admin_correction">Admin correction</option>
-              </select>
+              </SiteSelect>
             </div>
 
             <div className="space-y-1.5">

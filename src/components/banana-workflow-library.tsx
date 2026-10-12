@@ -3,6 +3,7 @@ import { Copy, Search, Sparkles, WandSparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Link, useRouter } from '@/core/i18n/navigation';
+import { SiteSelect } from '@/components/site-select';
 
 export type WorkflowRecipe = {
   id: string;
@@ -84,25 +85,25 @@ export function BananaWorkflowLibrary({
         {kind === 'prompts' && (
           <label className="banana-workflow-select">
             {copy.type}
-            <select
+            <SiteSelect
               value={operation}
               onChange={(event) => setOperation(event.target.value)}
             >
               <option value="all">{copy.all}</option>
               <option value="generate">{copy.generate}</option>
               <option value="edit">{copy.edit}</option>
-            </select>
+            </SiteSelect>
           </label>
         )}
         <label className="banana-workflow-select">
           {copy.sort}
-          <select
+          <SiteSelect
             value={sort}
             onChange={(event) => setSort(event.target.value)}
           >
             <option value="featured">{copy.featured}</option>
             <option value="name">{copy.name_sort}</option>
-          </select>
+          </SiteSelect>
         </label>
       </div>
       <div className="banana-workflow-categories" aria-label={copy.categories}>

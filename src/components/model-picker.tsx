@@ -72,7 +72,11 @@ export function ModelPicker({
       const rect = triggerRef.current?.getBoundingClientRect();
       if (!rect) return;
       const margin = 16;
-      const width = Math.min(620, window.innerWidth - margin * 2);
+      const width = Math.min(
+        480,
+        Math.max(rect.width, 360),
+        window.innerWidth - margin * 2
+      );
       const below = window.innerHeight - rect.bottom - margin - 8;
       const above = rect.top - margin - 8;
       const useAbove = below < 240 && above > below;
@@ -147,7 +151,7 @@ export function ModelPicker({
   };
 
   return (
-    <div ref={rootRef} className={cn('relative', className)}>
+    <div ref={rootRef} className={cn('site-model-picker relative', className)}>
       <button
         ref={triggerRef}
         type="button"
@@ -199,9 +203,9 @@ export function ModelPicker({
           role="dialog"
           aria-label={ariaLabel}
           style={position}
-          className="border-border bg-popover text-popover-foreground fixed z-[80] flex flex-col overflow-hidden rounded-3xl border p-3 shadow-2xl"
+          className="site-model-panel border-border bg-popover text-popover-foreground fixed z-[80] flex flex-col overflow-hidden rounded-3xl border p-3 shadow-2xl"
         >
-          <div className="border-border bg-background mb-3 flex shrink-0 items-center gap-2 rounded-xl border px-3">
+          <div className="site-model-search border-border bg-background mb-3 flex shrink-0 items-center gap-2 rounded-xl border px-3">
             <Search
               className="text-muted-foreground size-4 shrink-0"
               aria-hidden="true"
@@ -248,7 +252,7 @@ export function ModelPicker({
                   onMouseDown={(event) => event.preventDefault()}
                   onClick={() => choose(index)}
                   className={cn(
-                    'flex min-h-24 w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors',
+                    'site-model-item flex min-h-24 w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors',
                     isSelected
                       ? 'border-primary/60 bg-primary/10'
                       : 'border-border bg-background hover:bg-accent/70',

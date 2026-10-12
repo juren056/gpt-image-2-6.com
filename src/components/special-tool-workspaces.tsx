@@ -38,6 +38,7 @@ import {
   ImageUploader,
   type ImageUploaderValue,
 } from '@/components/image-uploader';
+import { SiteSelect } from '@/components/site-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -558,7 +559,7 @@ export function VideoGeneratorWorkspace({
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="video-camera">{copy.cameraLabel}</Label>
-              <select
+              <SiteSelect
                 id="video-camera"
                 value={camera}
                 onChange={(event) => setCamera(event.target.value)}
@@ -570,11 +571,11 @@ export function VideoGeneratorWorkspace({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </div>
             <div>
               <Label htmlFor="video-rhythm">{copy.rhythmLabel}</Label>
-              <select
+              <SiteSelect
                 id="video-rhythm"
                 value={rhythm}
                 onChange={(event) => setRhythm(event.target.value)}
@@ -586,7 +587,7 @@ export function VideoGeneratorWorkspace({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SiteSelect>
             </div>
           </div>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">

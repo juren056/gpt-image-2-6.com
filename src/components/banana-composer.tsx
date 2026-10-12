@@ -21,6 +21,7 @@ import { z } from 'zod';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { CREATIVE_MODELS } from '@/config/creative-studio';
 import type { NanoRecipe } from '@/components/banana-generator';
+import { SiteSelect } from '@/components/site-select';
 
 const recipeIcons = {
   product: Package,
@@ -101,7 +102,7 @@ export function BananaComposer({
             {(field) => (
               <div className="banana-composer__model">
                 <Sparkles size={16} aria-hidden="true" />
-                <select
+                <SiteSelect
                   aria-label={copy.model}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -111,7 +112,7 @@ export function BananaComposer({
                       {model.label}
                     </option>
                   ))}
-                </select>
+                </SiteSelect>
                 <ChevronDown size={14} aria-hidden="true" />
               </div>
             )}
