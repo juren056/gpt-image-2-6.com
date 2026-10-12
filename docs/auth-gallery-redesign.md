@@ -53,8 +53,10 @@ The final original-art version passed 35 browser scenarios plus 14 additional
 checks: both routes, English/Chinese, both themes, four viewport widths, form
 validation, password visibility, OTP navigation, invitation restrictions,
 required captcha, keyboard focus and repeated config-before-hydration races.
-Mobile requests only the 640px main artwork (31,816 bytes); both hidden auxiliary
-images are deferred. Desktop displays all three distinct application scenarios.
+Mobile requests only one main artwork; both hidden auxiliary images are deferred.
+The 640px variant is 31,816 bytes. Higher-density screens can select the 1280px
+variant (74,244 bytes), so 31KB is not a universal mobile transfer-size claim.
+Desktop displays all three distinct application scenarios.
 TypeScript, all 18 translation files, `pnpm build`, `pnpm cf:build`, security scan
 and both source/built homepage guards passed.
 
@@ -78,3 +80,53 @@ third-party identity scripts remain outside this auth layout change. The auth
 pages intentionally retain their existing indexing policy. Network lab scores
 vary and are not field Core Web Vitals. Raw reports are retained in
 `.artifacts/auth-gallery/lighthouse-original-art.json`.
+
+## Follow-up completion review
+
+The owner's completion review on 2026-10-12 identified three refinements: preserve
+the poster's 16:9 composition on mobile, move its desktop scenario caption above
+the overlapping cards, and replace endless loading after a failed public-config
+request with a translated error and retry action. Both auth routes use the same
+props-only feedback component. Retrying presents an accessible loading state,
+prevents repeated actions and keeps auth forms unavailable until the configuration succeeds; raw backend error
+details are never shown. The hydration boundary and all authentication checks
+remain in place. No provider, credit, payment or database settings were changed.
+
+The review also found that the existing invitation eligibility description was
+still English in 15 locales. Those translations now retain the same eligibility
+condition: registration and completion of the invited friend's first paid
+purchase. Mobile captions use the quiet lower corner of the full poster rather
+than covering its headline. German `Name` and Vietnamese `Email` are legitimate
+local labels, not untranslated sentences.
+
+The final follow-up artifact passed 79 browser checks: the original 35-case
+matrix, 14 hydration/keyboard/captcha checks, 26 extended layouts (six locales,
+320/1024px and 390px at 3x device pixel ratio), and four public-config outage /
+retry recovery checks. Node and Cloudflare production builds passed, along with
+TypeScript, all 18 message catalogs and the security review. Release
+`f950eab567d1` was verified against all 4,928 built public files, including 1,530
+HTML pages, and the protected homepage guard passed. An earlier incomplete
+copy was rejected before deployment; only the fully verified copy is released.
+
+Follow-up production Worker version:
+`c27126fc-8535-4570-b6e9-7db6e99592c5`. Its domain and D1/R2 identities match the
+approved Nano Banana deployment. The seven homepage images and all four auth
+assets again passed production SHA-256 checks.
+
+All 47 production browser checks passed: 17 live configuration / Google
+authorization-destination cases, 26 extended layout checks and four intercepted
+configuration outage / retry cases against the deployed JavaScript. The latter
+use browser-local interception and do not interrupt the real config endpoint or
+change accounts. Real account login and paid operations were not performed in
+this UI review.
+
+The follow-up Lighthouse measurements remain variable: the run alongside
+functional checks reported performance 80 / LCP 3.4s, while the isolated rerun
+reported performance 56 / simulated LCP 11.6s, CLS 0.004 and TBT 30ms.
+Accessibility remained 100 and best practices 96. These are lab measurements,
+not field Core Web Vitals, and do not establish that the shared-script loading
+bottleneck is solved. The installed Paraglide compiler explicitly warns that its
+experimental middleware locale-splitting flag is unsuitable for production
+client-side routing; it was not enabled to improve a benchmark at the cost of
+breaking client-only forms and navigation. The final isolated report is
+`.artifacts/auth-gallery/lighthouse-review-isolated.json`.

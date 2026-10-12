@@ -2060,7 +2060,7 @@
   "prompts.copy": "Copy prompt",
   "prompts.copied": "Copied",
   "prompts.use": "Use this prompt",
-  "common.sign.invite_purchase_description": "Both accounts earn credits after the invited friend registers and completes the first paid purchase.",
+  "common.sign.invite_purchase_description": "Les deux comptes reçoivent des crédits lorsque l’ami invité s’inscrit et effectue son premier achat payant.",
   "growth.rewards.invite_purchase_description": "Share your personal invitation. Both accounts receive bonus credits after the new creator completes the first paid purchase.",
   "growth.rewards.referral_pending": "Referral saved. Both accounts receive {credits} credits after the first paid purchase.",
   "settings.overview.invite_purchase_description": "Share your invitation. Both accounts unlock creation credits after the friend completes the first paid purchase.",

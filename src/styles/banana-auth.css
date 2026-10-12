@@ -188,6 +188,10 @@
   font-weight: 600;
   line-height: 1.3;
 }
+.auth-art-poster figcaption {
+  top: 10px;
+  bottom: auto;
+}
 .auth-art-corner {
   position: absolute;
   width: 42px;
@@ -433,17 +437,22 @@
     max-width: 500px;
   }
   .auth-gallery-art {
-    height: 120px;
+    height: auto;
+    aspect-ratio: 16/9;
     max-width: 520px;
     margin-top: 20px;
   }
   .auth-art-poster {
     inset: 0;
     width: 100%;
-    height: 120px;
+    height: 100%;
     aspect-ratio: auto;
     transform: none;
     --art-turn: 0deg;
+  }
+  .auth-art-poster figcaption {
+    top: auto;
+    bottom: 10px;
   }
   .auth-art-space,
   .auth-art-social,

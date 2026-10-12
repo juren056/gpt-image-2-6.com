@@ -26,6 +26,7 @@ import { m } from '@/paraglide/messages.js';
 import { localizeHref } from '@/paraglide/runtime.js';
 import { usePublicConfig } from '@/hooks/use-public-config';
 import { AuthMarketingShell } from '@/blocks/auth-marketing-shell';
+import { AuthConfigFeedback } from '@/components/auth-config-feedback';
 import { AuthPasswordInput } from '@/components/auth-password-field';
 import { TextField } from '@/components/form-field';
 import { GoogleIcon } from '@/components/google-icon';
@@ -308,9 +309,14 @@ function SignInPage() {
         </div>
         <div>
           {!configsLoaded ? (
-            <div className="flex min-h-32 items-center justify-center">
-              <Loader2 className="text-muted-foreground size-5 animate-spin" />
-            </div>
+            <AuthConfigFeedback
+              failed={hydrated && configQuery.isError}
+              pending={configQuery.isFetching}
+              message={m['common.error.message']()}
+              retryLabel={m['common.error.retry']()}
+              loadingLabel={m['settings.profile.loading']()}
+              onRetry={() => void configQuery.refetch()}
+            />
           ) : !hasAnyMethod ? (
             <div className="rounded-lg border border-dashed p-6 text-center">
               <p className="text-sm font-medium">
