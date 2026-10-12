@@ -306,69 +306,135 @@
   color: #171717;
   transform: translate(2px, -2px);
 }
+/* Original photographic examples; artwork remains fully visible at every width. */
 .banana-capability-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 22px;
   list-style: none;
-  margin-top: 36px;
+  padding: 0;
+  margin: 36px 0 0;
 }
 .banana-capability-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 120px;
-  align-items: center;
-  gap: 26px;
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--card);
-  padding: 28px;
-  min-width: 0;
   transition:
     border-color 220ms ease,
     transform 220ms ease;
 }
-.banana-capability-icon {
+.banana-capability-article {
+  height: 100%;
   display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgb(250 204 21 / 35%);
-  border-radius: 11px;
-  background: rgb(250 204 21 / 8%);
-  color: var(--foreground);
-  margin-bottom: 20px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
 }
-.banana-capability-icon svg {
-  width: 20px;
-  height: 20px;
+.banana-capability-content {
+  padding: 28px 22px;
+  min-width: 0;
 }
 .banana-capability-card h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 .banana-capability-card p {
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--muted-foreground);
 }
-.banana-capability-sketch {
-  width: 120px;
+.banana-capability-artwork {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  background: #0e0e0e;
+}
+.banana-capability-artwork img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  transition: transform 350ms ease;
+}
+.banana-capability-example-label {
+  position: static;
+  padding: 8px 12px;
+  background: #0e0e0e;
+  color: #f5f5f2;
+  font-size: 11px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+.banana-capability-pair-labels {
+  position: absolute;
+  bottom: 45px;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  pointer-events: none;
+}
+.banana-capability-pair-labels span {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: rgb(10 10 10 / 88%);
+  color: #fff;
+  font-size: 12px;
+}
+.banana-capability-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
   max-width: 100%;
+  padding: 9px 12px;
+  margin-top: 22px;
+  border: 1px solid #facc15;
+  border-radius: 7px;
+  background: #facc15;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: start;
+  cursor: pointer;
+}
+.banana-capability-action svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.banana-capability-action:focus-visible {
+  outline: 2px solid #facc15;
+  outline-offset: 4px;
+}
+.banana-capability-card:focus-within {
+  border-color: #facc15;
+}
+.banana-capability-caption {
+  margin-top: 18px;
   color: var(--muted-foreground);
-  stroke: currentColor;
-  stroke-width: 1.3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 250ms ease;
+  font-size: 12px;
+  line-height: 1.7;
 }
-.banana-sketch-accent {
-  color: #c9a508;
-  stroke: currentColor;
-}
-.dark .banana-sketch-accent {
-  color: #facc15;
+@media (max-width: 1199px) {
+  .banana-capability-article {
+    grid-template-columns: 1fr;
+  }
+  .banana-capability-artwork {
+    grid-row: 1;
+  }
 }
 .banana-model-table-wrap:focus-visible,
 .banana-model-pick:focus-visible,
@@ -385,17 +451,8 @@
     border-color: #b99a11;
     transform: translateY(-3px);
   }
-  .banana-capability-card-0:hover .banana-capability-sketch {
-    transform: translateX(3px);
-  }
-  .banana-capability-card-1:hover .banana-capability-sketch {
-    transform: rotate(-3deg);
-  }
-  .banana-capability-card-2:hover .banana-capability-sketch {
-    transform: translateY(-3px);
-  }
-  .banana-capability-card-3:hover .banana-capability-sketch {
-    transform: scale(1.035);
+  .banana-capability-card:hover .banana-capability-artwork img {
+    transform: scale(1.025);
   }
 }
 @keyframes banana-card-entry {
@@ -410,24 +467,16 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .banana-card-reveal[data-revealed='true']
-    :is(
-      .banana-step-card,
-      .banana-capability-card,
-      .banana-model-table-wrap,
-      .banana-comparison-link
-    ) {
+    :is(.banana-step-card, .banana-model-table-wrap, .banana-comparison-link) {
     animation: banana-card-entry 360ms ease both;
   }
-  .banana-card-reveal[data-revealed='true']
-    :is(.banana-step-card, .banana-capability-card):nth-child(2) {
+  .banana-card-reveal[data-revealed='true'] .banana-step-card:nth-child(2) {
     animation-delay: 50ms;
   }
-  .banana-card-reveal[data-revealed='true']
-    :is(.banana-step-card, .banana-capability-card):nth-child(3) {
+  .banana-card-reveal[data-revealed='true'] .banana-step-card:nth-child(3) {
     animation-delay: 100ms;
   }
-  .banana-card-reveal[data-revealed='true']
-    :is(.banana-step-card, .banana-capability-card):nth-child(4) {
+  .banana-card-reveal[data-revealed='true'] .banana-step-card:nth-child(4) {
     animation-delay: 150ms;
   }
 }
@@ -440,7 +489,7 @@
   }
   .banana-step-card:hover,
   .banana-capability-card:hover,
-  .banana-capability-card:hover .banana-capability-sketch {
+  .banana-capability-card:hover .banana-capability-artwork img {
     transform: none;
   }
 }
@@ -496,11 +545,16 @@
   .banana-comparison-arrow {
     display: none;
   }
-  .banana-capability-card {
-    grid-template-columns: minmax(0, 1fr) 88px;
-    gap: 16px;
+  .banana-capability-article {
+    grid-template-columns: 1fr;
+  }
+  .banana-capability-artwork {
+    grid-row: 1;
+  }
+  .banana-capability-content {
     padding: 24px;
   }
+
   .banana-faq-grid {
     grid-template-columns: 280px minmax(0, 1fr);
     gap: 40px;
@@ -545,10 +599,13 @@
     gap: 14px;
     margin-top: 32px;
   }
-  .banana-capability-card {
-    grid-template-columns: minmax(0, 1fr) 88px;
+  .banana-capability-content {
     padding: 22px;
   }
+  .banana-capability-card h3 {
+    font-size: 21px;
+  }
+
   .banana-faq-grid {
     grid-template-columns: 1fr;
     gap: 40px;

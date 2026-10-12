@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "Sosyal içerikler",
   "common.sign.gallery_brand_alt": "MAKE SOME NOISE yazılı özgün siyah ve sarı kulaklık kampanyası.",
   "common.sign.gallery_space_alt": "Sarı dinlenme koltuğu ve kemerli pencere içeren özgün mimari görselleştirme.",
-  "common.sign.gallery_social_alt": "Kaykay yanında sarı ceketli bir erkeği gösteren özgün sosyal medya kampanyası."
+  "common.sign.gallery_social_alt": "Kaykay yanında sarı ceketli bir erkeği gösteren özgün sosyal medya kampanyası.",
+  "banana.capabilities.0.alt": "Stüdyo fotoğrafında koyu kaidelerin üzerinde havada duran sarı koşu ayakkabısı",
+  "banana.capabilities.1.alt": "Düz arka planda ve altın satenli sahnede aynı fildişi serum şişesi",
+  "banana.capabilities.2.alt": "Stüdyoda, şehir sokağında ve kitapçıda aynı yetişkin erkek fotoğrafçı",
+  "banana.capabilities.3.alt": "FRESH IDEAS, CREATIVE NIGHT ve 24 OCTOBER yazılı siyah sarı afiş",
+  "banana.capabilities.before": "Önce",
+  "banana.capabilities.after": "Sonra"
 }

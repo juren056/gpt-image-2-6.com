@@ -53,7 +53,7 @@ if (process.argv.includes('--built')) {
     assert(html.includes(baseline.copy.en['banana.cases.1.alt']), 'Built homepage contains the old character description');
   }
   if (baseline.cardPolish) {
-    for (const className of ['banana-steps-section', 'banana-step-topline', 'banana-model-topline', 'banana-comparison-visual', 'banana-capability-grid', 'banana-capability-sketch']) {
+    for (const className of ['banana-steps-section', 'banana-step-topline', 'banana-model-topline', 'banana-comparison-visual', 'banana-capability-grid', 'banana-capability-artwork']) {
       assert(html.includes(className), `Built homepage lost the reviewed card design: ${className}`);
     }
     assert.equal((html.match(/class="banana-step-card"/g) || []).length, 4, 'Built homepage lost the four-step sequence');
@@ -62,6 +62,18 @@ if (process.argv.includes('--built')) {
     const stylesheets = (await Promise.all(stylesheetPaths.map(value => readFile(path.join(publicDir, value.split('?')[0]), 'utf8')))).join('').replace(/\s/g, '');
     assert(stylesheets.includes('prefers-reduced-motion:reduce'), 'Built homepage lost reduced-motion support');
     assert(stylesheets.includes('banana-card-entry'), 'Built homepage lost reviewed card entry motion');
+  }
+  if (baseline.capabilityGallery) {
+    assert(!html.includes('banana-capability-sketch'), 'Rejected capability line art returned');
+    assert.equal((html.match(/class="banana-capability-action"/g) || []).length, 4, 'Capability example actions are missing');
+    for (const file of baseline.capabilityGallery.assets) {
+      const assetPath = file.replace(/^public\//, '/');
+      const builtHash = createHash('sha256').update(await readFile(path.join(publicDir, assetPath))).digest('hex');
+      assert.equal(builtHash, baseline.files[file], `Capability artwork differs from the reviewed source: ${file}`);
+      if (!file.includes('-source-')) assert(html.includes(assetPath), `Capability artwork missing from homepage: ${file}`);
+    }
+    assert(html.includes(baseline.copy.en['banana.capabilities.before']), 'Capability source label missing');
+    assert(html.includes(baseline.copy.en['banana.capabilities.after']), 'Capability result label missing');
   }
 }
 console.log('Approved homepage source, copy and image baseline verified.');

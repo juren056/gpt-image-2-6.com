@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "Контент для соцсетей",
   "common.sign.gallery_brand_alt": "Оригинальная чёрно-жёлтая реклама наушников с надписью MAKE SOME NOISE.",
   "common.sign.gallery_space_alt": "Оригинальная архитектурная визуализация с жёлтым креслом и арочным окном.",
-  "common.sign.gallery_social_alt": "Оригинальная кампания для соцсетей с мужчиной в жёлтой куртке рядом со скейтбордом."
+  "common.sign.gallery_social_alt": "Оригинальная кампания для соцсетей с мужчиной в жёлтой куртке рядом со скейтбордом.",
+  "banana.capabilities.0.alt": "Жёлтый кроссовок парит над тёмными подиумами на студийном снимке",
+  "banana.capabilities.1.alt": "Один и тот же флакон сыворотки цвета слоновой кости на простом фоне и среди золотого атласа",
+  "banana.capabilities.2.alt": "Один и тот же взрослый фотограф в студии, на улице и в книжном магазине",
+  "banana.capabilities.3.alt": "Чёрно-жёлтый плакат с надписями FRESH IDEAS, CREATIVE NIGHT и 24 OCTOBER",
+  "banana.capabilities.before": "До",
+  "banana.capabilities.after": "После"
 }

@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "Contenido social",
   "common.sign.gallery_brand_alt": "Campaña original de auriculares negros y amarillos con el texto MAKE SOME NOISE.",
   "common.sign.gallery_space_alt": "Visualización arquitectónica original con un sillón amarillo y una ventana arqueada.",
-  "common.sign.gallery_social_alt": "Campaña social original con un hombre de chaqueta amarilla junto a un monopatín."
+  "common.sign.gallery_social_alt": "Campaña social original con un hombre de chaqueta amarilla junto a un monopatín.",
+  "banana.capabilities.0.alt": "Zapatilla amarilla suspendida sobre pedestales oscuros en una foto publicitaria",
+  "banana.capabilities.1.alt": "El mismo frasco de sérum marfil con fondo liso y en una escena de satén dorado",
+  "banana.capabilities.2.alt": "El mismo fotógrafo adulto en un estudio, una calle y una librería",
+  "banana.capabilities.3.alt": "Cartel negro y amarillo con FRESH IDEAS, CREATIVE NIGHT y 24 OCTOBER",
+  "banana.capabilities.before": "Antes",
+  "banana.capabilities.after": "Después"
 }

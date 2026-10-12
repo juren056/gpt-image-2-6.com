@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "Treści społecznościowe",
   "common.sign.gallery_brand_alt": "Oryginalna czarno-żółta kampania słuchawek z napisem MAKE SOME NOISE.",
   "common.sign.gallery_space_alt": "Oryginalna wizualizacja architektoniczna z żółtym fotelem i łukowym oknem.",
-  "common.sign.gallery_social_alt": "Oryginalna kampania społecznościowa z mężczyzną w żółtej kurtce obok deskorolki."
+  "common.sign.gallery_social_alt": "Oryginalna kampania społecznościowa z mężczyzną w żółtej kurtce obok deskorolki.",
+  "banana.capabilities.0.alt": "Żółty but do biegania unoszący się nad ciemnymi podestami w studiu",
+  "banana.capabilities.1.alt": "Ta sama butelka serum w kolorze kości słoniowej na prostym tle i przy złotej satynie",
+  "banana.capabilities.2.alt": "Ten sam dorosły fotograf w studiu, na ulicy i w księgarni",
+  "banana.capabilities.3.alt": "Czarno-żółty plakat z napisami FRESH IDEAS, CREATIVE NIGHT i 24 OCTOBER",
+  "banana.capabilities.before": "Przed",
+  "banana.capabilities.after": "Po"
 }

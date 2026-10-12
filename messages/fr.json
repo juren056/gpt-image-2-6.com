@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "Contenus sociaux",
   "common.sign.gallery_brand_alt": "Campagne originale de casque noir et jaune avec le texte MAKE SOME NOISE.",
   "common.sign.gallery_space_alt": "Visualisation architecturale originale avec un fauteuil jaune et une fenêtre en arche.",
-  "common.sign.gallery_social_alt": "Campagne sociale originale avec un homme en veste jaune près d’un skateboard."
+  "common.sign.gallery_social_alt": "Campagne sociale originale avec un homme en veste jaune près d’un skateboard.",
+  "banana.capabilities.0.alt": "Chaussure de course jaune flottant au-dessus de socles sombres en studio",
+  "banana.capabilities.1.alt": "Le même flacon de sérum ivoire sur fond uni puis dans un décor de satin doré",
+  "banana.capabilities.2.alt": "Le même photographe adulte en studio, dans la rue et dans une librairie",
+  "banana.capabilities.3.alt": "Affiche noire et jaune avec FRESH IDEAS, CREATIVE NIGHT et 24 OCTOBER",
+  "banana.capabilities.before": "Avant",
+  "banana.capabilities.after": "Après"
 }

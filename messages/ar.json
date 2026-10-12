@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "محتوى اجتماعي",
   "common.sign.gallery_brand_alt": "إعلان أصلي لسماعات باللونين الأسود والأصفر مع عبارة MAKE SOME NOISE.",
   "common.sign.gallery_space_alt": "تصور معماري أصلي مع كرسي استرخاء أصفر ونافذة مقوسة.",
-  "common.sign.gallery_social_alt": "حملة اجتماعية أصلية لرجل يرتدي سترة صفراء بجوار لوح تزلج."
+  "common.sign.gallery_social_alt": "حملة اجتماعية أصلية لرجل يرتدي سترة صفراء بجوار لوح تزلج.",
+  "banana.capabilities.0.alt": "حذاء رياضي أصفر يطفو فوق قواعد داكنة في صورة إعلانية",
+  "banana.capabilities.1.alt": "عبوة مصل عاجية بخلفية بسيطة وبمشهد من الساتان الذهبي",
+  "banana.capabilities.2.alt": "المصور البالغ نفسه في الاستوديو والشارع ومتجر الكتب",
+  "banana.capabilities.3.alt": "ملصق أسود وأصفر بكلمات FRESH IDEAS وCREATIVE NIGHT و24 OCTOBER",
+  "banana.capabilities.before": "قبل",
+  "banana.capabilities.after": "بعد"
 }

@@ -2,12 +2,12 @@
   "description": "Owner explicitly authorized original homepage images and generator redesign on 2026-10-11. Fourteen AI candidates reviewed; seven selected. Existing black/yellow composition, system font, hero, model table, and repaired business functions preserved. CUA visual review at 390/768/1440px and both themes; see docs/homepage-refresh.md. Update only after explicit owner request and visual review. Owner authorized generator option repair on 2026-10-11. Inline searchable models, 15 shape choices and explicit 1K/2K/4K controls visually reviewed with CUA; local click, keyboard, persistence, both themes and 390/768/1440px checks passed. See docs/generator-options-repair.md. All other protected source, copy and photographs verified unchanged. Owner authorized generator option repair on 2026-10-11. Inline searchable models, 15 shape choices and explicit 1K/2K/4K controls visually reviewed with CUA; local click, keyboard, persistence, both themes and 390/768/1440px checks passed. See docs/generator-options-repair.md. All other protected source, copy and photographs verified unchanged. Owner authorized replacing only the four-scene character on 2026-10-11. New generated photograph, matching alt text/reference prompt and asset-specific cache revision visually reviewed; other protected files/copy/images unchanged. Owner authorized card layout and motion changes on 2026-10-11. Three target sections visually reviewed with CUA; protected files, all copy, photographs and non-target component functions verified unchanged. See docs/homepage-card-polish.md.",
   "files": {
     "src/routes/index.tsx": "54472b3413f999459cff4a25775614141d552654dd3a0359462e20947ff486fd",
-    "src/blocks/banana-home.tsx": "eb0d994269dae2465bd2d7353784f43baf0657ebaac78870eac55374c013c452",
+    "src/blocks/banana-home.tsx": "4286772ea5239674fc680ec3427d833efa10078b2e4b6547109e609b3001af27",
     "src/blocks/banana-features.tsx": "612dedf12896698ca8050c2e0aa2f4712f5d5d863519bc57dbb6dea0a6472329",
-    "src/components/banana-home-content.tsx": "44b36b81fca9abcf91740de48b0d7543afb7413bece3d6c53c8ff9b5abbf9b2d",
+    "src/components/banana-home-content.tsx": "6c1db2e5e32dca6050391f1cdd87671352d9b6c47389be2ae2effc062a137cac",
     "src/components/banana-features.tsx": "56be9ef7e5c9303ffa436c8d694141e971fbfd13821020628ca7f07d0e75206b",
     "src/styles/banana-features.css": "590daf92aadd2b895491535c9e8d9d20affdbdc2295512b2f70f4689be725987",
-    "src/styles/banana-home-content.css": "ab09b2d7dff6b6ba74170be0bb941d0022e8b894b754f7c6972f4180f17e7c26",
+    "src/styles/banana-home-content.css": "7be3e676620013d16e25cbe41704fb43fff057147614904ca87eb080da47e606",
     "src/styles/banana-replica.css": "f8cb725a2ef5ada28db484da6903771919850bf781be693faa072e80f3a0cfd3",
     "public/images/banana21/feature-text.webp": "3ff2eb5fee292849e20401952da20988cfd1542973801e733a815ff37d96877a",
     "public/images/banana21/feature-ratios.webp": "86000a97ee8056229b2a74a785acd61e97c7698f2a5d51924ff1f16d28fdd62e",
@@ -25,12 +25,19 @@
     "src/routes/__root.tsx": "6e94ee4d3bad2295443c25cd78beb3bb9f4a05e4400c69af5b84f84d44a165ce",
     "src/config/homepage-examples.ts": "77acca433a8e50329eea8c2a40163caa05b4d224bcdaa389762261ab39aaf1bc",
     "src/lib/banana-generator-navigation.ts": "faf2d0b5ca630949fe190d7ec2c74de06dda6b6313325e5c8ac3600e962dda8e",
-    "scripts/verify-homepage-baseline.mjs": "8391b657cff1a749f389b238a5ab72e5dac136c635b6e891ed89f808ab912c8e",
+    "scripts/verify-homepage-baseline.mjs": "9ea4bcc3d80d027701704db9e2704c90fe37c409a9ee575f9c9eb31a6ab3cfb3",
     "src/config/creative-studio.ts": "65e4fdf8847c836a8f2ce4edbaf5fcf0944d32a0e668c56a473369c73618837c",
     "src/lib/creative-image-options.ts": "6b7ca5976b7907e45a864f77bab1817eb01d8e935b9e7a24193e1746c0903145",
     "src/lib/banana-task-resume.ts": "361898b74e8f8de728cc20d5109b570a8a6f18d465a06d5c7a8aba3f0767c5d0",
     "src/modules/images/service.ts": "43912a0d50a9306ac659183d0d751378fc2f3b6894eaef1fdb32e05c59df5d23",
-    "src/routes/api/studio/run.ts": "700e09d41eb94cab96a47b2372fb3c18f8f06c47dff235a28aee3949a8109e3d"
+    "src/routes/api/studio/run.ts": "700e09d41eb94cab96a47b2372fb3c18f8f06c47dff235a28aee3949a8109e3d",
+    "src/config/capability-examples.ts": "5ca4d55ddab031d9d94626cbeaff24391fd0c26dcd5c2abb8fa81e8add07b139",
+    "public/images/capabilities/shoe-20261012.webp": "640bedf470e88bfc261b9f6f2062296f32cda886b3f46b7207a1760d5ef8612b",
+    "public/images/capabilities/serum-pair-20261012.webp": "d57e386fdf2721ed70418d3010170092402c581d2fcd1da28d79bac29ee4f03b",
+    "public/images/capabilities/serum-source-20261012.webp": "0400936c32c6fcad594a4fc66297453d7cce4dfac3b15726ea71c83a87ced8f1",
+    "public/images/capabilities/photographer-scenes-20261012.webp": "897f68e5513f74108c52b7af76e7fbf7ae43906e5a294136022bfd0c9828a122",
+    "public/images/capabilities/photographer-source-20261012.webp": "fda6ba57c6d3c9dd0e48de4850daed99216b9b280b50b87611594cf3be8ed2ee",
+    "public/images/capabilities/fresh-ideas-20261012.webp": "acfe843022b43ea2943e8766a7b7269d7c33fd654319975830f88cd68f960083"
   },
   "copy": {
     "en": {
@@ -121,7 +128,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Yellow running shoe floating above charcoal pedestals in a studio campaign photograph",
+      "banana.capabilities.1.alt": "Ivory serum bottle on a plain backdrop and the same product in a golden satin scene",
+      "banana.capabilities.2.alt": "The same adult male photographer in a studio, on a city street and in a bookshop",
+      "banana.capabilities.3.alt": "Black and yellow FRESH IDEAS poster with CREATIVE NIGHT and 24 OCTOBER lettering",
+      "banana.capabilities.before": "Before",
+      "banana.capabilities.after": "After"
     },
     "zh": {
       "banana.hero.badge": "Nano Banana 2.1 · 同一个工作空间里的 2、Pro 和 Lite",
@@ -211,7 +224,13 @@
       "banana.more_ratios": "全部比例",
       "banana.fewer_ratios": "收起更多比例",
       "banana.resolution_hint": "此处为每张图片的积分，总额会随出图数量更新。",
-      "banana.resolution_fixed": "此模型采用默认输出分辨率。"
+      "banana.resolution_fixed": "此模型采用默认输出分辨率。",
+      "banana.capabilities.0.alt": "黄色运动鞋悬浮于深色台座上方的原创商业摄影示例",
+      "banana.capabilities.1.alt": "同一支乳白色精华瓶，分别展示纯色背景和金黄色缎布场景",
+      "banana.capabilities.2.alt": "同一位成年男摄影师在摄影棚、城市街道和书店的三场景分镜",
+      "banana.capabilities.3.alt": "黑黄配色活动海报，展示 FRESH IDEAS、CREATIVE NIGHT 和 24 OCTOBER 文字",
+      "banana.capabilities.before": "修改前",
+      "banana.capabilities.after": "修改后"
     },
     "ru": {
       "banana.features.eyebrow": "What it does",
@@ -264,7 +283,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Жёлтый кроссовок парит над тёмными подиумами на студийном снимке",
+      "banana.capabilities.1.alt": "Один и тот же флакон сыворотки цвета слоновой кости на простом фоне и среди золотого атласа",
+      "banana.capabilities.2.alt": "Один и тот же взрослый фотограф в студии, на улице и в книжном магазине",
+      "banana.capabilities.3.alt": "Чёрно-жёлтый плакат с надписями FRESH IDEAS, CREATIVE NIGHT и 24 OCTOBER",
+      "banana.capabilities.before": "До",
+      "banana.capabilities.after": "После"
     },
     "es": {
       "banana.features.eyebrow": "What it does",
@@ -317,7 +342,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Zapatilla amarilla suspendida sobre pedestales oscuros en una foto publicitaria",
+      "banana.capabilities.1.alt": "El mismo frasco de sérum marfil con fondo liso y en una escena de satén dorado",
+      "banana.capabilities.2.alt": "El mismo fotógrafo adulto en un estudio, una calle y una librería",
+      "banana.capabilities.3.alt": "Cartel negro y amarillo con FRESH IDEAS, CREATIVE NIGHT y 24 OCTOBER",
+      "banana.capabilities.before": "Antes",
+      "banana.capabilities.after": "Después"
     },
     "ko": {
       "banana.features.eyebrow": "What it does",
@@ -370,7 +401,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "어두운 받침대 위에 떠 있는 노란 러닝화의 스튜디오 광고 사진",
+      "banana.capabilities.1.alt": "단색 배경과 금빛 새틴 장면에 놓인 동일한 아이보리색 세럼 병",
+      "banana.capabilities.2.alt": "스튜디오, 도시 거리, 서점에 있는 동일한 성인 남성 사진가",
+      "banana.capabilities.3.alt": "FRESH IDEAS, CREATIVE NIGHT, 24 OCTOBER 문구가 있는 검정과 노랑 포스터",
+      "banana.capabilities.before": "수정 전",
+      "banana.capabilities.after": "수정 후"
     },
     "ja": {
       "banana.features.eyebrow": "What it does",
@@ -423,7 +460,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "暗い台座の上に浮かぶ黄色いランニングシューズのスタジオ広告写真",
+      "banana.capabilities.1.alt": "無地の背景と金色のサテンの背景に置かれた同じ乳白色の美容液ボトル",
+      "banana.capabilities.2.alt": "スタジオ、街の通り、書店にいる同じ成人男性の写真家",
+      "banana.capabilities.3.alt": "FRESH IDEAS、CREATIVE NIGHT、24 OCTOBER の文字が入った黒と黄色のポスター",
+      "banana.capabilities.before": "編集前",
+      "banana.capabilities.after": "編集後"
     },
     "de": {
       "banana.features.eyebrow": "What it does",
@@ -476,7 +519,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Gelber Laufschuh über dunklen Podesten in einer Studioaufnahme",
+      "banana.capabilities.1.alt": "Dieselbe elfenbeinfarbene Serumflasche vor neutralem Hintergrund und goldenem Satin",
+      "banana.capabilities.2.alt": "Derselbe erwachsene Fotograf im Studio, auf der Straße und in einer Buchhandlung",
+      "banana.capabilities.3.alt": "Schwarzgelbes Plakat mit FRESH IDEAS, CREATIVE NIGHT und 24 OCTOBER",
+      "banana.capabilities.before": "Vorher",
+      "banana.capabilities.after": "Nachher"
     },
     "fr": {
       "banana.features.eyebrow": "What it does",
@@ -529,7 +578,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Chaussure de course jaune flottant au-dessus de socles sombres en studio",
+      "banana.capabilities.1.alt": "Le même flacon de sérum ivoire sur fond uni puis dans un décor de satin doré",
+      "banana.capabilities.2.alt": "Le même photographe adulte en studio, dans la rue et dans une librairie",
+      "banana.capabilities.3.alt": "Affiche noire et jaune avec FRESH IDEAS, CREATIVE NIGHT et 24 OCTOBER",
+      "banana.capabilities.before": "Avant",
+      "banana.capabilities.after": "Après"
     },
     "ar": {
       "banana.features.eyebrow": "What it does",
@@ -582,7 +637,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "حذاء رياضي أصفر يطفو فوق قواعد داكنة في صورة إعلانية",
+      "banana.capabilities.1.alt": "عبوة مصل عاجية بخلفية بسيطة وبمشهد من الساتان الذهبي",
+      "banana.capabilities.2.alt": "المصور البالغ نفسه في الاستوديو والشارع ومتجر الكتب",
+      "banana.capabilities.3.alt": "ملصق أسود وأصفر بكلمات FRESH IDEAS وCREATIVE NIGHT و24 OCTOBER",
+      "banana.capabilities.before": "قبل",
+      "banana.capabilities.after": "بعد"
     },
     "pt": {
       "banana.features.eyebrow": "What it does",
@@ -635,7 +696,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Tênis de corrida amarelo suspenso sobre pedestais escuros em uma foto de estúdio",
+      "banana.capabilities.1.alt": "O mesmo frasco de sérum marfim com fundo liso e em uma cena de cetim dourado",
+      "banana.capabilities.2.alt": "O mesmo fotógrafo adulto no estúdio, na rua e em uma livraria",
+      "banana.capabilities.3.alt": "Cartaz preto e amarelo com FRESH IDEAS, CREATIVE NIGHT e 24 OCTOBER",
+      "banana.capabilities.before": "Antes",
+      "banana.capabilities.after": "Depois"
     },
     "it": {
       "banana.features.eyebrow": "What it does",
@@ -688,7 +755,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Scarpa da corsa gialla sospesa sopra piedistalli scuri in studio",
+      "banana.capabilities.1.alt": "Lo stesso flacone di siero avorio su sfondo semplice e in una scena di raso dorato",
+      "banana.capabilities.2.alt": "Lo stesso fotografo adulto in studio, in strada e in libreria",
+      "banana.capabilities.3.alt": "Poster nero e giallo con FRESH IDEAS, CREATIVE NIGHT e 24 OCTOBER",
+      "banana.capabilities.before": "Prima",
+      "banana.capabilities.after": "Dopo"
     },
     "zh-TW": {
       "banana.features.eyebrow": "功能亮点",
@@ -741,7 +814,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "黃色運動鞋懸浮於深色台座上方的原創商業攝影範例",
+      "banana.capabilities.1.alt": "同一支乳白色精華瓶，分別展示純色背景與金黃色緞布場景",
+      "banana.capabilities.2.alt": "同一位成年男攝影師在攝影棚、城市街道與書店的三場景分鏡",
+      "banana.capabilities.3.alt": "黑黃配色活動海報，展示 FRESH IDEAS、CREATIVE NIGHT 和 24 OCTOBER 文字",
+      "banana.capabilities.before": "修改前",
+      "banana.capabilities.after": "修改後"
     },
     "tr": {
       "banana.features.eyebrow": "What it does",
@@ -794,7 +873,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Stüdyo fotoğrafında koyu kaidelerin üzerinde havada duran sarı koşu ayakkabısı",
+      "banana.capabilities.1.alt": "Düz arka planda ve altın satenli sahnede aynı fildişi serum şişesi",
+      "banana.capabilities.2.alt": "Stüdyoda, şehir sokağında ve kitapçıda aynı yetişkin erkek fotoğrafçı",
+      "banana.capabilities.3.alt": "FRESH IDEAS, CREATIVE NIGHT ve 24 OCTOBER yazılı siyah sarı afiş",
+      "banana.capabilities.before": "Önce",
+      "banana.capabilities.after": "Sonra"
     },
     "vi": {
       "banana.features.eyebrow": "What it does",
@@ -847,7 +932,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Giày chạy bộ màu vàng lơ lửng trên bục tối trong ảnh quảng cáo studio",
+      "banana.capabilities.1.alt": "Cùng một chai serum màu ngà trên nền đơn giản và trong cảnh vải satin vàng",
+      "banana.capabilities.2.alt": "Cùng một nhiếp ảnh gia nam trưởng thành trong studio, trên phố và trong hiệu sách",
+      "banana.capabilities.3.alt": "Áp phích đen vàng có chữ FRESH IDEAS, CREATIVE NIGHT và 24 OCTOBER",
+      "banana.capabilities.before": "Trước",
+      "banana.capabilities.after": "Sau"
     },
     "nl": {
       "banana.features.eyebrow": "What it does",
@@ -900,7 +991,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Gele hardloopschoen boven donkere sokkels in een studiofoto",
+      "banana.capabilities.1.alt": "Dezelfde ivoorkleurige serumfles op een effen achtergrond en in een gouden satijnen scène",
+      "banana.capabilities.2.alt": "Dezelfde volwassen fotograaf in een studio, op straat en in een boekwinkel",
+      "banana.capabilities.3.alt": "Zwartgele poster met FRESH IDEAS, CREATIVE NIGHT en 24 OCTOBER",
+      "banana.capabilities.before": "Voor",
+      "banana.capabilities.after": "Na"
     },
     "th": {
       "banana.features.eyebrow": "What it does",
@@ -953,7 +1050,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "ภาพโฆษณารองเท้าวิ่งสีเหลืองลอยเหนือแท่นสีเข้มในสตูดิโอ",
+      "banana.capabilities.1.alt": "ขวดเซรั่มสีงาช้างใบเดียวกันบนพื้นหลังเรียบและในฉากผ้าซาตินสีทอง",
+      "banana.capabilities.2.alt": "ช่างภาพชายวัยผู้ใหญ่คนเดียวกันในสตูดิโอ ถนนในเมือง และร้านหนังสือ",
+      "banana.capabilities.3.alt": "โปสเตอร์สีดำและเหลืองพร้อมข้อความ FRESH IDEAS, CREATIVE NIGHT และ 24 OCTOBER",
+      "banana.capabilities.before": "ก่อนแก้ไข",
+      "banana.capabilities.after": "หลังแก้ไข"
     },
     "pl": {
       "banana.features.eyebrow": "What it does",
@@ -1006,7 +1109,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Żółty but do biegania unoszący się nad ciemnymi podestami w studiu",
+      "banana.capabilities.1.alt": "Ta sama butelka serum w kolorze kości słoniowej na prostym tle i przy złotej satynie",
+      "banana.capabilities.2.alt": "Ten sam dorosły fotograf w studiu, na ulicy i w księgarni",
+      "banana.capabilities.3.alt": "Czarno-żółty plakat z napisami FRESH IDEAS, CREATIVE NIGHT i 24 OCTOBER",
+      "banana.capabilities.before": "Przed",
+      "banana.capabilities.after": "Po"
     },
     "hu": {
       "banana.features.eyebrow": "What it does",
@@ -1059,7 +1168,13 @@
       "banana.more_ratios": "All aspect ratios",
       "banana.fewer_ratios": "Show common ratios",
       "banana.resolution_hint": "Credits shown per image. Your total updates with the output count.",
-      "banana.resolution_fixed": "This model uses its default output resolution."
+      "banana.resolution_fixed": "This model uses its default output resolution.",
+      "banana.capabilities.0.alt": "Sárga futócipő sötét emelvények fölött egy stúdiófotón",
+      "banana.capabilities.1.alt": "Ugyanaz az elefántcsontszínű szérumüveg egyszerű háttérrel és arany szatén környezetben",
+      "banana.capabilities.2.alt": "Ugyanaz a felnőtt férfi fotós stúdióban, városi utcán és könyvesboltban",
+      "banana.capabilities.3.alt": "Fekete-sárga plakát FRESH IDEAS, CREATIVE NIGHT és 24 OCTOBER felirattal",
+      "banana.capabilities.before": "Előtte",
+      "banana.capabilities.after": "Utána"
     }
   },
   "generatorReference": true,
@@ -1087,5 +1202,21 @@
     "scope": ["steps", "model-comparison", "capabilities"],
     "entryDurationMs": 360,
     "reducedMotion": true
+  },
+  "notes": "undefined Owner approved the four photographic capability cards on 2026-10-12. All other protected source/copy and eight non-target component functions preserved. Final desktop/mobile CSS visual review and 21 browser cases passed; source labels moved below artwork to avoid obscuring subjects. See docs/capability-gallery-redesign.md.",
+  "capabilityGallery": {
+    "date": "2026-10-12",
+    "assets": [
+      "public/images/capabilities/shoe-20261012.webp",
+      "public/images/capabilities/serum-pair-20261012.webp",
+      "public/images/capabilities/serum-source-20261012.webp",
+      "public/images/capabilities/photographer-scenes-20261012.webp",
+      "public/images/capabilities/photographer-source-20261012.webp",
+      "public/images/capabilities/fresh-ideas-20261012.webp"
+    ],
+    "examples": 4,
+    "sourceOnlyReferences": 2,
+    "lineArt": false,
+    "reference": "docs/capability-gallery-redesign.md"
   }
 }

@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-12",
+  "generator": "Built-in image_gen",
+  "disclosure": "Illustrative examples, not Fal test results or user history",
+  "generated": [
+    {
+      "id": "shoe",
+      "source": "exec-3046a8d4-fa90-44a1-b7ca-b73c21db7045.png",
+      "sourceSha256": "30a467bdae23033a1ece1c0580321226cbdd5ba1203967f9c1c00386fdbf6011",
+      "output": "public/images/capabilities/shoe-20261012.webp",
+      "sha256": "640bedf470e88bfc261b9f6f2062296f32cda886b3f46b7207a1760d5ef8612b"
+    },
+    {
+      "id": "serum",
+      "source": "exec-5bd334af-26fe-4f7f-9f67-79882a17cd0c.png",
+      "sourceSha256": "40a6549c2bdafdcce8b45341fe94c01f50fabd0f02ff9d77d15782a985a5eb5c",
+      "output": "public/images/capabilities/serum-pair-20261012.webp",
+      "sha256": "d57e386fdf2721ed70418d3010170092402c581d2fcd1da28d79bac29ee4f03b"
+    },
+    {
+      "id": "photographer",
+      "source": "exec-99e21748-8539-4c1d-bbd8-f29975be14ac.png",
+      "sourceSha256": "7cbc5c1b6f81145c0712ec8b2b630ec6503f5e7c8aac368c36626cf46e707c88",
+      "output": "public/images/capabilities/photographer-scenes-20261012.webp",
+      "sha256": "897f68e5513f74108c52b7af76e7fbf7ae43906e5a294136022bfd0c9828a122"
+    },
+    {
+      "id": "poster",
+      "source": "exec-8559ee4b-8a66-4649-b771-833cbd1a7c24.png",
+      "sourceSha256": "8db7a59b1df4e905e5ebf5741ea4d159c53a5a127f21990d8cb8960f025c8db4",
+      "output": "public/images/capabilities/fresh-ideas-20261012.webp",
+      "sha256": "acfe843022b43ea2943e8766a7b7269d7c33fd654319975830f88cd68f960083"
+    }
+  ],
+  "assets": [
+    {
+      "file": "public/images/capabilities/shoe-20261012.webp",
+      "width": 960,
+      "height": 640,
+      "bytes": 54676,
+      "sha256": "640bedf470e88bfc261b9f6f2062296f32cda886b3f46b7207a1760d5ef8612b",
+      "derivative": "Full original composition, resized and encoded as WebP"
+    },
+    {
+      "file": "public/images/capabilities/serum-pair-20261012.webp",
+      "width": 960,
+      "height": 640,
+      "bytes": 35490,
+      "sha256": "d57e386fdf2721ed70418d3010170092402c581d2fcd1da28d79bac29ee4f03b",
+      "derivative": "Full original composition, resized and encoded as WebP"
+    },
+    {
+      "file": "public/images/capabilities/serum-source-20261012.webp",
+      "width": 640,
+      "height": 853,
+      "bytes": 9556,
+      "sha256": "0400936c32c6fcad594a4fc66297453d7cce4dfac3b15726ea71c83a87ced8f1",
+      "derivative": "Source-only crop from the corresponding paired/contact-sheet original"
+    },
+    {
+      "file": "public/images/capabilities/photographer-scenes-20261012.webp",
+      "width": 960,
+      "height": 640,
+      "bytes": 83072,
+      "sha256": "897f68e5513f74108c52b7af76e7fbf7ae43906e5a294136022bfd0c9828a122",
+      "derivative": "Full original composition, resized and encoded as WebP"
+    },
+    {
+      "file": "public/images/capabilities/photographer-source-20261012.webp",
+      "width": 640,
+      "height": 1288,
+      "bytes": 78482,
+      "sha256": "fda6ba57c6d3c9dd0e48de4850daed99216b9b280b50b87611594cf3be8ed2ee",
+      "derivative": "Source-only crop from the corresponding paired/contact-sheet original"
+    },
+    {
+      "file": "public/images/capabilities/fresh-ideas-20261012.webp",
+      "width": 960,
+      "height": 640,
+      "bytes": 77786,
+      "sha256": "acfe843022b43ea2943e8766a7b7269d7c33fd654319975830f88cd68f960083",
+      "derivative": "Full original composition, resized and encoded as WebP"
+    }
+  ]
+}

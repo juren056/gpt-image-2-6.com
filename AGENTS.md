@@ -566,3 +566,11 @@ The owner subsequently authorized the card layout and motion changes limited to
 the four-step guidance, model comparison/banner and creative capabilities. Read
 `docs/homepage-card-polish.md` and its updated baseline. Preserve all other
 homepage sections and repaired business functions during future releases.
+
+The owner subsequently approved replacing only the four capability line drawings
+with original photographic showcase cards on 2026-10-12. Read
+`docs/capability-gallery-redesign.md` and the current baseline. Keep the four
+new scenarios, unobstructed artwork and source-only edit references. Do not bring
+back `CapabilitySketch`, recycle earlier homepage/account pictures into these
+cards, or auto-submit a paid request when an example is selected. Preserve all
+other homepage sections and repaired business functions.

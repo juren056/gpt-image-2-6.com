@@ -1,9 +1,14 @@
+import {
+  CAPABILITY_EXAMPLES,
+  capabilityExampleSelection,
+} from '@/config/capability-examples';
 import { CREATIVE_MODELS } from '@/config/creative-studio';
 import {
   HOMEPAGE_EXAMPLES,
   homepageExampleSelection,
   homepageImage,
 } from '@/config/homepage-examples';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { BananaFeatures } from '@/blocks/banana-features';
 import { bananaText } from '@/blocks/banana-messages';
@@ -94,6 +99,12 @@ export function BananaHome({
 }) {
   const locale = getLocale();
   const text = (key: string) => bananaText(key, locale);
+  const capabilityAlts = [
+    m['banana.capabilities.0.alt'](),
+    m['banana.capabilities.1.alt'](),
+    m['banana.capabilities.2.alt'](),
+    m['banana.capabilities.3.alt'](),
+  ];
   const cards = (prefix: string, count: number) =>
     Array.from({ length: count }, (_, index) => ({
       title: text(`${prefix}.${index}.title`),
@@ -214,7 +225,20 @@ export function BananaHome({
           eyebrow={text('capabilities.eyebrow')}
           title={text('capabilities.title')}
           intro={text('capabilities.intro')}
-          items={cards('capabilities', 4)}
+          items={CAPABILITY_EXAMPLES.map((example, index) => ({
+            ...cards('capabilities', 4)[index],
+            id: example.id,
+            image: example.image,
+            alt: capabilityAlts[index],
+            selection: capabilityExampleSelection(example),
+          }))}
+          labels={{
+            useExample: text('use_example'),
+            example: text('example_label'),
+            caption: text('cases.caption'),
+            before: m['banana.capabilities.before'](),
+            after: m['banana.capabilities.after'](),
+          }}
         />
         <BananaUseCases
           eyebrow={text('cases.eyebrow')}

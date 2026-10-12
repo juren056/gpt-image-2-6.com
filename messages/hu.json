@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "Közösségi tartalom",
   "common.sign.gallery_brand_alt": "Eredeti fekete-sárga fejhallgató-kampány MAKE SOME NOISE felirattal.",
   "common.sign.gallery_space_alt": "Eredeti építészeti látványterv sárga pihenőszékkel és boltíves ablakkal.",
-  "common.sign.gallery_social_alt": "Eredeti közösségi kampány sárga kabátos férfival egy gördeszka mellett."
+  "common.sign.gallery_social_alt": "Eredeti közösségi kampány sárga kabátos férfival egy gördeszka mellett.",
+  "banana.capabilities.0.alt": "Sárga futócipő sötét emelvények fölött egy stúdiófotón",
+  "banana.capabilities.1.alt": "Ugyanaz az elefántcsontszínű szérumüveg egyszerű háttérrel és arany szatén környezetben",
+  "banana.capabilities.2.alt": "Ugyanaz a felnőtt férfi fotós stúdióban, városi utcán és könyvesboltban",
+  "banana.capabilities.3.alt": "Fekete-sárga plakát FRESH IDEAS, CREATIVE NIGHT és 24 OCTOBER felirattal",
+  "banana.capabilities.before": "Előtte",
+  "banana.capabilities.after": "Utána"
 }

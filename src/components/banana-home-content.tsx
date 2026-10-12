@@ -58,92 +58,6 @@ function useCardReveal() {
   return { ref, revealed };
 }
 
-function CapabilitySketch({ kind }: { kind: number }) {
-  return (
-    <svg
-      viewBox="0 0 120 100"
-      fill="none"
-      aria-hidden="true"
-      className="banana-capability-sketch"
-    >
-      {kind === 0 && (
-        <>
-          <rect x="10" y="14" width="100" height="72" rx="9" />
-          <text
-            x="23"
-            y="54"
-            stroke="none"
-            fill="currentColor"
-            fontSize="30"
-            fontWeight="600"
-          >
-            Aa
-          </text>
-          <path d="M24 66h55M24 74h32" />
-          <path
-            className="banana-sketch-accent"
-            d="M88 32v24"
-            strokeWidth="3"
-          />
-        </>
-      )}
-      {kind === 1 && (
-        <>
-          <rect x="8" y="18" width="54" height="61" rx="7" />
-          <path d="m17 65 14-19 12 12 9-9" />
-          <circle cx="44" cy="33" r="5" />
-          <rect
-            className="banana-sketch-accent"
-            x="54"
-            y="29"
-            width="58"
-            height="61"
-            rx="7"
-          />
-          <path className="banana-sketch-accent" d="m64 77 14-19 12 12 12-15" />
-          <path d="M81 10v9m-5-4h10" />
-        </>
-      )}
-      {kind === 2 && (
-        <>
-          {[10, 45, 80].map((x) => (
-            <g key={x}>
-              <rect x={x} y="23" width="30" height="57" rx="7" />
-              <circle
-                className="banana-sketch-accent"
-                cx={x + 15}
-                cy="42"
-                r="6"
-              />
-              <path
-                className="banana-sketch-accent"
-                d={`M${x + 6} 68v-7a9 9 0 0 1 18 0v7`}
-              />
-            </g>
-          ))}
-          <path d="M25 13h70" strokeDasharray="2 5" />
-        </>
-      )}
-      {kind === 3 && (
-        <>
-          <rect x="10" y="17" width="100" height="69" rx="9" />
-          <path
-            className="banana-sketch-accent"
-            d="M29 34h-8v11h9v-6h-4m27-5h-8v11h9v-6h-4"
-            strokeWidth="2.5"
-          />
-          <path d="M24 60h70M24 69h48" />
-          <path
-            className="banana-sketch-accent"
-            d="M24 77h70"
-            strokeWidth="3"
-          />
-        </>
-      )}
-    </svg>
-  );
-}
-
 export function BananaHero({
   badge,
   name,
@@ -455,42 +369,75 @@ export function BananaCapabilities({
   title,
   intro,
   items,
+  labels,
 }: {
   eyebrow: string;
   title: string;
   intro: string;
-  items: BananaCard[];
+  items: Array<
+    BananaCard & {
+      id: string;
+      image: string;
+      alt: string;
+      selection: BananaGeneratorSelection;
+    }
+  >;
+  labels: {
+    useExample: string;
+    example: string;
+    caption: string;
+    before: string;
+    after: string;
+  };
 }) {
-  const icons = [Type, ImagePlus, Users, Layers];
-  const reveal = useCardReveal();
   return (
     <section className="banana-section banana-section-compact banana-capabilities-section">
-      <div
-        className="banana-container banana-card-reveal"
-        ref={reveal.ref}
-        data-revealed={reveal.revealed}
-      >
+      <div className="banana-container">
         <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
         <ul className="banana-capability-grid">
-          {items.map((item, index) => {
-            const Icon = icons[index];
-            return (
-              <li
-                key={item.title}
-                className={`banana-capability-card banana-capability-card-${index}`}
-              >
+          {items.map((item) => (
+            <li
+              key={item.id}
+              className={`banana-capability-card banana-capability-card-${item.id}`}
+            >
+              <article className="banana-capability-article">
                 <div className="banana-capability-content">
-                  <span className="banana-capability-icon">
-                    <Icon aria-hidden="true" />
-                  </span>
                   <h3>{item.title}</h3>
                   <p>{item.body}</p>
+                  <button
+                    type="button"
+                    className="banana-capability-action"
+                    aria-label={`${labels.useExample}: ${item.title}`}
+                    onClick={() => prepareBananaGenerator(item.selection)}
+                  >
+                    {labels.useExample}
+                    <ArrowUpRight aria-hidden="true" />
+                  </button>
                 </div>
-                <CapabilitySketch kind={index} />
-              </li>
-            );
-          })}
+                <figure className="banana-capability-artwork">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    width={960}
+                    height={640}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption className="banana-capability-example-label">
+                    {labels.example}
+                  </figcaption>
+                  {item.id === 'serum' && (
+                    <div className="banana-capability-pair-labels">
+                      <span>{labels.before}</span>
+                      <span>{labels.after}</span>
+                    </div>
+                  )}
+                </figure>
+              </article>
+            </li>
+          ))}
         </ul>
+        <p className="banana-capability-caption">{labels.caption}</p>
       </div>
     </section>
   );

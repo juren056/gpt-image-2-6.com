@@ -3605,5 +3605,11 @@
   "common.sign.gallery_social_label": "เนื้อหาโซเชียล",
   "common.sign.gallery_brand_alt": "โฆษณาหูฟังต้นฉบับสีดำและเหลืองพร้อมข้อความ MAKE SOME NOISE",
   "common.sign.gallery_space_alt": "ภาพสถาปัตยกรรมต้นฉบับพร้อมเก้าอี้สีเหลืองและหน้าต่างโค้ง",
-  "common.sign.gallery_social_alt": "แคมเปญโซเชียลต้นฉบับที่มีชายสวมแจ็กเก็ตสีเหลืองข้างสเกตบอร์ด"
+  "common.sign.gallery_social_alt": "แคมเปญโซเชียลต้นฉบับที่มีชายสวมแจ็กเก็ตสีเหลืองข้างสเกตบอร์ด",
+  "banana.capabilities.0.alt": "ภาพโฆษณารองเท้าวิ่งสีเหลืองลอยเหนือแท่นสีเข้มในสตูดิโอ",
+  "banana.capabilities.1.alt": "ขวดเซรั่มสีงาช้างใบเดียวกันบนพื้นหลังเรียบและในฉากผ้าซาตินสีทอง",
+  "banana.capabilities.2.alt": "ช่างภาพชายวัยผู้ใหญ่คนเดียวกันในสตูดิโอ ถนนในเมือง และร้านหนังสือ",
+  "banana.capabilities.3.alt": "โปสเตอร์สีดำและเหลืองพร้อมข้อความ FRESH IDEAS, CREATIVE NIGHT และ 24 OCTOBER",
+  "banana.capabilities.before": "ก่อนแก้ไข",
+  "banana.capabilities.after": "หลังแก้ไข"
 }
