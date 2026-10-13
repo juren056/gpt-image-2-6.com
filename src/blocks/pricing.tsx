@@ -17,8 +17,16 @@ import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
+import { pricingCatalog } from '@/config/pricing';
+import {
+  imageRequestEstimates,
+  PRIMARY_IMAGE_MODEL,
+  productCredits,
+  welcomeReward,
+} from '@/config/product-facts';
 import { trackFunnelEvent } from '@/lib/analytics-events';
 import { m } from '@/paraglide/messages.js';
+import { usePublicConfig } from '@/hooks/use-public-config';
 import {
   PricingTable,
   type PricingGroup,
@@ -38,6 +46,8 @@ export function Pricing({
 } = {}) {
   const router = useRouter();
   const { data: session } = useSession();
+  const publicConfig = usePublicConfig();
+  const reward = welcomeReward(publicConfig.data);
   const [returningPlanId, setReturningPlanId] = useState<string | undefined>();
 
   useEffect(() => {
@@ -291,13 +301,29 @@ export function Pricing({
     ...group,
     plans: group.plans.map((plan) => ({
       ...plan,
+      price: `$${((pricingCatalog[plan.productId ?? '']?.priceInCents ?? plan.priceInCents ?? 0) / 100).toFixed(2)}`,
+      priceInCents:
+        pricingCatalog[plan.productId ?? '']?.priceInCents ?? plan.priceInCents,
+      credits: productCredits(plan.productId ?? '', plan.credits ?? 0),
       originalPrice: undefined,
       promotionLabel: undefined,
-      // A pack buys credits. Model-specific image estimates belong beside the
-      // selected request, not on a plan that supports several different models.
-      features: plan.features.filter(
-        (feature) => typeof feature === 'string' || feature.icon !== Images
-      ),
+      // Estimates are explicitly scoped to the primary model and resolution.
+      features: [
+        ...plan.features.filter(
+          (feature) => typeof feature === 'string' || feature.icon !== Images
+        ),
+        ...imageRequestEstimates(
+          productCredits(plan.productId ?? '', plan.credits ?? 0)
+        ).map(({ resolution, count, unitCredits }) => ({
+          icon: Images,
+          label: m['landing.pricing.request_estimate']({
+            model: PRIMARY_IMAGE_MODEL.label,
+            resolution,
+            count,
+            credits: unitCredits,
+          }),
+        })),
+      ],
     })),
   }));
   const groups: PricingGroup[] = honestGroups;
@@ -353,6 +379,32 @@ export function Pricing({
           onCheckout={handleCheckout}
           selectedPlanId={returningPlanId}
         />
+        <p className="text-muted-foreground mx-auto mt-5 max-w-3xl text-center text-xs leading-5">
+          {m['landing.pricing.estimate_conditions']()}{' '}
+          <Link href="/refund-policy" className="underline underline-offset-2">
+            {m['landing.footer.refunds']()}
+          </Link>
+          {' · '}
+          <Link
+            href="/settings/billing"
+            className="underline underline-offset-2"
+          >
+            {m['landing.pricing.manage_renewal']()}
+          </Link>
+        </p>
+        {reward && (
+          <p className="text-muted-foreground mx-auto mt-3 max-w-3xl text-center text-xs leading-5">
+            {reward.days > 0
+              ? m['landing.pricing.signup_reward']({
+                  amount: reward.amount,
+                  days: reward.days,
+                })
+              : m['landing.pricing.signup_reward_no_expiry']({
+                  amount: reward.amount,
+                })}{' '}
+            {m['landing.pricing.signup_conditions']()}
+          </p>
+        )}
         {compact ? (
           <div className="mt-8 text-center">
             <Link

@@ -33,6 +33,10 @@ import {
 } from '@/components/banana-home-content';
 
 export const BANANA_GENERATOR_KEYS = [
+  'result_details',
+  'result_endpoint',
+  'result_submitted',
+  'result_dimensions',
   'more_ratios',
   'fewer_ratios',
   'resolution_hint',

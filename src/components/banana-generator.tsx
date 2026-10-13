@@ -54,6 +54,11 @@ type Task = {
   status: string;
   images?: Array<{ imageUrl?: string }>;
   errorMessage?: string;
+  model?: string;
+  createdAt?: string;
+  costCredits?: number;
+  inferenceTime?: number;
+  options?: Record<string, unknown>;
 };
 export type NanoRecipe = { id: string; title: string; prompt: string };
 export type GeneratorExample = {
@@ -172,6 +177,11 @@ export function BananaGenerator({
   const [modelPickerOpen, setModelPickerOpen] = useState(false);
   const [modelSearch, setModelSearch] = useState('');
   const [resultIndex, setResultIndex] = useState(0);
+  const [resultDimensions, setResultDimensions] = useState<{
+    url: string;
+    width: number;
+    height: number;
+  }>();
   const [references, setReferences] = useState<ImageUploaderValue[]>([]);
   const [taskId, setTaskId] = useState<string>();
   const [draftLoaded, setDraftLoaded] = useState(false);
@@ -672,6 +682,20 @@ export function BananaGenerator({
         : [];
   const rawResult = (resultImages[resultIndex] || resultImages[0])?.imageUrl;
   const result = rawResult?.startsWith('https://') ? rawResult : undefined;
+  const resultTask =
+    task.data?.status === 'success' ? task.data : selectedHistory;
+  const resultSettings = Object.entries(resultTask?.options ?? {}).filter(
+    ([key, value]) =>
+      [
+        'image_size',
+        'aspect_ratio',
+        'resolution',
+        'quality',
+        'output_format',
+        'num_images',
+        'seed',
+      ].includes(key) && ['string', 'number'].includes(typeof value)
+  );
   useEffect(() => setResultIndex(0), [taskId, selectedHistory?.id]);
   const pendingCopy = availability.isPending
     ? copy.checking
@@ -1380,6 +1404,13 @@ export function BananaGenerator({
                   src={result}
                   alt={copy.result}
                   className="banana-generator__result-image"
+                  onLoad={(event) =>
+                    setResultDimensions({
+                      url: event.currentTarget.currentSrc,
+                      width: event.currentTarget.naturalWidth,
+                      height: event.currentTarget.naturalHeight,
+                    })
+                  }
                 />
                 <span className="banana-generator__zoom">
                   <Maximize2 size={16} aria-hidden />
@@ -1395,6 +1426,35 @@ export function BananaGenerator({
               >
                 {copy.download_image} <Download size={14} aria-hidden />
               </a>
+              <details className="banana-generator__extras">
+                <summary>{copy.result_details}</summary>
+                <dl className="text-xs leading-6 break-words">
+                  <dt>{copy.result_endpoint}</dt>
+                  <dd>{resultTask?.model ?? '—'}</dd>
+                  <dt>{copy.result_submitted}</dt>
+                  <dd>
+                    {resultTask?.createdAt
+                      ? new Date(resultTask.createdAt).toISOString()
+                      : '—'}
+                  </dd>
+                  <dt>{copy.result_dimensions}</dt>
+                  <dd>
+                    {resultDimensions?.url === result
+                      ? `${resultDimensions.width} × ${resultDimensions.height} px`
+                      : '—'}
+                  </dd>
+                  <dt>{copy.cost_label}</dt>
+                  <dd>
+                    {resultTask?.costCredits ?? '—'} {copy.credits}
+                  </dd>
+                  {resultSettings.map(([key, value]) => (
+                    <div key={key}>
+                      <dt>{key}</dt>
+                      <dd>{String(value)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
               {resultImages.length > 1 && (
                 <div
                   className="banana-generator__batch-results"

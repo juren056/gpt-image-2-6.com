@@ -18,5 +18,12 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", ".output", ".nitro", ".tanstack"]
+  "exclude": [
+    "node_modules",
+    ".output",
+    ".nitro",
+    ".tanstack",
+    ".artifacts",
+    ".wrangler"
+  ]
 }

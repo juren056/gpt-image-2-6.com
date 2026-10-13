@@ -1,4 +1,5 @@
 import { envConfigs } from '@/config';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { bananaText } from '@/blocks/banana-messages';
 import { BananaFooter } from '@/components/banana-footer';
@@ -24,6 +25,10 @@ export function Footer() {
             link('/prompts/chinese', 'chinese_prompts'),
             link('/free', 'free'),
             link('/guide', 'guide'),
+            {
+              href: '/evaluation-method',
+              label: m['product.evaluation_link'](),
+            },
             link('/blog', 'blog'),
             link('/api', 'api'),
             link('/gpt-image-2-5-api-pricing', 'api_costs'),

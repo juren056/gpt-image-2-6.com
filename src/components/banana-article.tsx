@@ -20,6 +20,7 @@ export function BananaArticle({
   related,
   children,
   sample,
+  primaryHref,
 }: {
   page: NanoPageCopy;
   copy: Record<string, string>;
@@ -27,6 +28,7 @@ export function BananaArticle({
   related: Array<{ label: string; description: string; href: string }>;
   children?: ReactNode;
   sample?: string;
+  primaryHref?: string;
 }) {
   const hasContent = Children.toArray(children).length > 0;
   return (
@@ -50,12 +52,14 @@ export function BananaArticle({
           {page.intro}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
-          <a
-            href={hasContent ? '#generator' : '/#tool-generator'}
+          <Link
+            href={
+              primaryHref ?? (hasContent ? '#generator' : '/#tool-generator')
+            }
             className="banana-button"
           >
             {copy.start}
-          </a>
+          </Link>
           <Link
             href="/prompts"
             className="border-border inline-flex min-h-10 items-center rounded-lg border px-5 text-sm"

@@ -79,6 +79,7 @@ import {
 } from '@/modules/images/content-safety';
 import { buildCreativeImageOptions } from '@/lib/creative-image-options';
 import { imageModerationConfig as moderationConfig } from '@/lib/image-moderation-config';
+import { publicImageTaskSettings } from '@/lib/image-task-settings';
 import {
   MATCHA_COLORIZATION_STRENGTH,
   shouldRunMatchaColorization,
@@ -586,15 +587,9 @@ function parseTaskResult(task: ImageTaskRow) {
   if (task.options) {
     try {
       const parsedOptions = JSON.parse(task.options as string);
-      options = {
-        image_size:
-          typeof parsedOptions?.image_size === 'string'
-            ? parsedOptions.image_size
-            : 'square_hd',
-        ...(typeof parsedOptions?.seed === 'number'
-          ? { seed: parsedOptions.seed }
-          : {}),
-      };
+      // Return recorded scalar settings only. Do not invent a default for
+      // historical tasks or expose references/provider credentials.
+      options = publicImageTaskSettings(parsedOptions);
     } catch {
       /* ignore malformed historical option data */
     }

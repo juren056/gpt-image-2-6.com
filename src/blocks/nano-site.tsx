@@ -5,9 +5,12 @@ import {
   NANO_API_SAMPLE,
   NANO_PAGE_SOURCES,
   NANO_SITE_PAGES,
+  NANO_SITE_REVIEW_DATE,
   NANO_SITE_SOURCES,
   type NanoPageId,
 } from '@/config/nano-site';
+import { sitemapLastModified } from '@/config/sitemap-updates';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { BANANA_GENERATOR_KEYS, BananaHome } from '@/blocks/banana-home';
 import { bananaText } from '@/blocks/banana-messages';
@@ -213,7 +216,14 @@ export function NanoSitePage({
       <Header />
       <BananaArticle
         page={page}
-        copy={copy}
+        copy={{
+          ...copy,
+          updated: m['product.reviewed_date'](
+            { date: sitemapLastModified(page.path, NANO_SITE_REVIEW_DATE)! },
+            { locale: contentLocale }
+          ),
+        }}
+        primaryHref={hasWorkbench ? '#generator' : '/#tool-generator'}
         sources={NANO_PAGE_SOURCES[id] || NANO_SITE_SOURCES}
         related={related}
         sample={id === 'api' ? NANO_API_SAMPLE : undefined}

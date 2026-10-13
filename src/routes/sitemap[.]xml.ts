@@ -193,6 +193,13 @@ const STATIC_PATHS: Array<
   { path: '/refund-policy', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/contact', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.6 },
+  {
+    path: '/evaluation-method',
+    lastModified: '2026-10-13',
+    changeFrequency: 'monthly',
+    priority: 0.7,
+    indexableLocales: ['en', 'zh'],
+  },
 ];
 
 type Entry = {

@@ -1,0 +1,103 @@
+export const meta = {
+  title: 'Nano Banana 图片实测：方法、成本与验收标准',
+  description:
+    '产品图、中文海报、参考图编辑和背景移除的测试方法，记录可复现输入、原始输出与完整任务成本。',
+  updated_at: '2026-10-13',
+};
+
+选择图片工具前，先确定什么结果对你有用。好看的示意图说明设计方向；有记录的网站任务说明流程实际运行过。单凭其中一项，无法判断工具对你的任务是否稳定。
+
+## 什么才算有证据的实测案例
+
+案例必须提供完整提示词、有权公开的输入图片、实际模型端点、参数、日期和可下载的原始输出。同时记录从提交到可用结果的耗时、报价与实际扣费、重试、失败和人工修改。公开案例使用脱敏编号，不公开账号信息。
+
+[公开配套仓库](https://github.com/juren056/nano-banana-image-workflows)目前提供的是**原创示意案例**与提示词，不是本站模型跑分。新的真实任务结果必须由任务记录支持并单独标注，才能作为实测证据发布。
+
+## 二十个任务的验收集
+
+<div className="border-border my-6 overflow-x-auto rounded-xl border">
+  <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+    <thead>
+      <tr>
+        <th className="bg-muted p-3 font-semibold">场景</th>
+        <th className="bg-muted p-3 font-semibold">四个计划任务</th>
+        <th className="bg-muted p-3 font-semibold">检查标准</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="border-border border-t p-3 align-top">产品场景</td>
+        <td className="border-border border-t p-3 align-top">
+          瓶子、鞋子、包装、方形广告
+        </td>
+        <td className="border-border border-t p-3 align-top">
+          形状、颜色和标签保持，没有额外产品部件
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">中文海报</td>
+        <td className="border-border border-t p-3 align-top">
+          短标题、两段文字、包装文字、竖版活动海报
+        </td>
+        <td className="border-border border-t p-3 align-top">
+          逐字核对，在原图尺寸检查排版
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">角色编辑</td>
+        <td className="border-border border-t p-3 align-top">
+          工作室、街道、书店、户外
+        </td>
+        <td className="border-border border-t p-3 align-top">
+          用同一虚构参考人物核对面部、服装和配饰
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">背景处理</td>
+        <td className="border-border border-t p-3 align-top">
+          简单抠图、头发边缘、产品抠图、换背景
+        </td>
+        <td className="border-border border-t p-3 align-top">
+          检查透明通道、边缘和主体；换背景不等于透明抠图
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">多参考图</td>
+        <td className="border-border border-t p-3 align-top">
+          两个物体、人物加产品、三个物体、替代构图
+        </td>
+        <td className="border-border border-t p-3 align-top">
+          每个参考对象可识别，位置正确，没有混合或重复
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+这里公布的是验收**方法**，不表示二十个任务已经通过。实际任务状态和输出需另行发布；重复调用和模型对比会增加请求数量与成本。
+
+## 如何公平比较模型
+
+在看到结果前固定提示词、输入文件与合格标准，尽量匹配比例和分辨率。不支持的参数要记录，不能悄悄换成其他模型。保留所有提交结果，包括失败，不只挑最好看的一张。技术完成、文字正确、细节保持和最终可用性分别判断。
+
+成本应计入获得可用图片所需的所有扣费尝试与编辑。单次报价低，不代表最终项目成本低。当前报价见[生成器](/#tool-generator)，套餐规则见[定价](/pricing)。
+
+## 独立体验者指南
+
+选择自己实际需要的任务，保存输入并检查原始输出，同时写出优点和限制。接受赠送积分或与运营者存在合作时要说明。可以公开诚实评价，不需要提供好评；公开他人的参考图或作品前取得许可。
+
+通过[联系页面](/contact)提交纠错或已发表评测。我们不会编造评价，也不会未经授权公开你的私密生成历史。
+
+## 常见问题
+
+### 任务完成是否代表图片可用？
+
+不代表。完成表示服务商返回了结果；文字、主体保持、构图和用途仍需要检查。
+
+### 相同提示词能否复现完全一致的像素？
+
+通常不能。可用时记录种子与参数；可复现指能遵循相同的公开流程，不承诺相同图片。
+
+### 失败返还和订阅流程是否也要验收？
+
+需要。检查任务状态、积分返还、下载归属、续费说明和取消流程。强制失败与订阅变更使用隔离测试数据；隔离测试不能宣传为真实购买。

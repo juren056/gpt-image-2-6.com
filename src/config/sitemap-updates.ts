@@ -6,8 +6,11 @@ import {
 // Recorded substantive changes, not a build/request timestamp. See
 // docs/sitemap-refresh.md for the reviewed source revisions behind these dates.
 const contentUpdates = new Map<string, string>([
-  ['/', '2026-10-12'],
-  ['/pricing', '2026-10-11'],
+  ['/', '2026-10-13'],
+  ['/pricing', '2026-10-13'],
+  ['/vs-2', '2026-10-13'],
+  ['/about', '2026-10-13'],
+  ['/privacy-policy', '2026-10-13'],
   ['/models', '2026-10-12'],
   ...PUBLIC_MODEL_PAGES.filter(
     (page) => !page.seoTitle && !['/', '/nano-banana-pro'].includes(page.path)

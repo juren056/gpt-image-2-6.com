@@ -53,6 +53,9 @@ const keepPostgres = workersDb === 'postgresql' || workersDb === 'postgres';
 export default defineConfig({
   server: {
     port: 3000,
+    watch: {
+      ignored: ['**/.artifacts/**', '**/.wrangler/**', '**/.output/**'],
+    },
   },
   resolve: {
     tsconfigPaths: true,

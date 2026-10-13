@@ -4,6 +4,7 @@ import {
   NANO_SITE_REVIEW_DATE,
   type NanoPageId,
 } from '@/config/nano-site';
+import { sitemapLastModified } from '@/config/sitemap-updates';
 import { organizationSchema, seoHead } from '@/lib/seo';
 import { getLocale } from '@/paraglide/runtime.js';
 import { getNanoPageCopy, NanoSitePage } from '@/blocks/nano-site';
@@ -39,7 +40,10 @@ export function nanoSiteRouteOptions(id: NanoPageId) {
         title: loaderData.page.title,
         description: loaderData.page.description,
         type: ARTICLE_PAGE_IDS.includes(id) ? 'article' : 'website',
-        dateModified: NANO_SITE_REVIEW_DATE,
+        dateModified: sitemapLastModified(
+          NANO_SITE_PAGES[id].path,
+          NANO_SITE_REVIEW_DATE
+        ),
         faqItems: loaderData.page.faqs,
         extraSchemas:
           id === 'home'

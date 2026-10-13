@@ -3,6 +3,8 @@ import {
   homepageExampleSelection,
   homepageImage,
 } from '@/config/homepage-examples';
+import { PRIMARY_IMAGE_MODEL } from '@/config/product-facts';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { bananaText } from '@/blocks/banana-messages';
 import {
@@ -18,7 +20,10 @@ export function BananaFeatures() {
   const features: BananaFeature[] = [
     {
       id: 'references',
-      title: text('references.title'),
+      title: m['banana.features.references.title'](
+        { count: PRIMARY_IMAGE_MODEL.maxReferences },
+        { locale: locale === 'zh' ? 'zh' : 'en' }
+      ),
       body: text('references.body'),
       cta: text('references.cta'),
       href: '/editor',

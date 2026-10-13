@@ -2,7 +2,7 @@ export const meta = {
   title: 'Privacy Policy',
   description:
     'How AI Image collects, uses, shares, retains, and protects account, generation, payment, and analytics data.',
-  updated_at: '2026-07-18',
+  updated_at: '2026-10-13',
 };
 
 ## 1. Scope
@@ -40,12 +40,12 @@ Where applicable law requires a legal basis, we rely on performance of our contr
 We do not sell personal information. We disclose only the information reasonably necessary to providers that help operate the Service, which can include:
 
 - Stripe for checkout, subscriptions, invoices, refunds, and fraud prevention;
-- Vercel for application hosting and delivery;
-- Neon or another configured database provider for account and application records;
-- Cloudflare R2 or another configured storage provider for images and files;
-- configured third-party AI service providers to process generation requests;
+- Cloudflare Workers for application hosting and delivery;
+- Cloudflare D1 for account and application records;
+- Cloudflare R2 for uploaded images and saved output files;
+- fal.ai for the connected image-generation and editing requests, which sends the required prompt, references and settings to the selected model service;
 - email and customer-support providers to deliver messages and handle support; and
-- Google Analytics or another configured analytics provider to understand website use.
+- Google Analytics 4 for website usage analytics. Prompts, reference-image URLs and account email are excluded from our application funnel events.
 
 We may also disclose information to comply with valid legal process, investigate abuse or fraud, protect users and the public, or complete a business reorganization subject to appropriate safeguards.
 
@@ -89,3 +89,7 @@ We may update this Policy to reflect legal, security, provider, or product chang
 ## 12. Contact
 
 Privacy questions and requests can be sent to [contact page](/contact) or submitted through our [contact page](/contact).
+
+## Image deletion requests
+
+Use the [contact page](/contact) or your [support tickets](/settings/tickets) to request deletion. Identify the relevant task or files without sending passwords or API keys. We verify account ownership before removing account-linked files and records. Billing records may need to remain for accounting or dispute handling. Provider-side retention follows the provider’s own policy; deleting a site file does not prove immediate deletion from every provider system. We do not publish a fixed automatic image-deletion period because one is not currently enforced across all storage and task records.
