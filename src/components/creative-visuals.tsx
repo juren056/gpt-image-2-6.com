@@ -1,7 +1,8 @@
-import type { ComponentType } from 'react';
+import { useState, type ComponentType } from 'react';
 import {
   CircleDashed,
   CodeXml,
+  Cpu,
   Crop,
   Eraser,
   Expand,
@@ -27,7 +28,6 @@ import {
   Workflow,
 } from 'lucide-react';
 
-import { DEFAULT_APP_LOGO } from '@/config/brand';
 import type { CreativeToolId } from '@/config/creative-tools';
 import { cn } from '@/lib/utils';
 
@@ -43,7 +43,7 @@ type ModelVisual = {
     | 'Google Gemini'
     | 'ByteDance Seed'
     | 'Black Forest Labs';
-  src: string;
+  src?: string;
   markClassName?: string;
   surfaceClassName: string;
 };
@@ -51,34 +51,29 @@ type ModelVisual = {
 const MODEL_VISUALS: Record<string, ModelVisual> = {
   generic: {
     brand: 'AI',
-    src: DEFAULT_APP_LOGO,
-    surfaceClassName:
-      'border-violet-200 bg-violet-50 dark:border-violet-400/20 dark:bg-violet-400/10',
+    surfaceClassName: 'border-border bg-muted/50',
   },
   openai: {
     brand: 'OpenAI',
     src: '/brands/openai.svg',
     markClassName: 'dark:invert',
-    surfaceClassName:
-      'border-slate-200 bg-white dark:border-white/15 dark:bg-white/5',
+    surfaceClassName: 'border-border bg-muted/50',
   },
   gemini: {
     brand: 'Google Gemini',
     src: '/brands/gemini.svg',
-    surfaceClassName:
-      'border-blue-200 bg-blue-50 dark:border-blue-400/20 dark:bg-blue-400/10',
+    surfaceClassName: 'border-border bg-muted/50',
   },
   seed: {
     brand: 'ByteDance Seed',
     src: '/brands/seed.ico',
-    surfaceClassName:
-      'border-cyan-200 bg-cyan-50 dark:border-cyan-400/20 dark:bg-cyan-400/10',
+    surfaceClassName: 'border-border bg-muted/50',
   },
   bfl: {
     brand: 'Black Forest Labs',
     src: '/brands/bfl-symbol-black.svg',
-    surfaceClassName:
-      'border-slate-200 bg-white dark:border-white/15 dark:bg-white',
+    markClassName: 'dark:invert',
+    surfaceClassName: 'border-border bg-muted/50',
   },
 };
 
@@ -90,6 +85,35 @@ export function getModelVisual(modelId: string): ModelVisual {
   return MODEL_VISUALS.generic;
 }
 
+function ModelBrandImage({
+  visual,
+  className,
+}: {
+  visual: ModelVisual;
+  className?: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  if (!visual.src || failed) {
+    return (
+      <Cpu
+        aria-hidden="true"
+        className={cn('text-muted-foreground size-5', className)}
+      />
+    );
+  }
+  return (
+    <img
+      src={visual.src}
+      alt=""
+      aria-hidden="true"
+      width={20}
+      height={20}
+      onError={() => setFailed(true)}
+      className={cn('size-5 object-contain', visual.markClassName, className)}
+    />
+  );
+}
+
 export function ModelBrandMark({
   modelId,
   className,
@@ -99,13 +123,10 @@ export function ModelBrandMark({
 }) {
   const visual = getModelVisual(modelId);
   return (
-    <img
-      src={visual.src}
-      alt=""
-      aria-hidden="true"
-      width={20}
-      height={20}
-      className={cn('size-5 object-contain', visual.markClassName, className)}
+    <ModelBrandImage
+      key={visual.src || 'generic'}
+      visual={visual}
+      className={className}
     />
   );
 }
@@ -124,7 +145,7 @@ export function ModelBrandTile({
     <span
       data-model-visual={modelId}
       className={cn(
-        'flex size-10 shrink-0 items-center justify-center rounded-xl border',
+        'model-brand-tile flex size-10 shrink-0 items-center justify-center rounded-[10px] border',
         visual.surfaceClassName,
         className
       )}

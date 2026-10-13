@@ -21,6 +21,7 @@ import {
   prepareBananaGenerator,
   type BananaGeneratorSelection,
 } from '@/lib/banana-generator-navigation';
+import { ModelBrandTile } from '@/components/creative-visuals';
 
 export type BananaCard = { title: string; body: string };
 export type BananaModelCard = BananaCard & {
@@ -208,7 +209,6 @@ export function BananaModelComparison({
   comparison: { title: string; body: string; link: string };
 }) {
   const reveal = useCardReveal();
-  const modelIcons = [Sparkles, ImagePlus, Layers, Zap];
   return (
     <section className="banana-section banana-model-section">
       <div
@@ -229,8 +229,7 @@ export function BananaModelComparison({
                 <th scope="col">
                   <span className="banana-model-axis">{labels.best}</span>
                 </th>
-                {models.map((model, index) => {
-                  const Icon = modelIcons[index] || Sparkles;
+                {models.map((model) => {
                   return (
                     <th
                       key={model.name}
@@ -243,9 +242,7 @@ export function BananaModelComparison({
                       }
                     >
                       <div className="banana-model-topline">
-                        <span className="banana-model-icon">
-                          <Icon aria-hidden="true" />
-                        </span>
+                        <ModelBrandTile modelId={model.id} />
                         {model.id === 'nano-banana-2.1' && (
                           <span className="banana-model-default">
                             {labels.default}

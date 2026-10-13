@@ -4,7 +4,7 @@
     "src/routes/index.tsx": "54472b3413f999459cff4a25775614141d552654dd3a0359462e20947ff486fd",
     "src/blocks/banana-home.tsx": "4286772ea5239674fc680ec3427d833efa10078b2e4b6547109e609b3001af27",
     "src/blocks/banana-features.tsx": "612dedf12896698ca8050c2e0aa2f4712f5d5d863519bc57dbb6dea0a6472329",
-    "src/components/banana-home-content.tsx": "6c1db2e5e32dca6050391f1cdd87671352d9b6c47389be2ae2effc062a137cac",
+    "src/components/banana-home-content.tsx": "fd3e3fb0c8f59ed7ca5c058c1e8750c3d8952ba71a8d3eba6e24fbaa1dae6f72",
     "src/components/banana-features.tsx": "56be9ef7e5c9303ffa436c8d694141e971fbfd13821020628ca7f07d0e75206b",
     "src/styles/banana-features.css": "590daf92aadd2b895491535c9e8d9d20affdbdc2295512b2f70f4689be725987",
     "src/styles/banana-home-content.css": "7be3e676620013d16e25cbe41704fb43fff057147614904ca87eb080da47e606",
@@ -16,7 +16,7 @@
     "public/images/banana21/case-localize.webp": "90d76417d01c9c6101a3374ebc249a25efcc6f50c4dc0336c4a5aad1ccc3016d",
     "public/images/banana21/case-character.webp": "d0823372263aa0bf50061c7a6712df2f3584812391051554b033b9221cf9821e",
     "public/images/banana21/case-social.webp": "2b074dabeaa3a937bddb83bacfcbb8f8db27e8efd45216fa721d318dfc302841",
-    "src/components/banana-generator.tsx": "a463f473fc1f6ecdc9f459948494c3fe8da34c99eed201bddd049764ee97c4a4",
+    "src/components/banana-generator.tsx": "6aa4baca9f975ac2a0282cd1d6c83d951f628481eff64d96c38f7cc775b87341",
     "src/blocks/banana-messages.ts": "e567e4767c2ad07eaa97abd0445bb0859798c11a6b8a5b3bfcde09a73b99dfbc",
     "src/styles/banana-generator.css": "957a20fb9cc0da4d3f415210f902a650ccdd1d4d099ecbc30eb6ef2ac7dad101",
     "src/styles/banana-chrome.css": "89b56cec9bba67b1a35d0ab6f2539ed30c7a769a7b0427ab6d7ed9e1875d3131",
@@ -1218,5 +1218,14 @@
     "sourceOnlyReferences": 2,
     "lineArt": false,
     "reference": "docs/capability-gallery-redesign.md"
+  },
+  "modelIconUnification": {
+    "authorized": "2026-10-13",
+    "scope": [
+      "src/components/banana-generator.tsx",
+      "src/components/banana-home-content.tsx"
+    ],
+    "sharedComponent": "src/components/creative-visuals.tsx",
+    "review": "Owner requested execution of the shared model-brand plan. CUA reviewed neutral containers, native brand marks, 40/32px tiles and keyboard model selection. Only model icon rendering changes; composition, photos, copy, parameter and pricing logic remain unchanged."
   }
 }

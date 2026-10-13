@@ -163,8 +163,8 @@ export function GptImageOpportunityPage({
         icon={
           <ModelBrandTile
             modelId={config.defaultModel}
-            className="size-12 rounded-2xl"
-            markClassName="size-6"
+            className="size-10"
+            markClassName="size-5"
           />
         }
         primaryLabel="Open the workflow"

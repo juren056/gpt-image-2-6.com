@@ -175,12 +175,15 @@ export function ModelPicker({
         {selected ? (
           <ModelBrandTile
             modelId={selected.id}
-            className="size-8 rounded-lg"
-            markClassName="size-4"
+            className="size-8"
+            markClassName="size-5"
           />
         ) : null}
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-semibold">
+          <span
+            title={selected?.label}
+            className="block truncate text-sm font-semibold"
+          >
             {selected?.label || ariaLabel}
           </span>
           {typeof selected?.credits === 'number' ? (
@@ -261,11 +264,14 @@ export function ModelPicker({
                 >
                   <ModelBrandTile
                     modelId={option.id}
-                    className="size-11 shrink-0 rounded-xl"
+                    className="shrink-0"
                     markClassName="size-5"
                   />
                   <span className="min-w-0 flex-1">
-                    <span className="block text-sm leading-snug font-semibold">
+                    <span
+                      title={option.label}
+                      className="block truncate text-sm leading-snug font-semibold"
+                    >
                       {option.label}
                     </span>
                     {typeof option.credits === 'number' ? (

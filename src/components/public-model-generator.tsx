@@ -473,8 +473,8 @@ export function PublicModelPage({ modelId }: { modelId: CreativeModelId }) {
         icon={
           <ModelBrandTile
             modelId={modelId}
-            className="size-12 rounded-2xl"
-            markClassName="size-6"
+            className="size-10"
+            markClassName="size-5"
           />
         }
         primaryLabel={
@@ -648,7 +648,7 @@ export function ModelsDirectory() {
                 ) : null}
                 <ModelBrandTile
                   modelId={item.id}
-                  className="absolute right-3 bottom-3 bg-white/95 shadow-sm"
+                  className="absolute right-3 bottom-3 shadow-sm"
                 />
               </Link>
               <div className="p-5">
