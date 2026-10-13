@@ -1,0 +1,722 @@
+{
+  "date": "2026-10-13",
+  "operatorTest": true,
+  "independentReview": false,
+  "submitted": 20,
+  "technicalSuccess": 20,
+  "credits": 150,
+  "retries": 0,
+  "manualEdits": 0,
+  "resolutionComparison": "2.1 uses 1K; 2 and Pro use provider default, so resolution is not held constant",
+  "cases": [
+    {
+      "caseId": "NB-01",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the exact ivory serum bottle silhouette, color, cap and label from the reference. Place it on charcoal stone pedestal with warm light. No extra bottles, no new brand or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 24.036,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-01.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "product",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-01.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "0a3cf03a140d7e5356acac6a02d4f802acb9f353f5ce9bd644fa95502c4dab46",
+      "visualReview": "Bottle, cap and DAILY SERUM label remain recognizable; charcoal pedestal and warm light applied. Exact dimensional preservation is not measured.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-02",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the exact ivory serum bottle silhouette, color, cap and label from the reference. Place it on cream seamless catalog backdrop. No extra bottles, no new brand or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 17.608,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-02.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "product",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-02.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "4ddc9cb7c8d77ac7bebcbb7cda47485908681cac92d0132cbb3617da2baae202",
+      "visualReview": "Bottle and label remain recognizable on a cream backdrop. No extra bottle visible.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-03",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the exact ivory serum bottle silhouette, color, cap and label from the reference. Place it on yellow fabric with soft shadows. No extra bottles, no new brand or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 20.03,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-03.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "product",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-03.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "4a27e98960c58c9210d8abbe2418efc9aeccf6cfce677c23bf576bce4f5af7ba",
+      "visualReview": "Bottle and label remain recognizable on yellow fabric; lighting and surrounding folds changed.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-04",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the exact ivory serum bottle silhouette, color, cap and label from the reference. Place it on a clean square social campaign with empty headline space. No extra bottles, no new brand or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 20.098,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-04.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "product",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-04.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "b827f017d929d3430fd07e4315ee56192410c8520814ef239803897c8073cd54",
+      "visualReview": "Bottle and label remain recognizable in the requested product scene; no dimensional measurements made.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-05",
+      "status": "success",
+      "model": "google/nano-banana-2.1",
+      "prompt": "Create an original black, ivory and banana-yellow design with one short bold headline. Exact Chinese text: \"新鲜咖啡\". Render each character accurately. Generous margins, no other words, no brand logos.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 0
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 16.126,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-05.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "chinese-text",
+      "operation": "generate",
+      "quotedCredits": 8,
+      "inputs": [],
+      "referenceOrder": [],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-05.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "7ae09de51c702a5c2881fbc30921f0764e84ce7fd7b6abf95dcdfa73c251567e",
+      "visualReview": "Visible headline reads 新鲜咖啡. No additional words observed.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-06",
+      "status": "success",
+      "model": "google/nano-banana-2.1",
+      "prompt": "Create an original black, ivory and banana-yellow design with two clearly separated text blocks. Exact Chinese text: \"新鲜咖啡 / 每天一杯好心情\". Render each character accurately. Generous margins, no other words, no brand logos.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 0
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 14.766,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-06.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "chinese-text",
+      "operation": "generate",
+      "quotedCredits": 8,
+      "inputs": [],
+      "referenceOrder": [],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-06.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "f7e58f68ac71bf26487192d91690b61abad4048c342e6d5da30fb8e082ce2583",
+      "visualReview": "Both phrases read 新鲜咖啡 and 每天一杯好心情. The slash is treated as a layout separator, not printed literally.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-07",
+      "status": "success",
+      "model": "google/nano-banana-2.1",
+      "prompt": "Create an original black, ivory and banana-yellow design with a fictional yellow snack packaging label. Exact Chinese text: \"香蕉脆片 / 净含量：100克\". Render each character accurately. Generous margins, no other words, no brand logos.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 0
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 22.011,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-07.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "chinese-text",
+      "operation": "generate",
+      "quotedCredits": 8,
+      "inputs": [],
+      "referenceOrder": [],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-07.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "36f42d04565b4d8826fd0bc502dc114c780911bca8f8001e71717653fd13ce85",
+      "visualReview": "Visible words read 香蕉脆片 and 净含量：100克. Space/punctuation rendering differs; this is a fictional label illustration, not a verified physical packaging mockup.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-08",
+      "status": "success",
+      "model": "google/nano-banana-2.1",
+      "prompt": "Create an original black, ivory and banana-yellow design with a portrait event poster. Exact Chinese text: \"创意之夜 / 10月24日\". Render each character accurately. Generous margins, no other words, no brand logos.",
+      "options": {
+        "aspect_ratio": "9:16",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 0
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 26.637,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-08.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "chinese-text",
+      "operation": "generate",
+      "quotedCredits": 8,
+      "inputs": [],
+      "referenceOrder": [],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-08.webp",
+      "dimensions": {
+        "width": 768,
+        "height": 1376
+      },
+      "sha256": "0a7eb3e1eee734f27ec7bd5006851357df72103fbf317336aa6fe55650a223eb",
+      "visualReview": "Visible words read 创意之夜 and 10月24日. Layout uses line breaks rather than a literal slash.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-09",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the same fictional adult photographer face, haircut, jacket and camera from the reference. Show him in a sunlit photography studio. Photographic style, no additional people or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 20.054,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-09.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "character",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-09.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "6bf3e38de2ebf4f9592ecdc3963bc14ee99e48fd3182a194f411c3acb49927a8",
+      "visualReview": "Fictional face, dark shirt, light tee and camera remain recognizable in the studio. Identity preservation is a visual judgment.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-10",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the same fictional adult photographer face, haircut, jacket and camera from the reference. Show him in a calm city street. Photographic style, no additional people or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 16.845,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-10.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "character",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-10.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "b42c4894238b7efa5a1f55a603aabfc8fe6971e195bfb8ba786fd8e3185f7f15",
+      "visualReview": "Fictional subject remains recognizable on a street; pose and facial details vary.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-11",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the same fictional adult photographer face, haircut, jacket and camera from the reference. Show him in a bookshop with warm window light. Photographic style, no additional people or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 17.717,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-11.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "character",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-11.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "fa79c2239058ab108233c8547e4794bb613b33835e8a1c170e948ceac95dc7a8",
+      "visualReview": "Fictional subject remains recognizable in a bookshop; expression and fine facial details vary.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-12",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Preserve the same fictional adult photographer face, haircut, jacket and camera from the reference. Show him in an outdoor park at golden hour. Photographic style, no additional people or text.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 19.439,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-12.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "character",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-12.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "ba54f14a8b38d844b224765efc670351f9849cfd77fc1b9c8eb35ec1b85b1b3e",
+      "visualReview": "Fictional subject remains recognizable in a park; fine details and lighting vary.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-13",
+      "status": "success",
+      "model": "fal-ai/bria/background/remove",
+      "prompt": "remove-background",
+      "options": {
+        "resolution": "provider-default",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 3,
+      "serverElapsedSeconds": 15.908,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-13.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "background",
+      "operation": "remove-background",
+      "quotedCredits": 3,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-13.webp",
+      "dimensions": {
+        "width": 640,
+        "height": 853
+      },
+      "sha256": "d7dc4d3b88f2fcbec34377906f6e35a9fe7f39fc30caccf6c84537f907a09104",
+      "visualReview": "PNG has real alpha transparency; bottle is isolated. Edge quality remains a human visual check.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-14",
+      "status": "success",
+      "model": "fal-ai/bria/background/remove",
+      "prompt": "remove-background",
+      "options": {
+        "resolution": "provider-default",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 3,
+      "serverElapsedSeconds": 10.052,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-14.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "background",
+      "operation": "remove-background",
+      "quotedCredits": 3,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/photographer-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-14.webp",
+      "dimensions": {
+        "width": 640,
+        "height": 1288
+      },
+      "sha256": "41b7d008b1eca7ed8a50826134a3b8d5948c2322b0d668a400ecda0521b12245",
+      "visualReview": "PNG has real alpha transparency, but a foreground tabletop remains. Not a clean person-only cutout.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-15",
+      "status": "success",
+      "model": "fal-ai/bria/background/remove",
+      "prompt": "remove-background",
+      "options": {
+        "resolution": "provider-default",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 3,
+      "serverElapsedSeconds": 8.75,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-15.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "background",
+      "operation": "remove-background",
+      "quotedCredits": 3,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-15.webp",
+      "dimensions": {
+        "width": 960,
+        "height": 640
+      },
+      "sha256": "4ce6a9da1c5661f64056ca9ae3fb06846583f64c154de542f3c9df84d81cec11",
+      "visualReview": "PNG has real alpha transparency, but part of the original pedestal remains. Not a clean shoe-only cutout.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-16",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Keep the same ivory serum bottle and label. Replace only the background with a warm yellow studio backdrop and natural contact shadow. Do not remove or reshape the bottle.",
+      "options": {
+        "aspect_ratio": "3:2",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 1
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 19.3,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-16.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "background",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": false,
+      "preview": "/evidence/2026-10-13/NB-16.webp",
+      "dimensions": {
+        "width": 1264,
+        "height": 848
+      },
+      "sha256": "ad2b1ec53f6e433e18850f3b3edc56fc9984b6fb41c8e0ad3dfbd72557174da9",
+      "visualReview": "Bottle preserved against a warm yellow background; output is opaque, as expected for replacement rather than removal.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-17",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Place the exact ivory bottle and yellow shoe together on two separate charcoal pedestals. Keep both objects distinct and faithful to references.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 2
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 23.739,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-17.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "multi-reference",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "actualReferencesReencoded": true,
+      "preview": "/evidence/2026-10-13/NB-17.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "960aacc42a8bbcb72c9a90d990799e6094818e9f32e03d9da13624d9af721cc0",
+      "visualReview": "2.1 returns distinct bottle and shoe on separate pedestals; product details remain recognizable.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-18",
+      "status": "success",
+      "model": "fal-ai/nano-banana-2/edit",
+      "prompt": "Place the exact ivory bottle and yellow shoe together on two separate charcoal pedestals. Keep both objects distinct and faithful to references.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "provider-default",
+        "num_images": 1,
+        "referenceCount": 2
+      },
+      "credits": 6,
+      "serverElapsedSeconds": 19.886,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-18.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "multi-reference",
+      "operation": "edit",
+      "quotedCredits": 6,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "actualReferencesReencoded": true,
+      "preview": "/evidence/2026-10-13/NB-18.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "2b02711d917e17b30015c65c056edc85c0bd59428ce67d16145c2ec2d1bc0789",
+      "visualReview": "2 returns both objects on separate pedestals; shoe placement differs. One trial is insufficient for a model ranking.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-19",
+      "status": "success",
+      "model": "fal-ai/nano-banana-pro/edit",
+      "prompt": "Place the exact ivory bottle and yellow shoe together on two separate charcoal pedestals. Keep both objects distinct and faithful to references.",
+      "options": {
+        "aspect_ratio": "1:1",
+        "resolution": "provider-default",
+        "num_images": 1,
+        "referenceCount": 2
+      },
+      "credits": 15,
+      "serverElapsedSeconds": 26.119,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-19.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "multi-reference",
+      "operation": "edit",
+      "quotedCredits": 15,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp"
+      ],
+      "actualReferencesReencoded": true,
+      "preview": "/evidence/2026-10-13/NB-19.webp",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      },
+      "sha256": "c5b78fb7fb59369a93f795b5e3ecd2a7d87a45fe3c6a98eb249f7f6f831f6501",
+      "visualReview": "Pro returns both objects on separate pedestals with differing scale and texture. One trial is insufficient for a model ranking.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    },
+    {
+      "caseId": "NB-20",
+      "status": "success",
+      "model": "google/nano-banana-2.1/edit",
+      "prompt": "Arrange the yellow shoe on the left and ivory bottle on the right in a landscape product campaign. Empty center space, no text, preserve both reference shapes.",
+      "options": {
+        "aspect_ratio": "16:9",
+        "resolution": "1K",
+        "num_images": 1,
+        "referenceCount": 2
+      },
+      "credits": 8,
+      "serverElapsedSeconds": 26.985,
+      "date": "2026-10-13",
+      "originalOutput": "/evidence/2026-10-13/NB-20.png",
+      "manualEdits": false,
+      "retries": 0,
+      "category": "multi-reference",
+      "operation": "edit",
+      "quotedCredits": 8,
+      "inputs": [
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "referenceOrder": [
+        "https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp",
+        "https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp"
+      ],
+      "actualReferencesReencoded": true,
+      "preview": "/evidence/2026-10-13/NB-20.webp",
+      "dimensions": {
+        "width": 1376,
+        "height": 768
+      },
+      "sha256": "9d3fa557346e4612e1f7bc4d432dce5f7980c4a6077302024a34fccfedef6ada",
+      "visualReview": "Landscape output places shoe left and bottle right with center space; pedestal staging extends into the middle.",
+      "timingDefinition": "server task created_at to updated_at; includes polling, not a browser stopwatch or provider-only inference time"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ Use these checks before judging an image workflow. An attractive illustration de
 
 A published case must include its full prompt, reusable input images with permission, actual provider endpoint, settings, test date and original downloadable output. Record the time from submission to a usable result, quoted and charged credits, retries, failures and any manual editing. Keep a sanitized case identifier rather than publishing private account details.
 
-Our [public workflow repository](https://github.com/juren056/nano-banana-image-workflows) currently contains **illustrative examples** and prompts. Those assets are not a measured website benchmark. New real task results must be explicitly labeled and supported by task records before entering that repository or this site.
+Our [public workflow repository](https://github.com/juren056/nano-banana-image-workflows) separates illustrative artwork from the recorded website outputs below. These are operator tests, not independent reviews.
 
 ## Twenty-task acceptance set
 
@@ -87,6 +87,266 @@ Our [public workflow repository](https://github.com/juren056/nano-banana-image-w
 </div>
 
 This is the acceptance **method**, not a claim that all twenty tasks have already passed. Test status and outputs must be reported separately. Repeated calls and comparisons increase the request count and cost.
+
+## Recorded website tests — 13 October 2026
+
+We submitted twenty single-output tasks through the production website. All twenty returned an image, costing **150 site credits** in total, with no retries or manual retouching. This records technical completion, not a 100% visual pass rate. Provider billing is separate from site credits. The test account’s balance is not a customer price.
+
+The final set includes four bottle edits, four Chinese designs, four fictional-character edits, three cutouts, one background replacement and four two-reference tasks. Three of the last four use the same scene to compare 2.1, 2 and Pro; this replaces two originally planned independent multi-reference scenes. There are no three-object or person-plus-product tests in this run.
+
+### What the outputs show
+
+- **Chinese designs (NB-05–08):** the requested words and numbers are legible in these four outputs. Slash separators become layout breaks, and spacing/punctuation can vary. This small set does not establish accuracy for longer text or other fonts.
+- **Bottle scenes (NB-01–04, NB-16):** the ivory bottle, black pump and DAILY SERUM label remain recognizable. This is a visual check, not an exact geometry measurement.
+- **Character edits (NB-09–12):** the same fictional subject, shirt and camera remain recognizable, with changes in pose and fine facial details. No identity similarity score is claimed.
+- **Background removal (NB-13–15):** all three PNGs contain real alpha transparency. The person cutout retains a tabletop and the shoe cutout retains pedestal fragments. These need cleanup for a person-only or shoe-only asset; transparent pixels alone are not a clean-cutout pass.
+- **Model comparison (NB-17–19):** all three models return a distinct bottle and shoe on separate pedestals. Composition, scale and texture vary. Each model ran once; 2.1 used 1K while 2 and Pro used provider defaults. This is an example comparison, not a controlled resolution benchmark or model ranking.
+
+The most supported starting scenario in this run is **short Chinese promotional designs**, followed by simple bottle-background edits. Proofread each output and verify product details before publication. This is an operator assessment; external reviewers have not evaluated this set.
+
+### Reproduce and inspect every submitted result
+
+The [complete case manifest](/evidence/2026-10-13/results.json) contains all twenty full prompts, reusable public source references, exact endpoints, stored settings, quoted and charged credits, dimensions, SHA-256 hashes and per-case review notes. References pasted into the browser were converted from the public WebP source to PNG, without intentional content changes. The manifest records which cases used reencoded uploads. No private account identifiers or customer records are published.
+
+Timing below is the server task’s `created_at` to `updated_at` interval. It includes the polling/completion-recording delay, so it is neither a browser stopwatch nor provider-only inference time. A paused test runner can inflate it. No seed was fixed; following the procedure will not reproduce identical pixels.
+
+![Contact sheet of the twenty recorded website outputs](/evidence/2026-10-13/contact-sheet.png)
+
+<div className="border-border my-6 overflow-x-auto rounded-xl border">
+  <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+    <thead>
+      <tr>
+        <th className="bg-muted p-3 font-semibold">Case</th>
+        <th className="bg-muted p-3 font-semibold">Endpoint</th>
+        <th className="bg-muted p-3 font-semibold">Credits</th>
+        <th className="bg-muted p-3 font-semibold">Recorded seconds</th>
+        <th className="bg-muted p-3 font-semibold">Original PNG</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-01</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">24.0</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-01.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-02</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">17.6</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-02.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-03</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">20.0</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-03.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-04</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">20.1</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-04.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-05</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">16.1</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-05.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-06</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">14.8</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-06.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-07</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">22.0</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-07.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-08</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">26.6</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-08.png">768 × 1376</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-09</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">20.1</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-09.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-10</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">16.8</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-10.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-11</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">17.7</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-11.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-12</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">19.4</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-12.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-13</td>
+        <td className="border-border border-t p-3 align-top">
+          fal-ai/bria/background/remove
+        </td>
+        <td className="border-border border-t p-3 align-top">3</td>
+        <td className="border-border border-t p-3 align-top">15.9</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-13.png">640 × 853</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-14</td>
+        <td className="border-border border-t p-3 align-top">
+          fal-ai/bria/background/remove
+        </td>
+        <td className="border-border border-t p-3 align-top">3</td>
+        <td className="border-border border-t p-3 align-top">10.1</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-14.png">640 × 1288</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-15</td>
+        <td className="border-border border-t p-3 align-top">
+          fal-ai/bria/background/remove
+        </td>
+        <td className="border-border border-t p-3 align-top">3</td>
+        <td className="border-border border-t p-3 align-top">8.8</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-15.png">960 × 640</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-16</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">19.3</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-16.png">1264 × 848</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-17</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">23.7</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-17.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-18</td>
+        <td className="border-border border-t p-3 align-top">
+          fal-ai/nano-banana-2/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">6</td>
+        <td className="border-border border-t p-3 align-top">19.9</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-18.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-19</td>
+        <td className="border-border border-t p-3 align-top">
+          fal-ai/nano-banana-pro/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">15</td>
+        <td className="border-border border-t p-3 align-top">26.1</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-19.png">1024 × 1024</a>
+        </td>
+      </tr>
+      <tr>
+        <td className="border-border border-t p-3 align-top">NB-20</td>
+        <td className="border-border border-t p-3 align-top">
+          google/nano-banana-2.1/edit
+        </td>
+        <td className="border-border border-t p-3 align-top">8</td>
+        <td className="border-border border-t p-3 align-top">27.0</td>
+        <td className="border-border border-t p-3 align-top">
+          <a href="/evidence/2026-10-13/NB-20.png">1376 × 768</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ## Comparing models fairly
 
