@@ -72,6 +72,9 @@ export function promptHandoff(item: PromptExample) {
     prompt: item.prompt,
     model: 'nano-banana-2.1',
     operation: item.operation,
+    aspectRatio: '1:1',
+    resolution: '1K',
+    outputCount: 1,
     imageUrls: [],
   };
 }

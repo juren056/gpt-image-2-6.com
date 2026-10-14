@@ -16,6 +16,7 @@ export function Footer() {
       logo={envConfigs.app_logo}
       description={text('footer_description')}
       contact={link('/contact', 'contact')}
+      supportEmail="support@nanobanana21pro.com"
       columns={[
         {
           title: text('resources'),

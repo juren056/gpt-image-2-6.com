@@ -16,6 +16,7 @@ import { BANANA_GENERATOR_KEYS, BananaHome } from '@/blocks/banana-home';
 import { bananaText } from '@/blocks/banana-messages';
 import { AccountPromptLibrary } from '@/blocks/banana-prompt-library';
 import { Footer } from '@/blocks/footer';
+import { FreeExperience } from '@/blocks/free-experience';
 import { Header } from '@/blocks/header';
 import { nanoSiteText } from '@/blocks/nano-site-messages';
 import { Pricing } from '@/blocks/pricing';
@@ -229,6 +230,7 @@ export function NanoSitePage({
         sample={id === 'api' ? NANO_API_SAMPLE : undefined}
       >
         {id === 'prompts' && <AccountPromptLibrary publicView />}
+        {id === 'free' && <FreeExperience />}
         {hasWorkbench && (
           <BananaGenerator
             copy={{
@@ -245,7 +247,7 @@ export function NanoSitePage({
                 ? recipes.filter((recipe) => recipe.id === id)
                 : recipes
             }
-            initialModel="nano-banana-pro"
+            initialModel={id === 'pro' ? 'nano-banana-pro' : 'nano-banana-2.1'}
             initialMode={id === 'editor' ? 'edit' : 'generate'}
             returnPath={page.path}
           />

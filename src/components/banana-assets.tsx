@@ -30,6 +30,7 @@ import { z } from 'zod';
 import { useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { apiGet, apiPost } from '@/lib/api-client';
+import { normalizeGeneratorDraft } from '@/lib/generator-entry';
 import { TextField } from '@/components/form-field';
 import { SiteSelect } from '@/components/site-select';
 import {
@@ -48,6 +49,7 @@ type AssetTask = {
   costCredits: number;
   createdAt: string;
   images: Array<{ imageUrl?: string }>;
+  options?: Record<string, string | number>;
   errorMessage?: string;
 };
 type LibraryItem = {
@@ -187,13 +189,21 @@ export function BananaAssets({
         );
       sessionStorage.setItem(
         'banana-account:handoff:v1',
-        JSON.stringify({
-          prompt: task.prompt,
-          model: task.model,
-          operation: reference ? 'edit' : 'generate',
-          imageUrls: reference ? urls : [],
-          sourceTaskId: task.id,
-        })
+        JSON.stringify(
+          normalizeGeneratorDraft(
+            {
+              prompt: task.prompt,
+              model: task.model,
+              operation: reference ? 'edit' : 'generate',
+              aspectRatio: task.options?.aspect_ratio,
+              resolution: task.options?.resolution,
+              outputCount: task.options?.num_images ?? 1,
+              imageUrls: reference ? urls : [],
+            },
+            'nano-banana-2.1',
+            true
+          )
+        )
       );
       void router.push('/settings/generate?resume=asset');
     } catch {

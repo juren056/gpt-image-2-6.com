@@ -1,6 +1,7 @@
 import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
 import { PromptLibrary } from '@/blocks/prompt-library';
+import { VerifiedExamples } from '@/blocks/verified-examples';
 import {
   PROMPT_CATEGORIES,
   type PromptCategory,
@@ -15,12 +16,16 @@ export function PromptDirectory({ category }: { category?: PromptCategory }) {
             {m['prompts.eyebrow']()}
           </p>
           <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">
-            {category
-              ? m['prompts.category_title']({ category })
-              : m['prompts.title']()}
+            {category === 'chinese'
+              ? m['prompts.chinese.title']()
+              : category
+                ? m['prompts.category_title']({ category })
+                : m['prompts.title']()}
           </h1>
           <p className="text-muted-foreground mt-5 max-w-2xl leading-7">
-            {m['prompts.description']()}
+            {category === 'chinese'
+              ? m['prompts.chinese.intro']()
+              : m['prompts.description']()}
           </p>
           {!category ? (
             <nav
@@ -43,6 +48,14 @@ export function PromptDirectory({ category }: { category?: PromptCategory }) {
           ) : null}
         </div>
       </div>
+      {category === 'chinese' && (
+        <div className="mx-auto max-w-7xl">
+          <VerifiedExamples chinese />
+          <p className="text-muted-foreground mt-6 max-w-3xl text-sm leading-7">
+            {m['prompts.chinese.guidance']()}
+          </p>
+        </div>
+      )}
       <PromptLibrary showIntro={false} category={category} />
     </main>
   );

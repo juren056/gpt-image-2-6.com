@@ -6,6 +6,9 @@ import {
 // Recorded substantive changes, not a build/request timestamp. See
 // docs/sitemap-refresh.md for the reviewed source revisions behind these dates.
 const contentUpdates = new Map<string, string>([
+  ['/prompts/chinese', '2026-10-13'],
+  ['/free', '2026-10-13'],
+  ['/contact', '2026-10-13'],
   ['/', '2026-10-13'],
   ['/pricing', '2026-10-13'],
   ['/vs-2', '2026-10-13'],

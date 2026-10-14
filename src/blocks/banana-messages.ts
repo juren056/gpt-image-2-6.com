@@ -6,6 +6,18 @@ import { getLocale } from '@/paraglide/runtime.js';
 export function bananaText(key: string, locale: string = getLocale()): string {
   const language = locale === 'zh' ? 'zh' : 'en';
   switch (key) {
+    case 'prefill_failed':
+      return m['banana.prefill_failed']({}, { locale: language });
+    case 'active_preserved':
+      return m['banana.active_preserved']({}, { locale: language });
+    case 'previous_saved':
+      return m['banana.previous_saved']({}, { locale: language });
+    case 'restore_previous':
+      return m['banana.restore_previous']({}, { locale: language });
+    case 'free_saved':
+      return m['banana.free_saved']({}, { locale: language });
+    case 'free_start':
+      return m['banana.free_start']({}, { locale: language });
     case 'result_details':
       return m['banana.result_details']({}, { locale: language });
     case 'result_endpoint':

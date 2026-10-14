@@ -6,6 +6,8 @@ export type BananaGeneratorSelection = {
   aspectRatio?: string;
   scene?: string;
   imageUrls?: string[];
+  resolution?: string;
+  outputCount?: number;
 };
 
 /** Prepare the visible generator without submitting a paid request. */

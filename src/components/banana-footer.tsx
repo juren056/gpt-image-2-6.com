@@ -8,6 +8,7 @@ export function BananaFooter({
   logo,
   description,
   contact,
+  supportEmail,
   columns,
   languageControls,
   copyright,
@@ -18,6 +19,7 @@ export function BananaFooter({
   logo: string;
   description: string;
   contact: BananaNavLink;
+  supportEmail: string;
   columns: Array<{ title: string; links: BananaNavLink[] }>;
   languageControls: ReactNode;
   copyright: string;
@@ -37,6 +39,14 @@ export function BananaFooter({
             <Link href={contact.href} className="banana-footer-contact">
               {contact.label}
             </Link>
+            <div>
+              <Link
+                href={`mailto:${supportEmail}`}
+                className="banana-footer-contact break-all"
+              >
+                {supportEmail}
+              </Link>
+            </div>
           </div>
           {columns.map((column) => (
             <nav

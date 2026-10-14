@@ -58,6 +58,9 @@ export function BananaWorkflowLibrary({
           prompt: recipe.prompt,
           model: 'nano-banana-2.1',
           operation: recipe.operation,
+          aspectRatio: '1:1',
+          resolution: '1K',
+          outputCount: 1,
           imageUrls: [],
         })
       );

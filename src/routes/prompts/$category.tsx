@@ -24,15 +24,22 @@ export const Route = createFileRoute('/prompts/$category')({
     seoHead({
       locale: loaderData?.locale ?? 'en',
       path: `/prompts/${loaderData?.category}`,
-      title: m['prompts.category_meta_title'](
-        { category: loaderData?.category ?? '' },
-        { locale: loaderData?.locale ?? 'en' }
-      ),
+      title:
+        loaderData?.category === 'chinese'
+          ? m['prompts.chinese.title']({}, { locale: loaderData.locale })
+          : m['prompts.category_meta_title'](
+              { category: loaderData?.category ?? '' },
+              { locale: loaderData?.locale ?? 'en' }
+            ),
       description:
-        (loaderData?.category ?? 'AI image') +
-        ' prompt examples with copy-ready instructions, reference images, and practical generation workflows.',
-      dateModified: '2026-09-20',
-      indexableLocales: ['en'],
+        loaderData?.category === 'chinese'
+          ? m['prompts.chinese.description']({}, { locale: loaderData.locale })
+          : (loaderData?.category ?? 'AI image') +
+            ' prompt examples with copy-ready instructions, reference images, and practical generation workflows.',
+      dateModified:
+        loaderData?.category === 'chinese' ? '2026-10-13' : '2026-09-20',
+      indexableLocales:
+        loaderData?.category === 'chinese' ? ['en', 'zh'] : ['en'],
     }),
   component: PromptCategoryPage,
 });

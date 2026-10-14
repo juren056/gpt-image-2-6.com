@@ -40,6 +40,13 @@ import {
   normalizeCreativeScene,
   parseActiveCreativeTask,
 } from '@/lib/banana-task-resume';
+import {
+  markGeneratorDraftAccepted,
+  normalizeGeneratorDraft,
+  PREVIOUS_GENERATOR_DRAFT_KEY,
+  resolveGeneratorEntry,
+  savePreviousGeneratorDraft,
+} from '@/lib/generator-entry';
 import { ModelBrandTile } from '@/components/creative-visuals';
 import { FirstGenerationFeedback } from '@/components/first-generation-feedback';
 import {
@@ -197,6 +204,9 @@ export function BananaGenerator({
     mode: typeof mode;
     scene: string;
   }>();
+  const explicitSelection = useRef(false);
+  const [previousDraft, setPreviousDraft] =
+    useState<ReturnType<typeof normalizeGeneratorDraft>>(null);
   const restoringTask = useRef(false);
   const refreshedTask = useRef<string | undefined>(undefined);
   const previousUser = useRef(session?.user?.id);
@@ -283,6 +293,25 @@ export function BananaGenerator({
             : [],
       }),
     onSuccess: (data) => {
+      explicitSelection.current = false;
+      try {
+        markGeneratorDraftAccepted(sessionStorage, {
+          prompt: form.state.values.prompt,
+          model: modelId,
+          operation: mode,
+          aspectRatio: ratio,
+          resolution: selectedResolution,
+          outputCount: count,
+          imageUrls:
+            mode === 'edit'
+              ? references
+                  .filter((item) => item.status === 'uploaded' && item.url)
+                  .map((item) => item.url!)
+              : [],
+        });
+      } catch {
+        /* History remains available without optional browser storage. */
+      }
       setSelectedHistory(undefined);
       setTaskId(data.id);
       if (window.matchMedia('(max-width: 1023px)').matches)
@@ -340,6 +369,7 @@ export function BananaGenerator({
         !references.some((item) => item.status === 'uploaded' && item.url)
       )
         return;
+      remember();
       setTaskId(undefined);
       trackFunnelEvent('generate_clicked', { model: modelId, mode, scene });
       await run.mutateAsync(value.prompt.trim()).catch(() => undefined);
@@ -348,133 +378,104 @@ export function BananaGenerator({
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const query = params.get('prompt');
     setScene(normalizeCreativeScene(params.get('scene')));
-    let saved = '';
-    try {
-      saved = window.sessionStorage.getItem('nano-site:prompt') || '';
-      const serialized = window.sessionStorage.getItem('nano-site:draft:v2');
-      if (serialized) {
-        const draft: unknown = JSON.parse(serialized);
-        if (
-          draft &&
-          typeof draft === 'object' &&
-          'prompt' in draft &&
-          typeof draft.prompt === 'string'
-        ) {
-          saved = draft.prompt;
-          if ('imageUrls' in draft && Array.isArray(draft.imageUrls))
-            setInitialReferenceUrls(
-              draft.imageUrls
-                .filter(
-                  (url): url is string =>
-                    typeof url === 'string' && url.startsWith('https://')
-                )
-                .slice(0, 14)
-            );
-          setDraftRestored(!query && Boolean(saved));
-          if (
-            !query &&
-            returnPath !== '/editor' &&
-            returnPath !== '/nano-banana-pro'
-          ) {
-            if (
-              'model' in draft &&
-              WORKBENCH_MODELS.some((id) => id === draft.model)
-            ) {
-              setModelId(draft.model as CreativeModelId);
-            }
-            if (
-              'operation' in draft &&
-              (draft.operation === 'generate' || draft.operation === 'edit')
-            )
-              setMode(draft.operation);
-          }
-          const restoredModel =
-            'model' in draft &&
-            typeof draft.model === 'string' &&
-            returnPath !== '/nano-banana-pro'
-              ? CREATIVE_MODELS.find(
-                  (item) =>
-                    item.id === draft.model &&
-                    WORKBENCH_MODELS.some((id) => id === item.id)
-                )
-              : CREATIVE_MODELS.find((item) => item.id === initialModel);
-          if (
-            'resolution' in draft &&
-            typeof draft.resolution === 'string' &&
-            restoredModel?.resolutions?.includes(draft.resolution)
-          )
-            setResolution(draft.resolution);
-          if (
-            'aspectRatio' in draft &&
-            typeof draft.aspectRatio === 'string' &&
-            restoredModel?.sizes.includes(draft.aspectRatio)
-          )
-            setRatio(draft.aspectRatio);
-          if (
-            'outputCount' in draft &&
-            typeof draft.outputCount === 'number' &&
-            Number.isInteger(draft.outputCount) &&
-            draft.outputCount >= 1 &&
-            draft.outputCount <=
-              getCreativeOutputLimit(restoredModel?.id || initialModel)
-          )
-            setOutputCount(draft.outputCount);
-        }
+    const read = (key: string): unknown => {
+      try {
+        const raw = sessionStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
       }
-    } catch {
-      /* private browsing storage may be unavailable */
-    }
-    if (query || saved)
-      form.setFieldValue('prompt', (query || saved).slice(0, 32000));
-    const queryModel = CREATIVE_MODELS.find(
-      (item) => item.id === params.get('model')
+    };
+    const stored = read('nano-site:draft:v2');
+    const saved =
+      stored &&
+      typeof stored === 'object' &&
+      ['/editor', '/nano-banana-pro'].includes(returnPath)
+        ? { ...stored, model: initialModel, operation: initialMode }
+        : stored;
+    const entry = resolveGeneratorEntry(
+      params,
+      saved,
+      read('banana-account:handoff:v1'),
+      initialModel,
+      allModels
     );
-    if (
-      queryModel &&
-      (allModels || WORKBENCH_MODELS.some((id) => id === queryModel.id))
-    )
-      setModelId(queryModel.id);
-    if (params.get('mode') === 'edit') setMode('edit');
-    const queryRatio = params.get('ratio');
-    if (queryRatio && (queryModel || model).sizes.includes(queryRatio))
-      setRatio(queryRatio);
-    try {
-      const serialized = window.sessionStorage.getItem(
-        'banana-account:handoff:v1'
-      );
-      if (
-        ['asset', 'recipe'].includes(params.get('resume') || '') &&
-        serialized
-      ) {
-        const handoff = JSON.parse(serialized) as Record<string, unknown>;
-        if (typeof handoff.prompt === 'string')
-          form.setFieldValue('prompt', handoff.prompt.slice(0, 32000));
-        const chosen = CREATIVE_MODELS.find(
-          (item) => item.id === handoff.model
-        );
-        if (
-          chosen &&
-          (allModels || WORKBENCH_MODELS.some((id) => id === chosen.id))
-        )
-          setModelId(chosen.id);
-        if (handoff.operation === 'edit' || handoff.operation === 'generate')
-          setMode(handoff.operation);
-        if (Array.isArray(handoff.imageUrls))
-          setInitialReferenceUrls(
-            handoff.imageUrls
-              .filter(
-                (url): url is string =>
-                  typeof url === 'string' && url.startsWith('https://')
-              )
-              .slice(0, 14)
-          );
-        setDraftRestored(true);
-        window.sessionStorage.removeItem('banana-account:handoff:v1');
+    explicitSelection.current = entry.explicit;
+    if (entry.explicit && entry.source !== 'saved-selection') {
+      try {
+        savePreviousGeneratorDraft(sessionStorage);
+      } catch {
+        /* Public recipes work without browser storage. */
       }
-    } catch {
-      /* A malformed continuation cannot prevent a fresh creation. */
+    }
+    setPreviousDraft(
+      normalizeGeneratorDraft(
+        read(PREVIOUS_GENERATOR_DRAFT_KEY),
+        initialModel,
+        allModels
+      )
+    );
+    const draft = entry.draft;
+    if (draft) {
+      form.setFieldValue('prompt', draft.prompt);
+      setModelId(draft.model as CreativeModelId);
+      setMode(draft.operation);
+      setRatio(draft.aspectRatio);
+      setResolution(draft.resolution);
+      setOutputCount(draft.outputCount);
+      setInitialReferenceUrls(draft.imageUrls);
+      setDraftRestored(!entry.explicit && Boolean(draft.prompt));
+      if (entry.explicit && entry.source !== 'saved-selection')
+        trackFunnelEvent('recipe_prefilled', {
+          source: entry.source,
+          model: draft.model,
+          recipe_id: params.get('recipe') || 'account',
+        });
+    } else if (entry.missing) {
+      toast.error(copy.prefill_failed);
+      trackFunnelEvent('recipe_prefill_failed', { source: entry.source });
+    } else {
+      try {
+        const oldPrompt = sessionStorage.getItem('nano-site:prompt');
+        if (oldPrompt) form.setFieldValue('prompt', oldPrompt.slice(0, 32000));
+      } catch {
+        /* Optional legacy draft. */
+      }
+    }
+    if (entry.explicit && draft) {
+      try {
+        sessionStorage.setItem(
+          'nano-site:draft:v2',
+          JSON.stringify({ ...draft, pendingSelection: true })
+        );
+        const clean = new URL(window.location.href);
+        for (const key of [
+          'recipe',
+          'resume',
+          'prompt',
+          'model',
+          'mode',
+          'ratio',
+          'resolution',
+          'outputCount',
+        ])
+          clean.searchParams.delete(key);
+        window.history.replaceState(
+          window.history.state,
+          '',
+          clean.pathname + clean.search + clean.hash
+        );
+      } catch {
+        /* Keep public recipe URL usable when storage is unavailable. */
+      }
+    }
+    if (entry.source === 'account-handoff' && draft) {
+      try {
+        sessionStorage.removeItem('banana-account:handoff:v1');
+      } catch {
+        /* Optional storage. */
+      }
     }
     setDraftLoaded(true);
   }, [form, initialModel, returnPath, allModels]);
@@ -485,6 +486,7 @@ export function BananaGenerator({
         window.sessionStorage.setItem(
           'nano-site:draft:v2',
           JSON.stringify({
+            pendingSelection: explicitSelection.current,
             prompt: form.state.values.prompt,
             model: modelId,
             operation: mode,
@@ -555,7 +557,9 @@ export function BananaGenerator({
   }, [modelId, mode, ratio, selectedResolution]);
   useEffect(() => {
     if (previousUser.current === session?.user?.id) return;
+    const signingIn = !previousUser.current && Boolean(session?.user?.id);
     previousUser.current = session?.user?.id;
+    if (signingIn) return;
     setTaskId(undefined);
     setSelectedHistory(undefined);
     setInitialReferenceUrls([]);
@@ -567,6 +571,10 @@ export function BananaGenerator({
         `banana:active-task:${session.user.id}`
       );
       if (!raw) return;
+      if (explicitSelection.current) {
+        toast.info(copy.active_preserved);
+        return;
+      }
       const saved = parseActiveCreativeTask(raw);
       if (!saved) return;
       const selected = saved.model;
@@ -628,6 +636,7 @@ export function BananaGenerator({
       window.sessionStorage.setItem(
         'nano-site:draft:v2',
         JSON.stringify({
+          pendingSelection: explicitSelection.current,
           prompt: form.state.values.prompt,
           model: modelId,
           operation: mode,
@@ -716,9 +725,34 @@ export function BananaGenerator({
   );
   useEffect(() => {
     const prepare = (event: Event) => {
-      if (working) return;
+      if (working) {
+        toast.info(copy.active_preserved);
+        return;
+      }
       const detail = (event as CustomEvent<BananaGeneratorSelection>).detail;
       if (!detail) return;
+      if (typeof detail.prompt === 'string') {
+        try {
+          savePreviousGeneratorDraft(sessionStorage);
+          const raw = sessionStorage.getItem(PREVIOUS_GENERATOR_DRAFT_KEY);
+          setPreviousDraft(
+            raw
+              ? normalizeGeneratorDraft(
+                  JSON.parse(raw),
+                  initialModel,
+                  allModels
+                )
+              : null
+          );
+        } catch {
+          /* Preparation still works without storage. */
+        }
+        explicitSelection.current = true;
+        trackFunnelEvent('recipe_prefilled', {
+          source: 'inline-selection',
+          model: detail.model || modelId,
+        });
+      }
       const selected = CREATIVE_MODELS.find((item) => item.id === detail.model);
       if (
         selected &&
@@ -734,9 +768,22 @@ export function BananaGenerator({
       if (detail.scene) setScene(normalizeCreativeScene(detail.scene));
       if (typeof detail.prompt === 'string')
         form.setFieldValue('prompt', detail.prompt.slice(0, 32000));
-      if (typeof detail.prompt === 'string') setOutputCount(1);
       if (typeof detail.prompt === 'string')
-        setResolution((selected || model).resolutions?.[0]);
+        setOutputCount(
+          Number.isInteger(detail.outputCount) &&
+            typeof detail.outputCount === 'number' &&
+            detail.outputCount >= 1 &&
+            detail.outputCount <= getCreativeOutputLimit((selected || model).id)
+            ? detail.outputCount
+            : 1
+        );
+      if (typeof detail.prompt === 'string')
+        setResolution(
+          detail.resolution &&
+            (selected || model).resolutions?.includes(detail.resolution)
+            ? detail.resolution
+            : (selected || model).resolutions?.[0]
+        );
       if (Array.isArray(detail.imageUrls))
         setInitialReferenceUrls(
           detail.imageUrls
@@ -755,7 +802,7 @@ export function BananaGenerator({
     window.addEventListener('banana:prepare-generator', prepare);
     return () =>
       window.removeEventListener('banana:prepare-generator', prepare);
-  }, [allModels, working, form, fieldId, model]);
+  }, [allModels, working, form, fieldId, model, modelId, initialModel]);
   function modelSummary(id: CreativeModelId) {
     if (!id.startsWith('nano-banana'))
       return (
@@ -1000,6 +1047,59 @@ export function BananaGenerator({
                   maxSize: () => copy.max_size,
                 }}
               />
+            </div>
+          )}
+          {(previousDraft || (returnPath === '/free' && draftRestored)) && (
+            <div
+              className="border-border bg-muted/30 rounded-lg border p-3 text-sm"
+              role="status"
+            >
+              <p>{previousDraft ? copy.previous_saved : copy.free_saved}</p>
+              <div className="mt-2 flex flex-wrap gap-3">
+                {previousDraft && (
+                  <button
+                    type="button"
+                    disabled={working}
+                    className="underline underline-offset-4"
+                    onClick={() => {
+                      const draft = previousDraft;
+                      prepareBananaGenerator({
+                        prompt: draft.prompt,
+                        model: draft.model,
+                        mode: draft.operation,
+                        aspectRatio: draft.aspectRatio,
+                        resolution: draft.resolution,
+                        outputCount: draft.outputCount,
+                        imageUrls: draft.imageUrls,
+                      });
+                      setPreviousDraft(null);
+                    }}
+                  >
+                    {copy.restore_previous}
+                  </button>
+                )}
+                {returnPath === '/free' && (
+                  <button
+                    type="button"
+                    disabled={working}
+                    className="underline underline-offset-4"
+                    onClick={() => {
+                      prepareBananaGenerator({
+                        prompt: '',
+                        model: 'nano-banana-2.1',
+                        mode: 'generate',
+                        aspectRatio: '1:1',
+                        resolution: '1K',
+                        outputCount: 1,
+                        imageUrls: [],
+                      });
+                      setDraftRestored(false);
+                    }}
+                  >
+                    {copy.free_start}
+                  </button>
+                )}
+              </div>
             </div>
           )}
           <form.Field name="prompt">
@@ -1269,7 +1369,7 @@ export function BananaGenerator({
               <>
                 {!session?.user && prompt.trim() ? (
                   <Link
-                    href={`/sign-in?callbackUrl=${encodeURIComponent(returnPath + '#generator')}`}
+                    href={`/sign-in?callbackUrl=${encodeURIComponent(returnPath + (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('recipe') ? '?recipe=' + encodeURIComponent(new URLSearchParams(window.location.search).get('recipe')!) : '') + '#generator')}`}
                     onClick={remember}
                     className="banana-generator__submit"
                   >

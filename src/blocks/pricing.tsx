@@ -56,10 +56,19 @@ export function Pricing({
 
   useEffect(() => {
     if (!session?.user) return;
-    const planId = window.sessionStorage.getItem('image-studio:pending-plan');
+    let planId: string | null;
+    try {
+      planId = window.sessionStorage.getItem('image-studio:pending-plan');
+    } catch {
+      return; // Optional login-return state must not block the homepage.
+    }
     if (!planId) return;
     setReturningPlanId(planId);
-    window.sessionStorage.removeItem('image-studio:pending-plan');
+    try {
+      window.sessionStorage.removeItem('image-studio:pending-plan');
+    } catch {
+      /* Keep the restored choice usable without optional storage. */
+    }
     window.setTimeout(
       () =>
         document

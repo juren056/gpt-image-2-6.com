@@ -58,7 +58,7 @@ const STATIC_PATHS: Array<
     lastModified: SITE_LAST_UPDATED,
     changeFrequency: 'monthly',
     priority: 0.75,
-    indexableLocales: ['en'],
+    indexableLocales: category === 'chinese' ? ['en', 'zh'] : ['en'],
   })),
   {
     path: '/tools',

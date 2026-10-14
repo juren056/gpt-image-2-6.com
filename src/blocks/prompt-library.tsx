@@ -15,10 +15,8 @@ import { toast } from 'sonner';
 import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
 import { trackFunnelEvent } from '@/lib/analytics-events';
-import {
-  stageGeneratorPrompt,
-  stageVideoPrompt,
-} from '@/lib/prompt-navigation';
+import { publicRecipeHref } from '@/lib/generator-entry';
+import { stageVideoPrompt } from '@/lib/prompt-navigation';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { HOMEPAGE_PROMPTS } from '@/content/homepage-prompts';
@@ -410,7 +408,7 @@ export function PromptLibrary({
                       <div className="p-4">
                         <div className="mb-2 text-[10px] font-medium text-slate-400">
                           {item.mediaType === 'image'
-                            ? `AI Image · ${item.ratio} · ${item.resolution}`
+                            ? `Nano Banana 2.1 · ${item.ratio} · ${item.resolution}`
                             : m['prompts.video_models_hint']()}
                         </div>
                         <p className="line-clamp-4 min-h-20 text-xs leading-5 text-slate-600 dark:text-white/52">
@@ -433,10 +431,8 @@ export function PromptLibrary({
                           </button>
                           {item.mediaType === 'image' ? (
                             <Link
-                              href="/#generator"
+                              href={publicRecipeHref(item.id)}
                               onClick={() => {
-                                stageGeneratorPrompt(item.prompt);
-
                                 trackFunnelEvent('prompt_used', {
                                   category: item.category,
 

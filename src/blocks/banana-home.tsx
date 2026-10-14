@@ -15,6 +15,7 @@ import { bananaText } from '@/blocks/banana-messages';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
 import { Pricing } from '@/blocks/pricing';
+import { VerifiedExamples } from '@/blocks/verified-examples';
 import type { NanoPageCopy } from '@/components/banana-article';
 import {
   BananaGenerator,
@@ -33,6 +34,12 @@ import {
 } from '@/components/banana-home-content';
 
 export const BANANA_GENERATOR_KEYS = [
+  'prefill_failed',
+  'active_preserved',
+  'previous_saved',
+  'restore_previous',
+  'free_saved',
+  'free_start',
   'result_details',
   'result_endpoint',
   'result_submitted',
@@ -189,6 +196,7 @@ export function BananaHome({
                   : text(`cases.${caseImages.indexOf(example.id)}.alt`),
             }))}
           />
+          <VerifiedExamples />
         </div>
       </div>
       <main>

@@ -14,12 +14,24 @@ export function ReferralClaimEffect() {
   const attempted = useRef(false);
   useEffect(() => {
     if (!session?.user || attempted.current) return;
-    const code = window.localStorage.getItem(KEY);
+    let code: string | null;
+    try {
+      code = window.localStorage.getItem(KEY);
+    } catch {
+      return; // Referral attribution is optional when storage is unavailable.
+    }
     if (!code) return;
     attempted.current = true;
     let cancelled = false;
     let retryTimer: number | undefined;
 
+    const forgetCode = () => {
+      try {
+        window.localStorage.removeItem(KEY);
+      } catch {
+        /* A storage failure must not retry an already successful claim. */
+      }
+    };
     const claimReward = (attempt: number) => {
       apiPost<{ rewarded: boolean; pending: boolean; credits: number }>(
         '/api/referrals',
@@ -27,7 +39,7 @@ export function ReferralClaimEffect() {
       )
         .then((data) => {
           if (cancelled) return;
-          window.localStorage.removeItem(KEY);
+          forgetCode();
           queryClient.invalidateQueries({ queryKey: ['referrals'] });
           toast.success(
             data.rewarded
@@ -42,7 +54,7 @@ export function ReferralClaimEffect() {
               error.message
             );
           if (terminal) {
-            window.localStorage.removeItem(KEY);
+            forgetCode();
             toast.error(error.message);
             return;
           }
