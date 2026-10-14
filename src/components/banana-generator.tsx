@@ -1,4 +1,11 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from 'react';
 import { useForm } from '@tanstack/react-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
@@ -41,11 +48,13 @@ import {
   parseActiveCreativeTask,
 } from '@/lib/banana-task-resume';
 import {
+  generatorDraftFromSelection,
   markGeneratorDraftAccepted,
   normalizeGeneratorDraft,
   PREVIOUS_GENERATOR_DRAFT_KEY,
   resolveGeneratorEntry,
   savePreviousGeneratorDraft,
+  type GeneratorDraft,
 } from '@/lib/generator-entry';
 import { ModelBrandTile } from '@/components/creative-visuals';
 import { FirstGenerationFeedback } from '@/components/first-generation-feedback';
@@ -205,6 +214,7 @@ export function BananaGenerator({
     scene: string;
   }>();
   const explicitSelection = useRef(false);
+  const applyingDraft = useRef(false);
   const [previousDraft, setPreviousDraft] =
     useState<ReturnType<typeof normalizeGeneratorDraft>>(null);
   const restoringTask = useRef(false);
@@ -276,39 +286,21 @@ export function BananaGenerator({
           : false,
   });
   const run = useMutation({
-    mutationFn: (prompt: string) =>
+    mutationFn: (draft: GeneratorDraft) =>
       apiPost<{ id: string }>('/api/studio/run', {
-        model: modelId,
-        operation: mode,
-        prompt,
-        size: ratio,
-        resolution: selectedResolution,
+        model: draft.model,
+        operation: draft.operation,
+        prompt: draft.prompt,
+        size: draft.aspectRatio,
+        resolution: draft.resolution,
         outputFormat: 'png',
-        outputCount: count,
-        imageUrls:
-          mode === 'edit'
-            ? references
-                .filter((item) => item.status === 'uploaded' && item.url)
-                .map((item) => item.url)
-            : [],
+        outputCount: draft.outputCount,
+        imageUrls: draft.imageUrls,
       }),
-    onSuccess: (data) => {
+    onSuccess: (data, submitted) => {
       explicitSelection.current = false;
       try {
-        markGeneratorDraftAccepted(sessionStorage, {
-          prompt: form.state.values.prompt,
-          model: modelId,
-          operation: mode,
-          aspectRatio: ratio,
-          resolution: selectedResolution,
-          outputCount: count,
-          imageUrls:
-            mode === 'edit'
-              ? references
-                  .filter((item) => item.status === 'uploaded' && item.url)
-                  .map((item) => item.url!)
-              : [],
-        });
+        markGeneratorDraftAccepted(sessionStorage, submitted);
       } catch {
         /* History remains available without optional browser storage. */
       }
@@ -322,19 +314,27 @@ export function BananaGenerator({
             : 'smooth',
           block: 'start',
         });
-      setRequestContext({ model: modelId, mode, scene });
-      trackFunnelEvent('generate_started', { model: modelId, mode, scene });
+      setRequestContext({
+        model: submitted.model as CreativeModelId,
+        mode: submitted.operation,
+        scene,
+      });
+      trackFunnelEvent('generate_started', {
+        model: submitted.model,
+        mode: submitted.operation,
+        scene,
+      });
       try {
         sessionStorage.setItem(
           `banana:active-task:${session?.user?.id}`,
           JSON.stringify({
             id: data.id,
-            model: modelId,
-            mode,
+            model: submitted.model,
+            mode: submitted.operation,
             scene,
-            ratio,
-            resolution: selectedResolution,
-            outputCount: count,
+            ratio: submitted.aspectRatio,
+            resolution: submitted.resolution,
+            outputCount: submitted.outputCount,
           })
         );
       } catch {
@@ -372,9 +372,97 @@ export function BananaGenerator({
       remember();
       setTaskId(undefined);
       trackFunnelEvent('generate_clicked', { model: modelId, mode, scene });
-      await run.mutateAsync(value.prompt.trim()).catch(() => undefined);
+      const submitted = normalizeGeneratorDraft(
+        {
+          prompt: value.prompt.trim(),
+          model: modelId,
+          operation: mode,
+          aspectRatio: ratio,
+          resolution: selectedResolution,
+          outputCount: count,
+          imageUrls:
+            mode === 'edit'
+              ? references
+                  .filter((item) => item.status === 'uploaded' && item.url)
+                  .map((item) => item.url)
+              : [],
+        },
+        modelId,
+        true
+      );
+      if (!submitted) return;
+      await run.mutateAsync(submitted).catch(() => undefined);
     },
   });
+
+  const applyGeneratorDraft = useCallback(
+    (
+      draft: GeneratorDraft,
+      options: { backupCurrent?: boolean; track?: boolean } = {}
+    ) => {
+      if (working) {
+        toast.info(copy.active_preserved);
+        return false;
+      }
+      const { backupCurrent = true, track = true } = options;
+      if (backupCurrent) {
+        try {
+          savePreviousGeneratorDraft(sessionStorage);
+          const raw = sessionStorage.getItem(PREVIOUS_GENERATOR_DRAFT_KEY);
+          setPreviousDraft(
+            raw
+              ? normalizeGeneratorDraft(
+                  JSON.parse(raw),
+                  initialModel,
+                  allModels
+                )
+              : null
+          );
+        } catch {
+          /* Preparation still works without storage. */
+        }
+      }
+
+      applyingDraft.current = true;
+      explicitSelection.current = true;
+      form.setFieldValue('prompt', draft.prompt);
+      setModelId(draft.model as CreativeModelId);
+      setMode(draft.operation);
+      setRatio(draft.aspectRatio);
+      setResolution(draft.resolution);
+      setOutputCount(draft.outputCount);
+      setInitialReferenceUrls(draft.imageUrls);
+      setReferences(
+        draft.operation === 'edit'
+          ? draft.imageUrls.map((url, index) => ({
+              id: `reference-${index}`,
+              preview: url,
+              url,
+              status: 'uploaded' as const,
+            }))
+          : []
+      );
+      setTaskId(undefined);
+      setSelectedHistory(undefined);
+      try {
+        sessionStorage.setItem(
+          'nano-site:draft:v2',
+          JSON.stringify({ ...draft, pendingSelection: true })
+        );
+      } catch {
+        /* Preparation still works without storage. */
+      } finally {
+        applyingDraft.current = false;
+      }
+      if (track)
+        trackFunnelEvent('recipe_prefilled', {
+          source: 'inline-selection',
+          model: draft.model,
+        });
+      return true;
+    },
+    [allModels, copy.active_preserved, form, initialModel, working]
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -482,6 +570,7 @@ export function BananaGenerator({
   useEffect(() => {
     if (!draftLoaded) return;
     const save = () => {
+      if (applyingDraft.current) return;
       try {
         window.sessionStorage.setItem(
           'nano-site:draft:v2',
@@ -725,75 +814,40 @@ export function BananaGenerator({
   );
   useEffect(() => {
     const prepare = (event: Event) => {
-      if (working) {
-        toast.info(copy.active_preserved);
-        return;
-      }
       const detail = (event as CustomEvent<BananaGeneratorSelection>).detail;
       if (!detail) return;
-      if (typeof detail.prompt === 'string') {
-        try {
-          savePreviousGeneratorDraft(sessionStorage);
-          const raw = sessionStorage.getItem(PREVIOUS_GENERATOR_DRAFT_KEY);
-          setPreviousDraft(
-            raw
-              ? normalizeGeneratorDraft(
-                  JSON.parse(raw),
-                  initialModel,
-                  allModels
-                )
-              : null
-          );
-        } catch {
-          /* Preparation still works without storage. */
-        }
-        explicitSelection.current = true;
-        trackFunnelEvent('recipe_prefilled', {
-          source: 'inline-selection',
-          model: detail.model || modelId,
-        });
-      }
-      const selected = CREATIVE_MODELS.find((item) => item.id === detail.model);
+      const promptSelection = typeof detail.prompt === 'string';
+      const current = normalizeGeneratorDraft(
+        {
+          prompt: form.state.values.prompt,
+          model: modelId,
+          operation: mode,
+          aspectRatio: ratio,
+          resolution: selectedResolution,
+          outputCount: count,
+          imageUrls: references
+            .filter((item) => item.status === 'uploaded' && item.url)
+            .map((item) => item.url),
+        },
+        modelId,
+        true
+      );
+      if (!current) return;
+      const draft = generatorDraftFromSelection(
+        current,
+        detail,
+        detail.model || modelId,
+        allModels
+      );
+      if (!draft) return;
       if (
-        selected &&
-        (allModels || WORKBENCH_MODELS.some((id) => id === selected.id))
+        !applyGeneratorDraft(draft, {
+          backupCurrent: promptSelection,
+          track: promptSelection,
+        })
       )
-        setModelId(selected.id);
-      if (detail.mode) setMode(detail.mode);
-      if (
-        detail.aspectRatio &&
-        (selected || model).sizes.includes(detail.aspectRatio)
-      )
-        setRatio(detail.aspectRatio);
+        return;
       if (detail.scene) setScene(normalizeCreativeScene(detail.scene));
-      if (typeof detail.prompt === 'string')
-        form.setFieldValue('prompt', detail.prompt.slice(0, 32000));
-      if (typeof detail.prompt === 'string')
-        setOutputCount(
-          Number.isInteger(detail.outputCount) &&
-            typeof detail.outputCount === 'number' &&
-            detail.outputCount >= 1 &&
-            detail.outputCount <= getCreativeOutputLimit((selected || model).id)
-            ? detail.outputCount
-            : 1
-        );
-      if (typeof detail.prompt === 'string')
-        setResolution(
-          detail.resolution &&
-            (selected || model).resolutions?.includes(detail.resolution)
-            ? detail.resolution
-            : (selected || model).resolutions?.[0]
-        );
-      if (Array.isArray(detail.imageUrls))
-        setInitialReferenceUrls(
-          detail.imageUrls
-            .filter(
-              (url) => typeof url === 'string' && url.startsWith('https://')
-            )
-            .slice(0, (selected || model).maxReferences)
-        );
-      setTaskId(undefined);
-      setSelectedHistory(undefined);
       const field = document.getElementById(
         detail.focus === 'shape' ? `${fieldId}-shape` : `${fieldId}-prompt`
       );
@@ -802,7 +856,18 @@ export function BananaGenerator({
     window.addEventListener('banana:prepare-generator', prepare);
     return () =>
       window.removeEventListener('banana:prepare-generator', prepare);
-  }, [allModels, working, form, fieldId, model, modelId, initialModel]);
+  }, [
+    allModels,
+    applyGeneratorDraft,
+    count,
+    fieldId,
+    form,
+    mode,
+    modelId,
+    ratio,
+    references,
+    selectedResolution,
+  ]);
   function modelSummary(id: CreativeModelId) {
     if (!id.startsWith('nano-banana'))
       return (
@@ -1063,16 +1128,13 @@ export function BananaGenerator({
                     className="underline underline-offset-4"
                     onClick={() => {
                       const draft = previousDraft;
-                      prepareBananaGenerator({
-                        prompt: draft.prompt,
-                        model: draft.model,
-                        mode: draft.operation,
-                        aspectRatio: draft.aspectRatio,
-                        resolution: draft.resolution,
-                        outputCount: draft.outputCount,
-                        imageUrls: draft.imageUrls,
-                      });
-                      setPreviousDraft(null);
+                      if (
+                        applyGeneratorDraft(draft, {
+                          backupCurrent: false,
+                          track: false,
+                        })
+                      )
+                        setPreviousDraft(null);
                     }}
                   >
                     {copy.restore_previous}

@@ -6,6 +6,7 @@ import {
 } from '../../src/config/creative-studio';
 import {
   GENERATOR_DRAFT_KEY,
+  generatorDraftFromSelection,
   markGeneratorDraftAccepted,
   normalizeGeneratorDraft,
   PREVIOUS_GENERATOR_DRAFT_KEY,
@@ -132,6 +133,39 @@ for (const id of ['NB-05', 'NB-06', 'NB-07', 'NB-08', 'NB-16', 'NB-17']) {
   );
 }
 assert.equal(publicRecipeDraft('NB-18'), null);
+const restored = normalizeGeneratorDraft(old, 'nano-banana-2.1', true)!;
+const bottle = publicRecipeDraft('NB-16')!;
+const switchedAfterRestore = generatorDraftFromSelection(
+  restored,
+  {
+    prompt: bottle.prompt,
+    model: bottle.model,
+    mode: bottle.operation,
+    aspectRatio: bottle.aspectRatio,
+    resolution: bottle.resolution,
+    outputCount: bottle.outputCount,
+    imageUrls: bottle.imageUrls,
+  },
+  restored.model,
+  true
+)!;
+assert.equal(switchedAfterRestore.prompt, bottle.prompt);
+assert.equal(switchedAfterRestore.model, 'nano-banana-2.1');
+assert.equal(switchedAfterRestore.operation, 'edit');
+assert.equal(switchedAfterRestore.aspectRatio, '3:2');
+assert.equal(switchedAfterRestore.resolution, '1K');
+assert.equal(switchedAfterRestore.outputCount, 1);
+assert.deepEqual(switchedAfterRestore.imageUrls, [
+  'https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp',
+]);
+assert.equal(
+  getCreativeUnitCredits(
+    CREATIVE_MODELS.find((m) => m.id === switchedAfterRestore.model)!,
+    switchedAfterRestore.operation,
+    switchedAfterRestore.resolution
+  ),
+  8
+);
 const asset = normalizeGeneratorDraft({
   ...old,
   model: 'fal-ai/nano-banana-pro/edit',
@@ -140,7 +174,7 @@ assert.equal(asset?.model, 'nano-banana-pro');
 assert.equal(asset?.outputCount, 4);
 assert.equal(asset?.aspectRatio, '16:9');
 console.log(
-  'Generator entry regression passed: stale draft, explicit recipe, query, login handoff, missing recipe, malformed input, storage denial and six real examples.'
+  'Generator entry regression passed: stale draft, explicit recipe, restore-then-edit switch, query, login handoff, missing recipe, malformed input, storage denial and six real examples.'
 );
 
 const submitted = publicRecipeDraft('chinese-tea-poster')!;

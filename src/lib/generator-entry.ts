@@ -16,6 +16,15 @@ export type GeneratorDraft = {
   outputCount: number;
   imageUrls: string[];
 };
+export type GeneratorDraftSelection = {
+  prompt?: string;
+  model?: string;
+  mode?: 'generate' | 'edit';
+  aspectRatio?: string;
+  resolution?: string;
+  outputCount?: number;
+  imageUrls?: string[];
+};
 export function normalizeGeneratorDraft(
   raw: unknown,
   fallback = 'nano-banana-2.1',
@@ -72,6 +81,35 @@ export function normalizeGeneratorDraft(
             .slice(0, model.maxReferences)
         : [],
   };
+}
+
+/** Build one complete draft before applying a UI selection. */
+export function generatorDraftFromSelection(
+  current: GeneratorDraft,
+  selection: GeneratorDraftSelection,
+  fallback: string,
+  allModels = false
+) {
+  const replacesPrompt = typeof selection.prompt === 'string';
+  return normalizeGeneratorDraft(
+    {
+      prompt: replacesPrompt ? selection.prompt : current.prompt,
+      model: selection.model || current.model,
+      operation: selection.mode || current.operation,
+      aspectRatio: selection.aspectRatio || current.aspectRatio,
+      resolution: replacesPrompt
+        ? selection.resolution
+        : selection.resolution || current.resolution,
+      outputCount: replacesPrompt
+        ? selection.outputCount || 1
+        : selection.outputCount || current.outputCount,
+      imageUrls: replacesPrompt
+        ? selection.imageUrls || []
+        : selection.imageUrls || current.imageUrls,
+    },
+    selection.model || fallback,
+    allModels
+  );
 }
 export function publicRecipeDraft(id: string): GeneratorDraft | null {
   const recipe = STUDIO_PROMPTS.find((item) => item.slug === id);
