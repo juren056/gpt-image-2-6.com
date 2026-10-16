@@ -3,7 +3,6 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { bananaText } from '@/blocks/banana-messages';
 import { BananaFooter } from '@/components/banana-footer';
-import { BuiltWithShipAny } from '@/components/built-with-shipany';
 import { FooterLocaleLinks } from '@/components/locale-selector';
 
 export function Footer() {
@@ -52,7 +51,6 @@ export function Footer() {
       languageControls={<FooterLocaleLinks />}
       copyright={`© ${new Date().getFullYear()} ${envConfigs.app_name}`}
       disclosure={text('independent')}
-      attribution={<BuiltWithShipAny appUrl={envConfigs.app_url} />}
     />
   );
 }

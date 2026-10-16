@@ -13,7 +13,6 @@ export function BananaFooter({
   languageControls,
   copyright,
   disclosure,
-  attribution,
 }: {
   brand: string;
   logo: string;
@@ -24,7 +23,6 @@ export function BananaFooter({
   languageControls: ReactNode;
   copyright: string;
   disclosure: string;
-  attribution: ReactNode;
 }) {
   return (
     <footer className="banana-footer">
@@ -69,7 +67,6 @@ export function BananaFooter({
             <p>{copyright}</p>
             <p>{disclosure}</p>
           </div>
-          {attribution}
         </div>
       </div>
     </footer>
