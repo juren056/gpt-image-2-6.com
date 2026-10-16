@@ -28,8 +28,8 @@ the credit-pack group is the first pricing tab.
 
 The Mini Pack dialog opens five seconds after the hydrated homepage is visible.
 If the tab is hidden when the delay expires, it waits until the tab becomes
-visible. Dismissing the dialog records a timestamp in browser local storage and
-suppresses it for seven days. Storage failures do not block the offer or checkout.
+visible. Dismissing the dialog closes it for the current homepage visit. Reloading,
+reopening the site or returning to the homepage starts a fresh five-second timer.
 
 The dialog uses the existing localized pricing messages. Its CTA records the
 existing privacy-filtered credit-pack event and opens
@@ -42,8 +42,9 @@ the authority for Stripe checkout amount and awarded credits.
 - TypeScript, Prettier, all 18 locale catalogs and analytics privacy checks passed.
 - Prepaid-membership regression and direct server-catalog assertions passed.
 - A full isolated production build passed.
-- Headless Chromium measured the popup after the five-second timer, confirmed the
-  seven-day repeat suppression, and reached checkout with $2.99 and 100 credits.
+- Headless Chromium measured the popup after the five-second timer, confirmed it
+  appears again after re-entering the homepage, and reached checkout with $2.99
+  and 100 credits.
 - Desktop 1440×1000 and mobile 390×844 screenshots were reviewed. The dialog fits
   both viewports, preserves focus-managed dismissal, and produced no console
   errors.

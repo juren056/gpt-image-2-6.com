@@ -3,7 +3,7 @@
   "files": {
     "src/routes/index.tsx": "54472b3413f999459cff4a25775614141d552654dd3a0359462e20947ff486fd",
     "src/blocks/banana-home.tsx": "880aeeb3b77cee63c4b1853d9c8b5e554ac521ae2bf9554c0c4ce94c3936977f",
-    "src/blocks/credit-pack-offer.tsx": "cdb93b22ee94079f6bfe9e84217d14c6ee33c209397c9722e1fc26bffb622f4f",
+    "src/blocks/credit-pack-offer.tsx": "b83530f31a09eee8db77669095815a4d1c34935ed7848dec6c55764c9c071a16",
     "src/blocks/pricing.tsx": "aabfc949edebfed826352f68512b8823e0bfb5e5d76dda3fd5c61f2435eb6101",
     "src/config/pricing.ts": "c8cb0cf94a9df5c7df19ed2423d174483e8f4476efe95eb69a552df8a9124791",
     "src/blocks/banana-features.tsx": "c8ce48e293338c0b7409a0cd94bb6a5d052aeb4214c30a651ecce530b284ebff",
@@ -1248,8 +1248,8 @@
     "date": "2026-10-16",
     "authorization": "Owner requested a one-time credit-pack promotion that opens five seconds after homepage entry",
     "product": "credits_boost · USD 2.99 · 100 credits · 365 days",
-    "behavior": "Visible-tab five-second delay, seven-day browser dismissal cooldown, Stripe checkout handoff",
-    "review": ".artifacts/credit-offer: desktop and 390px mobile screenshots, measured delay, cooldown, checkout price/credits and zero browser console errors",
+    "behavior": "Visible-tab five-second delay on every homepage entry, current-visit dismissal, Stripe checkout handoff",
+    "review": ".artifacts/credit-offer: desktop and 390px mobile screenshots, measured delay, re-entry behavior, checkout price/credits and zero browser console errors",
     "reference": "docs/credit-pack-offer.md"
   }
 }

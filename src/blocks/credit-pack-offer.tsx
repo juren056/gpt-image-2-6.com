@@ -18,22 +18,7 @@ import {
 } from '@/components/ui/dialog';
 
 const OFFER_DELAY_MS = 5_000;
-const OFFER_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1_000;
-const OFFER_DISMISSED_AT_KEY = 'nanobanana:credit-pack-offer-dismissed-at';
 const OFFER_PRODUCT_ID = 'credits_boost';
-
-function wasRecentlyDismissed(now: number) {
-  try {
-    const dismissedAt = Number(
-      window.localStorage.getItem(OFFER_DISMISSED_AT_KEY)
-    );
-    return (
-      Number.isFinite(dismissedAt) && now - dismissedAt < OFFER_COOLDOWN_MS
-    );
-  } catch {
-    return false;
-  }
-}
 
 export function CreditPackOffer() {
   const router = useRouter();
@@ -43,8 +28,6 @@ export function CreditPackOffer() {
   const estimate = imageRequestEstimates(product.credits)[0];
 
   useEffect(() => {
-    if (wasRecentlyDismissed(Date.now())) return;
-
     let delayElapsed = false;
     const maybeShow = () => {
       if (
@@ -73,29 +56,19 @@ export function CreditPackOffer() {
     };
   }, []);
 
-  function handleOpenChange(nextOpen: boolean) {
-    setOpen(nextOpen);
-    if (nextOpen) return;
-    try {
-      window.localStorage.setItem(OFFER_DISMISSED_AT_KEY, String(Date.now()));
-    } catch {
-      // Optional frequency storage must never block the offer or checkout.
-    }
-  }
-
   function handleCheckout() {
     trackFunnelEvent('credit_pack_clicked', {
       source: 'homepage_credit_offer',
       product: OFFER_PRODUCT_ID,
     });
-    handleOpenChange(false);
+    setOpen(false);
     router.push(
       `/checkout?product=${OFFER_PRODUCT_ID}&redirect=${encodeURIComponent('/settings/billing')}`
     );
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="w-[calc(100%-1.5rem)] max-w-lg overflow-hidden border-zinc-700 bg-zinc-950 p-0 text-white shadow-2xl sm:rounded-[1.75rem]">
         <div className="relative overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.24),transparent_42%)] px-6 pt-8 pb-6 sm:px-8 sm:pt-10 sm:pb-8">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-yellow-300/30 bg-yellow-300/10 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-yellow-300 uppercase">
