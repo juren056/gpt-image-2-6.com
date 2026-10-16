@@ -21,6 +21,7 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { usePublicConfig } from '@/hooks/use-public-config';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
+import { MicrosoftClarity } from '@/components/analytics/microsoft-clarity';
 import { Plausible } from '@/components/analytics/plausible';
 import { CustomerService } from '@/components/customer-service';
 import { GoogleOneTap } from '@/components/google-one-tap';
@@ -162,6 +163,7 @@ function RootDocument({ children }: { children: ReactNode }) {
     >
       <head>
         <HeadContent />
+        <MicrosoftClarity projectId="yyq48um5e7" />
       </head>
       <body className="font-sans antialiased">
         {children}
