@@ -3,7 +3,7 @@
   "files": {
     "src/routes/index.tsx": "54472b3413f999459cff4a25775614141d552654dd3a0359462e20947ff486fd",
     "src/blocks/banana-home.tsx": "880aeeb3b77cee63c4b1853d9c8b5e554ac521ae2bf9554c0c4ce94c3936977f",
-    "src/blocks/credit-pack-offer.tsx": "b83530f31a09eee8db77669095815a4d1c34935ed7848dec6c55764c9c071a16",
+    "src/blocks/credit-pack-offer.tsx": "1bf532f57976346d584882c5a88d3bdd58097e57b83a2b083761fd7f90223ce6",
     "src/blocks/pricing.tsx": "37b6c14f99fdde5b40516d9ee475be8058ba6de1c75bfe37529bae49dcf4b19b",
     "src/config/pricing.ts": "c8cb0cf94a9df5c7df19ed2423d174483e8f4476efe95eb69a552df8a9124791",
     "src/blocks/banana-features.tsx": "c8ce48e293338c0b7409a0cd94bb6a5d052aeb4214c30a651ecce530b284ebff",
@@ -1246,10 +1246,17 @@
   },
   "creditPackOffer": {
     "date": "2026-10-16",
-    "authorization": "Owner requested a one-time credit-pack promotion that opens five seconds after homepage entry",
-    "product": "credits_boost · USD 2.99 · 100 credits · 365 days",
-    "behavior": "Visible-tab five-second delay on every homepage entry, current-visit dismissal, Stripe checkout handoff",
-    "review": ".artifacts/credit-offer: desktop and 390px mobile screenshots, measured delay, re-entry behavior, checkout price/credits and zero browser console errors",
+    "authorization": "Owner requested the existing five-second offer include the other primary plans and approved the two-group implementation plan",
+    "products": [
+      "credits_boost",
+      "credits_flex",
+      "credits_power",
+      "starter_monthly",
+      "creator_monthly",
+      "pro_monthly"
+    ],
+    "behavior": "Visible-tab five-second delay on every homepage entry, current-visit dismissal, keyboard-accessible credit-pack and subscription selectors, server-catalog pricing and selected-product checkout handoff",
+    "review": ".artifacts/plan-offer: reviewed 672px desktop and 390px mobile dialog, all six checkout URLs, keyboard selection, measured delay, viewport containment and zero browser console errors",
     "reference": "docs/credit-pack-offer.md"
   },
   "homepageSubscriptionPlans": {

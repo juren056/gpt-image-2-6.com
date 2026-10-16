@@ -24,6 +24,8 @@ export type FunnelEvent =
   | 'evidence_opened'
   | 'pricing_view'
   | 'pricing_viewed'
+  | 'offer_group_selected'
+  | 'offer_product_selected'
   | 'checkout_started'
   | 'credit_pack_clicked'
   | 'subscription_clicked'

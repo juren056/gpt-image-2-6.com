@@ -21,6 +21,21 @@ const normalized = normalizeFunnelEvent('pricing_viewed', {
 assert.equal(normalized.event, 'pricing_view');
 assert.deepEqual(normalized.params, { source: 'header' });
 
+const offerSelection = normalizeFunnelEvent('offer_product_selected', {
+  source: 'homepage_plan_offer',
+  group: 'monthly',
+  product: 'creator_monthly',
+  email: 'private@example.test',
+});
+assert.deepEqual(offerSelection, {
+  event: 'offer_product_selected',
+  params: {
+    source: 'homepage_plan_offer',
+    group: 'monthly',
+    product: 'creator_monthly',
+  },
+});
+
 assert.deepEqual(
   buildGa4PurchaseEvent({
     transactionId: 'ORD-TEST-001',
