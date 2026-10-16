@@ -100,6 +100,7 @@ export function seoHead(params: {
   faqItems?: Array<{ question: string; answer: string }>;
   extraSchemas?: Array<Record<string, unknown>>;
   indexableLocales?: readonly string[];
+  markdownPath?: string;
 }) {
   const {
     locale,
@@ -115,6 +116,7 @@ export function seoHead(params: {
     faqItems = [],
     extraSchemas = [],
     indexableLocales = INDEXABLE_LOCALES,
+    markdownPath,
   } = params;
   const socialImage = socialImageUrl(image);
   const excluded = isSearchExcludedPath(path);
@@ -229,6 +231,25 @@ export function seoHead(params: {
       })),
       ...(!excluded
         ? [{ rel: 'alternate', hreflang: 'x-default', href: urlFor('en') }]
+        : []),
+      ...(!excluded && markdownPath
+        ? [
+            {
+              rel: 'alternate',
+              type: 'text/markdown',
+              hreflang: 'en',
+              href: `${envConfigs.app_url}${markdownPath}`,
+            },
+          ]
+        : []),
+      ...(!excluded
+        ? [
+            {
+              rel: 'describedby',
+              type: 'text/plain',
+              href: `${envConfigs.app_url}/llms.txt`,
+            },
+          ]
         : []),
     ],
   };

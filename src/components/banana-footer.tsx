@@ -10,6 +10,9 @@ export function BananaFooter({
   contact,
   supportEmail,
   columns,
+  agentActions,
+  agentActionTitle,
+  agentActionDescription,
   languageControls,
   copyright,
   disclosure,
@@ -20,6 +23,9 @@ export function BananaFooter({
   contact: BananaNavLink;
   supportEmail: string;
   columns: Array<{ title: string; links: BananaNavLink[] }>;
+  agentActions: Array<BananaNavLink & { shortLabel: string }>;
+  agentActionTitle: string;
+  agentActionDescription: string;
   languageControls: ReactNode;
   copyright: string;
   disclosure: string;
@@ -60,6 +66,26 @@ export function BananaFooter({
               ))}
             </nav>
           ))}
+        </div>
+        <div className="banana-footer-agent-bar">
+          <div>
+            <h2>{agentActionTitle}</h2>
+            <p>{agentActionDescription}</p>
+          </div>
+          <div className="banana-footer-agent-actions">
+            {agentActions.map((action) => (
+              <a
+                key={action.label}
+                href={action.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={action.label}
+                title={action.label}
+              >
+                <span aria-hidden="true">{action.shortLabel}</span>
+              </a>
+            ))}
+          </div>
         </div>
         <div className="banana-footer-languages">{languageControls}</div>
         <div className="banana-footer-bottom">

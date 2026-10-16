@@ -4,6 +4,7 @@ import {
   NANO_SITE_REVIEW_DATE,
   type NanoPageId,
 } from '@/config/nano-site';
+import { pricingCatalog } from '@/config/pricing';
 import { sitemapLastModified } from '@/config/sitemap-updates';
 import { organizationSchema, seoHead } from '@/lib/seo';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -21,6 +22,44 @@ const ARTICLE_PAGE_IDS: readonly NanoPageId[] = [
   'blogExport',
   'blogRights',
 ];
+
+const MARKDOWN_ALTERNATES: Partial<Record<NanoPageId, string>> = {
+  home: '/index.md',
+  pricing: '/pricing.md',
+  prompts: '/prompts.md',
+};
+
+const PUBLIC_OFFER_IDS = [
+  'starter_monthly',
+  'creator_monthly',
+  'pro_monthly',
+  'credits_boost',
+  'credits_flex',
+  'credits_power',
+] as const;
+
+function softwareApplicationSchema(description: string) {
+  return {
+    '@type': 'SoftwareApplication',
+    '@id': `${envConfigs.app_url}/#software-application`,
+    name: envConfigs.app_name,
+    url: envConfigs.app_url,
+    description,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web',
+    offers: PUBLIC_OFFER_IDS.map((id) => {
+      const product = pricingCatalog[id];
+      return {
+        '@type': 'Offer',
+        name: product.productName,
+        price: (product.priceInCents / 100).toFixed(2),
+        priceCurrency: product.currency.toUpperCase(),
+        url: `${envConfigs.app_url}/pricing`,
+        availability: 'https://schema.org/InStock',
+      };
+    }),
+  };
+}
 
 export function nanoSiteRouteOptions(id: NanoPageId) {
   return {
@@ -45,6 +84,7 @@ export function nanoSiteRouteOptions(id: NanoPageId) {
           NANO_SITE_REVIEW_DATE
         ),
         faqItems: loaderData.page.faqs,
+        markdownPath: MARKDOWN_ALTERNATES[id],
         extraSchemas:
           id === 'home'
             ? [
@@ -56,6 +96,7 @@ export function nanoSiteRouteOptions(id: NanoPageId) {
                   url: envConfigs.app_url,
                   publisher: { '@id': `${envConfigs.app_url}/#organization` },
                 },
+                softwareApplicationSchema(loaderData.page.description),
               ]
             : [],
       });
