@@ -54,17 +54,24 @@ export function PricingTable({
   recommendedTier,
   selectedPlanId,
   valueLabel,
+  showAllGroups = false,
 }: {
   groups: PricingGroup[];
   onCheckout?: (plan: PricingPlan) => void;
   recommendedTier?: string;
   selectedPlanId?: string;
   valueLabel?: string;
+  showAllGroups?: boolean;
 }) {
   const [activeGroup, setActiveGroup] = useState(groups[0]?.key || '');
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const currentGroup = groups.find((g) => g.key === activeGroup) || groups[0];
+  const visibleGroups = showAllGroups
+    ? groups
+    : currentGroup
+      ? [currentGroup]
+      : [];
 
   const checkoutMutation = useMutation({
     mutationFn: (plan: PricingPlan) =>
@@ -106,7 +113,7 @@ export function PricingTable({
   return (
     <div className="space-y-7 sm:space-y-10">
       {/* Group tabs — pill toggle */}
-      {groups.length > 1 && (
+      {groups.length > 1 && !showAllGroups && (
         <div className="flex justify-center">
           <div className="border-border bg-muted/40 inline-flex max-w-full items-center overflow-x-auto rounded-full border p-1">
             {groups.map((group) => (
@@ -127,130 +134,150 @@ export function PricingTable({
         </div>
       )}
 
-      {/* Plans grid */}
-      <div
-        className={cn(
-          'mx-auto grid snap-x snap-mandatory auto-cols-[88%] grid-flow-col gap-3 overflow-x-auto px-1 pb-4 [scrollbar-width:none] sm:snap-none sm:auto-cols-auto sm:grid-flow-row sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden',
-          currentGroup?.plans.length === 2
-            ? 'max-w-3xl sm:grid-cols-2'
-            : currentGroup?.plans.length === 3
-              ? 'max-w-5xl sm:grid-cols-2 lg:grid-cols-3'
-              : 'max-w-6xl sm:grid-cols-2 lg:grid-cols-4'
-        )}
-      >
-        {currentGroup?.plans.map((plan) => {
-          const isRecommended = Boolean(
-            recommendedTier && plan.id.startsWith(recommendedTier)
-          );
-          const perImage =
-            plan.priceInCents && plan.credits
-              ? plan.priceInCents / (plan.credits / 5) / 100
-              : null;
-          return (
-            <div
-              key={plan.id}
-              className={cn(
-                'border-border relative flex min-w-0 snap-center flex-col rounded-[1.5rem] border p-6 transition-all sm:rounded-2xl sm:p-8',
-                isRecommended || plan.featured
-                  ? 'bg-card ring-foreground/10 shadow-md ring-1'
-                  : 'bg-background hover:border-foreground/30',
-                selectedPlanId === plan.id &&
-                  'ring-primary border-primary shadow-primary/10 shadow-lg ring-2'
-              )}
-            >
-              {plan.badge && !isRecommended ? (
-                <span className="bg-primary text-primary-foreground absolute top-5 right-5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide uppercase">
-                  {plan.badge}
-                </span>
-              ) : null}
-              {isRecommended ? (
-                <span className="absolute top-5 right-5 rounded-full bg-emerald-600 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white uppercase">
-                  {m['landing.pricing.recommended']()}
-                </span>
-              ) : null}
-              <div data-tour={plan.featured ? 'subscription-plan' : undefined}>
-                {/* Plan name */}
-                {plan.name && (
-                  <p className="text-foreground mb-2 text-sm font-medium">
-                    {plan.name}
-                  </p>
-                )}
-
-                {plan.promotionLabel && (
-                  <p className="text-primary mb-2 text-xs font-semibold tracking-[0.12em] uppercase">
-                    {plan.promotionLabel}
-                  </p>
-                )}
-
-                {/* Price */}
-                <div className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <span className="text-primary font-serif text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
-                    {plan.price}
-                  </span>
-                  {plan.originalPrice && (
-                    <span
-                      className="text-muted-foreground text-base tabular-nums line-through decoration-2"
-                      aria-label={`${m['landing.pricing.original_price']()} ${plan.originalPrice}`}
-                    >
-                      {plan.originalPrice}
-                    </span>
+      {visibleGroups.map((group) => (
+        <div key={group.key} className="space-y-5 sm:space-y-7">
+          {showAllGroups && (
+            <h3 className="text-foreground text-center text-xl font-semibold tracking-tight sm:text-2xl">
+              {group.label}
+            </h3>
+          )}
+          {/* Plans grid */}
+          <div
+            className={cn(
+              'mx-auto grid snap-x snap-mandatory auto-cols-[88%] grid-flow-col gap-3 overflow-x-auto px-1 pb-4 [scrollbar-width:none] sm:snap-none sm:auto-cols-auto sm:grid-flow-row sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden',
+              group.plans.length === 2
+                ? 'max-w-3xl sm:grid-cols-2'
+                : group.plans.length === 3
+                  ? 'max-w-5xl sm:grid-cols-2 lg:grid-cols-3'
+                  : 'max-w-6xl sm:grid-cols-2 lg:grid-cols-4'
+            )}
+          >
+            {group.plans.map((plan) => {
+              const isRecommended = Boolean(
+                recommendedTier && plan.id.startsWith(recommendedTier)
+              );
+              const perImage =
+                plan.priceInCents && plan.credits
+                  ? plan.priceInCents / (plan.credits / 5) / 100
+                  : null;
+              return (
+                <div
+                  key={plan.id}
+                  className={cn(
+                    'border-border relative flex min-w-0 snap-center flex-col rounded-[1.5rem] border p-6 transition-all sm:rounded-2xl sm:p-8',
+                    isRecommended || plan.featured
+                      ? 'bg-card ring-foreground/10 shadow-md ring-1'
+                      : 'bg-background hover:border-foreground/30',
+                    selectedPlanId === plan.id &&
+                      'ring-primary border-primary shadow-primary/10 shadow-lg ring-2'
                   )}
-                  {plan.interval && (
-                    <span className="text-muted-foreground text-sm">
-                      /{plan.interval}
+                >
+                  {plan.badge && !isRecommended ? (
+                    <span className="bg-primary text-primary-foreground absolute top-5 right-5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide uppercase">
+                      {plan.badge}
                     </span>
-                  )}
+                  ) : null}
+                  {isRecommended ? (
+                    <span className="absolute top-5 right-5 rounded-full bg-emerald-600 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white uppercase">
+                      {m['landing.pricing.recommended']()}
+                    </span>
+                  ) : null}
+                  <div
+                    data-tour={plan.featured ? 'subscription-plan' : undefined}
+                  >
+                    {/* Plan name */}
+                    {plan.name && (
+                      <p className="text-foreground mb-2 text-sm font-medium">
+                        {plan.name}
+                      </p>
+                    )}
+
+                    {plan.promotionLabel && (
+                      <p className="text-primary mb-2 text-xs font-semibold tracking-[0.12em] uppercase">
+                        {plan.promotionLabel}
+                      </p>
+                    )}
+
+                    {/* Price */}
+                    <div className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                      <span className="text-primary font-serif text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
+                        {plan.price}
+                      </span>
+                      {plan.originalPrice && (
+                        <span
+                          className="text-muted-foreground text-base tabular-nums line-through decoration-2"
+                          aria-label={`${m['landing.pricing.original_price']()} ${plan.originalPrice}`}
+                        >
+                          {plan.originalPrice}
+                        </span>
+                      )}
+                      {plan.interval && (
+                        <span className="text-muted-foreground text-sm">
+                          /{plan.interval}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    {plan.description && (
+                      <p className="text-muted-foreground mb-3 text-sm">
+                        {plan.description}
+                      </p>
+                    )}
+                    {plan.billingNote && (
+                      <p className="bg-muted text-foreground mb-8 rounded-lg px-3 py-2 text-xs leading-5">
+                        {plan.billingNote}
+                      </p>
+                    )}
+                    {perImage !== null && valueLabel ? (
+                      <p className="text-primary mb-5 text-sm font-semibold">
+                        {valueLabel.replace(
+                          '{price}',
+                          `$${perImage.toFixed(3)}`
+                        )}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  {/* CTA — full-width pill */}
+                  <Button
+                    data-tour={
+                      plan.featured ? 'subscription-checkout' : undefined
+                    }
+                    variant={plan.featured ? 'default' : 'outline'}
+                    className="h-10 w-full rounded-full text-sm font-medium"
+                    onClick={() => handleCheckout(plan)}
+                    disabled={loadingId === plan.id}
+                  >
+                    {loadingId === plan.id
+                      ? m['common.pricing.processing']()
+                      : plan.buttonText || m['common.pricing.get_started']()}
+                  </Button>
+
+                  {/* Features */}
+                  <ul className="mt-6 space-y-3 sm:mt-8">
+                    {plan.features.map((feature, i) => {
+                      const isObj = typeof feature !== 'string';
+                      const Icon: IconComponent =
+                        (isObj && feature.icon) || Check;
+                      const label = isObj ? feature.label : feature;
+                      return (
+                        <li
+                          key={i}
+                          className="flex items-center gap-2.5 text-sm"
+                        >
+                          <Icon className="text-muted-foreground size-4 shrink-0" />
+                          <span className="text-foreground/90">{label}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
-
-                {/* Description */}
-                {plan.description && (
-                  <p className="text-muted-foreground mb-3 text-sm">
-                    {plan.description}
-                  </p>
-                )}
-                {plan.billingNote && (
-                  <p className="bg-muted text-foreground mb-8 rounded-lg px-3 py-2 text-xs leading-5">
-                    {plan.billingNote}
-                  </p>
-                )}
-                {perImage !== null && valueLabel ? (
-                  <p className="text-primary mb-5 text-sm font-semibold">
-                    {valueLabel.replace('{price}', `$${perImage.toFixed(3)}`)}
-                  </p>
-                ) : null}
-              </div>
-
-              {/* CTA — full-width pill */}
-              <Button
-                data-tour={plan.featured ? 'subscription-checkout' : undefined}
-                variant={plan.featured ? 'default' : 'outline'}
-                className="h-10 w-full rounded-full text-sm font-medium"
-                onClick={() => handleCheckout(plan)}
-                disabled={loadingId === plan.id}
-              >
-                {loadingId === plan.id
-                  ? m['common.pricing.processing']()
-                  : plan.buttonText || m['common.pricing.get_started']()}
-              </Button>
-
-              {/* Features */}
-              <ul className="mt-6 space-y-3 sm:mt-8">
-                {plan.features.map((feature, i) => {
-                  const isObj = typeof feature !== 'string';
-                  const Icon: IconComponent = (isObj && feature.icon) || Check;
-                  const label = isObj ? feature.label : feature;
-                  return (
-                    <li key={i} className="flex items-center gap-2.5 text-sm">
-                      <Icon className="text-muted-foreground size-4 shrink-0" />
-                      <span className="text-foreground/90">{label}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

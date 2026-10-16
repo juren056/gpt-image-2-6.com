@@ -345,7 +345,11 @@ export function Pricing({
       ],
     })),
   }));
-  const groups: PricingGroup[] = honestGroups;
+  const groups: PricingGroup[] = compact
+    ? honestGroups.filter((group) =>
+        ['credit-packs', 'monthly'].includes(group.key)
+      )
+    : honestGroups;
 
   function handleCheckout(plan: PricingPlan) {
     if (!plan.productId) return;
@@ -397,6 +401,7 @@ export function Pricing({
           groups={groups}
           onCheckout={handleCheckout}
           selectedPlanId={returningPlanId}
+          showAllGroups={compact}
         />
         <p className="text-muted-foreground mx-auto mt-5 max-w-3xl text-center text-xs leading-5">
           {m['landing.pricing.estimate_conditions']()}{' '}
