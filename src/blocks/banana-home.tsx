@@ -12,6 +12,7 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { BananaFeatures } from '@/blocks/banana-features';
 import { bananaText } from '@/blocks/banana-messages';
+import { CreditPackOffer } from '@/blocks/credit-pack-offer';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
 import { Pricing } from '@/blocks/pricing';
@@ -157,6 +158,7 @@ export function BananaHome({
   }));
   return (
     <div className="banana-app">
+      <CreditPackOffer />
       <div className="banana-ambient">
         <div className="banana-wash" aria-hidden="true">
           <span />

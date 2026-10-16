@@ -94,14 +94,14 @@ export const pricingCatalog: Record<string, PricingProduct> = {
   starter_monthly: subscription(
     'starter_monthly',
     'Starter',
-    899,
+    799,
     400,
     PaymentInterval.MONTH
   ),
   creator_monthly: subscription(
     'creator_monthly',
     'Creator',
-    1999,
+    1899,
     1100,
     PaymentInterval.MONTH
   ),
@@ -115,13 +115,13 @@ export const pricingCatalog: Record<string, PricingProduct> = {
   starter_prepaid_monthly: prepaidMonthlyMembership(
     'starter_prepaid_monthly',
     'Starter',
-    899,
+    799,
     400
   ),
   creator_prepaid_monthly: prepaidMonthlyMembership(
     'creator_prepaid_monthly',
     'Creator',
-    1999,
+    1899,
     1100
   ),
   pro_prepaid_monthly: prepaidMonthlyMembership(
@@ -130,9 +130,9 @@ export const pricingCatalog: Record<string, PricingProduct> = {
     4499,
     2800
   ),
-  credits_boost: creditPack('credits_boost', 'Mini Pack', 499, 200),
-  credits_flex: creditPack('credits_flex', 'Flex', 1199, 600),
-  credits_power: creditPack('credits_power', 'Power', 2699, 1500),
+  credits_boost: creditPack('credits_boost', 'Mini Pack', 299, 100),
+  credits_flex: creditPack('credits_flex', 'Flex', 1099, 600),
+  credits_power: creditPack('credits_power', 'Power', 2599, 1500),
   starter_yearly: subscription(
     'starter_yearly',
     'Starter',

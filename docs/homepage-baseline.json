@@ -2,7 +2,10 @@
   "description": "Owner explicitly authorized original homepage images and generator redesign on 2026-10-11. Fourteen AI candidates reviewed; seven selected. Existing black/yellow composition, system font, hero, model table, and repaired business functions preserved. CUA visual review at 390/768/1440px and both themes; see docs/homepage-refresh.md. Update only after explicit owner request and visual review. Owner authorized generator option repair on 2026-10-11. Inline searchable models, 15 shape choices and explicit 1K/2K/4K controls visually reviewed with CUA; local click, keyboard, persistence, both themes and 390/768/1440px checks passed. See docs/generator-options-repair.md. All other protected source, copy and photographs verified unchanged. Owner authorized generator option repair on 2026-10-11. Inline searchable models, 15 shape choices and explicit 1K/2K/4K controls visually reviewed with CUA; local click, keyboard, persistence, both themes and 390/768/1440px checks passed. See docs/generator-options-repair.md. All other protected source, copy and photographs verified unchanged. Owner authorized replacing only the four-scene character on 2026-10-11. New generated photograph, matching alt text/reference prompt and asset-specific cache revision visually reviewed; other protected files/copy/images unchanged. Owner authorized card layout and motion changes on 2026-10-11. Three target sections visually reviewed with CUA; protected files, all copy, photographs and non-target component functions verified unchanged. See docs/homepage-card-polish.md. Owner authorized first-experience and public-evidence repairs on 2026-10-13. The generator handoff, optional-storage recovery and adjacent real-output gallery were visually reviewed on 2026-10-14 at 390/768/1440px and in dark/light themes. Only four protected source hashes changed; all other protected source, copy and photographs match. See docs/acquisition-repair.md. Owner authorized the restore-then-switch state repair on 2026-10-14. The exact old-draft to Chinese-tea to restore to bottle-edit path, reload persistence and intercepted submit payload were verified in Chromium; English and Chinese pages were also checked at 390/768/1440px. Only the protected generator source hash changed for this repair; protected copy and photographs remain unchanged. See docs/generator-state-repair.md.",
   "files": {
     "src/routes/index.tsx": "54472b3413f999459cff4a25775614141d552654dd3a0359462e20947ff486fd",
-    "src/blocks/banana-home.tsx": "3067acc0a196bebd92784d86b3244bcc6f34935fbce9f8a2a197b6dbd1a20b29",
+    "src/blocks/banana-home.tsx": "880aeeb3b77cee63c4b1853d9c8b5e554ac521ae2bf9554c0c4ce94c3936977f",
+    "src/blocks/credit-pack-offer.tsx": "cdb93b22ee94079f6bfe9e84217d14c6ee33c209397c9722e1fc26bffb622f4f",
+    "src/blocks/pricing.tsx": "aabfc949edebfed826352f68512b8823e0bfb5e5d76dda3fd5c61f2435eb6101",
+    "src/config/pricing.ts": "c8cb0cf94a9df5c7df19ed2423d174483e8f4476efe95eb69a552df8a9124791",
     "src/blocks/banana-features.tsx": "c8ce48e293338c0b7409a0cd94bb6a5d052aeb4214c30a651ecce530b284ebff",
     "src/components/banana-home-content.tsx": "fd3e3fb0c8f59ed7ca5c058c1e8750c3d8952ba71a8d3eba6e24fbaa1dae6f72",
     "src/components/banana-features.tsx": "56be9ef7e5c9303ffa436c8d694141e971fbfd13821020628ca7f07d0e75206b",
@@ -1240,5 +1243,13 @@
     ],
     "visualEvidence": ".artifacts/product-evidence: 36 fixed-width iframe layout/theme cases (6 EN/ZH pages × 3 measured widths × 2 themes); reviewed pricing/features screenshots. Browser viewport override was ineffective, so these are layout checks, not real-device tests.",
     "artwork": "All existing approved asset hashes unchanged"
+  },
+  "creditPackOffer": {
+    "date": "2026-10-16",
+    "authorization": "Owner requested a one-time credit-pack promotion that opens five seconds after homepage entry",
+    "product": "credits_boost · USD 2.99 · 100 credits · 365 days",
+    "behavior": "Visible-tab five-second delay, seven-day browser dismissal cooldown, Stripe checkout handoff",
+    "review": ".artifacts/credit-offer: desktop and 390px mobile screenshots, measured delay, cooldown, checkout price/credits and zero browser console errors",
+    "reference": "docs/credit-pack-offer.md"
   }
 }

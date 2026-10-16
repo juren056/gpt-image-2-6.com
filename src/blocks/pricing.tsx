@@ -132,7 +132,7 @@ export function Pricing({
           id: 'starter-monthly',
           name: m['landing.pricing.starter'](),
           description: m['landing.pricing.starter_desc'](),
-          price: '$8.99',
+          price: '$7.99',
           originalPrice: '$12',
           promotionLabel: m['landing.pricing.limited_offer'](),
           interval: 'mo',
@@ -140,7 +140,7 @@ export function Pricing({
           features: starterFeatures,
           productId: 'starter_monthly',
           paymentProvider: 'stripe',
-          priceInCents: 899,
+          priceInCents: 799,
           currency: 'usd',
           credits: 400,
           plan: { name: 'Starter', interval: 'month', intervalCount: 1 },
@@ -149,7 +149,7 @@ export function Pricing({
           id: 'creator-monthly',
           name: m['landing.pricing.creator'](),
           description: m['landing.pricing.creator_desc'](),
-          price: '$19.99',
+          price: '$18.99',
           originalPrice: '$29',
           promotionLabel: m['landing.pricing.limited_offer'](),
           interval: 'mo',
@@ -159,7 +159,7 @@ export function Pricing({
           features: creatorFeatures,
           productId: 'creator_monthly',
           paymentProvider: 'stripe',
-          priceInCents: 1999,
+          priceInCents: 1899,
           currency: 'usd',
           credits: 1100,
           plan: { name: 'Creator', interval: 'month', intervalCount: 1 },
@@ -192,7 +192,7 @@ export function Pricing({
           id: 'starter-prepaid-monthly',
           name: m['landing.pricing.starter'](),
           description: m['landing.pricing.starter_desc'](),
-          price: '$8.99',
+          price: '$7.99',
           originalPrice: '$12',
           promotionLabel: m['landing.pricing.limited_offer'](),
           billingNote: m['landing.pricing.prepaid_note'](),
@@ -201,7 +201,7 @@ export function Pricing({
           productId: 'starter_prepaid_monthly',
           productName: 'Starter Prepaid Membership',
           paymentProvider: 'stripe',
-          priceInCents: 899,
+          priceInCents: 799,
           currency: 'usd',
           credits: 400,
           plan: { name: 'Starter', interval: 'month', intervalCount: 1 },
@@ -210,7 +210,7 @@ export function Pricing({
           id: 'creator-prepaid-monthly',
           name: m['landing.pricing.creator'](),
           description: m['landing.pricing.creator_desc'](),
-          price: '$19.99',
+          price: '$18.99',
           originalPrice: '$29',
           promotionLabel: m['landing.pricing.limited_offer'](),
           featured: true,
@@ -221,7 +221,7 @@ export function Pricing({
           productId: 'creator_prepaid_monthly',
           productName: 'Creator Prepaid Membership',
           paymentProvider: 'stripe',
-          priceInCents: 1999,
+          priceInCents: 1899,
           currency: 'usd',
           credits: 1100,
           plan: { name: 'Creator', interval: 'month', intervalCount: 1 },
@@ -255,23 +255,23 @@ export function Pricing({
           id: 'credits-boost',
           name: m['landing.pricing.pack_boost'](),
           description: m['landing.pricing.pack_boost_desc'](),
-          price: '$4.99',
+          price: '$2.99',
           originalPrice: '$9',
           promotionLabel: m['landing.pricing.limited_offer'](),
           features: boostFeatures,
           buttonText: m['landing.pricing.buy_credits'](),
           productId: 'credits_boost',
           productName: 'Mini Credit Pack',
-          priceInCents: 499,
+          priceInCents: 299,
           currency: 'usd',
-          credits: 200,
+          credits: 100,
           creditsValidDays: 365,
         },
         {
           id: 'credits-flex',
           name: m['landing.pricing.pack_flex'](),
           description: m['landing.pricing.pack_flex_desc'](),
-          price: '$11.99',
+          price: '$10.99',
           originalPrice: '$22',
           promotionLabel: m['landing.pricing.limited_offer'](),
           featured: true,
@@ -280,7 +280,7 @@ export function Pricing({
           buttonText: m['landing.pricing.buy_credits'](),
           productId: 'credits_flex',
           productName: 'Flex Credit Pack',
-          priceInCents: 1199,
+          priceInCents: 1099,
           currency: 'usd',
           credits: 600,
           creditsValidDays: 365,
@@ -289,7 +289,7 @@ export function Pricing({
           id: 'credits-power',
           name: m['landing.pricing.pack_power'](),
           description: m['landing.pricing.pack_power_desc'](),
-          price: '$26.99',
+          price: '$25.99',
           originalPrice: '$49',
           promotionLabel: m['landing.pricing.limited_offer'](),
           badge: m['landing.pricing.best_value'](),
@@ -297,7 +297,7 @@ export function Pricing({
           buttonText: m['landing.pricing.buy_credits'](),
           productId: 'credits_power',
           productName: 'Power Credit Pack',
-          priceInCents: 2699,
+          priceInCents: 2599,
           currency: 'usd',
           credits: 1500,
           creditsValidDays: 365,
@@ -306,7 +306,11 @@ export function Pricing({
     },
   ];
 
-  const honestGroups: PricingGroup[] = fullGroups.map((group) => ({
+  const prioritizedGroups = [
+    fullGroups.find((group) => group.key === 'credit-packs'),
+    ...fullGroups.filter((group) => group.key !== 'credit-packs'),
+  ].filter((group): group is PricingGroup => Boolean(group));
+  const honestGroups: PricingGroup[] = prioritizedGroups.map((group) => ({
     ...group,
     plans: group.plans.map((plan) => ({
       ...plan,
@@ -318,9 +322,10 @@ export function Pricing({
       promotionLabel: undefined,
       // Estimates are explicitly scoped to the primary model and resolution.
       features: [
-        ...plan.features.filter(
-          (feature) => typeof feature === 'string' || feature.icon !== Images
-        ),
+        {
+          icon: Sparkles,
+          label: `${productCredits(plan.productId ?? '', plan.credits ?? 0).toLocaleString()} ${m['growth.rewards.credit_unit']()}`,
+        },
         ...imageRequestEstimates(
           productCredits(plan.productId ?? '', plan.credits ?? 0)
         ).map(({ resolution, count, unitCredits }) => ({
@@ -332,6 +337,11 @@ export function Pricing({
             credits: unitCredits,
           }),
         })),
+        ...plan.features.filter(
+          (feature) =>
+            typeof feature === 'string' ||
+            (feature.icon !== Images && feature.icon !== Sparkles)
+        ),
       ],
     })),
   }));
