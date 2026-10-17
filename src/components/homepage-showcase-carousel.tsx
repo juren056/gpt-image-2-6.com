@@ -9,6 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
   ExternalLink,
   Pause,
   Play,
@@ -27,6 +29,7 @@ import {
   type HomepageShowcaseItem,
   type SiteTestShowcaseItem,
 } from '@/lib/homepage-showcase';
+import { useEdgeCarousel } from '@/hooks/use-edge-carousel';
 import {
   Dialog,
   DialogContent,
@@ -48,13 +51,12 @@ export function HomepageShowcaseCarousel({
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const measuredIds = useRef(new Set<string>());
+  const measuredEdges = useRef(new Set<-1 | 1>());
   const [inView, setInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [manualPaused, setManualPaused] = useState(false);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [moveDirection, setMoveDirection] = useState<-1 | 0 | 1>(0);
   const [selected, setSelected] = useState<HomepageShowcaseItem | null>(null);
   const [brokenIds, setBrokenIds] = useState<Set<string>>(() => new Set());
 
@@ -101,38 +103,38 @@ export function HomepageShowcaseCarousel({
       ),
     [brokenIds, catalogQuery.data?.items, siteTests]
   );
+  const carousel = useEdgeCarousel({
+    itemCount: items.length,
+    enabled: inView && pageVisible,
+    paused: manualPaused || selected !== null,
+    hovered: hoveredKey !== null,
+    reducedMotion,
+    normalHoldMs: HOLD_MS,
+    normalMoveMs: MOVE_MS,
+  });
+  const {
+    activeIndex,
+    moveDirection,
+    edgeDirection,
+    edgeIntensity,
+    edgeActive,
+    motionDuration,
+    move,
+  } = carousel;
   const safeIndex = items.length
     ? wrapShowcaseIndex(activeIndex, items.length)
     : 0;
   const activeItem = items[safeIndex];
-  const canAutoPlay =
-    inView &&
-    pageVisible &&
-    !reducedMotion &&
-    !manualPaused &&
-    !hoveredKey &&
-    !selected &&
-    items.length > 1;
 
   useEffect(() => {
-    if (!canAutoPlay || moveDirection !== 0) return;
-    const timer = window.setTimeout(() => setMoveDirection(1), HOLD_MS);
-    return () => window.clearTimeout(timer);
-  }, [canAutoPlay, moveDirection, safeIndex]);
-
-  useEffect(() => {
-    if (moveDirection === 0) return;
-    const timer = window.setTimeout(
-      () => {
-        setActiveIndex((index) =>
-          wrapShowcaseIndex(index + moveDirection, items.length)
-        );
-        setMoveDirection(0);
-      },
-      reducedMotion ? 0 : MOVE_MS
-    );
-    return () => window.clearTimeout(timer);
-  }, [items.length, moveDirection, reducedMotion]);
+    if (edgeDirection === 0 || measuredEdges.current.has(edgeDirection)) return;
+    measuredEdges.current.add(edgeDirection);
+    trackFunnelEvent('carousel_edge_accelerated', {
+      source: 'homepage_showcase',
+      direction: edgeDirection === -1 ? 'left' : 'right',
+      intensity: edgeIntensity,
+    });
+  }, [edgeDirection, edgeIntensity]);
 
   useEffect(() => {
     if (!activeItem || !inView || moveDirection !== 0) return;
@@ -151,17 +153,6 @@ export function HomepageShowcaseCarousel({
     }, 700);
     return () => window.clearTimeout(timer);
   }, [activeItem, inView, moveDirection, safeIndex]);
-
-  function move(direction: -1 | 1) {
-    if (moveDirection !== 0 || items.length < 2) return;
-    if (reducedMotion) {
-      setActiveIndex((index) =>
-        wrapShowcaseIndex(index + direction, items.length)
-      );
-      return;
-    }
-    setMoveDirection(direction);
-  }
 
   function openItem(item: HomepageShowcaseItem) {
     setSelected(item);
@@ -194,13 +185,64 @@ export function HomepageShowcaseCarousel({
       </header>
 
       <div
-        className={`homepage-showcase__viewport${reducedMotion ? 'is-reduced' : ''}`}
-        onPointerLeave={() => setHoveredKey(null)}
-        onPointerDown={(event) => {
-          if (event.pointerType === 'touch') setManualPaused(true);
+        className={[
+          'homepage-showcase__viewport',
+          reducedMotion ? 'is-reduced' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        style={
+          {
+            '--showcase-motion-ms': `${motionDuration}ms`,
+          } as CSSProperties
+        }
+        tabIndex={0}
+        role="region"
+        aria-label={copy.title}
+        onPointerMove={carousel.onPointerMove}
+        onPointerLeave={() => {
+          setHoveredKey(null);
+          carousel.clearEdge();
+        }}
+        onPointerDown={carousel.onPointerDown}
+        onPointerUp={carousel.onPointerUp}
+        onPointerCancel={carousel.onPointerCancel}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.preventDefault();
+            move(event.key === 'ArrowLeft' ? -1 : 1);
+          } else if (event.key === ' ') {
+            event.preventDefault();
+            setManualPaused((paused) => !paused);
+          }
         }}
       >
         <div className="homepage-showcase__focus" aria-hidden="true" />
+        <div
+          className={[
+            'homepage-showcase__edge homepage-showcase__edge--left',
+            edgeDirection === -1 ? 'is-active' : '',
+            edgeIntensity === 2 ? 'is-fast' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          aria-hidden="true"
+        >
+          <ChevronsLeft />
+        </div>
+        <div
+          className={[
+            'homepage-showcase__edge homepage-showcase__edge--right',
+            edgeDirection === 1 ? 'is-active' : '',
+            edgeIntensity === 2 ? 'is-fast' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          aria-hidden="true"
+        >
+          <ChevronsRight />
+        </div>
         <div className="homepage-showcase__track">
           {items.length > 0 &&
             slots.map((slot) => {
@@ -209,9 +251,10 @@ export function HomepageShowcaseCarousel({
               const cardKey = `${item.id}:${slot}`;
               const becomesCenter =
                 moveDirection === 0 ? slot === 0 : slot === moveDirection;
-              const spotlight = hoveredKey
-                ? cardKey === hoveredKey
-                : becomesCenter;
+              const spotlight =
+                hoveredKey && !edgeActive
+                  ? cardKey === hoveredKey
+                  : becomesCenter;
               return (
                 <article
                   key={cardKey}

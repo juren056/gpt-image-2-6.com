@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowRight, LoaderCircle, PenLine, Sparkles } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronsLeft,
+  ChevronsRight,
+  LoaderCircle,
+  PenLine,
+  Sparkles,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -19,6 +26,7 @@ import {
 } from '@/lib/homepage-showcase';
 import { promptHandoff, type PromptCatalog } from '@/lib/prompt-library';
 import { m } from '@/paraglide/messages.js';
+import { useEdgeCarousel } from '@/hooks/use-edge-carousel';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -50,11 +58,11 @@ export function CreationNudge() {
   const [open, setOpen] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [moveDirection, setMoveDirection] = useState<-1 | 0 | 1>(0);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [preparingId, setPreparingId] = useState<string | null>(null);
+  const [brokenIds, setBrokenIds] = useState<Set<string>>(() => new Set());
   const shownRef = useRef(false);
+  const measuredEdges = useRef(new Set<-1 | 1>());
   const dialogRef = useRef<HTMLDivElement>(null);
   const examples = NUDGE_EXAMPLE_IDS.map((id) =>
     HOMEPAGE_EXAMPLES.find((example) => example.id === id)
@@ -100,19 +108,39 @@ export function CreationNudge() {
   const items: NudgeItem[] = [
     ...originalItems,
     ...(showcaseQuery.data?.items || []),
-  ];
+  ].filter((item) => !brokenIds.has(item.id));
+  const carousel = useEdgeCarousel({
+    itemCount: items.length,
+    enabled: open && pageVisible,
+    paused: !!preparingId,
+    hovered: hoveredKey !== null,
+    reducedMotion,
+    normalHoldMs: NUDGE_HOLD_MS,
+    normalMoveMs: NUDGE_MOVE_MS,
+  });
+  const {
+    activeIndex,
+    moveDirection,
+    edgeDirection,
+    edgeIntensity,
+    edgeActive,
+    motionDuration,
+    move,
+  } = carousel;
   const safeIndex = items.length
     ? wrapShowcaseIndex(activeIndex, items.length)
     : 0;
   const activeItem = items[safeIndex];
-  const canAutoPlay =
-    open &&
-    pageVisible &&
-    !reducedMotion &&
-    !hoveredId &&
-    !preparingId &&
-    moveDirection === 0 &&
-    items.length > 4;
+
+  useEffect(() => {
+    if (edgeDirection === 0 || measuredEdges.current.has(edgeDirection)) return;
+    measuredEdges.current.add(edgeDirection);
+    trackFunnelEvent('carousel_edge_accelerated', {
+      source: 'homepage_5s',
+      direction: edgeDirection === -1 ? 'left' : 'right',
+      intensity: edgeIntensity,
+    });
+  }, [edgeDirection, edgeIntensity]);
 
   useEffect(() => {
     let delayElapsed = false;
@@ -152,26 +180,6 @@ export function CreationNudge() {
       document.removeEventListener('visibilitychange', updateVisibility);
     };
   }, []);
-
-  useEffect(() => {
-    if (!canAutoPlay) return;
-    const timer = window.setTimeout(() => setMoveDirection(1), NUDGE_HOLD_MS);
-    return () => window.clearTimeout(timer);
-  }, [canAutoPlay, safeIndex]);
-
-  useEffect(() => {
-    if (moveDirection === 0 || items.length === 0) return;
-    const timer = window.setTimeout(
-      () => {
-        setActiveIndex((index) =>
-          wrapShowcaseIndex(index + moveDirection, items.length)
-        );
-        setMoveDirection(0);
-      },
-      reducedMotion ? 0 : NUDGE_MOVE_MS
-    );
-    return () => window.clearTimeout(timer);
-  }, [items.length, moveDirection, reducedMotion]);
 
   function startWithOriginal(item: OriginalNudgeItem) {
     setOpen(false);
@@ -220,14 +228,14 @@ export function CreationNudge() {
     trackFunnelEvent('generator_focused', { source: 'homepage_5s' });
   }
 
-  const slots = [-1, 0, 1, 2, 3, 4];
+  const slots = [-3, -2, -1, 0, 1, 2, 3];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
         ref={dialogRef}
         initialFocus={dialogRef}
-        className="creation-nudge max-h-[calc(100dvh-1.5rem)] w-[calc(100%-1.5rem)] overflow-y-auto border-zinc-700 bg-zinc-950 p-0 text-white shadow-2xl sm:max-w-4xl sm:rounded-[1.75rem]"
+        className="creation-nudge max-h-[calc(100dvh-1.5rem)] w-[calc(100%-1.5rem)] overflow-y-auto border-zinc-700 bg-zinc-950 p-0 text-white shadow-2xl sm:max-w-[72rem] sm:rounded-[1.75rem]"
       >
         <div className="bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.2),transparent_42%)] px-5 pt-7 pb-5 sm:px-8 sm:pt-7 sm:pb-6">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-yellow-300/40 bg-yellow-300/10 px-3 py-1 text-xs font-semibold tracking-wide text-yellow-300 uppercase">
@@ -243,17 +251,64 @@ export function CreationNudge() {
 
           <div
             className="creation-nudge__viewport"
-            onPointerLeave={() => setHoveredId(null)}
+            style={
+              {
+                '--nudge-motion-ms': `${motionDuration}ms`,
+              } as CSSProperties
+            }
+            tabIndex={0}
+            role="region"
+            aria-label={m['growth.creation_nudge.title']()}
+            onPointerMove={carousel.onPointerMove}
+            onPointerLeave={() => {
+              setHoveredKey(null);
+              carousel.clearEdge();
+            }}
+            onPointerDown={carousel.onPointerDown}
+            onPointerUp={carousel.onPointerUp}
+            onPointerCancel={carousel.onPointerCancel}
+            onKeyDown={(event) => {
+              if (event.target !== event.currentTarget) return;
+              if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                event.preventDefault();
+                move(event.key === 'ArrowLeft' ? -1 : 1);
+              }
+            }}
           >
+            <div
+              className={[
+                'creation-nudge__edge creation-nudge__edge--left',
+                edgeDirection === -1 ? 'is-active' : '',
+                edgeIntensity === 2 ? 'is-fast' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              aria-hidden="true"
+            >
+              <ChevronsLeft />
+            </div>
+            <div
+              className={[
+                'creation-nudge__edge creation-nudge__edge--right',
+                edgeDirection === 1 ? 'is-active' : '',
+                edgeIntensity === 2 ? 'is-fast' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              aria-hidden="true"
+            >
+              <ChevronsRight />
+            </div>
             <div className="creation-nudge__track">
               {items.length > 0 &&
                 slots.map((slot) => {
                   const item =
                     items[wrapShowcaseIndex(safeIndex + slot, items.length)];
                   const cardKey = `${item.id}:${slot}`;
-                  const isActive = hoveredId
-                    ? hoveredId === item.id
-                    : slot === (moveDirection || 0);
+                  const isActive =
+                    hoveredKey && !edgeActive
+                      ? hoveredKey === cardKey
+                      : slot === (moveDirection || 0);
                   return (
                     <button
                       key={cardKey}
@@ -269,9 +324,9 @@ export function CreationNudge() {
                           '--nudge-x': `calc(${(slot - moveDirection) * 100}% + ${(slot - moveDirection) * 12}px)`,
                         } as CSSProperties
                       }
-                      onPointerEnter={() => setHoveredId(item.id)}
-                      onFocus={() => setHoveredId(item.id)}
-                      onBlur={() => setHoveredId(null)}
+                      onPointerEnter={() => setHoveredKey(cardKey)}
+                      onFocus={() => setHoveredKey(cardKey)}
+                      onBlur={() => setHoveredKey(null)}
                       onClick={() => startWithItem(item)}
                       disabled={!!preparingId}
                     >
@@ -281,8 +336,15 @@ export function CreationNudge() {
                           alt=""
                           width={item.width}
                           height={item.height}
-                          loading={slot >= 0 && slot <= 3 ? 'eager' : 'lazy'}
+                          loading={Math.abs(slot) <= 2 ? 'eager' : 'lazy'}
                           decoding="async"
+                          onError={() =>
+                            setBrokenIds((current) => {
+                              const next = new Set(current);
+                              next.add(item.id);
+                              return next;
+                            })
+                          }
                         />
                       </span>
                       <span className="creation-nudge__label">

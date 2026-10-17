@@ -18,8 +18,14 @@ library imagery used by the homepage showcase.
 - Selecting an original scenario prepares its reviewed prompt and settings.
   Selecting a library image retrieves the full prompt only on demand and then
   prepares the generator. Neither action submits a generation or starts payment.
-- Only six cards are mounted at once, so the 1,492-image rotation does not create
+- Only seven cards are mounted at once, so the 1,492-image rotation does not create
   a large DOM or preload the full prompt catalog.
+
+The subsequent owner-authorized visual-impact update centers a larger active
+card, increases the dialog rail size and adds the same two-level left/right edge
+acceleration used by the homepage carousel. The full catalog is still never
+rendered or fetched as prompt bodies up front.
+See [Carousel visual impact and edge acceleration](carousel-impact-and-edge-speed.md).
 
 ## Preserved flow
 

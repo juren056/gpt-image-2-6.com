@@ -25,6 +25,7 @@ export type FunnelEvent =
   | 'showcase_item_viewed'
   | 'showcase_item_opened'
   | 'showcase_prompt_used'
+  | 'carousel_edge_accelerated'
   | 'pricing_view'
   | 'pricing_viewed'
   | 'offer_group_selected'
