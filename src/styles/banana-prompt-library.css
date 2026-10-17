@@ -10,28 +10,12 @@
   font-weight: 700;
   margin-bottom: 8px;
 }
-.banana-prompt-total {
-  color: var(--foreground);
-  font-size: 32px;
-  white-space: nowrap;
-}
-.banana-prompt-total span {
-  display: block;
-  color: var(--assets-muted);
-  font-size: 12px;
-  font-weight: 400;
-  text-align: right;
-}
 .banana-prompt-library .banana-workflow-categories button {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   gap: 7px;
   min-height: 40px;
-}
-.banana-workflow-categories small {
-  opacity: 0.65;
-  font-size: 11px;
 }
 .banana-prompt-status {
   display: flex;
@@ -219,9 +203,6 @@
   }
   .banana-prompt-heading {
     flex-wrap: wrap;
-  }
-  .banana-prompt-total {
-    font-size: 24px;
   }
   .banana-prompt-library .banana-workflow-toolbar {
     flex-wrap: wrap;

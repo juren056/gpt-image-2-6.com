@@ -250,12 +250,6 @@ export function PromptLibrary({
                       : value === 'image'
                         ? m['prompts.image_tab']()
                         : m['prompts.video_tab']()}
-                    <span className="ml-1.5 text-[10px] opacity-65">
-                      {value === 'all'
-                        ? effectiveCatalog.length
-                        : catalog.filter((item) => item.mediaType === value)
-                            .length}
-                    </span>
                   </button>
                 ))}
               </div>
@@ -289,15 +283,6 @@ export function PromptLibrary({
                   >
                     <Sparkles className="size-4" />
                     {m['prompts.all_tab']()}
-                    <span className="ml-auto text-[10px] opacity-55">
-                      {
-                        catalog.filter(
-                          (item) =>
-                            activeMedia === 'all' ||
-                            item.mediaType === activeMedia
-                        ).length
-                      }
-                    </span>
                   </button>
                 ) : null}
                 {categoryOptions.map((value) => (
@@ -321,16 +306,6 @@ export function PromptLibrary({
                       <WandSparkles className="size-4" />
                     )}
                     {categoryLabel(value)}
-                    <span className="ml-auto text-[10px] opacity-55">
-                      {
-                        catalog.filter(
-                          (item) =>
-                            item.category === value &&
-                            (activeMedia === 'all' ||
-                              item.mediaType === activeMedia)
-                        ).length
-                      }
-                    </span>
                   </button>
                 ))}
               </nav>
@@ -354,15 +329,10 @@ export function PromptLibrary({
               </label>
               <div
                 className={cn(
-                  'mt-4 flex justify-between gap-4 text-xs text-slate-500',
+                  'mt-4 flex justify-end text-xs text-slate-500',
                   compact && 'hidden'
                 )}
               >
-                <span>
-                  {m['homepage_prompt_library.results']({
-                    count: items.length,
-                  })}
-                </span>
                 <span className="hidden sm:inline">
                   {m['homepage_prompt_library.copy_hint']()}
                 </span>

@@ -105,7 +105,6 @@ export function HomepageShowcaseCarousel({
     ? wrapShowcaseIndex(activeIndex, items.length)
     : 0;
   const activeItem = items[safeIndex];
-  const spotlightId = hoveredKey || activeItem?.id || null;
   const canAutoPlay =
     inView &&
     pageVisible &&
@@ -288,9 +287,6 @@ export function HomepageShowcaseCarousel({
             <Pause size={16} aria-hidden="true" />
           )}
         </button>
-        <span aria-label={`${safeIndex + 1} / ${items.length}`}>
-          {(safeIndex + 1).toLocaleString()} / {items.length.toLocaleString()}
-        </span>
         <button type="button" onClick={() => move(1)} aria-label={copy.next}>
           <ChevronRight size={18} aria-hidden="true" />
         </button>
@@ -379,9 +375,6 @@ export function HomepageShowcaseCarousel({
           )}
         </DialogContent>
       </Dialog>
-      <span className="sr-only">
-        {spotlightId ? `${safeIndex + 1} / ${items.length}` : ''}
-      </span>
     </section>
   );
 }

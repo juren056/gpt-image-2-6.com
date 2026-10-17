@@ -146,9 +146,6 @@ export function BananaPromptLibrary({
           {heading}
           <p>{copy.body}</p>
         </div>
-        <strong className="banana-prompt-total">
-          {catalog.total.toLocaleString()} <span>{copy.results}</span>
-        </strong>
       </header>
       <div className="banana-workflow-toolbar">
         <label className="banana-assets-search">
@@ -219,9 +216,9 @@ export function BananaPromptLibrary({
             setPage(1);
           }}
         >
-          {copy.all} <small>{catalog.total}</small>
+          {copy.all}
         </button>
-        {Object.entries(catalog.categories).map(([value, count]) => (
+        {Object.keys(catalog.categories).map((value) => (
           <button
             key={value}
             className={category === value ? 'active' : ''}
@@ -231,7 +228,7 @@ export function BananaPromptLibrary({
               setPage(1);
             }}
           >
-            {categoryLabel(value)} <small>{count}</small>
+            {categoryLabel(value)}
           </button>
         ))}
         <button
@@ -243,21 +240,19 @@ export function BananaPromptLibrary({
           }}
         >
           <Heart size={14} />
-          {copy.favorites} <small>{favorites.length}</small>
+          {copy.favorites}
         </button>
       </div>
-      <div className="banana-prompt-status" aria-live="polite">
-        <span>
-          {filtered.length.toLocaleString()} {copy.results} {copy.of}{' '}
-          {catalog.total.toLocaleString()}
-          {loading ? ` · ${copy.loading}` : ''}
-        </span>
-        {error && (
-          <span role="alert">
-            {copy.error} <button onClick={retry}>{copy.retry}</button>
-          </span>
-        )}
-      </div>
+      {(loading || error) && (
+        <div className="banana-prompt-status" aria-live="polite">
+          {loading && <span>{copy.loading}</span>}
+          {error && (
+            <span role="alert">
+              {copy.error} <button onClick={retry}>{copy.retry}</button>
+            </span>
+          )}
+        </div>
+      )}
       {!filtered.length ? (
         <div className="banana-assets-empty">
           <Search size={30} />
