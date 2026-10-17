@@ -3674,5 +3674,6 @@
   "evidence.gallery.NB06": "Two Chinese text blocks",
   "evidence.gallery.NB08": "Chinese event poster",
   "evidence.gallery.prompt": "Full original prompt",
-  "evidence.gallery.boundary": "Requested words are legible in this output; separators, punctuation and spacing can vary. One result cannot guarantee future text accuracy. Proofread before use."
+  "evidence.gallery.boundary": "Requested words are legible in this output; separators, punctuation and spacing can vary. One result cannot guarantee future text accuracy. Proofread before use.",
+  "checkout.fallback": "Stripe ile devam et"
 }

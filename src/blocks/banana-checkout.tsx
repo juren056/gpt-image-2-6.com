@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type { CheckoutProduct } from '@/types/checkout';
 
 import { useSession } from '@/core/auth/client';
 import { envConfigs } from '@/config';
 import { trackFunnelEvent } from '@/lib/analytics-events';
-import { apiGet, apiPost } from '@/lib/api-client';
+import { ApiError, apiGet, apiPost } from '@/lib/api-client';
 import { m } from '@/paraglide/messages.js';
 import { getLocale, localizeHref } from '@/paraglide/runtime.js';
 import { usePublicConfig } from '@/hooks/use-public-config';
@@ -57,6 +57,51 @@ export function Checkout({
     refetchOnReconnect: false,
     refetchOnMount: false,
   });
+  const hostedCheckout = useMutation({
+    mutationKey: ['hosted-checkout-fallback', session?.user?.id, productId],
+    mutationFn: async () => {
+      // The checkout route is rate limited. Waiting also prevents a quick
+      // fallback from racing an embedded request whose response was lost.
+      await new Promise((resolve) => window.setTimeout(resolve, 1100));
+      const result = await apiPost<{ checkout_url?: string }>(
+        '/api/payment/checkout',
+        {
+          product_id: productId,
+          payment_provider: 'stripe',
+          redirect: returnPath,
+          ui_mode: 'hosted',
+        }
+      );
+      const checkoutUrl = new URL(result.checkout_url || '');
+      if (
+        checkoutUrl.protocol !== 'https:' ||
+        checkoutUrl.hostname !== 'checkout.stripe.com'
+      ) {
+        throw new Error('Stripe checkout URL was not returned');
+      }
+      return checkoutUrl.href;
+    },
+    onSuccess: (checkoutUrl) => {
+      trackFunnelEvent('checkout_started', {
+        product: productId,
+        provider: 'stripe_hosted_fallback',
+      });
+      window.location.assign(checkoutUrl);
+    },
+  });
+  const checkoutError =
+    hostedCheckout.error || checkout.error || products.error;
+  const errorMessage = checkoutError
+    ? checkoutError instanceof ApiError
+      ? checkoutError.message
+      : m['checkout.error']()
+    : undefined;
+  const fallbackAvailable =
+    !!session?.user &&
+    !!product &&
+    ready &&
+    (!!checkout.data ||
+      (!!checkout.error && !(checkout.error instanceof ApiError)));
   const callback = `/checkout?product=${encodeURIComponent(productId)}&redirect=${encodeURIComponent(returnPath)}`;
   return (
     <BananaCheckout
@@ -67,7 +112,9 @@ export function Checkout({
       email={session?.user?.email}
       loading={products.isPending || configs.isPending || sessionPending}
       pending={checkout.isFetching}
-      error={checkout.error?.message || products.error?.message}
+      error={errorMessage}
+      fallbackAvailable={fallbackAvailable}
+      fallbackPending={hostedCheckout.isPending}
       paymentForm={
         checkout.data ? (
           <StripeEmbeddedCheckout
@@ -76,6 +123,9 @@ export function Checkout({
             loadingLabel={m['checkout.working']()}
             errorLabel={m['checkout.error']()}
             retryLabel={m['checkout.retry']()}
+            fallbackLabel={m['checkout.fallback']()}
+            fallbackPending={hostedCheckout.isPending}
+            onFallback={() => hostedCheckout.mutate()}
           />
         ) : undefined
       }
@@ -111,6 +161,7 @@ export function Checkout({
         missing: m['checkout.missing'](),
         unavailable: m['checkout.error'](),
         retry: m['checkout.retry'](),
+        fallback: m['checkout.fallback'](),
       }}
       onCheckout={() => {
         if (!session?.user) {
@@ -122,7 +173,9 @@ export function Checkout({
       }}
       signedIn={!!session?.user}
       ready={ready}
+      onFallback={() => hostedCheckout.mutate()}
       onRetry={() => {
+        hostedCheckout.reset();
         products.refetch();
         configs.refetch();
         if (checkout.isError) checkout.refetch();

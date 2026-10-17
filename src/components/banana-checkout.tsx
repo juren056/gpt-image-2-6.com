@@ -16,8 +16,11 @@ type Props = {
   signedIn: boolean;
   ready: boolean;
   paymentForm?: ReactNode;
+  fallbackAvailable: boolean;
+  fallbackPending: boolean;
   copy: Record<string, string>;
   onCheckout: () => void;
+  onFallback: () => void;
   onRetry: () => void;
 };
 export function BananaCheckout({
@@ -31,8 +34,11 @@ export function BananaCheckout({
   signedIn,
   ready,
   paymentForm,
+  fallbackAvailable,
+  fallbackPending,
   copy,
   onCheckout,
+  onFallback,
   onRetry,
 }: Props) {
   const money = product
@@ -113,9 +119,29 @@ export function BananaCheckout({
             className={`checkout-form${paymentForm ? 'checkout-form-embedded' : ''}`}
           >
             {error && (
-              <p className="checkout-error" role="alert">
-                {error} <button onClick={onRetry}>{copy.retry}</button>
-              </p>
+              <div className="checkout-error" role="alert">
+                <p>{error}</p>
+                <div className="checkout-error-actions">
+                  {fallbackAvailable ? (
+                    <button
+                      type="button"
+                      className="checkout-fallback"
+                      disabled={fallbackPending}
+                      onClick={onFallback}
+                    >
+                      {fallbackPending ? copy.working : copy.fallback}
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className="checkout-retry"
+                    disabled={fallbackPending}
+                    onClick={onRetry}
+                  >
+                    {copy.retry}
+                  </button>
+                </div>
+              </div>
             )}
             {!loading && !product && (
               <p className="checkout-error" role="alert">
@@ -125,7 +151,9 @@ export function BananaCheckout({
             {!loading && !ready && (
               <p className="checkout-error" role="alert">
                 {copy.unavailable}{' '}
-                <button onClick={onRetry}>{copy.retry}</button>
+                <button type="button" onClick={onRetry}>
+                  {copy.retry}
+                </button>
               </p>
             )}
             {paymentForm}

@@ -278,9 +278,42 @@
   margin-bottom: 16px;
   overflow-wrap: anywhere;
 }
-.checkout-error button {
+.checkout-error p {
+  margin: 0;
+}
+.checkout-error-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.checkout-error-actions button {
+  min-height: 40px;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-weight: 650;
+}
+.checkout-error-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.checkout-fallback {
+  background: #facc15;
+  color: #161812;
+  text-decoration: none;
+}
+.checkout-fallback:hover:not(:disabled) {
+  background: #edbd08;
+}
+.checkout-retry {
+  color: #8f1f1f;
   text-decoration: underline;
-  cursor: pointer;
+}
+@media (max-width: 480px) {
+  .checkout-error-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 .checkout-legal {
   display: flex;

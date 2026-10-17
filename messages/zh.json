@@ -3674,5 +3674,6 @@
   "evidence.gallery.NB06": "两段中文文字",
   "evidence.gallery.NB08": "中文活动海报",
   "evidence.gallery.prompt": "完整原始提示词",
-  "evidence.gallery.boundary": "本例指定词句可读，但斜杠、标点和空格可能变化。单次结果不能保证后续文字准确，发布前仍需逐字检查。"
+  "evidence.gallery.boundary": "本例指定词句可读，但斜杠、标点和空格可能变化。单次结果不能保证后续文字准确，发布前仍需逐字检查。",
+  "checkout.fallback": "前往 Stripe 安全支付"
 }

@@ -9,6 +9,9 @@ type Props = {
   loadingLabel: string;
   errorLabel: string;
   retryLabel: string;
+  fallbackLabel: string;
+  fallbackPending: boolean;
+  onFallback: () => void;
 };
 
 /** Stripe owns the payment fields and final submit; card data never reaches us. */
@@ -18,6 +21,9 @@ export function StripeEmbeddedCheckout({
   loadingLabel,
   errorLabel,
   retryLabel,
+  fallbackLabel,
+  fallbackPending,
+  onFallback,
 }: Props) {
   const mount = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
@@ -67,10 +73,25 @@ export function StripeEmbeddedCheckout({
       )}
       {failed && (
         <div className="checkout-error" role="alert">
-          {errorLabel}{' '}
-          <button onClick={() => setAttempt((value) => value + 1)}>
-            {retryLabel}
-          </button>
+          <p>{errorLabel}</p>
+          <div className="checkout-error-actions">
+            <button
+              type="button"
+              className="checkout-fallback"
+              disabled={fallbackPending}
+              onClick={onFallback}
+            >
+              {fallbackPending ? loadingLabel : fallbackLabel}
+            </button>
+            <button
+              type="button"
+              className="checkout-retry"
+              disabled={fallbackPending}
+              onClick={() => setAttempt((value) => value + 1)}
+            >
+              {retryLabel}
+            </button>
+          </div>
         </div>
       )}
       <div ref={mount} aria-label="Stripe Checkout" />
