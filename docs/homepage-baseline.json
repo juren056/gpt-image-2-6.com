@@ -3,7 +3,7 @@
   "files": {
     "src/routes/index.tsx": "54472b3413f999459cff4a25775614141d552654dd3a0359462e20947ff486fd",
     "src/blocks/banana-home.tsx": "57b1134318a84bbf21dc6447d9b95f3052e0b0f7eee9c8d83b756205a0fb39d4",
-    "src/blocks/credit-pack-offer.tsx": "9dfa5c1af04d41a0ca36953c0fd0fa397dd8f577ccc6f0685f47759dd8ed503f",
+    "src/blocks/credit-pack-offer.tsx": "1b8ecda5e243f1536942d14f58bad677b8e2039991b0d4a2bc82f8b4609e4e5f",
     "src/blocks/pricing.tsx": "37b6c14f99fdde5b40516d9ee475be8058ba6de1c75bfe37529bae49dcf4b19b",
     "src/config/pricing.ts": "c8cb0cf94a9df5c7df19ed2423d174483e8f4476efe95eb69a552df8a9124791",
     "src/blocks/banana-features.tsx": "c8ce48e293338c0b7409a0cd94bb6a5d052aeb4214c30a651ecce530b284ebff",
@@ -1274,8 +1274,8 @@
   "generationFirstConversion": {
     "date": "2026-10-17",
     "authorization": "Owner requested strict execution of the generation-first plan",
-    "behavior": "Five-second creation nudge; final-action server preflight; smallest suitable one-time pack; exact draft payment return and one-shot resume",
-    "review": "Production build; desktop and 390x844 EN/ZH CUA; example handoff; TypeScript, 18 locales, pricing/resume, analytics, creative validation and content safety",
+    "behavior": "Five-second creation nudge with a read-only pricing preview; one-time packs shown first and monthly plans switchable; final-action server preflight; smallest suitable one-time pack; exact draft payment return and one-shot resume",
+    "review": "Production build; desktop and 390x844 EN/ZH CUA; one-time/monthly plan switching; example handoff without checkout; TypeScript, 18 locales, pricing/resume, analytics, creative validation and content safety",
     "reference": "docs/generation-first-conversion.md"
   }
 }
