@@ -123,6 +123,10 @@ const ADULT_CONFIRMATION =
   /\b(?:adult|woman|man|aged\s+(?:1[89]|[2-9]\d)|(?:1[89]|[2-9]\d)[- ]?year[- ]old)\b|(?:成年人|成年女性|成年男性|(?:1[89]|[2-9]\d)岁)|(?:взросл|женщина|мужчина)/iu;
 const SAFE_PERFORMANCE_CONTEXT =
   /\b(?:martial\s+arts|karate|taekwondo|ballet|dance\s+class|sports?\s+uniform|athletic\s+wear)\b|(?:武术|空手道|跆拳道|芭蕾|舞蹈课|运动服)|(?:каратэ|тхэквондо|балет|спортивн)/iu;
+const WATERMARK_REMOVAL =
+  /\b(?:remove|erase|delete|hide|clean(?:\s+up)?|strip)\b.{0,24}\bwatermarks?\b|\bwatermarks?\b.{0,24}\b(?:remove|erase|delete|hide|clean(?:\s+up)?|strip)\b|(?:去除|移除|删除|抹掉|擦除|去掉|消除).{0,8}(?:水印|浮水印)|(?:水印|浮水印).{0,8}(?:去除|移除|删除|抹掉|擦除|去掉|消除)/iu;
+const NAMED_PERSON_IDENTITY_SWAP =
+  /\b(?:[Rr]eplace|[Ss]wap)\b.{0,120}\b(?:person|woman|man|girl|boy|athlete|judoka|player|actor|actress|singer|face|identity|subject)\b.{0,120}\b(?:with|for)\s+[\p{Lu}][\p{L}'’-]+(?:\s+[\p{Lu}][\p{L}'’-]+){1,3}\b(?=\s+(?:while|and\s+maintain)|\s*[,.;]|\s*$)|\b(?:[Mm]ake|[Tt]urn|[Tt]ransform)\b.{0,120}\b(?:person|woman|man|girl|boy|athlete|judoka|player|actor|actress|singer|face|identity|subject)\b.{0,80}\b(?:look\s+like|into)\s+[\p{Lu}][\p{L}'’-]+(?:\s+[\p{Lu}][\p{L}'’-]+){1,3}\b(?=\s+(?:while|and\s+maintain)|\s*[,.;]|\s*$)|(?:替换|替換|换成|換成|变成|變成).{0,40}(?:名人|明星|公众人物|公眾人物)/u;
 
 function normalize(value: string) {
   return value
@@ -133,6 +137,37 @@ function normalize(value: string) {
 
 export function classifyPromptLocally(prompt: string): SafetyDecision {
   const text = normalize(prompt);
+
+  if (NAMED_PERSON_IDENTITY_SWAP.test(text)) {
+    return {
+      allowed: false,
+      category: 'identity_impersonation',
+      severity: 'medium',
+      confidence: 92,
+      source: 'local_rule',
+      reviewStatus: 'pending',
+      publicMessage:
+        'Requests to replace a person with a named real individual are not supported. Use an original or fictional person instead. It was blocked before generation and no credits were charged.',
+    };
+  }
+
+  const watermarkInstruction = text.replace(
+    /\b(?:do\s+not|don't|never)\s+(?:remove|erase|delete|hide|clean(?:\s+up)?|strip)\b.{0,24}\bwatermarks?\b|(?:不要|不得|切勿).{0,6}(?:去除|移除|删除|抹掉|擦除|去掉|消除).{0,8}(?:水印|浮水印)/giu,
+    ' '
+  );
+  if (WATERMARK_REMOVAL.test(watermarkInstruction)) {
+    return {
+      allowed: false,
+      category: 'watermark_removal',
+      severity: 'medium',
+      confidence: 96,
+      source: 'local_rule',
+      reviewStatus: 'pending',
+      publicMessage:
+        'Watermark-removal requests are not supported. Use an image you own without a watermark. It was blocked before generation and no credits were charged.',
+    };
+  }
+
   const minor = MINOR_TERMS.test(text) || EXPLICIT_MINOR_AGE.test(text);
   const sexualText = text.replace(
     /(?:非色情|无裸露|無裸露|不是色情|无色情内容|無色情內容|性教育|性健康|裸色|not\s+(?:pornographic|sexual|nude)|without\s+nudity|sex(?:ual)?\s+(?:education|health)|nude(?:[- ]tone|\s+(?:color|lipstick|palette|shade))|naked\s+cake|сексуальн(?:ое|ого|ом)\s+(?:образован|здоров)|без\s+обнажения|educación\s+sexual|salud\s+sexual|sin\s+desnudos?|sexualkunde|sexuelle\s+gesundheit|keine\s+nacktheit|éducation\s+sexuelle|santé\s+sexuelle|sans\s+nudité|educação\s+sexual|saúde\s+sexual|sem\s+nudez|educazione\s+sessuale|salute\s+sessuale|senza\s+nudità|cinsel\s+(?:eğitim|sağlık)|çıplaklık\s+yok|giáo\s+dục\s+giới\s+tính|sức\s+khỏe\s+tình\s+dục|không\s+khỏa\s+thân|seksuele\s+(?:voorlichting|gezondheid)|geen\s+naaktheid|edukacja\s+seksualna|zdrowie\s+seksualne|bez\s+nagości|szexuális\s+(?:felvilágosítás|egészség)|meztelenség\s+nélkül|성교육|성\s*건강|노출\s*없음|التثقيف\s+الجنسي|الصحة\s+الجنسية|بدون\s+عري|เพศศึกษา|สุขภาพทางเพศ|ไม่มีภาพเปลือย|裸体なし|ヌードなし)/giu,

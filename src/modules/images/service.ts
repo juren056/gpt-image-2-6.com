@@ -1,4 +1,4 @@
-import { and, count, eq, gte, isNull, lt, ne } from 'drizzle-orm';
+import { and, count, desc, eq, gte, isNull, lt, ne } from 'drizzle-orm';
 
 import { FalProvider } from '@/core/ai/fal';
 import { GeminiProvider } from '@/core/ai/gemini';
@@ -78,6 +78,10 @@ import {
   type SafetyDecision,
 } from '@/modules/images/content-safety';
 import { buildCreativeImageOptions } from '@/lib/creative-image-options';
+import {
+  getPublicGenerationError,
+  isSameGenerationAttempt,
+} from '@/lib/generation-errors';
 import { imageModerationConfig as moderationConfig } from '@/lib/image-moderation-config';
 import { publicImageTaskSettings } from '@/lib/image-task-settings';
 import {
@@ -281,24 +285,43 @@ export async function getMonthlyImageUsage(userId: string) {
   };
 }
 
-function getPublicGenerationError(message: string): string {
-  if (
-    /flagged by a content checker|content (?:safety|policy)|safety (?:checker|filter)|nsfw|not safe for work|moderation/i.test(
-      message
+const RECENT_FAILED_GENERATION_WINDOW_MS = 30 * 60 * 1000;
+
+async function assertNoRecentDuplicateFailure(params: {
+  userId: string;
+  model: string;
+  prompt: string;
+  options: Record<string, unknown>;
+}) {
+  const recentFailures = await db()
+    .select({ options: aiTask.options })
+    .from(aiTask)
+    .where(
+      and(
+        eq(aiTask.userId, params.userId),
+        eq(aiTask.mediaType, AIMediaType.IMAGE),
+        eq(aiTask.model, params.model),
+        eq(aiTask.prompt, params.prompt),
+        eq(aiTask.status, AITaskStatus.FAILED),
+        gte(
+          aiTask.createdAt,
+          new Date(Date.now() - RECENT_FAILED_GENERATION_WINDOW_MS)
+        ),
+        isNull(aiTask.deletedAt)
+      )
     )
-  ) {
-    return "This prompt was blocked by the AI provider's content safety filter. Try removing protected character names or sensitive details, then try again. Your credits were restored.";
-  }
+    .orderBy(desc(aiTask.createdAt))
+    .limit(5);
 
   if (
-    /fal|queue\.fal\.run|downstream service|provider (?:status|result|request)|service unavailable|request timed out/i.test(
-      message
+    recentFailures.some((failure: { options: string | null }) =>
+      isSameGenerationAttempt(failure.options, params.options)
     )
   ) {
-    return 'The AI generation service is temporarily unavailable. Please try again shortly. Credits are restored when a generation task fails.';
+    throw new Error(
+      "This exact request failed recently. Change the prompt or input before trying again; the previous task's credits were restored."
+    );
   }
-
-  return message;
 }
 
 function resolveProvider(configs: ConfigMap, providerName: string): AIProvider {
@@ -940,6 +963,11 @@ export async function runCreativeImage(params: {
       request.prompt = annotatedPrompt;
     }
   }
+  const taskOptions = {
+    ...options,
+    studioModelId: request.model.id,
+    operation: request.operation,
+  };
   const safety = await moderateAndEnforce({
     userId: params.userId,
     prompt: request.prompt,
@@ -948,6 +976,12 @@ export async function runCreativeImage(params: {
     model: request.providerModel,
     moderation: moderationConfig(configs),
   });
+  await assertNoRecentDuplicateFailure({
+    userId: params.userId,
+    model: request.providerModel,
+    prompt: request.prompt,
+    options: taskOptions,
+  });
   const task = await createTask({
     userId: params.userId,
     mediaType: AIMediaType.IMAGE,
@@ -955,11 +989,7 @@ export async function runCreativeImage(params: {
     model: request.providerModel,
     prompt: request.prompt,
     costCredits: request.credits,
-    options: {
-      ...options,
-      studioModelId: request.model.id,
-      operation: request.operation,
-    },
+    options: taskOptions,
     safety: allowedSafetyMetadata(safety),
   });
   try {

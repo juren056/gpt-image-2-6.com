@@ -14,6 +14,7 @@ import {
 
 import { db } from '@/core/db';
 import { aiTask, user } from '@/config/db/schema';
+import { getPublicGenerationError } from '@/lib/generation-errors';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -267,7 +268,7 @@ function normalizeTask(row: {
     videos: mediaUrls(result.videos, ['videoUrl', 'url']),
     inputAssets: collectInputAssets(options),
     options: redact(options) as JsonRecord,
-    errorMessage: error,
+    errorMessage: error ? getPublicGenerationError(error) : null,
     errorCategory: classifyGenerationFailure(row.task.status, error, errorCode),
     errorCode,
     providerStatus:
