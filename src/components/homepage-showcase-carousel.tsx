@@ -216,7 +216,12 @@ export function HomepageShowcaseCarousel({
               return (
                 <article
                   key={cardKey}
-                  className={`homepage-showcase__card${spotlight ? 'is-spotlight' : ''}`}
+                  className={[
+                    'homepage-showcase__card',
+                    spotlight ? 'is-spotlight' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                   style={
                     {
                       '--showcase-x': `calc(${(slot - moveDirection) * 100}% + ${(slot - moveDirection) * 16}px)`,
