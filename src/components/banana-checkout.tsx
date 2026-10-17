@@ -22,6 +22,7 @@ type Props = {
   onCheckout: () => void;
   onFallback: () => void;
   onRetry: () => void;
+  backHref?: string;
 };
 export function BananaCheckout({
   brand,
@@ -40,6 +41,7 @@ export function BananaCheckout({
   onCheckout,
   onFallback,
   onRetry,
+  backHref = '/pricing',
 }: Props) {
   const money = product
     ? new Intl.NumberFormat(locale, {
@@ -99,7 +101,7 @@ export function BananaCheckout({
         </div>
       </aside>
       <section className="checkout-payment">
-        <Link href="/pricing" className="checkout-back">
+        <Link href={backHref} className="checkout-back">
           <ArrowLeft size={16} />
           {copy.back}
         </Link>

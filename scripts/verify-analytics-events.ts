@@ -36,6 +36,23 @@ assert.deepEqual(offerSelection, {
   },
 });
 
+const generationPaywall = normalizeFunnelEvent('generation_paywall_shown', {
+  source: 'generator',
+  model: 'nano-banana-2.1',
+  credits: 28,
+  shortfall: 8,
+  prompt: 'private prompt',
+});
+assert.deepEqual(generationPaywall, {
+  event: 'generation_paywall_shown',
+  params: {
+    source: 'generator',
+    model: 'nano-banana-2.1',
+    credits: 28,
+    shortfall: 8,
+  },
+});
+
 assert.deepEqual(
   buildGa4PurchaseEvent({
     transactionId: 'ORD-TEST-001',

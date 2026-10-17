@@ -12,7 +12,7 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { BananaFeatures } from '@/blocks/banana-features';
 import { bananaText } from '@/blocks/banana-messages';
-import { CreditPackOffer } from '@/blocks/credit-pack-offer';
+import { CreationNudge } from '@/blocks/credit-pack-offer';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
 import { Pricing } from '@/blocks/pricing';
@@ -80,6 +80,19 @@ export const BANANA_GENERATOR_KEYS = [
   'prompt_first',
   'upload_first',
   'need_credits',
+  'purchase_title',
+  'purchase_description',
+  'purchase_required',
+  'purchase_balance',
+  'purchase_shortfall',
+  'purchase_choose_pack',
+  'purchase_recommended',
+  'purchase_validity',
+  'purchase_pay',
+  'purchase_compare_monthly',
+  'purchase_preflight',
+  'purchase_final_step',
+  'purchase_storage_failed',
   'prompt_tools',
   'batch_results',
   'cost_label',
@@ -158,7 +171,7 @@ export function BananaHome({
   }));
   return (
     <div className="banana-app">
-      <CreditPackOffer />
+      <CreationNudge />
       <div className="banana-ambient">
         <div className="banana-wash" aria-hidden="true">
           <span />

@@ -173,6 +173,7 @@ export function Checkout({
       }}
       signedIn={!!session?.user}
       ready={ready}
+      backHref={returnPath}
       onFallback={() => hostedCheckout.mutate()}
       onRetry={() => {
         hostedCheckout.reset();

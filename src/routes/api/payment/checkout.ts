@@ -123,7 +123,7 @@ async function POST({ request }: { request: Request }) {
       baseUrl
     );
     const finalRedirect = redirect
-      ? `${baseUrl}/auth-callback?redirect=${encodeURIComponent(`${baseUrl}${safeRedirectPath}`)}`
+      ? `${baseUrl}${safeRedirectPath}`
       : `${baseUrl}/settings/billing?purchase=success`;
     const successUrl = finalRedirect;
     const cancelUrl = `${baseUrl}/checkout?product=${encodeURIComponent(product.productId)}&redirect=${encodeURIComponent(safeRedirectPath)}`;

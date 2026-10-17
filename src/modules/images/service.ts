@@ -67,6 +67,7 @@ import {
   updateTask,
 } from '@/modules/ai-tasks/service';
 import { getAllConfigs, type ConfigMap } from '@/modules/config/service';
+import { getBalance } from '@/modules/credits/service';
 import {
   assertUserSafetyAllowed,
   automatedSafetyReviewStatus,
@@ -1041,6 +1042,65 @@ export async function runCreativeImage(params: {
     });
     throw new Error(getPublicGenerationError(message));
   }
+}
+
+/** Validate a homepage generation before offering payment. This performs the
+ * same model, provider, account, safety, duplicate-failure and price checks as
+ * execution without creating or charging a generation task. Execution repeats
+ * these checks because account and provider state can change during checkout. */
+export async function preflightCreativeImage(params: {
+  userId: string;
+  model: string;
+  operation: string;
+  prompt?: string;
+  imageUrls?: string[];
+  size?: string;
+  quality?: string;
+  resolution?: unknown;
+  outputFormat?: string;
+  outputCount?: unknown;
+}) {
+  requireProductionCreativeModel(params.model);
+  const request = validateCreativeRequest(params);
+  await assertPaidGenerationAllowed(params.userId);
+  const configs = await getAllConfigs();
+  if (!isCreativeModelLive(configs, request.model.id)) {
+    throw new Error(
+      `${request.model.label} is awaiting paid acceptance and production enablement`
+    );
+  }
+  resolveProvider(configs, request.model.provider);
+  const options = buildCreativeImageOptions(request);
+  const taskOptions = {
+    ...options,
+    studioModelId: request.model.id,
+    operation: request.operation,
+  };
+  await moderateAndEnforce({
+    userId: params.userId,
+    prompt: request.prompt,
+    imageUrls: request.imageUrls,
+    mediaType: AIMediaType.IMAGE,
+    model: request.providerModel,
+    moderation: moderationConfig(configs),
+  });
+  await assertNoRecentDuplicateFailure({
+    userId: params.userId,
+    model: request.providerModel,
+    prompt: request.prompt,
+    options: taskOptions,
+  });
+  const balance = await getBalance(params.userId);
+  return {
+    credits: request.credits,
+    balance,
+    shortfall: Math.max(0, request.credits - balance),
+    canGenerate: balance >= request.credits,
+    model: request.model.id,
+    operation: request.operation,
+    resolution: request.resolution,
+    outputCount: request.outputCount,
+  };
 }
 
 export async function getCreativeUtilityAvailability() {

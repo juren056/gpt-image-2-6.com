@@ -12,6 +12,7 @@ import type {
   AccountCreditBalance,
   AccountImageTask,
 } from '@/types/banana-account';
+import type { CheckoutProduct } from '@/types/checkout';
 import {
   ArrowUpRight,
   Check,
@@ -30,7 +31,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { useSession } from '@/core/auth/client';
-import { Link } from '@/core/i18n/navigation';
+import { Link, useRouter } from '@/core/i18n/navigation';
 import {
   CREATIVE_MODELS,
   getCreativeOutputLimit,
@@ -48,6 +49,12 @@ import {
   parseActiveCreativeTask,
 } from '@/lib/banana-task-resume';
 import {
+  createGenerationPurchaseIntent,
+  GENERATION_PURCHASE_INTENT_KEY,
+  parseGenerationPurchaseIntent,
+  recommendGenerationProduct,
+} from '@/lib/generation-purchase';
+import {
   generatorDraftFromSelection,
   markGeneratorDraftAccepted,
   normalizeGeneratorDraft,
@@ -58,6 +65,7 @@ import {
 } from '@/lib/generator-entry';
 import { ModelBrandTile } from '@/components/creative-visuals';
 import { FirstGenerationFeedback } from '@/components/first-generation-feedback';
+import { GenerationPurchaseDialog } from '@/components/generation-purchase-dialog';
 import {
   ImageUploader,
   type ImageUploaderValue,
@@ -75,6 +83,12 @@ type Task = {
   costCredits?: number;
   inferenceTime?: number;
   options?: Record<string, unknown>;
+};
+type GenerationPreflight = {
+  credits: number;
+  balance: number;
+  shortfall: number;
+  canGenerate: boolean;
 };
 export type NanoRecipe = { id: string; title: string; prompt: string };
 export type GeneratorExample = {
@@ -177,6 +191,7 @@ export function BananaGenerator({
   examples?: GeneratorExample[];
 }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const fieldId = useId();
   const [modelId, setModelId] = useState<CreativeModelId>(initialModel);
   const [mode, setMode] = useState(initialMode);
@@ -220,6 +235,11 @@ export function BananaGenerator({
   const restoringTask = useRef(false);
   const refreshedTask = useRef<string | undefined>(undefined);
   const previousUser = useRef(session?.user?.id);
+  const resumeAttempted = useRef(false);
+  const [purchaseOpen, setPurchaseOpen] = useState(false);
+  const [purchaseDraft, setPurchaseDraft] = useState<GeneratorDraft>();
+  const [purchaseQuote, setPurchaseQuote] = useState<GenerationPreflight>();
+  const [selectedProductId, setSelectedProductId] = useState<string>();
   const queryClient = useQueryClient();
   const model = CREATIVE_MODELS.find((item) => item.id === modelId)!;
   const availability = useQuery({
@@ -254,6 +274,17 @@ export function BananaGenerator({
     enabled: Boolean(session?.user),
     staleTime: 15000,
   });
+  const checkoutProducts = useQuery({
+    queryKey: ['checkout-products'],
+    queryFn: () => apiGet<CheckoutProduct[]>('/api/payment/products'),
+    enabled: Boolean(session?.user),
+    staleTime: 60_000,
+  });
+  const creditProducts = (checkoutProducts.data || []).filter((product) =>
+    ['credits_boost', 'credits_flex', 'credits_power'].includes(
+      product.productId
+    )
+  );
   const insufficient =
     typeof cost === 'number' &&
     typeof balance.data?.balance === 'number' &&
@@ -350,6 +381,27 @@ export function BananaGenerator({
       });
     },
   });
+  const preflight = useMutation({
+    mutationFn: (draft: GeneratorDraft) =>
+      apiPost<GenerationPreflight>('/api/studio/preflight', {
+        model: draft.model,
+        operation: draft.operation,
+        prompt: draft.prompt,
+        size: draft.aspectRatio,
+        resolution: draft.resolution,
+        outputFormat: 'png',
+        outputCount: draft.outputCount,
+        imageUrls: draft.imageUrls,
+      }),
+    onError: (error: Error) => {
+      toast.error(error.message);
+      trackFunnelEvent('generate_failed', {
+        model: modelId,
+        scene,
+        stage: 'preflight',
+      });
+    },
+  });
   const working =
     run.isPending ||
     Boolean(
@@ -363,7 +415,7 @@ export function BananaGenerator({
       onSubmit: z.object({ prompt: z.string().trim().min(1).max(32000) }),
     },
     onSubmit: async ({ value }) => {
-      if (!ready || !session?.user || working || insufficient) return;
+      if (!ready || !session?.user || working || preflight.isPending) return;
       if (
         mode === 'edit' &&
         !references.some((item) => item.status === 'uploaded' && item.url)
@@ -391,7 +443,38 @@ export function BananaGenerator({
         true
       );
       if (!submitted) return;
-      await run.mutateAsync(submitted).catch(() => undefined);
+      const quote = await preflight
+        .mutateAsync(submitted)
+        .catch(() => undefined);
+      if (!quote) return;
+      queryClient.setQueryData<AccountCreditBalance>(
+        ['account-balance', session.user.id],
+        (current) =>
+          current ? { ...current, balance: quote.balance } : current
+      );
+      trackFunnelEvent('generation_preflight_passed', {
+        model: modelId,
+        credits: quote.credits,
+        can_generate: quote.canGenerate,
+      });
+      if (quote.canGenerate) {
+        await run.mutateAsync(submitted).catch(() => undefined);
+        return;
+      }
+      const recommended = recommendGenerationProduct(
+        creditProducts,
+        quote.shortfall
+      );
+      setPurchaseDraft(submitted);
+      setPurchaseQuote(quote);
+      setSelectedProductId(recommended?.productId);
+      setPurchaseOpen(true);
+      trackFunnelEvent('generation_paywall_shown', {
+        model: modelId,
+        credits: quote.credits,
+        shortfall: quote.shortfall,
+      });
+      trackFunnelEvent('credit_balance_low', { model: modelId, scene });
     },
   });
 
@@ -463,6 +546,83 @@ export function BananaGenerator({
     },
     [allModels, copy.active_preserved, form, initialModel, working]
   );
+
+  useEffect(() => {
+    if (
+      !draftLoaded ||
+      !session?.user ||
+      !ready ||
+      working ||
+      resumeAttempted.current ||
+      new URLSearchParams(window.location.search).get('generation') !== 'resume'
+    ) {
+      return;
+    }
+    resumeAttempted.current = true;
+    void (async () => {
+      let intent;
+      try {
+        const raw = sessionStorage.getItem(GENERATION_PURCHASE_INTENT_KEY);
+        intent = parseGenerationPurchaseIntent(raw ? JSON.parse(raw) : null);
+      } catch {
+        intent = null;
+      }
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('generation');
+      window.history.replaceState(
+        window.history.state,
+        '',
+        cleanUrl.pathname + cleanUrl.search + cleanUrl.hash
+      );
+      if (!intent) {
+        try {
+          sessionStorage.removeItem(GENERATION_PURCHASE_INTENT_KEY);
+        } catch {
+          /* Optional storage cannot block the restored draft. */
+        }
+        return;
+      }
+      applyGeneratorDraft(intent.draft, { backupCurrent: false, track: false });
+      const refreshed = await balance.refetch();
+      const available = refreshed.data?.balance ?? 0;
+      if (available < intent.credits) {
+        const quote = {
+          credits: intent.credits,
+          balance: available,
+          shortfall: intent.credits - available,
+          canGenerate: false,
+        };
+        const recommended = recommendGenerationProduct(
+          creditProducts,
+          quote.shortfall
+        );
+        setPurchaseDraft(intent.draft);
+        setPurchaseQuote(quote);
+        setSelectedProductId(recommended?.productId);
+        setPurchaseOpen(true);
+        return;
+      }
+      try {
+        sessionStorage.removeItem(GENERATION_PURCHASE_INTENT_KEY);
+      } catch {
+        /* The URL is already consumed, preventing an automatic retry loop. */
+      }
+      trackFunnelEvent('generation_resumed', {
+        model: intent.draft.model,
+        credits: intent.credits,
+      });
+      await run.mutateAsync(intent.draft).catch(() => undefined);
+    })();
+  }, [
+    applyGeneratorDraft,
+    balance.refetch,
+    creditProducts,
+    draftLoaded,
+    ready,
+    run,
+    session?.user,
+    working,
+  ]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -744,6 +904,40 @@ export function BananaGenerator({
       /* the brief can still be downloaded */
     }
   }
+  function savePurchaseIntent() {
+    if (!purchaseDraft || !purchaseQuote) return false;
+    remember();
+    try {
+      sessionStorage.setItem(
+        GENERATION_PURCHASE_INTENT_KEY,
+        JSON.stringify(
+          createGenerationPurchaseIntent(purchaseDraft, purchaseQuote.credits)
+        )
+      );
+      return true;
+    } catch {
+      toast.error(copy.purchase_storage_failed);
+      return false;
+    }
+  }
+  function continueToCheckout() {
+    if (!selectedProductId || !savePurchaseIntent()) return;
+    setPurchaseOpen(false);
+    trackFunnelEvent('recommended_product_selected', {
+      product: selectedProductId,
+      source: 'generation_paywall',
+    });
+    router.push(
+      `/checkout?product=${encodeURIComponent(selectedProductId)}&redirect=${encodeURIComponent('/?generation=resume#generator')}`
+    );
+  }
+  function compareMonthlyPlans() {
+    if (!savePurchaseIntent()) return;
+    setPurchaseOpen(false);
+    router.push(
+      `/pricing?redirect=${encodeURIComponent('/?generation=resume#generator')}`
+    );
+  }
   async function copyPrompt() {
     remember();
     try {
@@ -812,6 +1006,18 @@ export function BananaGenerator({
   const filteredModelOptions = modelOptions.filter((option) =>
     option.label.toLowerCase().includes(modelSearch.toLowerCase())
   );
+  const recommendedProduct = purchaseQuote
+    ? recommendGenerationProduct(creditProducts, purchaseQuote.shortfall)
+    : undefined;
+  useEffect(() => {
+    if (
+      purchaseOpen &&
+      recommendedProduct &&
+      !creditProducts.some((product) => product.productId === selectedProductId)
+    ) {
+      setSelectedProductId(recommendedProduct.productId);
+    }
+  }, [creditProducts, purchaseOpen, recommendedProduct, selectedProductId]);
   useEffect(() => {
     const prepare = (event: Event) => {
       const detail = (event as CustomEvent<BananaGeneratorSelection>).detail;
@@ -887,6 +1093,19 @@ export function BananaGenerator({
   }
   return (
     <section aria-label={copy.workbench} className="banana-generator">
+      <GenerationPurchaseDialog
+        open={purchaseOpen}
+        onOpenChange={setPurchaseOpen}
+        products={creditProducts}
+        recommendedProductId={recommendedProduct?.productId}
+        selectedProductId={selectedProductId}
+        requiredCredits={purchaseQuote?.credits ?? 0}
+        balance={purchaseQuote?.balance ?? 0}
+        copy={copy}
+        onSelect={setSelectedProductId}
+        onCheckout={continueToCheckout}
+        onComparePlans={compareMonthlyPlans}
+      />
       <div
         className="banana-generator__tabs"
         role="tablist"
@@ -1412,18 +1631,9 @@ export function BananaGenerator({
               )}
             </dl>
             {insufficient && (
-              <Link
-                href={`/pricing?redirect=${encodeURIComponent(returnPath + '#generator')}`}
-                onClick={() => {
-                  remember();
-                  trackFunnelEvent('credit_balance_low', {
-                    model: modelId,
-                    scene,
-                  });
-                }}
-              >
-                {copy.flow_credits_link}
-              </Link>
+              <p className="banana-generator__status" role="status">
+                {copy.purchase_final_step}
+              </p>
             )}
           </section>
           <form.Subscribe selector={(s) => s.values.prompt}>
@@ -1444,31 +1654,31 @@ export function BananaGenerator({
                     className="banana-generator__submit"
                     disabled={
                       !ready ||
-                      insufficient ||
                       !prompt.trim() ||
                       working ||
+                      preflight.isPending ||
                       (mode === 'edit' &&
                         !references.some(
                           (item) => item.status === 'uploaded' && item.url
                         ))
                     }
                   >
-                    {working ? (
+                    {working || preflight.isPending ? (
                       <Loader2 size={16} className="animate-spin" aria-hidden />
                     ) : (
                       prompt.trim() && <Sparkles size={16} aria-hidden />
                     )}
                     {working
                       ? copy.working
-                      : mode === 'edit' &&
-                          !references.some(
-                            (item) => item.status === 'uploaded' && item.url
-                          )
-                        ? copy.upload_first
-                        : !prompt.trim()
-                          ? copy.prompt_first
-                          : insufficient
-                            ? copy.need_credits
+                      : preflight.isPending
+                        ? copy.purchase_preflight
+                        : mode === 'edit' &&
+                            !references.some(
+                              (item) => item.status === 'uploaded' && item.url
+                            )
+                          ? copy.upload_first
+                          : !prompt.trim()
+                            ? copy.prompt_first
                             : copy.run}
                   </button>
                 )}

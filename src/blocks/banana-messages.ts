@@ -80,6 +80,32 @@ export function bananaText(key: string, locale: string = getLocale()): string {
       return m['banana.upload_first']({}, { locale: language });
     case 'need_credits':
       return m['banana.need_credits']({}, { locale: language });
+    case 'purchase_title':
+      return m['banana.purchase_title']({}, { locale: language });
+    case 'purchase_description':
+      return m['banana.purchase_description']({}, { locale: language });
+    case 'purchase_required':
+      return m['banana.purchase_required']({}, { locale: language });
+    case 'purchase_balance':
+      return m['banana.purchase_balance']({}, { locale: language });
+    case 'purchase_shortfall':
+      return m['banana.purchase_shortfall']({}, { locale: language });
+    case 'purchase_choose_pack':
+      return m['banana.purchase_choose_pack']({}, { locale: language });
+    case 'purchase_recommended':
+      return m['banana.purchase_recommended']({}, { locale: language });
+    case 'purchase_validity':
+      return m['banana.purchase_validity']({}, { locale: language });
+    case 'purchase_pay':
+      return m['banana.purchase_pay']({}, { locale: language });
+    case 'purchase_compare_monthly':
+      return m['banana.purchase_compare_monthly']({}, { locale: language });
+    case 'purchase_preflight':
+      return m['banana.purchase_preflight']({}, { locale: language });
+    case 'purchase_final_step':
+      return m['banana.purchase_final_step']({}, { locale: language });
+    case 'purchase_storage_failed':
+      return m['banana.purchase_storage_failed']({}, { locale: language });
     case 'prompt_tools':
       return m['banana.prompt_tools']({}, { locale: language });
     case 'batch_results':
