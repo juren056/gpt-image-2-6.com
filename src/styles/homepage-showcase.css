@@ -1,0 +1,256 @@
+.homepage-showcase {
+  --showcase-card: clamp(168px, 18vw, 236px);
+  --showcase-gap: 16px;
+  position: relative;
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.homepage-showcase__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.homepage-showcase__header h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.homepage-showcase__header p {
+  max-width: 760px;
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.homepage-showcase__library-link,
+.homepage-showcase__secondary {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+.homepage-showcase__viewport {
+  position: relative;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 16px;
+  isolation: isolate;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+}
+.homepage-showcase__focus {
+  position: absolute;
+  z-index: -1;
+  top: 16px;
+  bottom: 18px;
+  left: 50%;
+  width: calc(var(--showcase-card) + 42px);
+  transform: translateX(-50%);
+  border: 1px solid color-mix(in srgb, var(--primary) 32%, transparent);
+  border-radius: 22px;
+  background: radial-gradient(
+    circle at 50% 44%,
+    color-mix(in srgb, var(--primary) 14%, transparent),
+    transparent 68%
+  );
+  box-shadow: 0 0 60px color-mix(in srgb, var(--primary) 8%, transparent);
+}
+.homepage-showcase__track {
+  position: absolute;
+  inset: 0;
+}
+.homepage-showcase__card {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  width: var(--showcase-card);
+  transform: translateX(calc(-50% + var(--showcase-x))) scale(0.94);
+  opacity: 0.64;
+  transition:
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 360ms ease,
+    filter 360ms ease;
+  filter: saturate(0.72) brightness(0.82);
+  will-change: transform;
+}
+.homepage-showcase__card.is-spotlight {
+  z-index: 3;
+  opacity: 1;
+  transform: translateX(calc(-50% + var(--showcase-x))) scale(1.1);
+  filter: saturate(1) brightness(1.04);
+}
+.homepage-showcase__open {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  color: var(--foreground);
+  text-align: left;
+  box-shadow: 0 14px 36px #0005;
+}
+.homepage-showcase__card.is-spotlight .homepage-showcase__open {
+  border-color: color-mix(in srgb, var(--primary) 72%, var(--border));
+  box-shadow:
+    0 18px 50px #0008,
+    0 0 0 1px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+.homepage-showcase__image {
+  display: grid;
+  height: 190px;
+  place-items: center;
+  overflow: hidden;
+  background: #111;
+}
+.homepage-showcase__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.homepage-showcase__body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 13px 14px;
+}
+.homepage-showcase__body strong {
+  display: -webkit-box;
+  min-height: 40px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.homepage-showcase__body > span:last-child {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.homepage-showcase__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.homepage-showcase__controls button {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+}
+.homepage-showcase__controls button:hover {
+  border-color: color-mix(in srgb, var(--primary) 60%, var(--border));
+  background: color-mix(in srgb, var(--primary) 10%, var(--card));
+}
+.homepage-showcase__controls span {
+  min-width: 112px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  text-align: center;
+}
+.homepage-showcase__dialog {
+  width: min(860px, calc(100vw - 32px));
+  max-width: min(860px, calc(100vw - 32px)) !important;
+  max-height: 88dvh;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  gap: 0;
+  overflow: auto;
+  padding: 0;
+}
+.homepage-showcase__dialog > img {
+  width: 100%;
+  height: min(68dvh, 620px);
+  object-fit: contain;
+  background: #111;
+}
+.homepage-showcase__dialog-body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 36px 24px 28px;
+}
+.homepage-showcase__dialog-body [data-slot='dialog-title'] {
+  font-size: 24px;
+  line-height: 1.25;
+}
+.homepage-showcase__dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.homepage-showcase__dialog-actions .banana-button {
+  margin: 0;
+}
+.homepage-showcase__viewport.is-reduced .homepage-showcase__card {
+  transition: none;
+}
+@media (max-width: 700px) {
+  .homepage-showcase {
+    --showcase-card: min(68vw, 228px);
+    --showcase-gap: 12px;
+  }
+  .homepage-showcase__header {
+    align-items: start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .homepage-showcase__viewport {
+    height: 336px;
+    margin-inline: -20px;
+    border-radius: 0;
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 3%,
+      #000 97%,
+      transparent
+    );
+  }
+  .homepage-showcase__image {
+    height: 176px;
+  }
+  .homepage-showcase__dialog {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .homepage-showcase__dialog > img {
+    height: min(42dvh, 360px);
+  }
+  .homepage-showcase__dialog-body {
+    padding: 24px 18px 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .homepage-showcase__card {
+    transition: none;
+  }
+}

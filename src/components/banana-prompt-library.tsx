@@ -45,6 +45,13 @@ export function BananaPromptLibrary({
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<PromptExample | null>(null);
   useEffect(() => {
+    if (typeof window === 'undefined' || !catalog.items.length) return;
+    const requested = new URLSearchParams(window.location.search).get('prompt');
+    if (!requested) return;
+    const item = catalog.items.find((candidate) => candidate.id === requested);
+    if (item) setSelected(item);
+  }, [catalog.items]);
+  useEffect(() => {
     try {
       const value: unknown = JSON.parse(
         localStorage.getItem(FAVORITES_KEY) || '[]'
@@ -296,16 +303,7 @@ export function BananaPromptLibrary({
                 >
                   <h3>{item.title}</h3>
                 </button>
-                <div className="banana-prompt-credit">
-                  {item.sourceModel} ·{' '}
-                  <a
-                    href={item.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {item.author}
-                  </a>
-                </div>
+                <div className="banana-prompt-credit">{item.sourceModel}</div>
                 <p>{item.prompt}</p>
                 <div className="banana-workflow-actions">
                   <button
@@ -344,16 +342,6 @@ export function BananaPromptLibrary({
           {copy.next}
         </button>
       </nav>
-      <p className="banana-workflow-note">
-        {copy.attribution}{' '}
-        <a
-          href="/data/prompt-library-credits.txt"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          CC BY 4.0
-        </a>
-      </p>
       <Dialog
         open={selected !== null}
         onOpenChange={(open) => {
@@ -381,9 +369,7 @@ export function BananaPromptLibrary({
               </div>
               <div className="banana-prompt-detail-body">
                 <DialogTitle>{selected.title}</DialogTitle>
-                <DialogDescription>
-                  {copy.community} · {selected.sourceModel}
-                </DialogDescription>
+                <DialogDescription>{selected.sourceModel}</DialogDescription>
                 <div className="banana-prompt-detail-meta">
                   <span>{categoryLabel(selected.category)}</span>
                   <span>
@@ -430,48 +416,6 @@ export function BananaPromptLibrary({
                     />
                   </button>
                 </div>
-                <dl className="banana-prompt-provenance">
-                  <dt>{copy.creator}</dt>
-                  <dd>
-                    <a
-                      href={selected.authorUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {selected.author}
-                    </a>
-                  </dd>
-                  <dt>{copy.source}</dt>
-                  <dd>
-                    <a
-                      href={selected.sourceUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {copy.source} ↗
-                    </a>{' '}
-                    ·{' '}
-                    <a
-                      href={selected.collectionUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {selected.collection}
-                    </a>
-                  </dd>
-                  <dt>{selected.license}</dt>
-                  <dd>
-                    <a
-                      href={selected.licenseUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {selected.license}
-                    </a>
-                  </dd>
-                  <dt>{copy.changes}</dt>
-                  <dd>{selected.changes}</dd>
-                </dl>
               </div>
             </>
           )}

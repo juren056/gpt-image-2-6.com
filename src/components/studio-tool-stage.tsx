@@ -84,7 +84,7 @@ export function StudioToolStage({
                 />
                 <strong>{item.title}</strong>
                 <span>
-                  {item.author} · {item.license}
+                  {item.sourceModel} · {item.license}
                 </span>
               </button>
             ))}

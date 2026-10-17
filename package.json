@@ -49,6 +49,7 @@
     "test:seeapi": "tsx scripts/verify-seeapi-moderation.ts",
     "test:seeapi:worker": "node scripts/verify-seeapi-worker.mjs",
     "test:analytics": "tsx scripts/verify-analytics-events.ts",
+    "test:homepage-showcase": "tsx scripts/verify-homepage-showcase.ts",
     "test:generation-purchase": "tsx scripts/verify-generation-purchase.ts",
     "test:agent-discovery": "tsx scripts/verify-agent-discovery.ts",
     "smoke:studio-fal": "tsx scripts/with-env.ts tsx scripts/smoke-creative-studio-fal-live.ts",
