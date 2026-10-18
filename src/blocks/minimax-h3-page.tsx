@@ -1,4 +1,4 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/minimax_h3';
 import { m } from '@/paraglide/messages.js';
 import { MinimaxH3Page as MinimaxH3PageComponent } from '@/components/minimax-h3-page';
 

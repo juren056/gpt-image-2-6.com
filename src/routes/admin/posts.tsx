@@ -11,7 +11,7 @@ import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/admin-posts';
 import {
   apiDelete,
   apiGet,

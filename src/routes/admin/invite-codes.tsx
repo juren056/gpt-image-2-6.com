@@ -11,7 +11,7 @@ import { Copy, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/admin-invite_codes';
 import { apiDelete, apiGet, apiPost, type PageResult } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';

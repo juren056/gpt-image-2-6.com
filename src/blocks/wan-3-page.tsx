@@ -7,7 +7,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/wan3-tools-video-camera_-tools-video-rhythm_';
 import { Link } from '@/core/i18n/navigation';
 import { getWan3GenerationCost } from '@/config/media-tools';
 import { cn } from '@/lib/utils';

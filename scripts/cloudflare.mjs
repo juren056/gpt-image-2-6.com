@@ -22,6 +22,7 @@ function run(entry, args) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
+run('scripts/generate-dynamic-message-lookups.mjs', ['--check']);
 run(
   'scripts/verify-homepage-baseline.mjs',
   process.argv.includes('--prebuilt') ? ['--built'] : []

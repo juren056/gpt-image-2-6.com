@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/prompt_library';
 import { PROMPT_LIBRARY_MANIFEST } from '@/config/prompt-library-manifest';
 import { apiGet } from '@/lib/api-client';
 import type { PromptCatalog } from '@/lib/prompt-library';

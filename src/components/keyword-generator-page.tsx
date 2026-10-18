@@ -10,7 +10,7 @@ import {
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/keyword-tools-generator';
 import { Link } from '@/core/i18n/navigation';
 import { IMAGE_GENERATION_COST } from '@/config/image-models';
 import { apiGet, apiGetBlob, apiPost } from '@/lib/api-client';

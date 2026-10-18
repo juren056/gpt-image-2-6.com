@@ -13,7 +13,7 @@ import {
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/settings-billing';
 import { Link } from '@/core/i18n/navigation';
 import {
   buildGa4PurchaseEvent,

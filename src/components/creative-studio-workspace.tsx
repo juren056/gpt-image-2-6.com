@@ -21,7 +21,7 @@ import {
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/account_assets';
 import type {
   CreativeModelDefinition,
   CreativeOperation,

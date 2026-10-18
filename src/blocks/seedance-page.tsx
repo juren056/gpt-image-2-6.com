@@ -1,4 +1,4 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/seedance25-seedance_draft-nav_label';
 import { m } from '@/paraglide/messages.js';
 import { SeedanceLandingPage } from '@/components/seedance-landing-page';
 

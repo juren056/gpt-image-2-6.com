@@ -1,4 +1,4 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/account_assets';
 import { PUBLIC_TOOL_PAGES } from '@/config/public-creative';
 import { getLocale } from '@/paraglide/runtime.js';
 import { AccountPromptLibrary } from '@/blocks/banana-prompt-library';

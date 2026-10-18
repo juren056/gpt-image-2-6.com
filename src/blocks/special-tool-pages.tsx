@@ -1,4 +1,7 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import {
+  messages as scopedMessages,
+  tDynamic,
+} from '@/core/i18n/lookups/tools';
 import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
 import {
@@ -176,7 +179,7 @@ export function BackgroundRemoverToolPage() {
 
 export function getSpecialToolFaqs(kind: SpecialKind, locale: string) {
   const localized = (key: string) => {
-    const fn = (m as Record<string, unknown>)[key];
+    const fn = scopedMessages[key];
     return typeof fn === 'function'
       ? (fn as (inputs: object, options: { locale: string }) => string)(
           {},

@@ -1,4 +1,4 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/seedance_draft';
 import { m } from '@/paraglide/messages.js';
 import { SeedanceDraftModePage as Page } from '@/components/seedance-draft-mode-page';
 import type { SeedanceDraftModeCopy } from '@/components/seedance-draft-types';

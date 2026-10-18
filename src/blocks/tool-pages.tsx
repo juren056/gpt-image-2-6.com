@@ -1,4 +1,7 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import {
+  messages as scopedMessages,
+  tDynamic,
+} from '@/core/i18n/lookups/tools';
 import { PUBLIC_TOOL_PAGES } from '@/config/public-creative';
 import {
   TOOL_IMAGES,
@@ -40,8 +43,8 @@ function optionsFor(
 function generatorCopy(kind: ScenarioToolKind): ScenarioGeneratorCopy {
   return {
     path: TOOL_PATHS[kind],
-    workspaceLabel: m[`tools.${kind}.workspace_label`](),
-    workspaceDescription: m[`tools.${kind}.workspace_description`](),
+    workspaceLabel: tDynamic(`tools.${kind}.workspace_label`),
+    workspaceDescription: tDynamic(`tools.${kind}.workspace_description`),
     privateLabel: m['tools.generator.private_label'](),
     creditsLabel: m['tools.generator.credits_label']({
       credits: '{credits}',
@@ -86,7 +89,7 @@ function generatorCopy(kind: ScenarioToolKind): ScenarioGeneratorCopy {
     generating: m['tools.generator.generating'](),
     signUpToGenerate: m['tools.generator.sign_up'](),
     resultTitle: m['tools.generator.result_title'](),
-    resultEmpty: m[`tools.${kind}.result_empty`](),
+    resultEmpty: tDynamic(`tools.${kind}.result_empty`),
     resultReady: m['tools.generator.result_ready'](),
     openStudio: m['tools.generator.open_studio'](),
     originalImage: m['settings.generate.compare_original_title'](),
@@ -98,7 +101,7 @@ function generatorCopy(kind: ScenarioToolKind): ScenarioGeneratorCopy {
 
 function faqsFor(kind: ScenarioToolKind, locale?: string): ToolFaq[] {
   const localized = (key: string) => {
-    const fn = (m as Record<string, unknown>)[key];
+    const fn = scopedMessages[key];
     if (typeof fn !== 'function') return key;
     return locale
       ? (fn as (inputs: object, options: { locale: string }) => string)(
@@ -130,20 +133,20 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
     kind,
     path: TOOL_PATHS[kind],
     image: TOOL_IMAGES[kind],
-    eyebrow: m[`tools.${kind}.eyebrow`](),
-    title: m[`tools.${kind}.title`](),
-    description: m[`tools.${kind}.description`](),
-    trustNote: m[`tools.${kind}.trust_note`](),
+    eyebrow: tDynamic(`tools.${kind}.eyebrow`),
+    title: tDynamic(`tools.${kind}.title`),
+    description: tDynamic(`tools.${kind}.description`),
+    trustNote: tDynamic(`tools.${kind}.trust_note`),
     breadcrumbHome: m['tools.common.home'](),
     breadcrumbTools: m['tools.common.tools'](),
-    showcaseAlt: m[`tools.${kind}.showcase_alt`](),
-    showcaseCaption: m[`tools.${kind}.showcase_caption`](),
+    showcaseAlt: tDynamic(`tools.${kind}.showcase_alt`),
+    showcaseCaption: tDynamic(`tools.${kind}.showcase_caption`),
     showcaseDisclosure: m['tools.common.showcase_disclosure'](),
-    generatorTitle: m[`tools.${kind}.generator_title`](),
-    generatorDescription: m[`tools.${kind}.generator_description`](),
+    generatorTitle: tDynamic(`tools.${kind}.generator_title`),
+    generatorDescription: tDynamic(`tools.${kind}.generator_description`),
     generatorCopy: generatorCopy(kind),
-    outcomesTitle: m[`tools.${kind}.outcomes_title`](),
-    outcomesDescription: m[`tools.${kind}.outcomes_description`](),
+    outcomesTitle: tDynamic(`tools.${kind}.outcomes_title`),
+    outcomesDescription: tDynamic(`tools.${kind}.outcomes_description`),
     outcomes: Array.from({ length: 3 }, (_, index) => {
       const number = index + 1;
       return {
@@ -151,8 +154,8 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
         description: tDynamic(`tools.${kind}.outcome_${number}_description`),
       };
     }),
-    workflowTitle: m[`tools.${kind}.workflow_title`](),
-    workflowDescription: m[`tools.${kind}.workflow_description`](),
+    workflowTitle: tDynamic(`tools.${kind}.workflow_title`),
+    workflowDescription: tDynamic(`tools.${kind}.workflow_description`),
     steps: Array.from({ length: 4 }, (_, index) => {
       const number = index + 1;
       return {
@@ -160,8 +163,8 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
         description: tDynamic(`tools.${kind}.step_${number}_description`),
       };
     }),
-    promptsTitle: m[`tools.${kind}.prompts_title`](),
-    promptsDescription: m[`tools.${kind}.prompts_description`](),
+    promptsTitle: tDynamic(`tools.${kind}.prompts_title`),
+    promptsDescription: tDynamic(`tools.${kind}.prompts_description`),
     prompts: Array.from({ length: 3 }, (_, index) => {
       const number = index + 1;
       return {
@@ -169,33 +172,33 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
         prompt: tDynamic(`tools.${kind}.prompt_${number}_body`),
       };
     }),
-    guidanceTitle: m[`tools.${kind}.guidance_title`](),
-    guidanceDescription: m[`tools.${kind}.guidance_description`](),
+    guidanceTitle: tDynamic(`tools.${kind}.guidance_title`),
+    guidanceDescription: tDynamic(`tools.${kind}.guidance_description`),
     tips: Array.from({ length: 4 }, (_, index) =>
       tDynamic(`tools.${kind}.tip_${index + 1}`)
     ),
-    limitationTitle: m[`tools.${kind}.limitation_title`](),
-    limitation: m[`tools.${kind}.limitation_body`](),
+    limitationTitle: tDynamic(`tools.${kind}.limitation_title`),
+    limitation: tDynamic(`tools.${kind}.limitation_body`),
     faqTitle: m['tools.common.faq_title'](),
     faqs: faqsFor(kind),
     relatedTitle: m['tools.common.related_title'](),
     relatedLinks: [
       {
         href: guidePath,
-        label: m[`tools.${kind}.guide_link`](),
+        label: tDynamic(`tools.${kind}.guide_link`),
       },
       {
         href: TOOL_PATHS[otherKind],
-        label: m[`tools.${otherKind}.link_label`](),
+        label: tDynamic(`tools.${otherKind}.link_label`),
       },
       {
         href: '/prompts',
         label: m['seo.prompts.link_label'](),
       },
     ],
-    ctaTitle: m[`tools.${kind}.cta_title`](),
-    ctaDescription: m[`tools.${kind}.cta_description`](),
-    ctaPrimary: m[`tools.${kind}.cta_primary`](),
+    ctaTitle: tDynamic(`tools.${kind}.cta_title`),
+    ctaDescription: tDynamic(`tools.${kind}.cta_description`),
+    ctaPrimary: tDynamic(`tools.${kind}.cta_primary`),
     ctaSecondary: m['tools.common.all_tools'](),
   };
 }

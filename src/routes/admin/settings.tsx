@@ -4,7 +4,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ChevronDown, FlaskConical, Minus, Plus, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/admin-settings';
 import {
   getSettingGroups,
   getSettings,

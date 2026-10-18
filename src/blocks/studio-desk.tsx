@@ -1,10 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Check, ChevronDown, FolderOpen, Loader2, Save, Share2, X } from 'lucide-react';
+import {
+  Check,
+  ChevronDown,
+  FolderOpen,
+  Loader2,
+  Save,
+  Share2,
+  X,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/studio_desk';
 import { Link } from '@/core/i18n/navigation';
 import type { CreativeToolId } from '@/config/creative-tools';
 import { PUBLIC_TOOL_PAGES } from '@/config/public-creative';
@@ -180,9 +188,14 @@ export function StudioDesk() {
     observedDrafts.current = {};
     if (metadata) {
       setDrafts(metadata.drafts);
-      const requestedTool = new URLSearchParams(window.location.search).get('tool');
-      setToolId(requestedTool && Object.hasOwn(STUDIO_TOOL_LAYOUTS, requestedTool)
-        ? requestedTool as CreativeToolId : metadata.activeTool);
+      const requestedTool = new URLSearchParams(window.location.search).get(
+        'tool'
+      );
+      setToolId(
+        requestedTool && Object.hasOwn(STUDIO_TOOL_LAYOUTS, requestedTool)
+          ? (requestedTool as CreativeToolId)
+          : metadata.activeTool
+      );
     } else
       setDrafts({
         T01: {
@@ -405,7 +418,11 @@ export function StudioDesk() {
                       />
                       <span>{toolName(tool.id)}</span>
                       {tool.id === toolId && (
-                        <Check className="studio-tool-selected" size={16} aria-hidden />
+                        <Check
+                          className="studio-tool-selected"
+                          size={16}
+                          aria-hidden
+                        />
                       )}
                     </DropdownMenuItem>
                   ))}

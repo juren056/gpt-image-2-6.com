@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { messages as scopedMessages } from '@/core/i18n/lookups/seedance25-seedance_draft-nav_label';
 import { seoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -11,7 +12,7 @@ const path = '/seedance-2-5';
 
 function localizedFaqs(locale: string) {
   const localized = (key: string) => {
-    const fn = (m as Record<string, unknown>)[key];
+    const fn = scopedMessages[key];
     return typeof fn === 'function'
       ? (fn as (inputs: object, options: { locale: string }) => string)(
           {},

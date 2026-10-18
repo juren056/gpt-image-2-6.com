@@ -1,4 +1,7 @@
-import { tDynamic } from '@/core/i18n/dynamic';
+import {
+  messages as scopedMessages,
+  tDynamic,
+} from '@/core/i18n/lookups/tools-matcha_filter';
 import { MATCHA_FILTER_REMOVAL_COST } from '@/config/media-tools';
 import { m } from '@/paraglide/messages.js';
 import {
@@ -83,7 +86,7 @@ export function RemoveMatchaFilterToolPage() {
 
 export function getMatchaFilterFaqs(locale: string) {
   const localized = (key: string) => {
-    const fn = (m as Record<string, unknown>)[key];
+    const fn = scopedMessages[key];
     return typeof fn === 'function'
       ? (fn as (inputs: object, options: { locale: string }) => string)(
           {},

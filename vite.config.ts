@@ -9,6 +9,7 @@ import viteReact from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
 
+import { directMessageImports } from './scripts/direct-message-imports';
 import { loadEnvFiles } from './src/lib/env';
 
 // Populate process.env from .env.local / .env.{NODE_ENV} / .env for the
@@ -50,7 +51,7 @@ function workersDbProvider(): string {
 const workersDb = isCloudflareBuild ? workersDbProvider() : '';
 const keepPostgres = workersDb === 'postgresql' || workersDb === 'postgres';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   server: {
     port: 3000,
     watch: {
@@ -70,13 +71,14 @@ export default defineConfig({
     // MDX must run before the react plugin so JSX in compiled MDX gets transformed.
     { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
     tailwindcss(),
+    directMessageImports(),
     paraglideVitePlugin({
       project: './project.inlang',
       outdir: './src/paraglide',
-      // The large locale catalog exhausts the SQLite WASM compiler when
-      // generating one module per message during production builds.
-      // Locale modules keep the public `m` API while reducing compilation work.
-      outputStructure: 'locale-modules',
+      // Small message modules let production routes load only their own copy.
+      // Keep fewer locale modules for the development server's rebuild cost.
+      outputStructure:
+        command === 'build' ? 'message-modules' : 'locale-modules',
       cookieName: 'PARAGLIDE_LOCALE',
       strategy: ['url', 'cookie', 'baseLocale'],
       urlPatterns: [
@@ -226,4 +228,4 @@ export default defineConfig({
       },
     }),
   ],
-});
+}));

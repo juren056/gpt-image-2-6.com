@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { tDynamic } from '@/core/i18n/dynamic';
+import { tDynamic } from '@/core/i18n/lookups/homepage_prompt_library';
 import { Link } from '@/core/i18n/navigation';
 import { trackFunnelEvent } from '@/lib/analytics-events';
 import { publicRecipeHref } from '@/lib/generator-entry';

@@ -1,0 +1,30 @@
+{
+  "studio_desk": ["studio_desk."],
+  "prompt_library": ["prompt_library."],
+  "account_assets": ["account_assets."],
+  "seedance_draft": ["seedance_draft."],
+  "tools-matcha_filter": ["tools.matcha_filter."],
+  "homepage_prompt_library": ["homepage_prompt_library."],
+  "wan3-tools-video-camera_-tools-video-rhythm_": [
+    "wan3.",
+    "tools.video.camera_",
+    "tools.video.rhythm_"
+  ],
+  "minimax_h3": ["minimax_h3."],
+  "seedance25-seedance_draft-nav_label": [
+    "seedance25.",
+    "seedance_draft.nav_label"
+  ],
+  "tools": ["tools."],
+  "keyword-tools-generator": ["keyword.", "tools.generator."],
+  "admin-credits": ["admin.credits."],
+  "admin-invite_codes": ["admin.invite_codes."],
+  "admin-payments": ["admin.payments."],
+  "admin-posts": ["admin.posts."],
+  "admin-settings": ["admin.settings."],
+  "admin-subscriptions": ["admin.subscriptions."],
+  "admin-tickets": ["admin.tickets."],
+  "settings-billing": ["settings.billing."],
+  "settings-payments": ["settings.payments."],
+  "settings-tickets": ["settings.tickets."]
+}
