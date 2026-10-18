@@ -65,7 +65,8 @@
     "db:account-status:ensure": "tsx scripts/with-env.ts tsx scripts/ensure-account-status-schema.ts",
     "db:generation-feedback:ensure": "tsx scripts/with-env.ts tsx scripts/ensure-generation-feedback-schema.ts",
     "i18n:lookups": "node scripts/generate-dynamic-message-lookups.mjs",
-    "test:i18n-lookups": "node scripts/generate-dynamic-message-lookups.mjs --check && tsx scripts/verify-dynamic-message-lookups.ts && tsx scripts/verify-direct-message-imports.ts"
+    "test:i18n-lookups": "node scripts/generate-dynamic-message-lookups.mjs --check && tsx scripts/verify-dynamic-message-lookups.ts && tsx scripts/verify-direct-message-imports.ts",
+    "test:startup-js": "node scripts/verify-client-startup.mjs"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs}": "prettier --write",

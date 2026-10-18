@@ -12,11 +12,14 @@ import { Link } from '@/core/i18n/navigation';
 import { getWan3GenerationCost } from '@/config/media-tools';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
+import { getWan3Faqs } from '@/blocks/public-faq-copy';
 import {
   VideoGeneratorWorkspace,
   type VideoWorkspaceCopy,
 } from '@/components/special-tool-workspaces';
 import { buttonVariants } from '@/components/ui/button';
+
+export { getWan3Faqs } from '@/blocks/public-faq-copy';
 
 const PREVIEW_SOURCE =
   'https://www.reddit.com/r/comfyui/comments/1vfmcty/wan_30_just_announced_and_coming_soon_native_30/';
@@ -24,14 +27,6 @@ const WAN_RELEASE_SOURCE =
   'https://fal.ai/models/alibaba/wan-3.0/text-to-video';
 const WAN_API_SOURCE =
   'https://fal.ai/models/alibaba/wan-3.0/text-to-video/api';
-
-export function getWan3Faqs(locale?: string) {
-  const options = locale ? { locale } : undefined;
-  return Array.from({ length: 6 }, (_, index) => ({
-    question: tDynamic(`wan3.faq_${index + 1}_question`, undefined, options),
-    answer: tDynamic(`wan3.faq_${index + 1}_answer`, undefined, options),
-  }));
-}
 
 function getWan3WorkspaceCopy(): VideoWorkspaceCopy {
   return {

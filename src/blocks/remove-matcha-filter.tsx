@@ -1,14 +1,14 @@
-import {
-  messages as scopedMessages,
-  tDynamic,
-} from '@/core/i18n/lookups/tools-matcha_filter';
+import { tDynamic } from '@/core/i18n/lookups/tools-matcha_filter';
 import { MATCHA_FILTER_REMOVAL_COST } from '@/config/media-tools';
 import { m } from '@/paraglide/messages.js';
+import { getMatchaFilterFaqs } from '@/blocks/public-faq-copy';
 import {
   RemoveMatchaFilterPage,
   type MatchaPageCopy,
 } from '@/components/remove-matcha-filter-page';
 import type { MatchaWorkspaceCopy } from '@/components/special-tool-workspaces';
+
+export { getMatchaFilterFaqs } from '@/blocks/public-faq-copy';
 
 function workspaceCopy(): MatchaWorkspaceCopy {
   return {
@@ -82,20 +82,4 @@ export function RemoveMatchaFilterToolPage() {
   return (
     <RemoveMatchaFilterPage copy={pageCopy()} workspace={workspaceCopy()} />
   );
-}
-
-export function getMatchaFilterFaqs(locale: string) {
-  const localized = (key: string) => {
-    const fn = scopedMessages[key];
-    return typeof fn === 'function'
-      ? (fn as (inputs: object, options: { locale: string }) => string)(
-          {},
-          { locale }
-        )
-      : key;
-  };
-  return Array.from({ length: 5 }, (_, index) => ({
-    question: localized(`tools.matcha_filter.faq_${index + 1}_question`),
-    answer: localized(`tools.matcha_filter.faq_${index + 1}_answer`),
-  }));
 }

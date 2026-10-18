@@ -1,18 +1,9 @@
 import { tDynamic } from '@/core/i18n/lookups/minimax_h3';
 import { m } from '@/paraglide/messages.js';
+import { getMinimaxH3Faqs } from '@/blocks/public-faq-copy';
 import { MinimaxH3Page as MinimaxH3PageComponent } from '@/components/minimax-h3-page';
 
-export function getMinimaxH3Faqs(locale?: string) {
-  const options = locale ? { locale } : undefined;
-  return Array.from({ length: 5 }, (_, index) => ({
-    question: tDynamic(
-      `minimax_h3.faq_${index + 1}_question`,
-      undefined,
-      options
-    ),
-    answer: tDynamic(`minimax_h3.faq_${index + 1}_answer`, undefined, options),
-  }));
-}
+export { getMinimaxH3Faqs } from '@/blocks/public-faq-copy';
 
 export function MinimaxH3Page() {
   const copy = {

@@ -1,9 +1,7 @@
-import {
-  messages as scopedMessages,
-  tDynamic,
-} from '@/core/i18n/lookups/tools';
+import { tDynamic } from '@/core/i18n/lookups/tools';
 import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
+import { getSpecialToolFaqs } from '@/blocks/public-faq-copy';
 import {
   AiVideoPage,
   BackgroundRemoverPage,
@@ -15,6 +13,8 @@ import type {
   VideoWorkspaceCopy,
   YouTubeWorkspaceCopy,
 } from '@/components/special-tool-workspaces';
+
+export { getSpecialToolFaqs } from '@/blocks/public-faq-copy';
 
 type SpecialKind = 'youtube_thumbnail' | 'video' | 'background_remover';
 
@@ -175,20 +175,4 @@ export function BackgroundRemoverToolPage() {
       />
     </>
   );
-}
-
-export function getSpecialToolFaqs(kind: SpecialKind, locale: string) {
-  const localized = (key: string) => {
-    const fn = scopedMessages[key];
-    return typeof fn === 'function'
-      ? (fn as (inputs: object, options: { locale: string }) => string)(
-          {},
-          { locale }
-        )
-      : key;
-  };
-  return Array.from({ length: 5 }, (_, index) => ({
-    question: localized(`tools.${kind}.faq_${index + 1}_question`),
-    answer: localized(`tools.${kind}.faq_${index + 1}_answer`),
-  }));
 }

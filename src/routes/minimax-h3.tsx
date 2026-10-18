@@ -5,7 +5,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import { getMinimaxH3Faqs, MinimaxH3Page } from '@/blocks/minimax-h3-page';
+import { MinimaxH3Page } from '@/blocks/minimax-h3-page';
+import { getMinimaxH3Faqs } from '@/blocks/public-faq-copy';
 
 const path = '/minimax-h3';
 

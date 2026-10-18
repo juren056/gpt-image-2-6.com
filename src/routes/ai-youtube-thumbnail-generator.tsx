@@ -5,10 +5,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import {
-  getSpecialToolFaqs,
-  YouTubeThumbnailToolPage,
-} from '@/blocks/special-tool-pages';
+import { getSpecialToolFaqs } from '@/blocks/public-faq-copy';
+import { YouTubeThumbnailToolPage } from '@/blocks/special-tool-pages';
 
 const path = '/ai-youtube-thumbnail-generator';
 

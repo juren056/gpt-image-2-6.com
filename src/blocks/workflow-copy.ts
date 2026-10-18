@@ -1,8 +1,7 @@
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 
-export function workflowCopy() {
-  const locale = getLocale();
+export function workflowCopy(locale = getLocale()) {
   return {
     scenes: m['workflow.scenes']({}, { locale }),
     title: m['workflow.title']({}, { locale }),

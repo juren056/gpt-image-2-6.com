@@ -5,7 +5,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import { getToolFaqs, ToolPage } from '@/blocks/tool-pages';
+import { getToolFaqs } from '@/blocks/public-faq-copy';
+import { ToolPage } from '@/blocks/tool-pages';
 
 export const Route = createFileRoute('/ai-product-photo-generator')({
   loader: () => {

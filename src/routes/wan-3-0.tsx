@@ -6,7 +6,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import { getWan3Faqs, Wan3Page } from '@/blocks/wan-3-page';
+import { getWan3Faqs } from '@/blocks/public-faq-copy';
+import { Wan3Page } from '@/blocks/wan-3-page';
 
 const path = '/wan-3-0';
 const videoPath = '/videos/wan-3-preview.mp4';

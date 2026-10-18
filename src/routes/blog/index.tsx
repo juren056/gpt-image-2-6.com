@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { getNanoSiteDataFn } from '@/lib/nano-site-data';
 import { nanoSiteRouteOptions } from '@/lib/nano-site-routes';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { getNanoPageCopy, NanoSitePage } from '@/blocks/nano-site';
+import { NanoSitePage } from '@/blocks/nano-site';
 import { BlogCard } from '@/components/blog-card';
 import { formatPostDate } from '@/content/posts';
 import { getBlogPostsFn } from '@/content/posts/server';
@@ -12,17 +13,21 @@ export const Route = createFileRoute('/blog/')({
   ...nanoSiteRouteOptions('blog'),
   loader: async () => {
     const locale = getLocale();
-    const posts = await getBlogPostsFn({ data: { locale } });
-    return { locale, page: getNanoPageCopy('blog', locale), posts };
+    const [presentation, posts] = await Promise.all([
+      getNanoSiteDataFn({ data: { id: 'blog', locale } }),
+      getBlogPostsFn({ data: { locale } }),
+    ]);
+    return { ...presentation, posts };
   },
   component: BlogPage,
 });
 
 function BlogPage() {
-  const { locale, posts } = Route.useLoaderData();
+  const presentation = Route.useLoaderData();
+  const { locale, posts } = presentation;
 
   return (
-    <NanoSitePage id="blog">
+    <NanoSitePage id="blog" presentation={presentation}>
       <section className="px-4 py-16 sm:py-24">
         <div className="mx-auto max-w-5xl">
           <div className="mb-16 text-center">

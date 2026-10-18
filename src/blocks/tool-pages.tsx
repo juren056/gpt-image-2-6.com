@@ -1,7 +1,4 @@
-import {
-  messages as scopedMessages,
-  tDynamic,
-} from '@/core/i18n/lookups/tools';
+import { tDynamic } from '@/core/i18n/lookups/tools';
 import { PUBLIC_TOOL_PAGES } from '@/config/public-creative';
 import {
   TOOL_IMAGES,
@@ -10,17 +7,19 @@ import {
   type ToolKind,
 } from '@/lib/tools';
 import { m } from '@/paraglide/messages.js';
+import { getToolFaqs } from '@/blocks/public-faq-copy';
 import { getLocalizedTools } from '@/blocks/tool-catalog';
 import type { ScenarioGeneratorCopy } from '@/components/scenario-generator-workspace';
 import {
   ToolLandingPage,
-  type ToolFaq,
   type ToolLandingPageProps,
 } from '@/components/tool-landing-page';
 import {
   ToolsDirectoryPage,
   type ToolsDirectoryItem,
 } from '@/components/tools-directory-page';
+
+export { getToolFaqs } from '@/blocks/public-faq-copy';
 
 function optionsFor(
   prefix:
@@ -99,30 +98,6 @@ function generatorCopy(kind: ScenarioToolKind): ScenarioGeneratorCopy {
   };
 }
 
-function faqsFor(kind: ScenarioToolKind, locale?: string): ToolFaq[] {
-  const localized = (key: string) => {
-    const fn = scopedMessages[key];
-    if (typeof fn !== 'function') return key;
-    return locale
-      ? (fn as (inputs: object, options: { locale: string }) => string)(
-          {},
-          { locale }
-        )
-      : (fn as () => string)();
-  };
-  return Array.from({ length: 6 }, (_, index) => {
-    const number = index + 1;
-    return {
-      question: localized(`tools.${kind}.faq_${number}_question`),
-      answer: localized(`tools.${kind}.faq_${number}_answer`),
-    };
-  });
-}
-
-export function getToolFaqs(kind: ScenarioToolKind, locale: string) {
-  return faqsFor(kind, locale);
-}
-
 function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
   const otherKind: ScenarioToolKind =
     kind === 'poster' ? 'product_photo' : 'poster';
@@ -180,7 +155,7 @@ function contentFor(kind: ScenarioToolKind): ToolLandingPageProps {
     limitationTitle: tDynamic(`tools.${kind}.limitation_title`),
     limitation: tDynamic(`tools.${kind}.limitation_body`),
     faqTitle: m['tools.common.faq_title'](),
-    faqs: faqsFor(kind),
+    faqs: getToolFaqs(kind),
     relatedTitle: m['tools.common.related_title'](),
     relatedLinks: [
       {

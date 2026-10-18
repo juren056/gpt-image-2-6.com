@@ -3,6 +3,14 @@ import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 
+import {
+  getMatchaFilterFaqs,
+  getMinimaxH3Faqs,
+  getSpecialToolFaqs,
+  getToolFaqs,
+  getWan3Faqs,
+} from '../src/blocks/public-faq-copy';
+import { workflowCopy } from '../src/blocks/workflow-copy';
 import { createMessageLookup } from '../src/core/i18n/dynamic';
 import { m } from '../src/paraglide/messages.js';
 import { locales } from '../src/paraglide/runtime.js';
@@ -97,4 +105,55 @@ for (const entry of readdirSync(sourceRoot, {
 }
 console.log(
   `Verified ${sourceFiles} source files contain no unbounded message namespace access.`
+);
+
+for (const locale of locales) {
+  assert.equal(
+    workflowCopy(locale).title,
+    m['workflow.title']({}, { locale }),
+    `Explicit workflow locale: ${locale}`
+  );
+}
+console.log(
+  'Explicit workflow copy locale passed for all 18 locales, independently of RPC request URL.'
+);
+
+for (const locale of locales) {
+  const groups = [
+    ['tools.poster', getToolFaqs('poster', locale), 6],
+    ['tools.product_photo', getToolFaqs('product_photo', locale), 6],
+    ['tools.video', getSpecialToolFaqs('video', locale), 5],
+    [
+      'tools.youtube_thumbnail',
+      getSpecialToolFaqs('youtube_thumbnail', locale),
+      5,
+    ],
+    [
+      'tools.background_remover',
+      getSpecialToolFaqs('background_remover', locale),
+      5,
+    ],
+    ['tools.matcha_filter', getMatchaFilterFaqs(locale), 5],
+    ['wan3', getWan3Faqs(locale), 6],
+    ['minimax_h3', getMinimaxH3Faqs(locale), 5],
+  ] as const;
+  for (const [prefix, items, count] of groups) {
+    assert.equal(items.length, count);
+    items.forEach((item, index) => {
+      for (const part of ['question', 'answer'] as const) {
+        const fn = allMessages[`${prefix}.faq_${index + 1}_${part}`] as (
+          inputs: object,
+          options: { locale: string }
+        ) => string;
+        assert.equal(
+          item[part],
+          fn({}, { locale }),
+          `${locale}: ${prefix} ${index + 1} ${part}`
+        );
+      }
+    });
+  }
+}
+console.log(
+  'All 43 public FAQs preserve their question/answer text in all 18 locales without workspace imports.'
 );

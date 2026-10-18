@@ -1,6 +1,6 @@
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { getNanoGeneratorContent } from '@/blocks/nano-site';
+import { getNanoGeneratorContent } from '@/blocks/nano-site-content';
 import { BananaComposer } from '@/components/banana-composer';
 import { BananaGenerator } from '@/components/banana-generator';
 

@@ -5,10 +5,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import {
-  AiVideoToolPage,
-  getSpecialToolFaqs,
-} from '@/blocks/special-tool-pages';
+import { getSpecialToolFaqs } from '@/blocks/public-faq-copy';
+import { AiVideoToolPage } from '@/blocks/special-tool-pages';
 
 const path = '/ai-video-generator';
 

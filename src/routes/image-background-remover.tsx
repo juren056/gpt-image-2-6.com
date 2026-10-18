@@ -5,10 +5,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import {
-  BackgroundRemoverToolPage,
-  getSpecialToolFaqs,
-} from '@/blocks/special-tool-pages';
+import { getSpecialToolFaqs } from '@/blocks/public-faq-copy';
+import { BackgroundRemoverToolPage } from '@/blocks/special-tool-pages';
 
 const path = '/image-background-remover';
 

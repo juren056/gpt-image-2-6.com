@@ -5,10 +5,8 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
-import {
-  getMatchaFilterFaqs,
-  RemoveMatchaFilterToolPage,
-} from '@/blocks/remove-matcha-filter';
+import { getMatchaFilterFaqs } from '@/blocks/public-faq-copy';
+import { RemoveMatchaFilterToolPage } from '@/blocks/remove-matcha-filter';
 
 const path = '/remove-matcha-filter';
 

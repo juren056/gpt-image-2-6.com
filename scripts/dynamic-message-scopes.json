@@ -26,5 +26,15 @@
   "admin-tickets": ["admin.tickets."],
   "settings-billing": ["settings.billing."],
   "settings-payments": ["settings.payments."],
-  "settings-tickets": ["settings.tickets."]
+  "settings-tickets": ["settings.tickets."],
+  "public-faqs": [
+    "tools.poster.faq_",
+    "tools.product_photo.faq_",
+    "tools.video.faq_",
+    "tools.youtube_thumbnail.faq_",
+    "tools.background_remover.faq_",
+    "tools.matcha_filter.faq_",
+    "wan3.faq_",
+    "minimax_h3.faq_"
+  ]
 }

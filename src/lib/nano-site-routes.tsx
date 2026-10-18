@@ -1,3 +1,5 @@
+import { useLoaderData } from '@tanstack/react-router';
+
 import { envConfigs } from '@/config';
 import {
   NANO_SITE_PAGES,
@@ -6,9 +8,12 @@ import {
 } from '@/config/nano-site';
 import { pricingCatalog } from '@/config/pricing';
 import { sitemapLastModified } from '@/config/sitemap-updates';
+import { getNanoSiteDataFn } from '@/lib/nano-site-data';
 import { organizationSchema, seoHead } from '@/lib/seo';
 import { getLocale } from '@/paraglide/runtime.js';
-import { getNanoPageCopy, NanoSitePage } from '@/blocks/nano-site';
+import { NanoSitePage } from '@/blocks/nano-site';
+import type { NanoSitePresentation } from '@/blocks/nano-site-content';
+import type { NanoPageCopy } from '@/components/banana-article';
 
 const ARTICLE_PAGE_IDS: readonly NanoPageId[] = [
   'comparison',
@@ -63,14 +68,14 @@ function softwareApplicationSchema(description: string) {
 
 export function nanoSiteRouteOptions(id: NanoPageId) {
   return {
-    loader: () => {
+    loader: async () => {
       const locale = getLocale();
-      return { locale, page: getNanoPageCopy(id, locale) };
+      return getNanoSiteDataFn({ data: { id, locale } });
     },
     head: ({
       loaderData,
     }: {
-      loaderData?: { locale: string; page: ReturnType<typeof getNanoPageCopy> };
+      loaderData?: { locale: string; page: NanoPageCopy };
     }) => {
       if (!loaderData) return {};
       return seoHead({
@@ -108,6 +113,11 @@ export function nanoSiteRouteOptions(id: NanoPageId) {
             : [],
       });
     },
-    component: () => <NanoSitePage id={id} />,
+    component: function NanoSiteRoutePage() {
+      const presentation = useLoaderData({
+        strict: false,
+      }) as NanoSitePresentation;
+      return <NanoSitePage id={id} presentation={presentation} />;
+    },
   };
 }
