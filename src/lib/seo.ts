@@ -237,7 +237,6 @@ export function seoHead(params: {
             {
               rel: 'alternate',
               type: 'text/markdown',
-              hreflang: 'en',
               href: `${envConfigs.app_url}${markdownPath}`,
             },
           ]

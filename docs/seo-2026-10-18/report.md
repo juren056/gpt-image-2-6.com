@@ -54,7 +54,13 @@ CUA reviewed the existing composition and new content in English/Chinese, dark/l
 
 Pre-commit security review: the repository `security-scan` worktree scanner returned clean, and the manual diff review found no reachable injection, XSS, privilege or business-rule change. The only endpoint output changed is the public sitemap. Public, fixed evidence paths are rendered as escaped React text and ordinary links. The staged scan is required again immediately before commit.
 
-Git publication, production verification and GSC submission results will be appended after the actual deployment, not inferred from a queued build.
+First application release: commit `2b18da46507714d3be2d0ffde65547ff9dea821a`, pushed to `origin/main`; Cloudflare Git build `8e8fd74e-4a92-43ff-9f3f-52d2834a3311` completed successfully in 6m38s. Deployment completed on 18 October at 18:01:40 Asia/Shanghai, version `78b04498-ec99-4de7-abd0-61e66b2f23cd`, custom domain `nanobanana21pro.com`. Actual build/deploy commands were `pnpm cf:ci:build` / `pnpm cf:ci:deploy`. Production bindings were checked as Nano Banana's D1 and upload bucket, and the built original-photo guard passed.
+
+The [production crawl](production.csv) and both HTTP verification scripts pass for all 120 sitemap URLs, including metadata, H1, canonical, noindex policy and orphan checks. Image sitemap landing pages and original files succeed. The Chinese share image now advertises its actual 640px preview dimensions. GSC accepted the resubmitted sitemap and immediately showed submission/read date 18 October, status **Success**, **120 discovered pages**, zero videos. The success screenshot is retained locally as `.artifacts/seo-20261018/gsc-sitemap-submitted.png`.
+
+The Chinese page's historical inspection still reports an unknown/unindexed URL. A manual indexing request after release returned Google's “problem submitting your indexing request; try again later” dialog, not a success receipt. Do not report that request as accepted or infer a website crawl block from it. The separate sitemap submission succeeded. Screenshot: `.artifacts/seo-20261018/gsc-index-request-state.png`. The earlier realtime Google fetch had already succeeded; the website and canonical are publicly readable.
+
+A final reciprocal-language audit detected that the Markdown representation links on home, pricing and prompts also carried `hreflang="en"`, alongside the English HTML language URL. The follow-up removes only that attribute from the Markdown alternate, retaining its `rel`, type and URL, and all actual EN/ZH language alternates. A regression check ensures one English HTML language target and a separate unlabelled-format link. See Google's [localized-version guidance](https://developers.google.com/search/docs/specialty/international/localized-versions). The follow-up is published by Git as well; its exact final commit/build outcome is recorded in the task handoff and the history of this report. No language page is redirected or excluded by this clarification.
 
 Cloudflare dashboard read-only inspection confirms the production Worker, D1 and upload bucket belong to Nano Banana, repository `juren056/nanobanana21pro.com`, production branch `main`, build `pnpm cf:ci:build`, deploy `pnpm cf:ci:deploy`. Builds are enabled. The settings page also displayed a GitHub user/organization lookup warning; actual push/build outcome must be checked before declaring release success.
 
@@ -78,6 +84,21 @@ Measured narrow fixes: remove an unused 101,698-byte `Noto Sans SC Variable` CSS
 The initial 120-page HTTP sweep passed metadata/status/canonical/H1 and identified only the two language versions of Draft as orphaned after restoring indexability. A contextual link from Wan's video-source discussion fixes this without adding irrelevant sitewide links. All 20 PNGs were verified against manifest SHA-256 values, with zero mismatches.
 
 Local compiled stylesheet comparison: primary CSS decreased from 483,267 raw / 102,061 gzip bytes to 375,392 raw / 57,569 gzip bytes. The separate account-menu stylesheet remained 5,432 raw / 1,503 gzip bytes. This measures artifacts with the same gzip calculation, not network transfer across different compression settings. Remaining shared JavaScript, source-map and general contrast warnings are recorded for a separate scoped task; no generator or popup refactor was performed to chase a lab score.
+
+Post-release PageSpeed runs at 18:02 used the same Lighthouse version/device profiles:
+
+| After release, single lab run | Performance | FCP   | LCP   | TBT    | CLS   |
+| ----------------------------- | ----------- | ----- | ----- | ------ | ----- |
+| Homepage mobile               | 56          | 11.0s | 12.9s | 0ms    | 0     |
+| Homepage desktop              | 58          | 0.8s  | 2.3s  | 1510ms | 0.001 |
+| Comparison mobile             | 56          | 10.9s | 11.8s | 0ms    | 0     |
+| Comparison desktop            | 68          | 0.8s  | 0.8s  | 2150ms | 0     |
+| Chinese cases mobile          | 44          | 10.9s | 11.0s | 480ms  | 0     |
+| Chinese cases desktop         | 74          | 0.8s  | 0.8s  | 640ms  | 0     |
+
+The concerning Chinese mobile result was repeated alone at 18:05: performance 56, FCP 10.9s, LCP 12.2s, TBT 0ms, CLS 0. Both results are retained, not replaced by the better score. These results do **not** establish an overall page-speed improvement. Shared JavaScript still produces roughly 1.4MiB of unused-code warnings and variable main-thread work; further reduction requires a separately scoped examination of shared route/i18n loading without changing product behavior. The site's GSC Core Web Vitals report also says there is insufficient usage data over the past 90 days for both device types.
+
+Final scope status: SEO00–SEO08, SEO10 and SEO11 are implemented/verified as described; SEO09 has completed links, evidence images, CSS/thumbnail repairs and measurement, with overall load performance still unresolved. SEO12's development/production checks and sitemap submission are complete; manual single-URL submission failed at Google, and seven-/28-day search outcomes remain future observations. No claim is made that the 65 discovered URLs have already been indexed.
 
 ## Post-release measurement plan
 

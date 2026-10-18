@@ -61,6 +61,24 @@ for (const path of [
     );
   }
 }
+// A representation link is not an additional English language variant.
+const markdownHead = seoHead({
+  locale: 'en',
+  path: '/',
+  title: 'Image workspace',
+  description: 'Image generation and editing.',
+  markdownPath: '/index.md',
+});
+assert.equal(
+  markdownHead.links.filter(
+    (item) => 'hreflang' in item && item.hreflang === 'en'
+  ).length,
+  1
+);
+const markdownLink = markdownHead.links.find(
+  (item) => 'type' in item && item.type === 'text/markdown'
+);
+assert(markdownLink && !('hreflang' in markdownLink));
 console.log(
   `Search policy passed: ${SEARCH_EXCLUDED_PATHS.size} legacy paths × ${locales.length} locales; 9 public paths × 2 reviewed locales.`
 );
