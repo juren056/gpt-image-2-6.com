@@ -34,7 +34,7 @@ export const Route = createFileRoute('/wan-3-0')({
           imageWidth: 1280,
           imageHeight: 720,
           datePublished: '2026-08-07',
-          dateModified: '2026-09-05',
+          dateModified: '2026-10-18',
           extraSchemas: [
             {
               '@type': 'WebApplication',

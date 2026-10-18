@@ -41,7 +41,7 @@ export const Route = createFileRoute('/seedance-2-5-draft-mode')({
           imageWidth: 960,
           imageHeight: 540,
           datePublished: '2026-09-24',
-          dateModified: '2026-09-24',
+          dateModified: '2026-10-18',
           extraSchemas: [
             {
               '@type': 'SoftwareApplication',

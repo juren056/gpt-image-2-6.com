@@ -43,6 +43,8 @@ for (const path of [
   '/ai-image-upscaler',
   '/image-background-remover',
   '/prompts',
+  '/wan-3-0',
+  '/seedance-2-5-draft-mode',
 ]) {
   assert(!isSearchExcludedPath(path));
   for (const locale of ['en', 'zh']) {
@@ -60,5 +62,5 @@ for (const path of [
   }
 }
 console.log(
-  `Search policy passed: ${SEARCH_EXCLUDED_PATHS.size} legacy paths × ${locales.length} locales; 7 image paths × 2 reviewed locales.`
+  `Search policy passed: ${SEARCH_EXCLUDED_PATHS.size} legacy paths × ${locales.length} locales; 9 public paths × 2 reviewed locales.`
 );

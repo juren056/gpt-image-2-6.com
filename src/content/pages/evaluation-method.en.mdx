@@ -2,7 +2,7 @@ export const meta = {
   title: 'Nano Banana image tests: methods, costs and review criteria',
   description:
     'How we review product images, Chinese posters, reference edits and background removal, with reproducible inputs and full task costs.',
-  updated_at: '2026-10-13',
+  updated_at: '2026-10-18',
 };
 
 Use these checks before judging an image workflow. An attractive illustration demonstrates a design idea; a recorded website task demonstrates that an operation ran. Neither alone establishes reliability across your work.
@@ -373,3 +373,110 @@ Usually not. Record supported seed and settings where available, but treat repro
 ### Are failed tasks and subscriptions part of the checks?
 
 Yes. Verify task status and credit reversal, download ownership, renewal disclosure and cancellation behavior. Use isolated fixtures for forced failures and subscription changes; a fixture test must not be described as a real paid purchase.
+
+## Four complete case records
+
+These records reuse the original manifest; no additional generation or independent review is implied. The Chinese-text pages explain lettering differences; product edits need inspection against their references.
+
+### NB-05 — Short Chinese coffee headline
+
+<img
+  src="/evidence/2026-10-13/NB-05.webp"
+  alt="NB-05 original Chinese design output"
+  width="1024"
+  height="1024"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1` · 2026-10-13 · 1:1 · 1K · 1024 × 1024 · 8 site credits
+
+Complete submitted prompt:
+
+```text
+Create an original black, ivory and banana-yellow design with one short bold headline. Exact Chinese text: "新鲜咖啡". Render each character accurately. Generous margins, no other words, no brand logos.
+```
+
+[Original PNG](/evidence/2026-10-13/NB-05.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+Visible headline reads 新鲜咖啡. No additional words observed.
+
+One request, no retry and no manual retouch. Recognizable details do not prove pixel-exact preservation or delivery readiness.
+
+### NB-07 — Fictional snack packaging lettering
+
+<img
+  src="/evidence/2026-10-13/NB-07.webp"
+  alt="NB-07 original Chinese design output"
+  width="1024"
+  height="1024"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1` · 2026-10-13 · 1:1 · 1K · 1024 × 1024 · 8 site credits
+
+Complete submitted prompt:
+
+```text
+Create an original black, ivory and banana-yellow design with a fictional yellow snack packaging label. Exact Chinese text: "香蕉脆片 / 净含量：100克". Render each character accurately. Generous margins, no other words, no brand logos.
+```
+
+[Original PNG](/evidence/2026-10-13/NB-07.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+Visible words read 香蕉脆片 and 净含量：100克. Space/punctuation rendering differs; this is a fictional label illustration, not a verified physical packaging mockup.
+
+One request, no retry and no manual retouch. Recognizable details do not prove pixel-exact preservation or delivery readiness.
+
+### NB-16 — Replace a bottle background without a transparent cutout
+
+<img
+  src="/evidence/2026-10-13/NB-16.webp"
+  alt="NB-16 original product edit output"
+  width="1264"
+  height="848"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1/edit` · 2026-10-13 · 3:2 · 1K · 1264 × 848 · 8 site credits
+
+Complete submitted prompt:
+
+```text
+Keep the same ivory serum bottle and label. Replace only the background with a warm yellow studio backdrop and natural contact shadow. Do not remove or reshape the bottle.
+```
+
+[Original PNG](/evidence/2026-10-13/NB-16.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+- [Input 1](https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp)
+
+Bottle preserved against a warm yellow background; output is opaque, as expected for replacement rather than removal.
+
+One request, no retry and no manual retouch. Recognizable details do not prove pixel-exact preservation or delivery readiness.
+
+### NB-17 — Two product references on separate pedestals
+
+<img
+  src="/evidence/2026-10-13/NB-17.webp"
+  alt="NB-17 original product edit output"
+  width="1024"
+  height="1024"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1/edit` · 2026-10-13 · 1:1 · 1K · 1024 × 1024 · 8 site credits
+
+Complete submitted prompt:
+
+```text
+Place the exact ivory bottle and yellow shoe together on two separate charcoal pedestals. Keep both objects distinct and faithful to references.
+```
+
+[Original PNG](/evidence/2026-10-13/NB-17.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+- [Input 1](https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp)
+- [Input 2](https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp)
+
+  2.1 returns distinct bottle and shoe on separate pedestals; product details remain recognizable.
+
+One request, no retry and no manual retouch. Recognizable details do not prove pixel-exact preservation or delivery readiness.
+
+[Chinese text prompts](/prompts/chinese) · [Text layout and correction](/blog/readable-text-in-ai-images) · [2.1 vs Pro original outputs](/posts/nano-banana-21-vs-pro)

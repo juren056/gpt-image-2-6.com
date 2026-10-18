@@ -1,6 +1,7 @@
 import { Link } from '@/core/i18n/navigation';
 import { trackFunnelEvent } from '@/lib/analytics-events';
 import { prepareBananaGenerator } from '@/lib/banana-generator-navigation';
+import { evidencePreviewSrcSet } from '@/lib/evidence-preview';
 import { publicRecipeHref } from '@/lib/generator-entry';
 
 export type VerifiedExample = {
@@ -43,7 +44,11 @@ export function VerifiedExamples({
       </p>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {examples.map((item) => (
-          <article key={item.caseId} className="min-w-0">
+          <article
+            key={item.caseId}
+            id={`case-${item.caseId}`}
+            className="min-w-0 scroll-mt-8"
+          >
             <a
               href={item.originalOutput}
               onClick={() =>
@@ -56,6 +61,8 @@ export function VerifiedExamples({
             >
               <img
                 src={item.preview}
+                srcSet={evidencePreviewSrcSet(item.preview)}
+                sizes="(min-width: 1280px) 308px, (min-width: 1024px) 25vw, 50vw"
                 alt={`${copy[item.caseId]} — ${item.caseId}`}
                 width={item.dimensions.width}
                 height={item.dimensions.height}
@@ -70,6 +77,12 @@ export function VerifiedExamples({
               {item.options.aspect_ratio || '1:1'} · {item.options.resolution} ·{' '}
               {item.dimensions.width} × {item.dimensions.height} · 2026-10-13
             </p>
+            {copy[`review-${item.caseId}`] && (
+              <p className="mt-3 text-sm leading-6">
+                {copy[`review-${item.caseId}`]}
+              </p>
+            )}
+            <p className="text-xs break-all">{item.model}</p>
             <div className="mt-2 flex flex-wrap gap-x-3 gap-y-2 text-sm">
               <a
                 href={item.originalOutput}

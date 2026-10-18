@@ -6,12 +6,21 @@ import {
 // Recorded substantive changes, not a build/request timestamp. See
 // docs/sitemap-refresh.md for the reviewed source revisions behind these dates.
 const contentUpdates = new Map<string, string>([
-  ['/prompts/chinese', '2026-10-13'],
-  ['/free', '2026-10-13'],
+  ...[
+    '/',
+    '/posts/nano-banana-21-vs-pro',
+    '/vs-2',
+    '/prompts/chinese',
+    '/evaluation-method',
+    '/blog/readable-text-in-ai-images',
+    '/mcp',
+    '/free',
+    '/pricing',
+    '/wan-3-0',
+    '/seedance-2-5-draft-mode',
+    '/blog/commercial-use-and-watermarks',
+  ].map((path): [string, string] => [path, '2026-10-18']),
   ['/contact', '2026-10-13'],
-  ['/', '2026-10-13'],
-  ['/pricing', '2026-10-13'],
-  ['/vs-2', '2026-10-13'],
   ['/about', '2026-10-13'],
   ['/privacy-policy', '2026-10-13'],
   ['/models', '2026-10-12'],

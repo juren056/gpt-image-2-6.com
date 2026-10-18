@@ -78,6 +78,13 @@ export function nanoSiteRouteOptions(id: NanoPageId) {
         path: NANO_SITE_PAGES[id].path,
         title: loaderData.page.title,
         description: loaderData.page.description,
+        ...(['comparison', 'versus2', 'blogText'].includes(id)
+          ? {
+              image: `/evidence/2026-10-13/${id === 'blogText' ? 'NB-05' : 'NB-17'}.webp`,
+              imageWidth: 640,
+              imageHeight: 640,
+            }
+          : {}),
         type: ARTICLE_PAGE_IDS.includes(id) ? 'article' : 'website',
         dateModified: sitemapLastModified(
           NANO_SITE_PAGES[id].path,

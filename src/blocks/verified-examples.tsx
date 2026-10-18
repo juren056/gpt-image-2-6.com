@@ -11,6 +11,10 @@ import '@/styles/homepage-showcase.css';
 export function VerifiedExamples({ chinese = false }: { chinese?: boolean }) {
   const copy = {
     title: m['evidence.gallery.title'](),
+    'review-NB-05': m['seo_editorial.nb05'](),
+    'review-NB-06': m['seo_editorial.nb06'](),
+    'review-NB-07': m['seo_editorial.nb07'](),
+    'review-NB-08': m['seo_editorial.nb08'](),
     all: m['evidence.gallery.all'](),
     note: m['evidence.gallery.note'](),
     original: m['evidence.gallery.original'](),

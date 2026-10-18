@@ -1,6 +1,7 @@
 import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
 import { PromptLibrary } from '@/blocks/prompt-library';
+import { SeoEditorial } from '@/blocks/seo-editorial';
 import { VerifiedExamples } from '@/blocks/verified-examples';
 import {
   PROMPT_CATEGORIES,
@@ -50,6 +51,7 @@ export function PromptDirectory({ category }: { category?: PromptCategory }) {
       </div>
       {category === 'chinese' && (
         <div className="mx-auto max-w-7xl">
+          <SeoEditorial id="chinese" />
           <VerifiedExamples chinese />
           <p className="text-muted-foreground mt-6 max-w-3xl text-sm leading-7">
             {m['prompts.chinese.guidance']()}

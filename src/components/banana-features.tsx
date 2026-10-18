@@ -5,6 +5,7 @@ import {
   prepareBananaGenerator,
   type BananaGeneratorSelection,
 } from '@/lib/banana-generator-navigation';
+import { homepagePhotoSrcSet } from '@/lib/evidence-preview';
 
 import '@/styles/banana-features.css';
 
@@ -82,6 +83,8 @@ export function BananaFeaturesSection({
                   <div className="banana-feature-image">
                     <img
                       src={feature.image}
+                      srcSet={homepagePhotoSrcSet(feature.image)}
+                      sizes="(min-width: 1280px) 582px, (min-width: 1024px) 50vw, 100vw"
                       alt={feature.imageAlt}
                       width={1280}
                       height={720}

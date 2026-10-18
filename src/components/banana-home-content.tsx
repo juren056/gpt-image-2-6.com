@@ -21,6 +21,7 @@ import {
   prepareBananaGenerator,
   type BananaGeneratorSelection,
 } from '@/lib/banana-generator-navigation';
+import { homepagePhotoSrcSet } from '@/lib/evidence-preview';
 import { ModelBrandTile } from '@/components/creative-visuals';
 
 export type BananaCard = { title: string; body: string };
@@ -477,6 +478,8 @@ export function BananaUseCases({
                     <div className="overflow-hidden">
                       <img
                         src={item.image}
+                        srcSet={homepagePhotoSrcSet(item.image)}
+                        sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
                         alt={item.alt}
                         width={1280}
                         height={720}

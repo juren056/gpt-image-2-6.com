@@ -16,6 +16,7 @@ import { CreationNudge } from '@/blocks/credit-pack-offer';
 import { Footer } from '@/blocks/footer';
 import { Header } from '@/blocks/header';
 import { Pricing } from '@/blocks/pricing';
+import { SeoEditorial } from '@/blocks/seo-editorial';
 import { VerifiedExamples } from '@/blocks/verified-examples';
 import type { NanoPageCopy } from '@/components/banana-article';
 import {
@@ -285,6 +286,7 @@ export function BananaHome({
             <Pricing title={text('pricing.title')} compact showHeader={false} />
           </div>
         </section>
+        <SeoEditorial id="home" />
         <BananaFaq title={text('faq.title')} faqs={page.faqs} />
         <BananaClosing
           eyebrow={text('closing.eyebrow')}

@@ -20,6 +20,7 @@ import { FreeExperience } from '@/blocks/free-experience';
 import { Header } from '@/blocks/header';
 import { nanoSiteText } from '@/blocks/nano-site-messages';
 import { Pricing } from '@/blocks/pricing';
+import { SeoEditorial } from '@/blocks/seo-editorial';
 import { workflowCopy } from '@/blocks/workflow-copy';
 import { BananaArticle, type NanoPageCopy } from '@/components/banana-article';
 import { BananaGenerator } from '@/components/banana-generator';
@@ -157,6 +158,8 @@ const RELATED_PAGES: Partial<Record<NanoPageId, NanoPageId[]>> = {
   science: ['prompts', 'editor', 'blogText', 'blogExport', 'blogRights'],
   api: ['mcp', 'pricing', 'migration', 'guide', 'versus2'],
   mcp: ['api', 'guide', 'prompts', 'blogRights'],
+  blogText: ['prompts', 'blogReferences', 'blogExport', 'blogRights'],
+  blogRights: ['blogText', 'blogProduct', 'api'],
   migration: ['versus2', 'api', 'guide', 'comparison'],
   logo: ['prompts', 'editor', 'blogText', 'blogRights'],
   blog: ['prompts', 'science', 'logo', 'editor', 'guide'],
@@ -217,6 +220,7 @@ export function NanoSitePage({
       <Header />
       <BananaArticle
         page={page}
+        editorial={<SeoEditorial id={id} />}
         copy={{
           ...copy,
           updated: m['product.reviewed_date'](

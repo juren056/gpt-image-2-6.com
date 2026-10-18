@@ -233,12 +233,24 @@ function entryXml(e: Entry, locale: string): string {
         `    <xhtml:link rel="alternate" hreflang="${seoLanguageTag(loc)}" href="${escapeXml(urlFor(e.path, loc))}"/>`
     )
     .join('\n');
+  const imageIds: Record<string, string[]> = {
+    '': ['NB-05', 'NB-07', 'NB-16', 'NB-17'],
+    '/posts/nano-banana-21-vs-pro': ['NB-17', 'NB-19'],
+    '/vs-2': ['NB-17', 'NB-18'],
+    '/blog/readable-text-in-ai-images': ['NB-05', 'NB-06', 'NB-07', 'NB-08'],
+    '/prompts/chinese': ['NB-05', 'NB-06', 'NB-07', 'NB-08'],
+  };
+  const images = (imageIds[e.path] ?? []).map(
+    (id) =>
+      `    <image:image><image:loc>${escapeXml(`${envConfigs.app_url}/evidence/2026-10-13/${id}.png`)}</image:loc></image:image>`
+  );
   const xDefault = `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(urlFor(e.path, baseLocale))}"/>`;
   return [
     '  <url>',
     `    <loc>${escapeXml(urlFor(e.path, locale))}</loc>`,
     alternates,
     xDefault,
+    ...images,
     e.lastModified ? `    <lastmod>${e.lastModified}</lastmod>` : null,
     `    <changefreq>${e.changeFrequency}</changefreq>`,
     `    <priority>${e.priority}</priority>`,
@@ -307,7 +319,7 @@ export const Route = createFileRoute('/sitemap.xml')({
 
         const xml = [
           '<?xml version="1.0" encoding="UTF-8"?>',
-          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
           ...uniqueEntries.flatMap((entry) =>
             (entry.indexableLocales ?? INDEXABLE_LOCALES).map((locale) =>
               entryXml(entry, locale)

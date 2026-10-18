@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 
 import { tDynamic } from '@/core/i18n/dynamic';
+import { Link } from '@/core/i18n/navigation';
 import { getWan3GenerationCost } from '@/config/media-tools';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
@@ -312,6 +313,9 @@ export function Wan3Page() {
           <p className="mt-4 max-w-3xl leading-relaxed text-white/65">
             {m['wan3.sources_description']()}
           </p>
+          <p className="mt-4 max-w-3xl leading-relaxed text-white/65">
+            {m['seo_editorial.wan_review']()}
+          </p>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
               [WAN_RELEASE_SOURCE, m['wan3.source_release']()],
@@ -330,6 +334,12 @@ export function Wan3Page() {
               </a>
             ))}
           </div>
+          <p className="mt-6 max-w-3xl leading-relaxed">
+            {m['seo_editorial.video_related']()}{' '}
+            <Link href="/seedance-2-5-draft-mode" className="underline">
+              {m['seedance_draft.title']()}
+            </Link>
+          </p>
         </div>
       </section>
 

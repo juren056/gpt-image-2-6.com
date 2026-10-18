@@ -36,8 +36,15 @@ export const Route = createFileRoute('/prompts/$category')({
           ? m['prompts.chinese.description']({}, { locale: loaderData.locale })
           : (loaderData?.category ?? 'AI image') +
             ' prompt examples with copy-ready instructions, reference images, and practical generation workflows.',
+      ...(loaderData?.category === 'chinese'
+        ? {
+            image: '/evidence/2026-10-13/NB-05.webp',
+            imageWidth: 640,
+            imageHeight: 640,
+          }
+        : {}),
       dateModified:
-        loaderData?.category === 'chinese' ? '2026-10-13' : '2026-09-20',
+        loaderData?.category === 'chinese' ? '2026-10-18' : '2026-09-20',
       indexableLocales:
         loaderData?.category === 'chinese' ? ['en', 'zh'] : ['en'],
     }),

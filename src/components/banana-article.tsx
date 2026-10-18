@@ -21,6 +21,7 @@ export function BananaArticle({
   children,
   sample,
   primaryHref,
+  editorial,
 }: {
   page: NanoPageCopy;
   copy: Record<string, string>;
@@ -29,6 +30,7 @@ export function BananaArticle({
   children?: ReactNode;
   sample?: string;
   primaryHref?: string;
+  editorial?: ReactNode;
 }) {
   const hasContent = Children.toArray(children).length > 0;
   return (
@@ -93,6 +95,7 @@ export function BananaArticle({
           </ul>
         </nav>
         <p className="text-muted-foreground mb-7 text-xs">{copy.updated}</p>
+        {editorial}
         {page.sections.map((section, index) => (
           <section
             id={section.id}

@@ -2,7 +2,7 @@ export const meta = {
   title: 'Nano Banana 图片实测：方法、成本与验收标准',
   description:
     '产品图、中文海报、参考图编辑和背景移除的测试方法，记录可复现输入、原始输出与完整任务成本。',
-  updated_at: '2026-10-13',
+  updated_at: '2026-10-18',
 };
 
 选择图片工具前，先确定什么结果对你有用。好看的示意图说明设计方向；有记录的网站任务说明流程实际运行过。单凭其中一项，无法判断工具对你的任务是否稳定。
@@ -361,3 +361,110 @@ export const meta = {
 ### 失败返还和订阅流程是否也要验收？
 
 需要。检查任务状态、积分返还、下载归属、续费说明和取消流程。强制失败与订阅变更使用隔离测试数据；隔离测试不能宣传为真实购买。
+
+## 四个精选案例的完整记录
+
+这些记录复用同一份原始清单，不新增测试或宣称独立评测。中文文字教程与案例页进一步解释文字误差；商品编辑需对照参考图逐项检查。
+
+### NB-05 — 中文咖啡短标题
+
+<img
+  src="/evidence/2026-10-13/NB-05.webp"
+  alt="NB-05 中文短标题原始输出"
+  width="1024"
+  height="1024"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1` · 2026-10-13 · 1:1 · 1K · 1024 × 1024 · 8 积分
+
+完整提示词：
+
+```text
+Create an original black, ivory and banana-yellow design with one short bold headline. Exact Chinese text: "新鲜咖啡". Render each character accurately. Generous margins, no other words, no brand logos.
+```
+
+[原始 PNG](/evidence/2026-10-13/NB-05.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+标题可读为“新鲜咖啡”，未观察到额外文字。这仅检查四个字，不代表长篇中文排版能力。
+
+一次请求，无重试、无手工修图。图片可辨认不代表像素级保留或可直接交付。
+
+### NB-07 — 虚构零食包装文字
+
+<img
+  src="/evidence/2026-10-13/NB-07.webp"
+  alt="NB-07 中文包装文字原始输出"
+  width="1024"
+  height="1024"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1` · 2026-10-13 · 1:1 · 1K · 1024 × 1024 · 8 积分
+
+完整提示词：
+
+```text
+Create an original black, ivory and banana-yellow design with a fictional yellow snack packaging label. Exact Chinese text: "香蕉脆片 / 净含量：100克". Render each character accurately. Generous margins, no other words, no brand logos.
+```
+
+[原始 PNG](/evidence/2026-10-13/NB-07.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+虚构零食标签中的“香蕉脆片”和“净含量：100克”可辨认，间距与标点呈现有差异。这是插画，不能据此证明包装可直接印刷或标签符合法规。
+
+一次请求，无重试、无手工修图。图片可辨认不代表像素级保留或可直接交付。
+
+### NB-16 — 替换瓶子背景，而非透明抠图
+
+<img
+  src="/evidence/2026-10-13/NB-16.webp"
+  alt="NB-16 商品背景替换原始输出"
+  width="1264"
+  height="848"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1/edit` · 2026-10-13 · 3:2 · 1K · 1264 × 848 · 8 积分
+
+完整提示词：
+
+```text
+Keep the same ivory serum bottle and label. Replace only the background with a warm yellow studio backdrop and natural contact shadow. Do not remove or reshape the bottle.
+```
+
+[原始 PNG](/evidence/2026-10-13/NB-16.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+- [输入 1](https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp)
+
+象牙白瓶子保留在暖黄色背景中，结果为不透明图片：替换背景不等于生成透明抠图。交付前仍需对照输入检查标签、瓶盖与轮廓。
+
+一次请求，无重试、无手工修图。图片可辨认不代表像素级保留或可直接交付。
+
+### NB-17 — 双参考商品与分开的基座
+
+<img
+  src="/evidence/2026-10-13/NB-17.webp"
+  alt="NB-17 双参考商品场景原始输出"
+  width="1024"
+  height="1024"
+  loading="lazy"
+/>
+
+`google/nano-banana-2.1/edit` · 2026-10-13 · 1:1 · 1K · 1024 × 1024 · 8 积分
+
+完整提示词：
+
+```text
+Place the exact ivory bottle and yellow shoe together on two separate charcoal pedestals. Keep both objects distinct and faithful to references.
+```
+
+[原始 PNG](/evidence/2026-10-13/NB-17.png) · [JSON manifest](/evidence/2026-10-13/results.json)
+
+- [输入 1](https://nanobanana21pro.com/images/capabilities/serum-source-20261012.webp)
+- [输入 2](https://nanobanana21pro.com/images/capabilities/shoe-20261012.webp)
+
+瓶子与鞋子位于分开的基座，主体仍可辨认，但这不代表像素级完全保留。实际提交的两张参考图经过重新编码，清单保留了原始顺序。
+
+一次请求，无重试、无手工修图。图片可辨认不代表像素级保留或可直接交付。
+
+[中文文字与提示词](/prompts/chinese) · [文字排版与修正](/blog/readable-text-in-ai-images) · [2.1 与 Pro 原图对照](/posts/nano-banana-21-vs-pro)
