@@ -19,6 +19,7 @@ import { formatAuthError } from '@/lib/auth-error';
 import {
   buildAuthSwitchQuery,
   googleLinkRecoveryDestination,
+  googleRecoveryTarget,
   resolvePostAuthDestination,
   toAbsoluteAuthCallbackURL,
   validateAuthSearch,
@@ -60,6 +61,8 @@ function SignInPage() {
 
   const search = Route.useSearch();
   const afterLoginUrl = resolvePostAuthDestination(search);
+  const recoveryTarget = googleRecoveryTarget(afterLoginUrl, search.error);
+  const [linkFailed, setLinkFailed] = useState(false);
   const switchQuery = buildAuthSwitchQuery(afterLoginUrl);
   const signInSchema = z.object({
     email: z
@@ -85,7 +88,9 @@ function SignInPage() {
         window.sessionStorage.removeItem('image-studio:signup-pending');
       }
       navigatingRef.current = true;
-      window.location.assign(localizeHref(afterLoginUrl));
+      if (recoveryTarget) {
+        void connectGoogle();
+      } else window.location.assign(localizeHref(afterLoginUrl));
     }
   }, [afterLoginUrl, sessionPending, session?.user]);
 
@@ -142,9 +147,38 @@ function SignInPage() {
     return `/sign-in?${params.toString()}`;
   }, [afterLoginUrl]);
 
+  async function connectGoogle() {
+    navigatingRef.current = true;
+    setLinkFailed(false);
+    setSocialPending('google');
+    try {
+      const result = await authClient.linkSocial({
+        provider: 'google',
+        callbackURL: toAbsoluteAuthCallbackURL(
+          localizeHref(recoveryTarget || afterLoginUrl),
+          window.location.origin
+        ),
+        errorCallbackURL: toAbsoluteAuthCallbackURL(
+          localizeHref(
+            googleLinkRecoveryDestination(recoveryTarget || afterLoginUrl)
+          ),
+          window.location.origin
+        ),
+      });
+      if (result.error || !result.data?.url)
+        throw new Error('Link did not redirect');
+    } catch {
+      setLinkFailed(true);
+      setError(m['settings.profile.google_link_failed']());
+      setSocialPending(null);
+    }
+  }
+
   function finishSignIn() {
     navigatingRef.current = true;
-    window.location.assign(localizeHref(afterLoginUrl));
+    if (recoveryTarget) {
+      void connectGoogle();
+    } else window.location.assign(localizeHref(afterLoginUrl));
   }
 
   async function sendSignInCode() {
@@ -310,7 +344,16 @@ function SignInPage() {
       <section className="w-full" aria-labelledby="sign-in-title">
         <div className="auth-form-heading">
           <h1 id="sign-in-title">{m['common.sign.sign_in_title']()}</h1>
-          <p>{m['common.sign.sign_in_description']()}</p>
+          <p>
+            {recoveryTarget
+              ? m['common.sign.google_password_recovery']()
+              : m['common.sign.sign_in_description']()}
+          </p>
+          {linkFailed && (
+            <Button type="button" onClick={() => void connectGoogle()}>
+              {m['settings.profile.google_connect']()}
+            </Button>
+          )}
         </div>
         <div>
           {!configsLoaded ? (
@@ -616,7 +659,10 @@ function SignInPage() {
                       </form.Field>
                       <form.Subscribe selector={(state) => state.isSubmitting}>
                         {(isSubmitting) => (
-                          <Button type="submit" disabled={isSubmitting}>
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting || socialPending !== null}
+                          >
                             {isSubmitting ? (
                               <Loader2 className="size-4 animate-spin" />
                             ) : (

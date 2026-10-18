@@ -5,6 +5,7 @@ import { memoryAdapter } from 'better-auth/adapters/memory';
 import { oneTap } from 'better-auth/plugins';
 import { exportJWK, generateKeyPair, SignJWT } from 'jose';
 
+import { SITE_ACCOUNT_LINKING } from '../src/lib/auth-policy';
 import { classifyOneTapFailure } from '../src/lib/one-tap-error';
 
 async function main() {
@@ -21,11 +22,7 @@ async function main() {
     database: memoryAdapter(database),
     emailAndPassword: { enabled: true },
     account: {
-      accountLinking: {
-        enabled: true,
-        allowDifferentEmails: false,
-        updateUserInfoOnLink: false,
-      },
+      accountLinking: SITE_ACCOUNT_LINKING,
     },
     socialProviders: {
       google: {
@@ -102,6 +99,21 @@ async function main() {
       'not-linked'
     );
     assert.equal(database.account.length, 1);
+    database.user[0].emailVerified = true;
+    assert.equal(
+      (
+        await request('/one-tap/callback', {
+          idToken: await token('old@example.test'),
+        })
+      ).status,
+      401
+    );
+    assert.equal(
+      database.account.length,
+      1,
+      'Verified but unbound users also need explicit linking'
+    );
+
     const fresh = await request('/one-tap/callback', {
       idToken: await token('fresh@example.test'),
     });

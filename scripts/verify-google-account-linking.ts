@@ -3,6 +3,8 @@ import { randomBytes } from 'node:crypto';
 import { betterAuth } from 'better-auth';
 import { memoryAdapter } from 'better-auth/adapters/memory';
 
+import { SITE_ACCOUNT_LINKING } from '../src/lib/auth-policy';
+
 // Provider responses are fixtures in this isolated test only. Production keeps
 // Google's real token verification and the unchanged account-linking rules.
 const origin = 'http://localhost:3199';
@@ -26,11 +28,7 @@ const auth = betterAuth({
   database: memoryAdapter(database),
   emailAndPassword: { enabled: true },
   account: {
-    accountLinking: {
-      enabled: true,
-      allowDifferentEmails: false,
-      updateUserInfoOnLink: false,
-    },
+    accountLinking: SITE_ACCOUNT_LINKING,
   },
   socialProviders: {
     google: {
@@ -121,9 +119,27 @@ try {
     false
   );
   assert.equal(anonymous.status, 401);
+  cookies.clear();
   const implicit = await oauth('/sign-in/social');
   assert.equal(implicit.searchParams.get('error'), 'account_not_linked');
   assert.equal(database.account.length, 1);
+  assert.equal(
+    (
+      await request('/sign-in/email', {
+        email,
+        password: randomBytes(24).toString('hex'),
+      })
+    ).status,
+    401
+  );
+  assert.equal(
+    (await request('/link-social', { provider: 'google' })).status,
+    401
+  );
+  assert.equal(
+    (await request('/sign-in/email', { email, password })).status,
+    200
+  );
   const explicit = await oauth('/link-social');
   assert.equal(explicit.pathname, '/settings/profile');
   assert.equal(explicit.searchParams.get('error'), null);

@@ -75,7 +75,7 @@
   "common.sign.already_have_account": "已經有帳戶？",
   "common.sign.or": "或繼續",
   "common.sign.sign_out_title": "退出",
-  "common.sign.google_sign_in": "使用 Google 登入",
+  "common.sign.google_sign_in": "使用 Google 继续",
   "common.sign.github_sign_in": "使用 GitHub 登入",
   "common.sign.continue_with_email": "繼續使用電子郵件",
   "common.sign.email_code_title": "檢查您的電子郵件",
@@ -3612,7 +3612,7 @@
   "banana.capabilities.3.alt": "黑黃配色活動海報，展示 FRESH IDEAS、CREATIVE NIGHT 和 24 OCTOBER 文字",
   "banana.capabilities.before": "修改前",
   "banana.capabilities.after": "修改後",
-  "common.sign.oauth_account_not_linked": "這個電子郵件已有帳號，但尚未關聯目前的登入方式。請先使用原密碼登入。",
+  "common.sign.oauth_account_not_linked": "请先用原账号的邮箱和密码登录，随后将继续连接 Google，保留你的积分和作品。",
   "common.sign.oauth_recover_google": "使用原密碼登入，再關聯 Google",
   "settings.profile.login_methods": "登入方式",
   "settings.profile.google_link_description": "將 Google 關聯到現有帳號。請選擇與下方電子郵件一致的 Google 帳號，專案和點數會保留在同一個帳號中。",
@@ -3705,5 +3705,7 @@
   "homepage_showcase.previous": "上一個案例",
   "homepage_showcase.next": "下一個案例",
   "homepage_showcase.details": "查看提示詞詳情",
-  "homepage_showcase.all": "瀏覽提示詞庫"
+  "homepage_showcase.all": "瀏覽提示詞庫",
+  "common.sign.name_optional": "姓名（选填）",
+  "common.sign.google_password_recovery": "输入原账号的邮箱和密码，验证后继续连接 Google。积分和作品会保留。"
 }

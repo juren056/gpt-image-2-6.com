@@ -75,7 +75,7 @@
   "common.sign.already_have_account": "Masz już konto?",
   "common.sign.or": "Lub kontynuuj",
   "common.sign.sign_out_title": "Wyloguj się",
-  "common.sign.google_sign_in": "Zaloguj się za pomocą Google",
+  "common.sign.google_sign_in": "Continue with Google",
   "common.sign.github_sign_in": "Zaloguj się za pomocą GitHub",
   "common.sign.continue_with_email": "Kontynuuj za pomocą poczty e-mail",
   "common.sign.email_code_title": "Sprawdź swój e-mail",
@@ -3612,7 +3612,7 @@
   "banana.capabilities.3.alt": "Czarno-żółty plakat z napisami FRESH IDEAS, CREATIVE NIGHT i 24 OCTOBER",
   "banana.capabilities.before": "Przed",
   "banana.capabilities.after": "Po",
-  "common.sign.oauth_account_not_linked": "This email already has an account that is not linked to this sign-in provider. Sign in with your existing password first.",
+  "common.sign.oauth_account_not_linked": "Sign in with your existing email and password. We will then connect Google and keep your credits and work.",
   "common.sign.oauth_recover_google": "Sign in with password, then connect Google",
   "settings.profile.login_methods": "Sign-in methods",
   "settings.profile.google_link_description": "Connect Google to your existing account. Choose the Google account with the same email shown below. Your projects and credits stay together.",
@@ -3705,5 +3705,7 @@
   "homepage_showcase.previous": "Previous example",
   "homepage_showcase.next": "Next example",
   "homepage_showcase.details": "View prompt details",
-  "homepage_showcase.all": "Browse prompt library"
+  "homepage_showcase.all": "Browse prompt library",
+  "common.sign.name_optional": "Name (optional)",
+  "common.sign.google_password_recovery": "Enter your existing account email and password to connect Google and keep your credits and work."
 }

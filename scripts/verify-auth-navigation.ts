@@ -87,3 +87,36 @@ assert.deepEqual(parseEditorDraft('{invalid json', origin), {
 });
 
 console.log('Auth navigation verification passed.');
+
+const { googleRecoveryTarget } = await import('../src/lib/auth-navigation');
+const { applySiteAuthPolicy } = await import('../src/lib/auth-policy');
+assert.equal(
+  googleRecoveryTarget('/#generator', 'account_not_linked'),
+  '/#generator'
+);
+assert.equal(
+  googleRecoveryTarget(googleLinkRecoveryDestination('/#generator')),
+  '/#generator'
+);
+assert.equal(
+  googleRecoveryTarget('//evil.example', 'account_not_linked'),
+  null
+);
+assert.equal(
+  googleRecoveryTarget(
+    '/settings/profile?connect=google&returnTo=https://evil.example'
+  ),
+  '/settings/generate'
+);
+const policy = applySiteAuthPolicy({
+  google_auth_enabled: 'true',
+  google_one_tap_enabled: 'true',
+  email_otp_sign_in_enabled: 'true',
+  email_verification_enabled: 'true',
+  github_auth_enabled: 'true',
+});
+assert.equal(policy.email_otp_sign_in_enabled, 'false');
+assert.equal(policy.email_verification_enabled, 'false');
+assert.equal(policy.github_auth_enabled, 'false');
+assert.equal(policy.google_auth_enabled, 'true');
+assert.equal(policy.google_one_tap_enabled, 'true');

@@ -107,6 +107,10 @@ async function GET({ request }: { request: Request }) {
     configs.google_one_tap_enabled === 'true'
       ? 'true'
       : 'false';
+  result.github_auth_enabled = 'false';
+  result.email_otp_sign_in_enabled = 'false';
+  result.email_verification_enabled = 'false';
+  result.password_reset_enabled = 'false';
   return respData(result, publicCache);
 }
 

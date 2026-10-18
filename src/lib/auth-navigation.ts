@@ -95,3 +95,24 @@ export function classifyOAuthLinkError(error?: string) {
   if (error === 'account_already_linked_to_different_user') return 'conflict';
   return 'generic';
 }
+
+/** Recovery intent carries no identity or authorization; linkSocial still enforces both. */
+export function googleRecoveryTarget(
+  destination: string,
+  error?: string
+): string | null {
+  const safe = safeInternalAuthDestination(destination);
+  if (!safe) return null;
+  if (error === 'account_not_linked') return safe;
+  const url = new URL(safe, 'https://auth.invalid');
+  if (
+    url.pathname === '/settings/profile' &&
+    url.searchParams.get('connect') === 'google'
+  ) {
+    return (
+      safeInternalAuthDestination(url.searchParams.get('returnTo') || '') ||
+      '/settings/generate'
+    );
+  }
+  return null;
+}

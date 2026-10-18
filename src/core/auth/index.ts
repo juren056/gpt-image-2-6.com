@@ -14,6 +14,7 @@ import { getAllConfigs } from '@/modules/config/service';
 import { grantForNewUser } from '@/modules/credits/service';
 import { redeemInviteCode } from '@/modules/invite-codes/service';
 import { grantRoleForNewUser } from '@/modules/rbac/service';
+import { applySiteAuthPolicy, SITE_ACCOUNT_LINKING } from '@/lib/auth-policy';
 import { getUuid } from '@/lib/hash';
 
 import {
@@ -269,7 +270,7 @@ async function initializeNewUser(user: {
   email?: string | null;
   emailVerified?: boolean;
 }) {
-  const configs = await getAllConfigs();
+  const configs = applySiteAuthPolicy(await getAllConfigs());
 
   // Better Auth must create a pending user row before it can issue a signed
   // verification token. Do not grant credits or roles until that address has
@@ -351,6 +352,7 @@ async function finishNewUser(
 }
 
 export function getAuth(configs?: Record<string, string>) {
+  if (configs) configs = applySiteAuthPolicy(configs);
   assertProductionAuthSecret();
   // Rebuild if any social provider credential changed
   if (configs) {
@@ -469,11 +471,7 @@ export function getAuth(configs?: Record<string, string>) {
       },
     },
     account: {
-      accountLinking: {
-        enabled: true,
-        allowDifferentEmails: false,
-        updateUserInfoOnLink: false,
-      },
+      accountLinking: SITE_ACCOUNT_LINKING,
     },
     user: {
       additionalFields: {

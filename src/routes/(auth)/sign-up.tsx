@@ -50,27 +50,16 @@ function SignUpPage() {
   const search = Route.useSearch();
   const afterLoginUrl = resolvePostAuthDestination(search);
   const switchQuery = buildAuthSwitchQuery(afterLoginUrl);
-  const signUpSchema = z
-    .object({
-      name: z
-        .string()
-        .trim()
-        .min(1, m['common.sign.validation_name_required']()),
-      email: z
-        .string()
-        .trim()
-        .min(1, m['common.sign.validation_email_required']())
-        .email(m['common.sign.validation_email_invalid']()),
-      password: z.string().min(8, m['common.sign.validation_password_min']()),
-      confirmPassword: z
-        .string()
-        .min(1, m['common.sign.validation_confirm_password_required']()),
-      inviteCode: z.string(),
-    })
-    .refine((d) => d.password === d.confirmPassword, {
-      path: ['confirmPassword'],
-      message: m['common.sign.password_mismatch'](),
-    });
+  const signUpSchema = z.object({
+    name: z.string().trim(),
+    email: z
+      .string()
+      .trim()
+      .min(1, m['common.sign.validation_email_required']())
+      .email(m['common.sign.validation_email_invalid']()),
+    password: z.string().min(8, m['common.sign.validation_password_min']()),
+    inviteCode: z.string(),
+  });
 
   // Already signed in (visited /sign-up directly, or a stale callbackUrl looped
   // back here) → go home. The auth pages never gate themselves, so this can't loop.
@@ -78,9 +67,9 @@ function SignUpPage() {
     if (sessionPending || navigatingRef.current) return;
     if (session?.user) {
       navigatingRef.current = true;
-      router.push('/');
+      window.location.assign(localizeHref(afterLoginUrl));
     }
-  }, [sessionPending, session?.user, router]);
+  }, [sessionPending, session?.user, afterLoginUrl]);
 
   const configQuery = usePublicConfig();
   // The root also requests public config. Its cache can resolve before this
@@ -116,7 +105,6 @@ function SignUpPage() {
       name: '',
       email: '',
       password: '',
-      confirmPassword: '',
       inviteCode: '',
     },
     validators: { onSubmit: signUpSchema },
@@ -141,7 +129,8 @@ function SignUpPage() {
         }
 
         const result = await signUp.email({
-          name: value.name.trim(),
+          name:
+            value.name.trim() || value.email.trim().split('@')[0].slice(0, 64),
           email: value.email.trim().toLowerCase(),
           password: value.password,
           fetchOptions: {
@@ -225,7 +214,11 @@ function SignUpPage() {
     setError('');
     setSocialPending(provider);
     try {
-      const result = await signIn.social({ provider, callbackURL });
+      const result = await signIn.social({
+        provider,
+        callbackURL,
+        errorCallbackURL: `/sign-in?${new URLSearchParams({ authError: 'oauth', callbackUrl: afterLoginUrl })}`,
+      });
       if (result.error)
         setError(
           formatAuthError(result.error, m['common.sign.error_sign_in_failed']())
@@ -360,10 +353,9 @@ function SignUpPage() {
                     {(field) => (
                       <TextField
                         field={field}
-                        label={m['common.sign.name_title']()}
+                        label={m['common.sign.name_optional']()}
                         type="text"
                         autoComplete="name"
-                        required
                         placeholder={m['common.sign.name_placeholder']()}
                       />
                     )}
@@ -388,19 +380,6 @@ function SignUpPage() {
                         field={field}
                         label={m['common.sign.password_title']()}
                         placeholder={m['common.sign.password_placeholder']()}
-                      />
-                    )}
-                  </form.Field>
-                  <form.Field name="confirmPassword">
-                    {(field) => (
-                      <AuthPasswordField
-                        showLabel={m['common.sign.gallery_show_password']()}
-                        hideLabel={m['common.sign.gallery_hide_password']()}
-                        field={field}
-                        label={m['common.sign.confirm_password_title']()}
-                        placeholder={m[
-                          'common.sign.confirm_password_placeholder'
-                        ]()}
                       />
                     )}
                   </form.Field>
