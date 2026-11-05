@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en" data-output="gif">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>GPT Image 2.6 GIF Generator | Free GIF, SVG, and PNG Studio</title>
+  <meta name="description" content="Generate a GIF, SVG, or PNG with GPT Image 2.6. Switch formats on one prompt desk, set a frame strip, and start with 3 free credits.">
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="styles/studio.css">
+</head>
+<body>
+  <a class="skip" href="#desk">Skip to the desk</a>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="home.html">
+        <img src="assets/logo.svg" alt="">
+        <span>GPT Image 2.6</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#desk">Studio</a>
+        <a href="#formats">Formats</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="sign-in.html">Sign in</a>
+        <a class="btn btn-primary" href="sign-in.html">Start free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-head">
+          <div>
+            <p class="eyebrow">Free GPT Image 2.6 generator</p>
+            <h1>GPT Image 2.6 GIF, SVG, and still generator</h1>
+            <p class="lede">Write one prompt. Export a looping GIF, an editable SVG, or a still PNG. The free desk includes 3 credits.</p>
+          </div>
+          <aside class="welcome">
+            <strong>3</strong>
+            <span>free credits</span>
+            <small>1 short GIF, or 3 stills</small>
+          </aside>
+        </div>
+
+        <div class="desk" id="desk">
+          <form class="composer" action="sign-in.html">
+            <div class="formats" role="group" aria-label="Output format">
+              <button class="format is-on" type="button" data-format="gif" aria-pressed="true">GIF</button>
+              <button class="format" type="button" data-format="svg" aria-pressed="false">SVG</button>
+              <button class="format" type="button" data-format="png" aria-pressed="false">PNG</button>
+            </div>
+            <div class="field-label"><span>Prompt</span><span>Sample</span></div>
+            <label class="sr" for="prompt" style="position:absolute;left:-999px">Prompt</label>
+            <textarea class="prompt" id="prompt" readonly>A cyan star crossing a white frame on a violet night, eight-frame loop, no lettering.</textarea>
+            <div class="control-row">
+              <button class="chip" type="button">1:1</button>
+              <button class="chip chip-frames" type="button">8 frames</button>
+              <button class="chip" type="button">Loop on</button>
+              <button class="chip" type="button">Solid</button>
+            </div>
+            <div class="estimate">
+              <span>Draft rate</span>
+              <b class="when-gif">This GIF · 3 credits</b>
+              <b class="when-svg">This SVG · 1 credit</b>
+              <b class="when-png">This PNG · 1 credit</b>
+            </div>
+            <div class="action-row">
+              <button class="btn btn-primary" type="submit">
+                <span class="when-gif">Generate GIF</span>
+                <span class="when-svg">Generate SVG</span>
+                <span class="when-png">Generate PNG</span>
+              </button>
+            </div>
+          </form>
+
+          <div class="stage" aria-label="Preview stage">
+            <div class="stage-top">
+              <span class="stage-kicker">Preview</span>
+              <span class="pill when-gif">Layout sample</span>
+              <span class="pill when-svg">Layout sample</span>
+              <span class="pill when-png">Layout sample</span>
+            </div>
+            <div class="stage-canvas">
+              <img class="when-gif" src="assets/gif-study.svg" alt="Format study: stacked frames, an orbit, and a cyan star.">
+              <img class="when-svg" src="assets/svg-study.svg" alt="Format study: a rounded frame with anchor points and a path.">
+              <img class="when-png" src="assets/still-study.svg" alt="Format study: one still frame with an orb and a cyan star.">
+            </div>
+            <div class="film" aria-hidden="true">
+              <i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i>
+              <i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i>
+            </div>
+            <div class="ruler">
+              <span>0.0s</span>
+              <span>Frame 3 / 8</span>
+              <span>1.0s</span>
+            </div>
+            <p class="stage-foot when-gif">Square loop · 8 frames. The file would download from this stage.</p>
+            <p class="stage-foot when-svg">Vector export · paths stay editable.</p>
+            <p class="stage-foot when-png">Single still · same ratio as the desk.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="formats">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Formats</p>
+          <h2>Three exports. One prompt desk.</h2>
+          <p>GIF for a loop, SVG for vectors, PNG for a still. These pictures are format studies for the layout, not live model output.</p>
+        </div>
+        <div class="study-grid">
+          <article class="study">
+            <img src="assets/gif-study.svg" alt="">
+            <div>
+              <h3>GIF</h3>
+              <p>A frame strip sits under the preview. This draft prices a GIF up to 8 frames at 3 credits.</p>
+            </div>
+          </article>
+          <article class="study">
+            <img src="assets/svg-study.svg" alt="">
+            <div>
+              <h3>SVG</h3>
+              <p>Export paths you can keep editing. A still SVG is 1 credit at the draft rate.</p>
+            </div>
+          </article>
+          <article class="study">
+            <img src="assets/still-study.svg" alt="">
+            <div>
+              <h3>PNG</h3>
+              <p>One frame for a cover or a poster. A PNG is 1 credit at the draft rate.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Desk</p>
+          <h2>Built like a workbench</h2>
+          <p>The format, the prompt, the frame strip, and the cost stay on one surface.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M6 4V2M10 4V2M14 4V2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Format switch</h3>
+            <p>GIF, SVG, and PNG share the prompt. Changing the file does not clear the text.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="6" width="4" height="8" rx="1" stroke="currentColor"/><rect x="8" y="6" width="4" height="8" rx="1" stroke="currentColor"/><rect x="14" y="6" width="4" height="8" rx="1" stroke="currentColor"/></svg>
+            </div>
+            <h3>Frame strip</h3>
+            <p>GIFs show a timeline. This draft offers 4, 8, or 12 frames. The sample uses 8.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 14c3-6 5-7 8-4s4 1 6-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="3" cy="14" r="1.4" fill="currentColor"/><circle cx="11" cy="10" r="1.4" fill="currentColor"/><circle cx="17" cy="6" r="1.4" fill="currentColor"/></svg>
+            </div>
+            <h3>Vector export</h3>
+            <p>SVG keeps paths, so the file can move into a design tool.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+            </div>
+            <h3>Still export</h3>
+            <p>PNG is a single frame, with the same ratio control as the GIF.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Visible cost</h3>
+            <p>The desk shows the draft credit cost before a run. Free starts at 3 credits.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 8h14" stroke="currentColor" stroke-width="1.6"/></svg>
+            </div>
+            <h3>One-time packs</h3>
+            <p>This proposal sells credits, not a monthly renewal.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Steps</p>
+          <h2>From prompt to file</h2>
+        </div>
+        <div class="step-grid">
+          <article class="step"><b>01</b><h3>Choose a format</h3><p>GIF, SVG, or PNG. The desk stays put.</p></article>
+          <article class="step"><b>02</b><h3>Write the prompt</h3><p>One field. The sample above is only a layout.</p></article>
+          <article class="step"><b>03</b><h3>Set the frames</h3><p>A GIF uses the strip. A still ignores it.</p></article>
+          <article class="step"><b>04</b><h3>Generate</h3><p>Sign in, then download from the preview stage.</p></article>
+        </div>
+        <p class="unit"><strong>Draft unit</strong> PNG or SVG · 1 credit <span>·</span> GIF up to 8 frames · 3 credits</p>
+      </div>
+    </section>
+
+    <section class="section" id="pricing" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Pricing</p>
+          <h2>Credits for the desk</h2>
+          <p>Free includes 3 credits. Spark, Studio, and Archive are one-time packs in this design draft.</p>
+        </div>
+        <div class="price-grid">
+          <article class="plan">
+            <p class="name">Free</p>
+            <p class="amount">$0</p>
+            <p class="credits">3 credits</p>
+            <ul>
+              <li>1 short GIF or 3 stills</li>
+              <li>GIF, SVG, and PNG desk</li>
+              <li>Sign in to generate</li>
+            </ul>
+            <a class="btn btn-line btn-block" href="sign-in.html">Start free</a>
+          </article>
+          <article class="plan">
+            <p class="name">Spark</p>
+            <p class="amount">$9.90</p>
+            <p class="credits">40 credits</p>
+            <ul>
+              <li>Up to 13 short GIFs</li>
+              <li>One-time payment</li>
+              <li>Credits last 365 days</li>
+            </ul>
+            <a class="btn btn-line btn-block" href="checkout.html">Choose Spark</a>
+          </article>
+          <article class="plan featured">
+            <span class="badge">Suggested</span>
+            <p class="name">Studio</p>
+            <p class="amount">$19.90</p>
+            <p class="credits">100 credits</p>
+            <ul>
+              <li>Up to 33 short GIFs</li>
+              <li>One-time payment</li>
+              <li>Credits last 365 days</li>
+            </ul>
+            <a class="btn btn-primary btn-block" href="checkout.html">Choose Studio</a>
+          </article>
+          <article class="plan">
+            <p class="name">Archive</p>
+            <p class="amount">$39.90</p>
+            <p class="credits">240 credits</p>
+            <ul>
+              <li>80 short GIFs</li>
+              <li>One-time payment</li>
+              <li>Credits last 365 days</li>
+            </ul>
+            <a class="btn btn-line btn-block" href="checkout.html">Choose Archive</a>
+          </article>
+        </div>
+        <p class="fine" style="margin-top:18px"><a href="pricing.html">Open the full pricing draft</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="faq" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">FAQ</p>
+          <h2>Before you generate</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq" open>
+            <summary>What is GPT Image 2.6?</summary>
+            <p>The studio is designed around GPT Image 2.6 and three files: a GIF, an SVG, and a PNG.</p>
+          </details>
+          <details class="faq">
+            <summary>Is there a free GPT Image 2.6 generator?</summary>
+            <p>Sign-in includes 3 credits in this draft. That covers one GIF up to 8 frames, or three stills. It is not a charge.</p>
+          </details>
+          <details class="faq">
+            <summary>Can I switch from GIF to SVG without rewriting?</summary>
+            <p>Yes. The format control changes the export. The prompt stays in the field.</p>
+          </details>
+          <details class="faq">
+            <summary>How is a GIF different from a PNG here?</summary>
+            <p>A GIF uses the frame strip and a loop. A PNG is one still. SVG is a vector file.</p>
+          </details>
+          <details class="faq">
+            <summary>Do the packs renew every month?</summary>
+            <p>No. Spark, Studio, and Archive are one-time in this proposal. The draft window is 365 days.</p>
+          </details>
+          <details class="faq">
+            <summary>Where does the file go?</summary>
+            <p>The preview stage is where a finished GIF, SVG, or PNG would be downloaded.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="closing">
+          <div>
+            <p class="eyebrow" style="color:#d9fbff">First file</p>
+            <h2>Generate your first GIF</h2>
+            <p>Use the 3 free credits on a loop, or keep them for an SVG or a PNG.</p>
+            <a class="btn btn-primary" href="sign-in.html">Start free</a>
+          </div>
+          <img src="assets/logo.svg" alt="">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <a class="brand" href="home.html"><img src="assets/logo.svg" alt=""><span>GPT Image 2.6</span></a>
+        <p style="margin-top:10px">gpt-image-2-6.com</p>
+      </div>
+      <div>
+        <strong>Product</strong>
+        <a href="#desk">Studio</a>
+        <a href="#formats">Formats</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div>
+        <strong>Files</strong>
+        <a href="#formats">GIF</a>
+        <a href="#formats">SVG</a>
+        <a href="#formats">PNG</a>
+      </div>
+      <div>
+        <strong>Account</strong>
+        <a href="sign-in.html">Sign in</a>
+        <a href="checkout.html">Checkout</a>
+        <a href="pricing.html">Credit packs</a>
+      </div>
+    </div>
+    <div class="wrap legal">© 2026 GPT Image 2.6</div>
+  </footer>
+  <script>
+    const root = document.documentElement;
+    document.querySelectorAll("[data-format]").forEach((button) => {
+      button.addEventListener("click", () => {
+        root.dataset.output = button.getAttribute("data-format");
+        document.querySelectorAll("[data-format]").forEach((item) => {
+          const on = item === button;
+          item.classList.toggle("is-on", on);
+          item.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+      });
+    });
+  </script>
+</body>
+</html>

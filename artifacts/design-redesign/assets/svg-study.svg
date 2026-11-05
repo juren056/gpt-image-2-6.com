@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="SVG path study">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#141A3A"/>
+      <stop offset="1" stop-color="#2A2158"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <g opacity="0.18" stroke="#9EB0FF" stroke-width="1">
+    <path d="M80 80H1120M80 200H1120M80 320H1120M80 440H1120M80 560H1120M80 680H1120"/>
+    <path d="M160 40V720M320 40V720M480 40V720M640 40V720M800 40V720M960 40V720"/>
+  </g>
+  <g fill="none" stroke="#F4F7FF" stroke-width="8">
+    <rect x="250" y="150" width="620" height="430" rx="72"/>
+  </g>
+  <g fill="none" stroke="#3EF0FF" stroke-width="2" opacity="0.8">
+    <path d="M250 222H170"/>
+    <path d="M250 508H190"/>
+    <path d="M870 150V90"/>
+    <path d="M870 580V650"/>
+  </g>
+  <g fill="#0E132C" stroke="#F7FEFF" stroke-width="3">
+    <circle cx="250" cy="150" r="8"/>
+    <circle cx="560" cy="150" r="8"/>
+    <circle cx="870" cy="150" r="8"/>
+    <circle cx="250" cy="365" r="8"/>
+    <circle cx="870" cy="365" r="8"/>
+    <circle cx="250" cy="580" r="8"/>
+    <circle cx="560" cy="580" r="8"/>
+    <circle cx="870" cy="580" r="8"/>
+  </g>
+  <g transform="translate(790 168)">
+    <path fill="#3EF0FF" opacity="0.35" filter="url(#glow)" d="M0-48C4-16 10-10 40-5C10 0 4 8 0 40C-4 8-10 0-40-5C-10-10-4-16 0-48Z"/>
+    <path fill="#E9FDFF" d="M0-36C3-12 8-8 30-4C8 0 3 7 0 30C-3 7-8 0-30-4C-8-8-3-12 0-36Z"/>
+    <g fill="#06262C" stroke="#3EF0FF" stroke-width="2">
+      <circle cx="0" cy="-36" r="5"/>
+      <circle cx="30" cy="-4" r="5"/>
+      <circle cx="0" cy="30" r="5"/>
+      <circle cx="-30" cy="-4" r="5"/>
+    </g>
+  </g>
+  <path d="M390 470C430 360 520 340 600 390C690 446 760 400 790 340" fill="none" stroke="#7AFAFF" stroke-width="6" stroke-linecap="round"/>
+  <g fill="#F7FEFF">
+    <circle cx="390" cy="470" r="7"/>
+    <circle cx="600" cy="390" r="7"/>
+    <circle cx="790" cy="340" r="7"/>
+  </g>
+</svg>
