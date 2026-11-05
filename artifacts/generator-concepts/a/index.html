@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>GPT Image 2.6 Monitor | GIF, SVG, and PNG</title>
+  <meta name="description" content="Cut a GIF, an SVG, or a PNG with GPT Image 2.6. The monitor shows the frame, the strip, and the cost.">
+  <link rel="icon" href="../assets/logo.png">
+  <link rel="stylesheet" href="monitor.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><img src="../assets/logo.png" alt=""><span>GPT Image 2.6</span></a>
+    <nav aria-label="Primary"><a href="#gen">Monitor</a><a href="#gen">Formats</a></nav>
+  </header>
+  <main class="page">
+    <h1>Cut a GIF, an SVG, or a still with GPT Image 2.6.</h1>
+    <section class="gen" id="gen" aria-label="Generator">
+      <div class="screen">
+        <img src="frame.svg" alt="Visual study, frame 3: a cyan star partway across a white frame.">
+        <div class="tag">Visual study</div>
+        <div class="hud">Frame 3 / 8 · 0.38s</div>
+      </div>
+      <div class="film" aria-label="Frame strip">
+        <div class="cells">
+          <div class="cell"><b>1</b><i style="left:18%"></i></div>
+          <div class="cell"><b>2</b><i style="left:30%"></i></div>
+          <div class="cell on"><b>3</b><i style="left:42%"></i></div>
+          <div class="cell"><b>4</b><i style="left:54%"></i></div>
+          <div class="cell"><b>5</b><i style="left:64%"></i></div>
+          <div class="cell"><b>6</b><i style="left:74%"></i></div>
+          <div class="cell"><b>7</b><i style="left:82%"></i></div>
+          <div class="cell"><b>8</b><i style="left:90%"></i></div>
+        </div>
+        <div class="times"><span>0.00s</span><span class="now">Playhead · frame 3 · 0.38s</span><span>1.00s</span></div>
+      </div>
+      <form class="bar">
+        <div class="seg" role="group" aria-label="Format">
+          <button class="on" type="button">GIF</button>
+          <button type="button">SVG</button>
+          <button type="button">PNG</button>
+        </div>
+        <label class="prompt">
+          <span>Example</span>
+          <input value="A cyan star crossing a white frame, no lettering." readonly aria-label="Prompt">
+        </label>
+        <div class="params" aria-label="GIF settings">
+          <span>8 frames</span>
+          <span>Loop on</span>
+          <span>1:1</span>
+        </div>
+        <div class="cost">3 credits</div>
+        <button class="go" type="button">Cut GIF</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,67 @@
+:root {
+  --paper: #f4f0e6;
+  --ink: #16141c;
+  --muted: #4e4a55;
+  --violet: #2f24d8;
+  --cyan: #14d4ea;
+  --serif: "Liberation Serif", "DejaVu Serif", Georgia, serif;
+  --sans: Inter, "Liberation Sans", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.45; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, p { margin: 0; }
+.top, .cover, .hang, .spread, .rate, .colophon { width: min(1360px, calc(100% - 64px)); margin: 0 auto; }
+.top { display: flex; align-items: center; justify-content: space-between; padding: 22px 0 8px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -0.03em; }
+.brand img { width: 38px; height: 38px; border-radius: 10px; }
+.folio { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+.folio b { color: var(--violet); }
+.cover {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  align-items: stretch;
+  min-height: calc(100vh - 78px);
+  padding-bottom: 28px;
+}
+.cover h1 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.045em; line-height: 0.86; }
+.cover h1 small { display: block; font-family: var(--sans); font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 18px; }
+.cover h1 .gif { display: block; font-size: clamp(120px, 14vw, 210px); }
+.cover h1 .line { display: block; font-size: clamp(40px, 4vw, 64px); font-style: italic; margin-top: 8px; }
+.cover h1 .line em { font-style: italic; color: var(--violet); }
+.deck { margin-top: 22px; max-width: 36ch; font-size: 18px; }
+.prompt {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 12px 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+}
+.prompt button { border: 0; background: var(--ink); color: var(--paper); min-height: 44px; padding: 0 16px; font-family: var(--sans); font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; }
+.slab { background: var(--violet); color: #f6f3ec; padding: 22px; display: flex; flex-direction: column; min-height: 100%; }
+.slab img { width: 100%; height: 100%; min-height: 520px; object-fit: cover; }
+.slab figcaption { display: flex; justify-content: space-between; margin-top: 12px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+.hang { display: grid; grid-template-columns: 1.3fr 0.7fr 0.85fr; gap: 22px; align-items: end; padding: 72px 0; }
+.hang figure:nth-child(2) { margin-bottom: 64px; }
+.hang figcaption { margin-top: 8px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.hang h2 { font-family: var(--serif); font-size: 42px; font-weight: 400; letter-spacing: -0.04em; }
+.spread { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 48px; padding: 20px 0 72px; border-top: 1px solid rgba(22,20,28,0.2); }
+.spread h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 4.4vw, 68px); line-height: 0.96; letter-spacing: -0.04em; }
+.spread p + p { margin-top: 12px; }
+.rate h2 { font-family: var(--serif); font-weight: 400; font-size: 48px; letter-spacing: -0.04em; }
+.sheet { width: 100%; border-collapse: collapse; margin-top: 18px; font-variant-numeric: tabular-nums; }
+.sheet th, .sheet td { text-align: left; padding: 14px 8px; border-bottom: 1px solid rgba(22,20,28,0.18); }
+.sheet th { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+.note { margin-top: 14px; color: var(--muted); max-width: 70ch; }
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 28px 0 10px; background: var(--ink); color: var(--paper); padding: 18px 20px; }
+.bar a { background: var(--cyan); color: #062126; padding: 10px 14px; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; font-size: 13px; }
+.colophon { padding: 10px 0 36px; color: var(--muted); font-size: 13px; }

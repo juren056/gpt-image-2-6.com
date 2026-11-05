@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>GPT Image 2.6 设计稿总览</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="styles/studio.css">
+  <style>
+    body.deck .lede, body.deck .nav-links { color: #3d4660; }
+    body.deck .btn-line { color: #1c2033; border-color: #c5cad8; background: #fff; }
+    body.deck .eyebrow { color: #0c7490; }
+    body.deck .nav { color: #1c2033; }
+  </style>
+</head>
+<body class="deck">
+  <header class="nav" style="background:#f6f7fb;border-bottom:1px solid #e1e4ee">
+    <div class="nav-inner">
+      <a class="brand" href="design-index.html"><img src="assets/logo.svg" alt=""><span>设计稿</span></a>
+      <nav class="nav-links" aria-label="稿件">
+        <a href="#home">首页</a>
+        <a href="#mobile">手机</a>
+        <a href="#pricing">定价</a>
+        <a href="#signin">登录</a>
+        <a href="#checkout">结账</a>
+        <a href="#theme">主题</a>
+      </nav>
+      <a class="btn btn-line" href="design-spec.md">设计说明</a>
+    </div>
+  </header>
+  <main class="wrap deck-hero">
+    <p class="eyebrow">给黄总挑选</p>
+    <h1>GPT Image 2.6 上站前设计</h1>
+    <p class="lede">夜色工作台，蓝紫标记，青色星光。下面是整页截图，不是情绪板。生产代码和真支付都没有动。文字说明在 <a href="design-spec.md">design-spec.md</a>。</p>
+    <p class="lede">可打开的页面：<a href="home.html">首页</a> · <a href="pricing.html">定价</a> · <a href="sign-in.html">登录</a> · <a href="checkout.html">结账</a> · <a href="theme.html">主题</a></p>
+
+    <figure class="shot-link" id="home">
+      <figcaption class="path">homepage-desktop.png · 1440 宽 · <a href="home.html">home.html</a></figcaption>
+      <img class="full" src="homepage-desktop.png" alt="桌面首页全页">
+    </figure>
+    <figure class="shot-link" id="mobile">
+      <figcaption class="path">homepage-mobile.png · 390 宽</figcaption>
+      <img class="full" src="homepage-mobile.png" alt="手机首页全页" style="max-width:390px">
+    </figure>
+    <figure class="shot-link" id="pricing">
+      <figcaption class="path">pricing.png · <a href="pricing.html">pricing.html</a></figcaption>
+      <img class="full" src="pricing.png" alt="定价页">
+    </figure>
+    <figure class="shot-link" id="signin">
+      <figcaption class="path">sign-in.png · <a href="sign-in.html">sign-in.html</a></figcaption>
+      <img class="full" src="sign-in.png" alt="登录页">
+    </figure>
+    <figure class="shot-link" id="checkout">
+      <figcaption class="path">checkout.png · 外观示意，不能付款 · <a href="checkout.html">checkout.html</a></figcaption>
+      <img class="full" src="checkout.png" alt="结账外观">
+    </figure>
+    <figure class="shot-link" id="theme">
+      <figcaption class="path">theme-board.png · <a href="theme.html">theme.html</a></figcaption>
+      <img class="full" src="theme-board.png" alt="主题板">
+    </figure>
+  </main>
+</body>
+</html>
