@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#05040a"/>
+      <stop offset="0.48" stop-color="#1a103f"/>
+      <stop offset="1" stop-color="#b14cff"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#f4ecff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#3ef0ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff7ea"/>
+      <stop offset="0.4" stop-color="#e7d4ff"/>
+      <stop offset="1" stop-color="#5b2ec8"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="8"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="#05040a"/>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <polygon points="0,0 720,80 640,900 0,900" fill="url(#beam)" opacity="0.85"/>
+  <g opacity="0.28" fill="none" stroke="#fff" stroke-width="8">
+    <rect x="760" y="70" width="760" height="620" rx="8" transform="skewX(-8) translate(40 20)"/>
+    <rect x="820" y="40" width="760" height="620" rx="8" transform="skewX(-8)"/>
+  </g>
+  <g filter="url(#glow)" opacity="0.55">
+    <rect x="860" y="90" width="640" height="560" fill="#3ef0ff"/>
+  </g>
+  <g transform="skewX(-8)">
+    <rect x="980" y="70" width="620" height="560" fill="url(#screen)"/>
+    <g fill="#fff" opacity="0.88">
+      <rect x="1040" y="110" width="46" height="470"/>
+      <rect x="1120" y="160" width="28" height="420" opacity="0.55"/>
+      <rect x="1188" y="90" width="70" height="490"/>
+      <rect x="1290" y="200" width="22" height="380" opacity="0.45"/>
+      <rect x="1350" y="130" width="90" height="450"/>
+    </g>
+    <rect x="980" y="70" width="620" height="560" fill="none" stroke="#fff" stroke-width="10"/>
+  </g>
+  <g transform="translate(1410 120)">
+    <path fill="#3EF0FF" filter="url(#glow)" d="M0-64C6-22 14-12 54-4C14 4 6 16 0 58C-6 16-14 4-54-4C-14-12-6-22 0-64Z"/>
+    <path fill="#F7FEFF" d="M0-46C4-16 10-8 38-3C10 2 4 12 0 42C-4 12-10 2-38-3C-10-8-4-16 0-46Z"/>
+  </g>
+  <rect width="1600" height="900" filter="url(#grain)" opacity="0.22"/>
+  <rect width="1600" height="220" y="680" fill="#05040a" opacity="0.55"/>
+</svg>
