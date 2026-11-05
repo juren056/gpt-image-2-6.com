@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GPT Image 2.6">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0.08" x2="1" y2="0.92">
+      <stop offset="0" stop-color="#3A5BFF"/>
+      <stop offset="0.46" stop-color="#5A45F2"/>
+      <stop offset="1" stop-color="#8A46F0"/>
+    </linearGradient>
+    <linearGradient id="starFill" x1="0.15" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#F7FEFF"/>
+      <stop offset="0.42" stop-color="#7AFAFF"/>
+      <stop offset="1" stop-color="#2ADFFF"/>
+    </linearGradient>
+    <filter id="bloom" x="-70%" y="-70%" width="240%" height="240%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="halo" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="114" fill="url(#bg)"/>
+  <rect x="114" y="114" width="284" height="284" rx="64" fill="none" stroke="#ffffff" stroke-width="34"/>
+  <g transform="translate(398 108)">
+    <path fill="#3EF0FF" opacity="0.85" filter="url(#halo)" d="M0-78C6-28 16-16 62-8C16 0 6 14 0 66C-6 14-16 0-62-8C-16-16-6-28 0-78Z"/>
+    <path fill="url(#starFill)" filter="url(#bloom)" d="M0-70C5-24 14-14 56-7C14 0 5 12 0 58C-5 12-14 0-56-7C-14-14-5-24 0-70Z"/>
+  </g>
+</svg>
