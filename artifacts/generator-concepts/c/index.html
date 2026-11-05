@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>GPT Image 2.6 Prompt | GIF, SVG, and PNG</title>
+  <meta name="description" content="Ask GPT Image 2.6 for a GIF, an SVG, or a PNG. The stage stays empty until you generate.">
+  <link rel="icon" href="../assets/logo.png">
+  <link rel="stylesheet" href="command.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><img src="../assets/logo.png" alt=""><span>GPT Image 2.6</span></a>
+    <nav aria-label="Primary"><a href="#gen">Stage</a><a href="#bar">Prompt</a></nav>
+  </header>
+  <main class="page">
+    <h1>Ask GPT Image 2.6 for a GIF, an SVG, or a PNG.</h1>
+    <section class="gen" id="gen" aria-label="Generator">
+      <div class="stage">
+        <img src="empty.svg" alt="Empty stage: a dashed frame and a cyan star, ready for a GIF.">
+        <div class="pills">
+          <span class="on">GIF</span>
+          <span>SVG</span>
+          <span>PNG</span>
+          <span>8 frames</span>
+          <span>Loop on</span>
+          <span>1:1</span>
+        </div>
+        <div class="guide">
+          <strong>Nothing generated yet</strong>
+          <p>Try: a cyan star crossing a white frame, eight beats, no lettering.</p>
+        </div>
+        <div class="scrub" aria-label="Timeline armed at the start">
+          <div class="track"><div class="knob"></div></div>
+          <p><span>0.0s · frame 1</span><span>Ready · 8 frames</span><span>1.0s</span></p>
+        </div>
+      </div>
+      <form class="bar" id="bar">
+        <span class="fmt">GIF</span>
+        <input aria-label="Prompt" placeholder="Describe the GIF. The example is on the stage." readonly>
+        <span class="cost">3 credits</span>
+        <button class="go" type="button">Generate</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
